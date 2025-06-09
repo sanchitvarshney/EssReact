@@ -5,24 +5,21 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/CustomAccordion";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { CgArrowTopRight } from "react-icons/cg";
-
+import React from "react";
+import { Link } from "react-router-dom";
 
 // import {  useAppSelector } from "../../hooks/useReduxHook";
-import { IoIosOpen } from "react-icons/io";
-import { MdHome } from "react-icons/md";
+
 // import CircularProgress from "@mui/material/CircularProgress";
 // import { Box } from "@mui/material";
 // import { Menu } from "@/features/menu/menuType";
-import { Icons } from "../icons";
+
 import CustomToolTip from "../reuseable/CustomToolTip";
 
-import type { MenuItem } from "../../types/menuitemtypes";
+import type { MenuItem } from "../../types/dummytypes";
 import { menu } from "../../dummydata/Menu";
-// import { getMenuData } from "@/features/menu/menuSlice";
-
+import { Avatar, Divider } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const getTextSize = (level: number) => {
   switch (level) {
@@ -37,96 +34,41 @@ const getTextSize = (level: number) => {
   }
 };
 const renderMenu = (
-  menu: MenuItem[]| null,
-  isExpanded: boolean,
-  setIsExpanded: (value: boolean) => void,
+  menu: MenuItem[] | null,
   isNew: boolean,
-  accordionValues: { [key: string]: string },
-  setAccordionValues: (value: { [key: string]: string }) => void,
-  path: string = "",
+
   level: number = 0
 ) => {
-  
   return (
-    <Accordion
-      type="single"
-      collapsible
-      value={accordionValues[path] || ""}
-      onValueChange={(val) =>
-        setAccordionValues({ ...accordionValues, [path]: val })
-      }
-    >
+    <Accordion type="single" collapsible>
       <ul className="flex flex-col gap-[20px]">
         {menu?.map((item: any, index: number) => {
-          const currentPath = `${path}/${item.name}-${index}`;
-
           return (
-            <li key={item.key || item.name + index}>
+            <li key={item.id || item.name + index}>
               {item?.children ? (
                 <AccordionItem
-                  value={currentPath}
+                  value={`${index + item.title}`}
                   className="border-0 w-full transition-all duration-100"
                 >
                   <div className="flex flex-col px-2">
-                    {!isExpanded && (
-                      <CustomToolTip title={item?.name} placement="right">
-                        <div
-                          className="px-1 rounded-md cursor-pointer "
-                          onClick={() => {
-                            if (!isExpanded) {
-                              setIsExpanded(true);
-                              setAccordionValues({
-                                ...accordionValues,
-                                [path]: currentPath,
-                              });
-                            }
-                          }}
-                        >
-                          <DynamicIcon
-                            name={item.icon}
-                            size="medium"
-                            isExpended={isExpanded}
-                          />
-                        </div>
-                      </CustomToolTip>
-                    )}
-                    {isExpanded && (
-                      <AccordionTrigger
-                        className="w-[100%] py-1   m-0 leading-none hover:no-underline rounded-md hover:bg-white"
-                        onClick={() => {
-                          setAccordionValues({
-                            ...accordionValues,
-                            [path]: currentPath,
-                          });
-                        }}
-                      >
-                        <div className="w-full p-1 flex items-center cursor-pointer rounded-md gap-2">
-                          {isNew && (
-                            <DynamicIcon
-                              name={item.icon}
-                              size="medium"
-                              isExpended={isExpanded}
-                              
-                            />
-                          )}
-                          <span
-                            className={` ${getTextSize(level)} font-[500]`}
-                          >
-                            {item.name}
-                          </span>
-                        </div>
-                      </AccordionTrigger>
-                    )}
-                    {isExpanded && item.children && (
-                      <AccordionContent className=" mx-4  border-l-2 border-cyan-600">
+                    <AccordionTrigger className="w-[100%] py-1   m-0 leading-none hover:no-underline rounded-md hover:bg-white">
+                      <div className="w-full p-1 flex items-center cursor-pointer rounded-md gap-2">
+                        {isNew && (
+                          <DynamicIcon name={item.icon} size="medium" />
+                        )}
+                        <span className={` ${getTextSize(level)} font-[500]`}>
+                          {item.title}
+                        </span>
+                      </div>
+                    </AccordionTrigger>
+
+                    {item.children && (
+                      <AccordionContent className=" mx-4  border-l-2 border-black">
                         {renderMenu(
                           item.children,
-                          isExpanded,
-                          setIsExpanded,
+
                           false,
-                          accordionValues,
-                          setAccordionValues,
-                          currentPath,
+
                           level + 1
                         )}
                       </AccordionContent>
@@ -134,37 +76,20 @@ const renderMenu = (
                   </div>
                 </AccordionItem>
               ) : (
-                <CustomToolTip title={isExpanded ? "" :item.name} placement="right">
+                <CustomToolTip title={item.name} placement="right">
                   <div
-                    className={` flex items-center justify-between w-full px-2 ${
-                      isExpanded && ""
-                    } rounded-md `}
+                    className={` flex items-center justify-between w-full px-2 rounded-md `}
                   >
                     <Link
                       to={item?.url}
-                      className={`w-full rounded-md cursor-pointer flex items-center gap-[10px] ${
-                        !isExpanded ? "pl-1" : "pl-1 hover:bg-white p-[6px]"
-                      } `}
-                      onClick={() => {
-                        setIsExpanded(false);
-                        setAccordionValues({});
-                      }}
+                      className={`w-full rounded-md cursor-pointer flex items-center gap-[10px] pl-1 hover:bg-white p-[6px]
+                      `}
                     >
-                      {isNew && (
-                        <DynamicIcon
-                          name={item.icon}
-                          size="medium"
-                          isExpended={isExpanded}
-                        />
-                      )}
-                      {isExpanded && (
-                        <div className="flex">
-                          <span className={`${getTextSize(level)} font-[500]`}>
-                            {item.name}
-                          </span>
-                          <CgArrowTopRight className="h-[20px] w-[20px] ml-2" />
-                        </div>
-                      )}
+                      {isNew && <DynamicIcon name={item.icon} size="medium" />}
+
+                      <span className={`${getTextSize(level)} font-[500]`}>
+                        {item.title}
+                      </span>
                     </Link>
                   </div>
                 </CustomToolTip>
@@ -183,124 +108,45 @@ interface CustomSideBarMenuProps {
 }
 
 const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
-  // const dispatch = useAppDispatch();
-  // const { menu, menuLoading } = useAppSelector((state) => state.menu);
-  const navigate = useNavigate();
-
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [accordionValues, setAccordionValues] = useState<{
-    [key: string]: string;
-  }>({});
+  // const navigate = useNavigate();
 
   return (
-    <div className=" w-[40vh] h-[calc(100vh-50px)]  flex flex-col bg-gradient-to-t from-cyan-400 to-cyan-100">
-      <div className="z-3 h-[calc(100vh-50px)] flex justify-center items-center ">
-
-        
-        <div
-          className={` h-[95%] ${
-            isExpanded ? "w-[360px] items-center" : "w-[80px] items-center "
-          } flex flex-col justify-between  transition-all duration-100 ease-in-out   bg-gradient-to-t from-cyan-400 to-cyan-100`}
-        >
-          {/* {menuLoading ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <CircularProgress size={22} />
-            </Box>
-          ) : ( */}
-            <>
-              <div className="overflow-y-auto custom-scrollbar-for-menu p-1 ">
-                <div
-                  className={`flex justify-between items-center p-1 pl-1   rounded-md  ${
-                    isExpanded && "mb-5 hover:bg-white"
-                  }`}
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  <CustomToolTip
-                    title={!isExpanded ? "Dashboard" : ""}
-                    placement="right"
-                  >
-                    <div
-                      className={`flex gap-[8px] items-center px-[7px] cursor-pointer  ${
-                        isExpanded
-                          ? "py-1 mb-0 hover:bg-white"
-                          : "mb-4  rounded-md flex items-center justify-center  "
-                      } `}
-                    >
-                      <MdHome size={26} />
-                      {isExpanded ? (
-                        <span className={` text-[18px] font-[500]`}>
-                          Dashboard
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  </CustomToolTip>
-                </div>
-                {/* </Link> */}
-                {renderMenu(
-                  menu,
-                  isExpanded,
-                  setIsExpanded,
-                  true,
-                  accordionValues,
-                  setAccordionValues
-                )}
+    <div className="w-full h-screen flex flex-col">
+      {/* Sidebar container */}
+      <div className="w-[40vh] flex flex-col overflow-y-auto h-[90vh]">
+        {/* Profile section */}
+        <div className="flex flex-col justify-center items-center p-2">
+          <div className="flex ml-auto">
+            <CustomToolTip title="Expand" placement="right">
+              <div className="cursor-pointer rounded-md transition">
+                <ArrowBackIcon />
               </div>
-            </>
-          {/* )} */}
-          <div
-            className={`mt-4 w-full  flex  ${
-              isExpanded
-                ? "justify-between items-center px-7"
-                : "justify-center items-center flex-col gap-y-4"
-            }`}
-          >
-           
-            <div>
-              <CustomToolTip title="Refresh" placement="right">
-                <div
-                  // onClick={() => dispatch(getMenuData())}
-                  className={`  cursor-pointer rounded-md transition`}
-                >
-                  <Icons.refresh />
-                </div>
-              </CustomToolTip>
-            </div>
-            <div>
-              <CustomToolTip title="Expend" placement="right">
-                <div
-                  onClick={() => {
-                    setIsExpanded(!isExpanded);
-                  }}
-                  className={` cursor-pointer rounded-md transition`}
-                >
-                  <IoIosOpen
-                    size={26}
-                    className={`transform transition-transform duration-100  ${
-                      isExpanded ? "rotate-180" : ""
-                    } `}
-                  />
-                </div>
-              </CustomToolTip>
-            </div>
+            </CustomToolTip>
+          </div>
+          <div className="flex flex-col items-center text-center px-5 py-2 gap-y-1 w-full ">
+            <Avatar
+              alt="Remy Sharp"
+              src="/static/images/avatar/2.jpg"
+              sx={{ width: 80, height: 80 }}
+            />
+            <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">Rahul Mehra</h2>
+            <h2 className=" break-words max-w-full text-[1rem] font-medium  ">
+              Assistant Manager
+            </h2>
+            <h2 className=" break-words max-w-full text-[1rem] font-medium ">Marketing</h2>
+            <p className=" break-words max-w-full text-[0.9rem] font-medium ">EMP-1003</p>
+            <p className=" break-words max-w-full text-[1rem] font-normal">rahul.mehra@company.com</p>
           </div>
         </div>
-
-        <div
-          className={` ${isExpanded ? "w-[85%]" : "w-[95%]"} overflow-y-auto`}
-        >
-          {children}
+        <Divider className="w-[90%] self-center " />
+        {/* Scrollable menu section */}
+        <div className="flex-1  custom-scrollbar-for-menu p-1  mt-2">
+          {renderMenu(menu, true)}
         </div>
       </div>
+
+      {/* Main content area */}
+      <div className="flex-1 overflow-y-auto w-full">{children}</div>
     </div>
   );
 };

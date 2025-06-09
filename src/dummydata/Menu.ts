@@ -1,22 +1,23 @@
-import type { MenuItem } from "../types/menuitemtypes";
+
+import type { MenuItem } from "../types/dummytypes";
 
 export const menu: MenuItem[] = [
   {
     id: 'profile',
     title: 'Profile',
-    icon: 'PersonIcon',
+    icon: 'profile',
     path: '/profile',
   },
   {
     id: 'flows',
     title: 'Flows',
-    icon: 'SyncAltIcon',
+    icon: 'flows',
     path: '/flows',
   },
   {
     id: 'benefits',
     title: 'Benefits',
-    icon: 'CardGiftcardIcon',
+    icon: 'benefits',
     path: '/benefits',
   },
   {
