@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Badge from "@mui/material/Badge";
 import CustomSearch from "../reuseable/CustomSearch";
 import CustomToolTip from "../reuseable/CustomToolTip";
-
+import { useMediaQuery } from "@mui/material";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -24,6 +24,7 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+  const isSmallScreen = useMediaQuery("(max-width:400px)");
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -87,10 +88,12 @@ function Header() {
           </Box>
 
           <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1, mr: 2 }}>
+            {/* {isSmallScreen && ( */}
             <img
               src="https://hrms.mscorpres.online/assets/images/hrms_logo.png"
               alt="mscorpres"
             />
+            {/* )} */}
           </Box>
 
           <Box
@@ -108,19 +111,23 @@ function Header() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <CustomToolTip title="Notification" placement="bottom">
-              {/* <IconButton
-                onClick={handleOpenUserMenu}
-                sx={{ p: 0.5, backgroundColor: "grey", mr: 2 }}
-              > */}
-              <Badge badgeContent={4} color="error" sx={{ p: 0, mr: 3 }}>
-                <NotificationsIcon sx={{ fontSize: 32, color: "#fff" }} />
-              </Badge>
-              {/* </IconButton> */}
-            </CustomToolTip>
+            {!isSmallScreen && (
+              <CustomToolTip title="Notification" placement="bottom">
+             
+                <Badge badgeContent={4} color="error" sx={{ p: 0, mr: 3 }}>
+                  <NotificationsIcon sx={{ fontSize: 32, color: "#fff" }} />
+                </Badge>
+             
+              </CustomToolTip>
+            )}
 
             <CustomToolTip title="Profile" placement="bottom">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton
+                onClick={handleOpenUserMenu}
+                sx={{
+                  p: 0,
+                }}
+              >
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </CustomToolTip>
