@@ -1,9 +1,11 @@
 // import React from 'react'
-import Header from '../components/header/Header'
+// import Header from '../components/header/Header'
+import SideMenuBar from '../components/sidemenubar/SideMenuBar'
 
 const MainLayout = () => {
   return (
-    <Header />
+    // <Header />
+    <SideMenuBar children={undefined} />
   )
 }
 
