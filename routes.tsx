@@ -6,5 +6,9 @@ import Custom404Page from "./src/pages/Custom404Page";
 export const route = createBrowserRouter([
   { path: "/", element: <MainLayout /> },
   { path: "/holidays", element: <HolidayPage /> },
-    { path: "/404", element: <Custom404Page /> },
+
+  {
+    path: "*",
+    element: <Custom404Page />,
+  },
 ]);

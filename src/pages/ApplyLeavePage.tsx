@@ -63,7 +63,7 @@ const ApplyLeavePage = () => {
                       <FormLabel className={LableStyle}>
                         Select Leave Type
                       </FormLabel>
-                      <FormControl >
+                      <FormControl>
                         <Select
                           onValueChange={() => {
                             // setWise(value);
@@ -74,12 +74,16 @@ const ApplyLeavePage = () => {
                             <SelectValue placeholder="Select Leave Type" />
                           </SelectTrigger>
 
-                          <SelectContent>
+                          <SelectContent className="bg-[#fff]">
                             {[
                               { label: "Option 1", value: "option1" },
                               { label: "Option 2", value: "option2" },
                             ].map((data) => (
-                              <SelectItem key={data.value} value={data.value}>
+                              <SelectItem
+                                className="bg-[#fff]"
+                                key={data.value}
+                                value={data.value}
+                              >
                                 {data.label}
                               </SelectItem>
                             ))}
@@ -101,6 +105,7 @@ const ApplyLeavePage = () => {
                         <FormControl className="">
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
+                              className="border-none"
                               onChange={() =>
                                 // setInvoiceDate(
                                 //   newValue
@@ -127,9 +132,26 @@ const ApplyLeavePage = () => {
                                       "& .MuiInputBase-input:focus::placeholder":
                                         {
                                           color: "#94a3b8",
+
                                           opacity: 1,
                                         },
+                                      // Remove focus border
                                     },
+                                  },
+                                  sx: {
+                                    // 👇 override default and focused border colors
+                                    "& .MuiOutlinedInput-notchedOutline": {
+                                      borderColor: "red", // normal border color
+                                    },
+                                    "&.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                      {
+                                        borderColor: "transparent", // or your custom color
+                                      },
+                                    // Optional: remove hover border color
+                                    "&:hover .MuiOutlinedInput-notchedOutline":
+                                      {
+                                        borderColor: "red",
+                                      },
                                   },
                                 },
                               }}
@@ -168,12 +190,12 @@ const ApplyLeavePage = () => {
                                     className: InputStyle,
                                     sx: {
                                       "& .MuiInputBase-input::placeholder": {
-                                        color: "#94a3b8",
+                                        // color: "#94a3b8",
                                         opacity: 1,
                                       },
                                       "& .MuiInputBase-input:focus::placeholder":
                                         {
-                                          color: "#94a3b8",
+                                          // color: "#94a3b8",
                                           opacity: 1,
                                         },
                                     },
@@ -208,9 +230,9 @@ const ApplyLeavePage = () => {
                 />
               </div>
               <div className=" my-4 justify-end flex px-3">
-             <CustomButton className="bg-green-600 text-[#fff]">
-              Submit
-             </CustomButton>
+                <CustomButton className="bg-green-600 text-[#fff]">
+                  Submit
+                </CustomButton>
               </div>
             </form>
           </Form>

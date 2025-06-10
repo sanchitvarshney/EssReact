@@ -81,7 +81,7 @@ const renderMenu = (
                     className={` flex items-center justify-between w-full px-2 rounded-md `}
                   >
                     <Link
-                      to={item?.url}
+                      to={item?.path}
                       className={`w-full rounded-md cursor-pointer flex items-center gap-[10px] pl-1 hover:bg-white p-[6px]
                       `}
                     >
@@ -113,7 +113,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
   return (
     <div className="w-full h-screen flex flex-col">
       {/* Sidebar container */}
-      <div className="w-[40vh] flex flex-col overflow-y-auto h-[90vh]">
+      <div className="w-[40vh] flex flex-col  h-[90vh]">
         {/* Profile section */}
         <div className="flex flex-col justify-center items-center p-2">
           <div className="flex ml-auto">
@@ -129,18 +129,26 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
               src="/static/images/avatar/2.jpg"
               sx={{ width: 80, height: 80 }}
             />
-            <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">Rahul Mehra</h2>
+            <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">
+              Rahul Mehra
+            </h2>
             <h2 className=" break-words max-w-full text-[1rem] font-medium  ">
               Assistant Manager
             </h2>
-            <h2 className=" break-words max-w-full text-[1rem] font-medium ">Marketing</h2>
-            <p className=" break-words max-w-full text-[0.9rem] font-medium ">EMP-1003</p>
-            <p className=" break-words max-w-full text-[1rem] font-normal">rahul.mehra@company.com</p>
+            <h2 className=" break-words max-w-full text-[1rem] font-medium ">
+              Marketing
+            </h2>
+            <p className=" break-words max-w-full text-[0.9rem] font-medium ">
+              EMP-1003
+            </p>
+            <p className=" break-words max-w-full text-[1rem] font-normal">
+              rahul.mehra@company.com
+            </p>
           </div>
         </div>
         <Divider className="w-[90%] self-center " />
         {/* Scrollable menu section */}
-        <div className="flex-1  custom-scrollbar-for-menu p-1  mt-2">
+        <div className="flex-1  custom-scrollbar-for-menu p-1 overflow-y-auto  mt-2">
           {renderMenu(menu, true)}
         </div>
       </div>
