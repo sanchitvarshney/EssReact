@@ -129,7 +129,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
               src="/static/images/avatar/2.jpg"
               sx={{ width: 80, height: 80 }}
             />
-            <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">Rahul Mehra</h2>
+            <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">Rahul Kumar</h2>
             <h2 className=" break-words max-w-full text-[1rem] font-medium  ">
               Assistant Manager
             </h2>
