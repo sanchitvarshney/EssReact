@@ -1,0 +1,112 @@
+.rbc-header {
+  color: #ffffff;
+  font-size: 14px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px !important;
+  background-color: #404040;
+}
+.rbc-allday-cell {
+  display: none;
+}
+.rbc-time-header-cell .rbc-today {
+  background-color: #04aa6d ;
+}
+
+.rbc-time-slot {
+    color: #000000 !important;
+    z-index: 1;
+}
+.rbc-time-slot:not(.rbc-today .rbc-time-slot) {
+    background-color: antiquewhite;
+}
+
+/* Background for today in month view */
+.rbc-month-view .rbc-day-bg.rbc-today {
+  background-color: #04aa6d !important;
+  height: 100% !important;
+}
+
+/* Style weekend cells */
+.rbc-month-view .rbc-day-bg:nth-child(1) {  /* Sunday */
+/* .rbc-month-view .rbc-day-bg:nth-child(7) { Saturday */
+  background-color: #fef3c7 !important; /* light yellow */
+}
+
+/* Style date numbers */
+.rbc-month-view .rbc-date-cell {
+  font-weight: 600;
+  color: #333;
+}
+
+
+/* eventstyle */
+.rbc-event,
+.rbc-background-event {
+  z-index: 2;
+  border: none !important;
+  border-radius: 4px;
+  padding: 2px 4px;
+  border-radius: 0px !important;
+  /* background-color: #d1b8b8 !important; */ /* Removed to allow dynamic colors */
+  color: white !important;
+  /* height: 100% !important;  */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0;
+}
+
+.rbc-event-label {
+    display: none !important;
+}
+.rbc-events-container {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Toolbar background and layout */
+.rbc-toolbar {
+  background-color: #fff; /* dark gray */
+  color: #ffffff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Label (e.g., June 2025) */
+.rbc-toolbar-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000; /* green */
+}
+
+/* Button groups (navigation + view switches) */
+.rbc-btn-group {
+  display: flex;
+  gap: 8px;
+  border-radius: 0px !important;
+}
+
+/* Buttons */
+.rbc-toolbar button {
+  background-color: #2a2929; /* gray-700 */
+  color: #fff;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #50545a; /* hover effect */
+  color: #ffffff
+}

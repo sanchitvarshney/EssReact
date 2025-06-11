@@ -6,6 +6,7 @@ import Custom404Page from "./src/pages/Custom404Page";
 import LeavePage from "./src/pages/LeavePage";
 import SideMenuBar from "./src/components/sidemenubar/SideMenuBar";
 import Dashboard from "./src/pages/Dashboard";
+import CustomCalender from "./src/components/CustomCalender";
 
 export const route = createBrowserRouter([
   {
@@ -14,6 +15,16 @@ export const route = createBrowserRouter([
       <MainLayout>
         <SideMenuBar>
          <Dashboard />
+        </SideMenuBar>
+      </MainLayout>
+    ),
+  },
+    {
+    path: "/calender",
+    element: (
+      <MainLayout>
+        <SideMenuBar>
+         <CustomCalender />
         </SideMenuBar>
       </MainLayout>
     ),
