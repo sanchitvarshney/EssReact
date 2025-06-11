@@ -39,6 +39,7 @@ export const holidayData = {
         date: "02-10-2025",
         day: "Thursday",
       },
+      
     ],
     2026: [], // Add dummy data if needed
   };

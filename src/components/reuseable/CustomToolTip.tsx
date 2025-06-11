@@ -24,14 +24,14 @@ const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.white,
-    color: "rgba(0, 0, 0, 0.87)",
+    backgroundColor: theme.palette.common.black,
+    color: "#fff",
     boxShadow: theme.shadows[2],
     fontSize: 12,
     fontWeight:"bold"
   },
   [`& .${tooltipClasses.arrow}`]: {
-    color: theme.palette.common.white, // Match arrow color with tooltip background
+    color: theme.palette.common.black, // Match arrow color with tooltip background
   },
 }));
 

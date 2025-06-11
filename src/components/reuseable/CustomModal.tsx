@@ -19,11 +19,12 @@ const CustomModal: React.FC<ConfirmationModalProps> = ({
   return (
  <Dialog
   open={open}
+  
   onOpenChange={(isOpen: boolean) => !isOpen && onClose(false)}
 >
   <DialogContent
     onInteractOutside={(e: any) => e.preventDefault()}
-    className="bg-white h-[80vh] flex flex-col"
+    className="bg-white  h-[80vh] flex flex-col"
   >
     <DialogHeader>
       <DialogTitle className="text-black">{title}</DialogTitle>
