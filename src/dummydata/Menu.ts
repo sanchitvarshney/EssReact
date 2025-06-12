@@ -14,7 +14,7 @@ export const menu: MenuItem[] = [
       {
         id: "dashboard",
         title: "Dashboard",
-        path: "/home/dashboard",
+        path: "/",
       },
       {
         id: "hierarchy",
