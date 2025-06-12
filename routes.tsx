@@ -11,7 +11,7 @@ import AttendancePage from "./src/pages/AttendancePage";
 
 export const route = createBrowserRouter([
   {
-    path: "/home/dashboard",
+    path: "/",
     element: (
       <MainLayout>
         <SideMenuBar>
