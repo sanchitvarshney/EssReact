@@ -11,7 +11,7 @@ import AttendancePage from "./src/pages/AttendancePage";
 
 export const route = createBrowserRouter([
   {
-    path: "/",
+    path: "/home/dashboard",
     element: (
       <MainLayout>
         <SideMenuBar>
@@ -21,7 +21,7 @@ export const route = createBrowserRouter([
     ),
   },
   {
-    path: "/attendance",
+    path: "/self-service/attendance",
     element: (
       <MainLayout>
         <SideMenuBar>
@@ -31,7 +31,7 @@ export const route = createBrowserRouter([
     ),
   },
   {
-    path: "/holidays",
+    path: "/calendar",
     element: (
       <MainLayout>
         <SideMenuBar>
@@ -41,7 +41,7 @@ export const route = createBrowserRouter([
     ),
   },
   {
-    path: "/leave",
+    path: "/self-service/apply-leave",
     element: (
       <MainLayout>
         <SideMenuBar>

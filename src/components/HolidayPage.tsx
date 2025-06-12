@@ -37,7 +37,7 @@ const HolidayPage = () => {
         ))}
       </Tabs>
       <div className="h-[75vh]  overflow-y-auto">
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} >
           <Table>
             <TableHead className="bg-gray-200">
               <TableRow>

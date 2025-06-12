@@ -20,10 +20,10 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 const getTextSize = (level: number) => {
   switch (level) {
     case 0:
-      return "text-[19px]";
-    case 1:
       return "text-[18px]";
-    case 2:
+    case 1:
+      return "text-[17px]";
+    case 2: 
       return "text-[17px]";
     default:
       return "text-[16px]";
@@ -86,7 +86,7 @@ const renderMenu = (
                     ) : (
                       <>
                         <AccordionTrigger
-                          className="w-[100%] py-1   m-0 leading-none hover:no-underline rounded-md hover:bg-white"
+                          className="w-[100%] py-1   m-0 leading-none hover:no-underline cursor-pointer rounded-md hover:bg-white"
                           onClick={() => {
                             setAccordionValues({
                               ...accordionValues,
@@ -94,7 +94,7 @@ const renderMenu = (
                             });
                           }}
                         >
-                          <div className="w-full p-1 flex items-center cursor-pointer rounded-md gap-2">
+                          <div className="w-full px-1 flex items-center cursor-pointer rounded-md gap-2">
                             {isNew && (
                               <DynamicIcon name={item.icon} size="medium" />
                             )}
@@ -137,7 +137,7 @@ const renderMenu = (
                       to={item?.path}
                       className={`w-full rounded-md cursor-pointer flex items-center gap-[10px] pl-1 ${
                         isExpended && "hover:bg-white"
-                      } p-[6px]
+                      } p-[2px]
                       `}
                       onClick={() => {
                         // setIsExpended(false);
@@ -186,7 +186,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
           {isExpended && (
             <>
               {" "}
-              <div className="flex flex-col justify-center items-center p-2">
+              <div className="flex flex-col justify-center items-center px-2 py-1">
                 <div className="flex ml-auto">
                   <CustomToolTip title="Expand" placement="right">
                     <div
@@ -197,7 +197,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
                     </div>
                   </CustomToolTip>
                 </div>
-                <div className="flex flex-col items-center text-center px-5 py-2 gap-y-1 w-full ">
+                <div className="flex flex-col items-center text-center py-1 gap-y-1 w-full ">
                   <Avatar
                     alt="Remy Sharp"
                     src="/static/images/avatar/2.jpg"
