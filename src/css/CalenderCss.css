@@ -22,22 +22,26 @@
     background-color: antiquewhite;
 }
 
-/* Background for today in month view */
-.rbc-month-view .rbc-day-bg.rbc-today {
-  background-color: #04aa6d !important;
+/* Background for today in month view */  
+.rbc-month-view .rbc-day-bg.rbc-today { 
+  background-color: #2ac88e !important;
   height: 100% !important;
+  width: 100% !important;
 }
+/* .rbc-row-content {
+  min-width: 1000px; 
+} */
 
 /* Style weekend cells */
 .rbc-month-view .rbc-day-bg:nth-child(1) {  /* Sunday */
-/* .rbc-month-view .rbc-day-bg:nth-child(7) { Saturday */
-  background-color: #fef3c7 !important; /* light yellow */
+
+  background-color: #fef3c7 !important;
 }
 
 /* Style date numbers */
 .rbc-month-view .rbc-date-cell {
   font-weight: 600;
-  color: #333;
+  color: z;
 }
 
 
@@ -49,7 +53,7 @@
   border-radius: 4px;
   padding: 2px 4px;
   border-radius: 0px !important;
-  /* background-color: #d1b8b8 !important; */ /* Removed to allow dynamic colors */
+  background-color: #b8b6b6 !important;
   color: white !important;
   /* height: 100% !important;  */
   display: flex;
@@ -60,6 +64,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   padding: 0;
+  overflow: auto;
 }
 
 .rbc-event-label {
@@ -110,3 +115,5 @@
   background-color: #50545a; /* hover effect */
   color: #ffffff
 }
+
+

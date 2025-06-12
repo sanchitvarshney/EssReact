@@ -6,7 +6,8 @@ import Custom404Page from "./src/pages/Custom404Page";
 import LeavePage from "./src/pages/LeavePage";
 import SideMenuBar from "./src/components/sidemenubar/SideMenuBar";
 import Dashboard from "./src/pages/Dashboard";
-import CustomCalender from "./src/components/CustomCalender";
+
+import AttendancePage from "./src/pages/AttendancePage";
 
 export const route = createBrowserRouter([
   {
@@ -14,31 +15,41 @@ export const route = createBrowserRouter([
     element: (
       <MainLayout>
         <SideMenuBar>
-         <Dashboard />
+          <Dashboard />
         </SideMenuBar>
       </MainLayout>
     ),
   },
-    {
-    path: "/calender",
+  {
+    path: "/attendance",
     element: (
       <MainLayout>
         <SideMenuBar>
-         <CustomCalender />
+          <AttendancePage />
         </SideMenuBar>
       </MainLayout>
     ),
   },
-  { path: "/holidays", element: (<MainLayout>
+  {
+    path: "/holidays",
+    element: (
+      <MainLayout>
         <SideMenuBar>
-         <HolidayPage />
+          <HolidayPage />
         </SideMenuBar>
-      </MainLayout>) },
-  { path: "/leave", element:  (<MainLayout>
+      </MainLayout>
+    ),
+  },
+  {
+    path: "/leave",
+    element: (
+      <MainLayout>
         <SideMenuBar>
-       <LeavePage />
+          <LeavePage />
         </SideMenuBar>
-      </MainLayout>) },
+      </MainLayout>
+    ),
+  },
 
   {
     path: "*",
