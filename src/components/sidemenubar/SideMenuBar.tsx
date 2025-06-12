@@ -5,9 +5,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/CustomAccordion";
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-
 
 import CustomToolTip from "../reuseable/CustomToolTip";
 
@@ -16,6 +15,8 @@ import { menu } from "../../dummydata/Menu";
 import { Avatar, Box, Divider } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CustomDrawer from "../CustomDrawer";
+import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 
 const getTextSize = (level: number) => {
   switch (level) {
@@ -23,13 +24,13 @@ const getTextSize = (level: number) => {
       return "text-[18px]";
     case 1:
       return "text-[17px]";
-    case 2: 
+    case 2:
       return "text-[17px]";
     default:
       return "text-[16px]";
   }
 };
-const renderMenu = (
+export const renderMenu = (
   menu: MenuItem[] | null,
   isNew: boolean,
   isExpended: boolean,
@@ -40,6 +41,7 @@ const renderMenu = (
   level: number = 0,
   path: string = ""
 ) => {
+  const {toggleDrawerClose} = useDrawerContext()
   return (
     <Accordion
       type="single"
@@ -142,6 +144,7 @@ const renderMenu = (
                       onClick={() => {
                         // setIsExpended(false);
                         setAccordionValues({});
+                        toggleDrawerClose()
                       }}
                     >
                       {isNew && <DynamicIcon name={item.icon} size="medium" />}
@@ -164,16 +167,14 @@ const renderMenu = (
 };
 
 interface CustomSideBarMenuProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   //   item:any
 }
 
 const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
+  const {isExpended,setIsExpended,accordionValues,setAccordionValues} = useDrawerContext()
   // const navigate = useNavigate();
-  const [isExpended, setIsExpended] = useState<boolean>(true);
-  const [accordionValues, setAccordionValues] = useState<{
-    [key: string]: string;
-  }>({});
+
 
   return (
     <div className="w-full h-[calc(100vh-65px)] flex flex-row ">
@@ -256,6 +257,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
       </Box>
       {/* Main content area */}
       <div className="flex-1 overflow-y-auto w-full">{children}</div>
+      <CustomDrawer />
     </div>
   );
 };

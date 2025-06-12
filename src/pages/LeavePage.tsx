@@ -13,14 +13,14 @@ const LeavePage = () => {
     const navigate = useNavigate()
   return (
     <div className="w-full px-6 py-5">
-      <div className="flex w-full justify-between items-center">
-        <div className="flex gap-x-[2px]">
+      <div className="flex w-full justify-between items-center flex-wrap gap-4">
+        <div className="flex gap-[2px] flex-wrap">
           <Typography>Your Leave balance as of (Date)</Typography>
           <span className="text-sm font-semibold bg-yellow-500 px-2 rounded-full">
             Pending Requests (0)
           </span>
         </div>
-        <div className="flex gap-x-[20px]">
+        <div className="flex gap-[20px] flex-wrap">
           <CustomButton onClick={()=>navigate('/holidays')} className="bg-[#fff] text-[#000] border-[#000] border-1 rounded-[2px]">
             LIST OF HOLYDAYS
           </CustomButton>

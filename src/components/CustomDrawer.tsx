@@ -1,0 +1,59 @@
+import Drawer from "@mui/material/Drawer";
+
+import { useDrawerContext } from "../contextapi/DrawerContextApi";
+import { renderMenu } from "./sidemenubar/SideMenuBar";
+import { Avatar, Divider } from "@mui/material";
+
+import { menu } from "../dummydata/Menu";
+
+export default function CustomDrawer() {
+  const { open, toggleDrawerClose,isExpended,accordionValues,setIsExpended, setAccordionValues } = useDrawerContext();
+
+  const DrawerList = (
+    <div className={`w-[40vh] flex flex-col h-full`}>
+      {/* Fixed header section */}
+      <div className="flex-shrink-0 flex flex-col items-center text-center py-1 gap-y-1 w-full">
+        <Avatar
+          alt="Remy Sharp"
+          src="/static/images/avatar/2.jpg"
+          sx={{ width: 80, height: 80 }}
+        />
+        <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">
+          Rahul Mehra
+        </h2>
+        <h2 className=" break-words max-w-full text-[1rem] font-medium  ">
+          Assistant Manager
+        </h2>
+        <h2 className=" break-words max-w-full text-[1rem] font-medium ">
+          Marketing
+        </h2>
+        <p className=" break-words max-w-full text-[0.9rem] font-medium ">
+          EMP-1003
+        </p>
+        <p className=" break-words max-w-full text-[1rem] font-normal">
+          rahul.mehra@company.com
+        </p>
+      </div>
+      
+      <Divider className="w-[90%] self-center flex-shrink-0" />
+      
+      {/* Scrollable menu section */}
+      <div className="flex-1 custom-scrollbar-for-menu p-1 overflow-y-auto my-2 min-h-0">
+        {renderMenu(
+          menu,
+          true,
+          isExpended,
+          setIsExpended,
+          accordionValues,
+          setAccordionValues
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <Drawer open={open} onClose={toggleDrawerClose} sx={{overflow:"hidden"}}>
+      {DrawerList}
+    </Drawer>
+  );
+}

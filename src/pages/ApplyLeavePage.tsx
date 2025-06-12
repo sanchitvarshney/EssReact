@@ -164,10 +164,10 @@ const ApplyLeavePage = () => {
                   />
                   <FormField
                     control={form.control}
-                    name="toDate"
+                    name="fromDate"
                     render={() => (
                       <FormItem>
-                        <FormLabel className={LableStyle}>To Date</FormLabel>
+                        <FormLabel className={LableStyle}>From Date</FormLabel>
                         <FormControl>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker

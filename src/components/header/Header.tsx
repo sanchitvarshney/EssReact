@@ -14,10 +14,12 @@ import Badge from "@mui/material/Badge";
 import CustomSearch from "../reuseable/CustomSearch";
 import CustomToolTip from "../reuseable/CustomToolTip";
 import { useMediaQuery } from "@mui/material";
+import {  useDrawerContext } from "../../contextapi/DrawerContextApi";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header() {
+  const {toggleDrawerOpen} = useDrawerContext()
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -26,9 +28,7 @@ function Header() {
   );
   const isSmallScreen = useMediaQuery("(max-width:400px)");
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -58,7 +58,7 @@ function Header() {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleOpenNavMenu}
+              onClick={toggleDrawerOpen}
               color="inherit"
             >
               <MenuIcon />
