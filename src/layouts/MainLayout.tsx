@@ -9,7 +9,7 @@ function MainLayout(props: { children: React.ReactNode }) {
         <Header />
       </div>
 
-      <main className=" bg-[#ffffff] h-full">{props.children}</main>
+      <main className=" bg-[#ffffff] h-full  custom-scrollbar-for-menu ">{props.children}</main>
     </Wrapper>
   );
 }

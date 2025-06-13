@@ -9,6 +9,8 @@ import Dashboard from "./src/pages/Dashboard";
 
 import AttendancePage from "./src/pages/AttendancePage";
 
+import LeaveStatusPage from "./src/pages/LeaveStatusPage";
+
 
 export const route = createBrowserRouter([
   {
@@ -48,6 +50,16 @@ export const route = createBrowserRouter([
       <MainLayout>
         <SideMenuBar>
           <LeavePage />
+        </SideMenuBar>
+      </MainLayout>
+    ),
+  },
+    {
+    path: "/self-service/leave-status",
+    element: (
+      <MainLayout>
+        <SideMenuBar>
+          <LeaveStatusPage />
         </SideMenuBar>
       </MainLayout>
     ),

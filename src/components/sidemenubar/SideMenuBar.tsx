@@ -181,7 +181,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
       <Box sx={{ display: { xs: "none", md: "flex" } }}>
         {/* Sidebar container */}
         <div
-          className={`${isExpended ? "w-[40vh]" : "w-[10vh]"} flex flex-col`}
+          className={`${isExpended ? "w-[40vh]" : "w-[10vh]"} flex flex-col border-r-1`}
         >
           {/* Profile section */}
           {isExpended && (
@@ -256,7 +256,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
         </div>
       </Box>
       {/* Main content area */}
-      <div className="flex-1 overflow-y-auto w-full">{children}</div>
+      <div className="flex-1 overflow-y-auto w-full ">{children}</div>
       <CustomDrawer />
     </div>
   );
