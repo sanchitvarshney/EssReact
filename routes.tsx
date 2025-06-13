@@ -9,6 +9,7 @@ import Dashboard from "./src/pages/Dashboard";
 
 import AttendancePage from "./src/pages/AttendancePage";
 
+
 export const route = createBrowserRouter([
   {
     path: "/",
@@ -30,6 +31,7 @@ export const route = createBrowserRouter([
       </MainLayout>
     ),
   },
+    
   {
     path: "/calendar",
     element: (
