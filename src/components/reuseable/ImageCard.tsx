@@ -6,7 +6,7 @@ type ImageCardProps = {
   image: string;
 };
 
-const ImageCard: FC<ImageCardProps> = ({ title, image }) => {
+const   ImageCard: FC<ImageCardProps> = ({ title, image }) => {
   return (
     <Card
       sx={{

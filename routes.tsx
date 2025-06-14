@@ -12,6 +12,8 @@ import AttendancePage from "./src/pages/AttendancePage";
 import LeaveStatusPage from "./src/pages/LeaveStatusPage";
 import WFHPage from "./src/pages/WFHPage";
 import PaySlipPage from "./src/pages/PaySlipPage";
+import HierarchyChart from "./src/pages/HierarchyChart";
+import AnnouncementPage from "./src/pages/AnnouncementPage";
 
 
 export const route = createBrowserRouter([
@@ -83,6 +85,26 @@ export const route = createBrowserRouter([
       <MainLayout>
         <SideMenuBar>
           <PaySlipPage />
+        </SideMenuBar>
+      </MainLayout>
+    ),
+  },
+         {
+    path: "/home/announcement",
+    element: (
+      <MainLayout>
+        <SideMenuBar>
+          <AnnouncementPage />
+        </SideMenuBar>
+      </MainLayout>
+    ),
+  },
+       {
+    path: "/home/hierarchy",
+    element: (
+      <MainLayout>
+        <SideMenuBar>
+          <HierarchyChart />
         </SideMenuBar>
       </MainLayout>
     ),
