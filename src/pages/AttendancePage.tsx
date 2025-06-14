@@ -14,7 +14,7 @@ const AttendancePage = () => {
   //     return dayjs(date);
   //   }, [date]);
   return (
-    <div className="w-full flex flex-wrap b">
+    <div className="w-full flex flex-wrap px-2">
       <div className="w-full sm:w-[70%] ">
         <CustomCalender />
       </div>

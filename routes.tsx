@@ -10,6 +10,8 @@ import Dashboard from "./src/pages/Dashboard";
 import AttendancePage from "./src/pages/AttendancePage";
 
 import LeaveStatusPage from "./src/pages/LeaveStatusPage";
+import WFHPage from "./src/pages/WFHPage";
+import PaySlipPage from "./src/pages/PaySlipPage";
 
 
 export const route = createBrowserRouter([
@@ -60,6 +62,27 @@ export const route = createBrowserRouter([
       <MainLayout>
         <SideMenuBar>
           <LeaveStatusPage />
+        </SideMenuBar>
+      </MainLayout>
+    ),
+  },
+     {
+    path: "/self-service/wfh",
+    element: (
+      <MainLayout>
+        <SideMenuBar>
+          <WFHPage />
+        </SideMenuBar>
+      </MainLayout>
+    ),
+  },
+
+       {
+    path: "/self-service/payslip",
+    element: (
+      <MainLayout>
+        <SideMenuBar>
+          <PaySlipPage />
         </SideMenuBar>
       </MainLayout>
     ),
