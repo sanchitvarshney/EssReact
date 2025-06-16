@@ -59,43 +59,44 @@ const SideShowCard: FC<SideShowPropsType> = ({ des = "Hire" }) => {
   }, []);
 
   return (
-    <div className="w-full max-w-sm  ">
-      <div className="relative rounded-md shadow-lg overflow-hidden h-85 sm:h-100  flex flex-col  justify-center items-center">
-        <div className="absolute top-5  text-black z-10">
-          <h2 className="text-xl font-bold">{des}</h2>
-        </div>
-
-        {/* <div className="w-60 h-60 bg-red-800 flex justify-center items-center rounded-full  mb-10 overflow-hidden">
-          <img
-            src={slides[current].image}
-            alt={slides[current].title}
-            className="w-[100%] h-[100%]   object-fill rounded-4xl"
-          />
-        </div> */}
-        <div className="w-35 h-35 sm:w-55 sm:h-55 md:w-60 md:h-60 bg-red-800 flex justify-center items-center rounded-full  sm:mb-10 mb-2 overflow-hidden">
-          <img
-            src={slides[current].image}
-            alt={slides[current].title}
-            className="w-full h-full object-fill"
-          />
-        </div>
-        <div className="absolute inset-0 bg-black/10 flex flex-col justify-end items-center p-4 text-black">
-          <h2 className="text-xl font-bold">{slides[current].date}</h2>
-          <h3 className="text-xl font-bold">{slides[current].title}</h3>
-          <p className="text-sm">{slides[current].description}</p>
-        </div>
-        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 px-2">
-          <CustomButton size="icon" variant="ghost" onClick={prevSlide}>
-            <ArrowBackIosIcon className="text-black" />
-          </CustomButton>
-        </div>
-        <div className="absolute top-1/2 right-0 transform -translate-y-1/2 px-2">
-          <CustomButton size="icon" variant="ghost" onClick={nextSlide}>
-            <ArrowForwardIosIcon className="text-black" />
-          </CustomButton>
-        </div>
-      </div>
+   <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto">
+  <div className="relative rounded-md shadow-lg overflow-hidden h-[20rem] sm:h-[26rem] md:h-[25rem] flex flex-col justify-center items-center">
+    
+    {/* Top label */}
+    <div className="absolute top-4 text-black z-10">
+      <h2 className="text-lg sm:text-xl font-bold">{des}</h2>
     </div>
+
+    {/* Image Container */}
+    <div className="w-32 h-32 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-45 lg:h-45 bg-red-800 flex justify-center items-center rounded-full sm:mb-6 mb-3 overflow-hidden">
+      <img
+        src={slides[current].image}
+        alt={slides[current].title}
+        className="w-full h-full object-cover"
+      />
+    </div>
+
+    {/* Overlay content */}
+    <div className="absolute inset-0 bg-black/10 flex flex-col justify-end items-center p-4 text-black text-center">
+      <h2 className="text-base sm:text-lg font-semibold">{slides[current].date}</h2>
+      <h3 className="text-base sm:text-lg font-bold">{slides[current].title}</h3>
+      <p className="text-sm sm:text-base">{slides[current].description}</p>
+    </div>
+
+    {/* Navigation Buttons */}
+    <div className="absolute top-1/2 left-0 transform -translate-y-1/2 px-2">
+      <CustomButton size="icon" variant="ghost" onClick={prevSlide}>
+        <ArrowBackIosIcon className="text-black" />
+      </CustomButton>
+    </div>
+    <div className="absolute top-1/2 right-0 transform -translate-y-1/2 px-2">
+      <CustomButton size="icon" variant="ghost" onClick={nextSlide}>
+        <ArrowForwardIosIcon className="text-black" />
+      </CustomButton>
+    </div>
+  </div>
+</div>
+
   );
 };
 

@@ -16,7 +16,7 @@ import CustomToolTip from "../reuseable/CustomToolTip";
 import { useMediaQuery } from "@mui/material";
 import {  useDrawerContext } from "../../contextapi/DrawerContextApi";
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Account", "Logout"];
 
 function Header() {
   const {toggleDrawerOpen} = useDrawerContext()
@@ -115,13 +115,13 @@ function Header() {
               <CustomToolTip title="Notification" placement="bottom">
              
                 <Badge badgeContent={4} color="error" sx={{ p: 0, mr: 3 }}>
-                  <NotificationsIcon sx={{ fontSize: 32, color: "#fff" }} />
+                  <NotificationsIcon sx={{ fontSize: 30, color: "#fff" }} />
                 </Badge>
              
               </CustomToolTip>
             )}
 
-            <CustomToolTip title="Profile" placement="bottom">
+           
               <IconButton
                 onClick={handleOpenUserMenu}
                 sx={{
@@ -130,7 +130,7 @@ function Header() {
               >
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
-            </CustomToolTip>
+          
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"

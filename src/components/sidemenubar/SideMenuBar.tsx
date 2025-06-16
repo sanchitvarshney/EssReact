@@ -66,7 +66,7 @@ export const renderMenu = (
                       <>
                         <CustomToolTip title={item?.title} placement="right">
                           <div
-                            className="px-1 rounded-md cursor-pointer "
+                            className="px-1 rounded-md cursor-pointer transition-all duration-600 ease-in-out "
                             onClick={() => {
                               if (!isExpended) {
                                 setIsExpended(true);
@@ -181,17 +181,17 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
       <Box sx={{ display: { xs: "none", md: "flex" } }}>
         {/* Sidebar container */}
         <div
-          className={`${isExpended ? "w-[40vh]" : "w-[10vh]"} flex flex-col border-r-1`}
+          className={`${isExpended ? "w-[40vh]" : "w-[10vh]"} flex flex-col border-r-1 transition-all duration-500 ease-in-out`}
         >
           {/* Profile section */}
           {isExpended && (
             <>
               {" "}
-              <div className="flex flex-col justify-center items-center px-2 py-1">
+              <div className="flex flex-col justify-center items-center px-2 py-1 transition-all duration-500 ease-in-out">
                 <div className="flex ml-auto">
                   <CustomToolTip title="Expand" placement="right">
                     <div
-                      className="cursor-pointer rounded-md transition"
+                      className="cursor-pointer rounded-md transition-all duration-300 ease-in-out hover:bg-gray-100"
                       onClick={() => setIsExpended(false)}
                     >
                       <ArrowBackIcon />
@@ -226,7 +226,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
           )}
           {/* Scrollable menu section */}
 
-          <div className="flex-1  custom-scrollbar-for-menu p-1 overflow-y-auto  my-2">
+          <div className="flex-1  custom-scrollbar-for-menu p-1 overflow-y-auto  my-2 transition-all duration-400 ease-in-out">
             {renderMenu(
               menu,
               true,
@@ -245,7 +245,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
                     onClick={() => {
                       setIsExpended(!isExpended);
                     }}
-                    className={` cursor-pointer rounded-md transition`}
+                    className={` cursor-pointer rounded-md transition-all duration-500 ease-in-out `}
                   >
                     <ArrowForwardIcon />
                   </div>

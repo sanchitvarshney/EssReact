@@ -49,11 +49,11 @@ export const menu: MenuItem[] = [
         title: "Leave Grant",
         path: "/self-service/leave-grant",
       },
-      {
-        id: "wfh",
-        title: "WHF Update",
-        path: "/self-service/wfh",
-      },
+      // {
+      //   id: "wfh",
+      //   title: "WHF Update",
+      //   path: "/self-service/wfh",
+      // },
       {
         id: "attendance",
         title: "Attendance",

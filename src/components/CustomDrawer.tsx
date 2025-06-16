@@ -10,7 +10,7 @@ export default function CustomDrawer() {
   const { open, toggleDrawerClose,isExpended,accordionValues,setIsExpended, setAccordionValues } = useDrawerContext();
 
   const DrawerList = (
-    <div className={`w-[40vh] flex flex-col h-full`}>
+    <div className={`w-[40vh] flex flex-col h-full transition-all duration-300 ease-in-out`}>
       {/* Fixed header section */}
       <div className="flex-shrink-0 flex flex-col items-center text-center py-1 gap-y-1 w-full">
         <Avatar

@@ -2,14 +2,13 @@ import {
   Box,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
   Paper,
   Typography,
-  IconButton,
-  Tooltip,
+  // IconButton,
+  // Tooltip,
 } from "@mui/material";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { CustomButton } from "../components/ui/CustomButton";
@@ -19,24 +18,28 @@ import PendingIcon from "@mui/icons-material/Pending";
 import { leaveLogData } from "../dummydata/LeaveSentData";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { styled } from "@mui/material/styles";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 // Styled components for better visual appeal
-const StyledTableCell = styled(TableCell)(() => ({
-  fontWeight: 600,
-  fontSize: "0.9rem",
-  color: "#000",
-  borderBottom: "2px solid #e5e7eb",
-  padding: "16px 24px",
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
 }));
 
-const StyledTableRow = styled(TableRow)(() => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: "#f9fafb",
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(even)": {
+    backgroundColor: theme.palette.action.hover,
   },
-  "&:hover": {
-    backgroundColor: "#f3f4f6",
-    transition: "background-color 0.2s ease-in-out",
-  },
+
+  // "&:hover": {
+  //   backgroundColor: "#f3f4g9",
+  //   transition: "background-color 0.4s ease-in-out",
+  // },
   "&:last-child td, &:last-child th": {
     border: 0,
   },
@@ -72,8 +75,10 @@ const LeaveStatusPage = () => {
 
   return (
     <Box sx={{ width: "100%", p: 2 }}>
-      <div className="w-full flex justify-between items-center mb-2 p-4 ">
-        <Typography>Leave Sent (60)</Typography>
+      <div className="w-full flex justify-between items-center p-0 mb-3 ">
+        <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
+          Leave Sent {leaveLogData.length}
+        </Typography>
         <div>
           <CustomButton className="bg-[#000000] text-white">
             {" "}
@@ -88,11 +93,23 @@ const LeaveStatusPage = () => {
           component={Paper}
           sx={{
             borderRadius: "0px",
-            maxHeight: "75vh",
+            maxHeight: "80vh",
             overflow: "auto",
+            border: "1px solid #000",
           }}
         >
-          <Table stickyHeader>
+          <Table
+            sx={{
+              borderCollapse: "separate",
+              borderSpacing: 0,
+              "& th, & td": {
+                borderRight: "1px solid #e0e0e0",
+              },
+              "& tr:last-child td": {
+                borderRight: "1px solid #e0e0e0",
+              },
+            }}
+          >
             {" "}
             {/* Add stickyHeader prop */}
             <TableHead className="bg-gray-200 ">
@@ -204,8 +221,8 @@ const LeaveStatusPage = () => {
                         {getStatus(row?.status)}
                       </Box>
                     </TableCell>
-                    <TableCell align="center" sx={{ py: 3 }}>
-                      <Tooltip title="Send Message">
+                    <TableCell sx={{ py: 3 }}>
+                      {/* <Tooltip title="Send Message">
                         <IconButton
                           sx={{
                             backgroundColor: "#f3f4f6",
@@ -217,10 +234,10 @@ const LeaveStatusPage = () => {
                             },
                             transition: "all 0.2s ease",
                           }}
-                        >
-                          <MessageIcon />
-                        </IconButton>
-                      </Tooltip>
+                        > */}
+                      <MessageIcon />
+                      {/* </IconButton>
+                      </Tooltip> */}
                     </TableCell>
                   </StyledTableRow>
                 ))
