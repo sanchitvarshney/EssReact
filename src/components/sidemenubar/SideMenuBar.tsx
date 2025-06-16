@@ -216,9 +216,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
                   <p className=" break-words max-w-full text-[0.9rem] font-medium ">
                     EMP-1003
                   </p>
-                  <p className=" break-words max-w-full text-[1rem] font-normal">
-                    rahul.mehra@company.com
-                  </p>
+           
                 </div>
               </div>
               <Divider className="w-[90%] self-center " />{" "}

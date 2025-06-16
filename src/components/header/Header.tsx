@@ -14,21 +14,25 @@ import Badge from "@mui/material/Badge";
 import CustomSearch from "../reuseable/CustomSearch";
 import CustomToolTip from "../reuseable/CustomToolTip";
 import { useMediaQuery } from "@mui/material";
-import {  useDrawerContext } from "../../contextapi/DrawerContextApi";
+import { useDrawerContext } from "../../contextapi/DrawerContextApi";
+import SearchBarComponent from "../SearchBarComponent";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Account", "Logout"];
 
 function Header() {
-  const {toggleDrawerOpen} = useDrawerContext()
+  const inputRef = React.useRef(null);
+  const [searchText, setSearchText] = React.useState("");
+  const [openSearch, setOpenSearch] = React.useState(false);
+  const { toggleDrawerOpen } = useDrawerContext();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
   const isSmallScreen = useMediaQuery("(max-width:400px)");
 
-  
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -105,32 +109,43 @@ function Header() {
             }}
           >
             <CustomSearch
+              ref={inputRef}
               width={"60ch"}
               placeholder="Search by Employee Name, Designation or Department"
+              onChange={(e) => {
+                const value = e.target.value;
+
+                setSearchText(value);
+                setOpenSearch(value.trim().length > 0);
+              }}
             />
+            {searchText && (
+              <SearchBarComponent
+                open={openSearch}
+                close={() => setSearchText("")}
+                anchorRef={inputRef}
+              />
+            )}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             {!isSmallScreen && (
               <CustomToolTip title="Notification" placement="bottom">
-             
                 <Badge badgeContent={4} color="error" sx={{ p: 0, mr: 3 }}>
                   <NotificationsIcon sx={{ fontSize: 30, color: "#fff" }} />
                 </Badge>
-             
               </CustomToolTip>
             )}
 
-           
-              <IconButton
-                onClick={handleOpenUserMenu}
-                sx={{
-                  p: 0,
-                }}
-              >
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-          
+            <IconButton
+              onClick={handleOpenUserMenu}
+              sx={{
+                p: 0,
+              }}
+            >
+              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            </IconButton>
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"

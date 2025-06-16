@@ -1,13 +1,15 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 
 type CustomSearchPropsType = {
     width : string,
-    placeholder:string
+    placeholder:string,
+    onChange: (e:any)=>void
+    ref:any
 }
-const CustomSearch:React.FC<CustomSearchPropsType> = ({width,placeholder}) => {
+const CustomSearch:React.FC<CustomSearchPropsType> =  forwardRef(({width,placeholder,onChange,},ref) => {
   return (
     <Search>
       <SearchIconWrapper>
@@ -17,10 +19,12 @@ const CustomSearch:React.FC<CustomSearchPropsType> = ({width,placeholder}) => {
         placeholder={placeholder}
         inputProps={{ "aria-label": "search" }}
         sx={{width:width}}
+        onChange={onChange}
+        ref={ref}
       />
     </Search>
   );
-};
+});
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -52,15 +56,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
+  
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
-    // [theme.breakpoints.up("xs")]: {
-    //   width: "50ch",
-    //   //   "&:focus": {
-    //   //     width: "40ch",
-    //   //   },
-    // },
+ 
   },
 }));
 
