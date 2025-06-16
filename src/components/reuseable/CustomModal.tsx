@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 interface ConfirmationModalProps {
   open: boolean;
   onClose: (confirmed: boolean) => void;
-  title: string;
+  title?: string;
 
   children: React.ReactNode;
 }

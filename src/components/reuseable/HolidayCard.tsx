@@ -13,16 +13,18 @@ const HolidayCard: FC<HolidayCardProps> = ({ title, image, value }) => {
       sx={{
         width: "100%",
         borderRadius: 0,
-        // boxShadow: "",
+        
         display: "flex",
 
         justifyContent: "space-between",
-        // alignItems: "center",
+       
         backgroundColor: "transparent",
         padding: 1,
         paddingRight: 2,
         paddingLeft: 2,
+        boxShadow: '0 0 0 2px rgba(209,213,219,0.5)'
       }}
+      className=" rounded-0 ring-2 ring-gray-300/50 "
     >
       <div className="flex">
         {/* <CardContent sx={{ p: 0}}> */}

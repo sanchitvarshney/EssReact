@@ -14,10 +14,12 @@ import {
 } from "@mui/material";
 import { holidayData } from "../dummydata/HolidayData";
 
+
 const years = [2024, 2025, 2026];
 
 const HolidayPage = () => {
   const [selectedYear, setSelectedYear] = useState(2025);
+  
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedYear(newValue);
@@ -25,7 +27,7 @@ const HolidayPage = () => {
   };
 
   return (
-    <Box sx={{ width: "100%", p: 3 }}>
+    <Box sx={{ width: "100%", paddingRight:3, paddingLeft:3, paddingTop:1 }}>
       <Tabs
         value={selectedYear}
         onChange={handleChange}
@@ -36,6 +38,7 @@ const HolidayPage = () => {
           <Tab key={year} label={year} value={year} />
         ))}
       </Tabs>
+     
       <div className="h-[75vh]  overflow-y-auto">
         <TableContainer component={Paper} >
           <Table>
