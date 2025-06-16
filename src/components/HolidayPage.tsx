@@ -13,13 +13,12 @@ import {
   Typography,
 } from "@mui/material";
 import { holidayData } from "../dummydata/HolidayData";
-
+import { motion } from "framer-motion";
 
 const years = [2024, 2025, 2026];
 
 const HolidayPage = () => {
   const [selectedYear, setSelectedYear] = useState(2025);
-  
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedYear(newValue);
@@ -27,7 +26,7 @@ const HolidayPage = () => {
   };
 
   return (
-    <Box sx={{ width: "100%", paddingRight:3, paddingLeft:3, paddingTop:1 }}>
+    <Box sx={{ width: "100%", paddingRight: 3, paddingLeft: 3, paddingTop: 1 }}>
       <Tabs
         value={selectedYear}
         onChange={handleChange}
@@ -38,9 +37,16 @@ const HolidayPage = () => {
           <Tab key={year} label={year} value={year} />
         ))}
       </Tabs>
-     
-      <div className="h-[75vh]  overflow-y-auto">
-        <TableContainer component={Paper} >
+
+      <motion.div
+        initial={{ opacity: 0, x: 100, scaleX: 0.95 }}
+        animate={{ opacity: 1, x: 0, scaleX: 1 }}
+        exit={{ opacity: 0, x: -40, scaleX: 0.95 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+        key={selectedYear}
+        className="h-[75vh] overflow-y-auto"
+      >
+        <TableContainer component={Paper}>
           <Table>
             <TableHead className="bg-gray-200">
               <TableRow>
@@ -83,7 +89,7 @@ const HolidayPage = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      </div>
+      </motion.div>
     </Box>
   );
 };

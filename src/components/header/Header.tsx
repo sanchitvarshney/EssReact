@@ -16,11 +16,14 @@ import CustomToolTip from "../reuseable/CustomToolTip";
 import { useMediaQuery } from "@mui/material";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 import SearchBarComponent from "../SearchBarComponent";
+import NotificationDropDown from "../NotificationDropDown";
+
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Account", "Logout"];
 
 function Header() {
   const inputRef = React.useRef(null);
+  const notificationRef = React.useRef(null);
   const [searchText, setSearchText] = React.useState("");
   const [openSearch, setOpenSearch] = React.useState(false);
   const { toggleDrawerOpen } = useDrawerContext();
@@ -31,6 +34,7 @@ function Header() {
     null
   );
 
+  const [isOpenNotification, setIsOpenNotification] = React.useState(false);
   const isSmallScreen = useMediaQuery("(max-width:400px)");
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -130,11 +134,18 @@ function Header() {
 
           <Box sx={{ flexGrow: 0 }}>
             {!isSmallScreen && (
-              <CustomToolTip title="Notification" placement="bottom">
-                <Badge badgeContent={4} color="error" sx={{ p: 0, mr: 3 }}>
-                  <NotificationsIcon sx={{ fontSize: 30, color: "#fff" }} />
-                </Badge>
-              </CustomToolTip>
+              <>
+                <CustomToolTip title="Notification" placement="bottom">
+                  <IconButton
+                    onClick={() => setIsOpenNotification(true)}
+                    ref={notificationRef}
+                  >
+                    <Badge badgeContent={4} color="error" sx={{ p: 0, mr: 3 }}>
+                      <NotificationsIcon sx={{ fontSize: 30, color: "#fff" }} />
+                    </Badge>
+                  </IconButton>
+                </CustomToolTip>
+              </>
             )}
 
             <IconButton
@@ -173,6 +184,16 @@ function Header() {
           </Box>
         </Toolbar>
       </Container>
+      {isOpenNotification && (
+      
+          <NotificationDropDown
+            open={isOpenNotification}
+            close={() => setIsOpenNotification(false)}
+            //@ts-ignore
+            anchorEl={notificationRef}
+          />
+      
+      )}
     </AppBar>
   );
 }
