@@ -1,7 +1,7 @@
 import { Popover, Typography } from "@mui/material";
-import { motion, AnimatePresence } from "framer-motion";
+import {  AnimatePresence } from "framer-motion";
 import NotificationContent from "./reuseable/NotificationContent";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 interface Props {
   open: boolean;
   close: () => void;
@@ -27,15 +27,15 @@ const NotificationDropDown: React.FC<Props> = ({ open, close, anchorEl }) => {
           disableAutoFocus
           disableEnforceFocus
           PaperProps={{
-            component: motion.div,
-            initial: { opacity: 0.1, y: -10, scaleY: 0.6 },
-            animate: { opacity: 1, y: -5, scaleY: 1 },
-            exit: { opacity: 0.2, y: -10, scaleY: 0.4 },
-            transition: {
-              duration: 0.1,
-              ease: "easeOut",
-              scaleY: { duration: 0.15 },
-            },
+            // component: motion.div,
+            // initial: { opacity: 0.1, y: -10, scaleY: 0.6 },
+            // animate: { opacity: 1, y: -5, scaleY: 1 },
+            // exit: { opacity: 0.2, y: -10, scaleY: 0.4 },
+            // transition: {
+            //   duration: 0.1,
+            //   ease: "easeOut",
+            //   scaleY: { duration: 0.15 },
+            // },
             style: {
               transformOrigin: "top",
               position: "relative",
@@ -72,7 +72,7 @@ const NotificationDropDown: React.FC<Props> = ({ open, close, anchorEl }) => {
                 Notifications
               </Typography>
               <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-                See All <ArrowForwardIcon sx={{fontSize:16}} />
+                See All <ArrowForwardIcon sx={{ fontSize: 16 }} />
               </Typography>
             </div>
             <NotificationContent

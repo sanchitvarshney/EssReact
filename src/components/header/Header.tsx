@@ -35,7 +35,7 @@ function Header() {
   );
 
   const [isOpenNotification, setIsOpenNotification] = React.useState(false);
-  const isSmallScreen = useMediaQuery("(max-width:400px)");
+  const isSmallScreen = useMediaQuery("(max-width:450px)");
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -126,7 +126,8 @@ function Header() {
             {searchText && (
               <SearchBarComponent
                 open={openSearch}
-                close={() => setSearchText("")}
+                close={() => setOpenSearch(false)}
+                searchQuary={searchText}
                 anchorRef={inputRef}
               />
             )}
@@ -160,6 +161,7 @@ function Header() {
               onClick={handleOpenUserMenu}
               sx={{
                 p: 0,
+               
               }}
             >
               <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
