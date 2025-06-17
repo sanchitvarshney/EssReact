@@ -10,7 +10,7 @@ const   ImageCard: FC<ImageCardProps> = ({ title, image }) => {
   return (
     <Card
       sx={{
-        width: "100%",          
+        // width: "100%",          
         borderRadius: 0,
         boxShadow: "none",
         display:"flex",

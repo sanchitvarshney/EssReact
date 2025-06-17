@@ -14,6 +14,7 @@ import WFHPage from "./src/pages/WFHPage";
 import PaySlipPage from "./src/pages/PaySlipPage";
 import HierarchyChart from "./src/pages/HierarchyChart";
 import AnnouncementPage from "./src/pages/AnnouncementPage";
+import HomePage from "./src/pages/HomePage";
 
 
 export const route = createBrowserRouter([
@@ -21,9 +22,9 @@ export const route = createBrowserRouter([
     path: "/",
     element: (
       <MainLayout>
-        <SideMenuBar>
-          <Dashboard />
-        </SideMenuBar>
+        {/* <SideMenuBar> */}
+          <HomePage />
+        {/* </SideMenuBar> */}
       </MainLayout>
     ),
   },

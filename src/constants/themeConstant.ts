@@ -2,3 +2,9 @@ export const InputStyle = " flex h-9  items-center justify-between whitespace-no
 export const LableStyle = "text-black mb-3 block ";
 export const flexProperty = "flex  justify-center items-center"
 
+
+export const customColor = {
+    bgColor:"#232324",
+    textColor:"#ffffff"
+}
+

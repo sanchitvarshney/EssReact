@@ -17,6 +17,7 @@ import { useMediaQuery } from "@mui/material";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 import SearchBarComponent from "../SearchBarComponent";
 import NotificationDropDown from "../NotificationDropDown";
+import { customColor } from "../../constants/themeConstant";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Account", "Logout"];
@@ -50,7 +51,7 @@ function Header() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#232324" }}>
+    <AppBar position="static" sx={{ backgroundColor: customColor.bgColor, paddingTop:1.5, paddingBottom:1.5 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
@@ -133,7 +134,7 @@ function Header() {
             )}
           </Box>
 
-          <Box sx={{ flexGrow: 0 ,}}>
+          <Box sx={{ flexGrow: 0 }}>
             {!isSmallScreen && (
               <>
                 <CustomToolTip title="Notification" placement="bottom">
@@ -161,14 +162,13 @@ function Header() {
               onClick={handleOpenUserMenu}
               sx={{
                 p: 0,
-               
               }}
             >
               <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
             </IconButton>
 
             <Menu
-              sx={{mt:5}}
+              sx={{ mt: 5 }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -183,7 +183,6 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-    
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography sx={{ textAlign: "center" }}>
