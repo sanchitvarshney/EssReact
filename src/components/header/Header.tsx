@@ -132,7 +132,7 @@ function Header() {
             )}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0 ,}}>
             {!isSmallScreen && (
               <>
                 <CustomToolTip title="Notification" placement="bottom">
@@ -145,6 +145,14 @@ function Header() {
                     </Badge>
                   </IconButton>
                 </CustomToolTip>
+                {isOpenNotification && (
+                  <NotificationDropDown
+                    open={isOpenNotification}
+                    close={() => setIsOpenNotification(false)}
+                    //@ts-ignore
+                    anchorEl={notificationRef}
+                  />
+                )}
               </>
             )}
 
@@ -158,21 +166,22 @@ function Header() {
             </IconButton>
 
             <Menu
-              sx={{ mt: "45px" }}
+              sx={{mt:5}}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: "top",
-                horizontal: "right",
+                horizontal: "center",
               }}
               keepMounted
               transformOrigin={{
                 vertical: "top",
-                horizontal: "right",
+                horizontal: "center",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+    
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography sx={{ textAlign: "center" }}>
@@ -184,16 +193,6 @@ function Header() {
           </Box>
         </Toolbar>
       </Container>
-      {isOpenNotification && (
-      
-          <NotificationDropDown
-            open={isOpenNotification}
-            close={() => setIsOpenNotification(false)}
-            //@ts-ignore
-            anchorEl={notificationRef}
-          />
-      
-      )}
     </AppBar>
   );
 }

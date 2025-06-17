@@ -26,8 +26,8 @@ const Dashboard = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:place-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 mt-8">
         <SlideShowCard />
-        <SlideShowCard />
-        <SlideShowCard />
+        <SlideShowCard title="Birthday Bash"/>
+        <SlideShowCard title="Anniversary"/>
       </div>
 
       <div className="w-full  bg-white shadow-md p-3 mt-8  rounded-0 ring-2 ring-gray-300/50">
