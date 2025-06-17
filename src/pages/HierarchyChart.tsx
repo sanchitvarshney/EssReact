@@ -95,7 +95,7 @@ const HierarchyChart = () => {
   const [zoom, setZoom] = useState(1);
   return (
     <div
-      className="overflow-auto p-6 min-h-screen  w-full flex"
+      className="overflow-auto p-6 h-[calc(100vh-65px)]  w-full flex"
       style={{ position: "relative" }}
     >
       <div
@@ -111,19 +111,26 @@ const HierarchyChart = () => {
         <IconButton
           onClick={() => setZoom((z) => Math.min(z + 0.1, 2))}
           size="small"
-          sx={{ color: "#fff", background: "#000000" ,   "&:hover": {
-      backgroundColor: "#4b5563",
-    },}}
-          
+          sx={{
+            color: "#fff",
+            background: "#000000",
+            "&:hover": {
+              backgroundColor: "#4b5563",
+            },
+          }}
         >
           <ZoomInIcon />
         </IconButton>
         <IconButton
           onClick={() => setZoom((z) => Math.max(z - 0.1, 0.5))}
           size="small"
-          sx={{ color: "#fff", background: "#000000" ,   "&:hover": {
-      backgroundColor: "#4b5563", 
-    },}}
+          sx={{
+            color: "#fff",
+            background: "#000000",
+            "&:hover": {
+              backgroundColor: "#4b5563",
+            },
+          }}
         >
           <ZoomOutIcon />
         </IconButton>
@@ -143,15 +150,13 @@ const HierarchyChart = () => {
           transform: `scale(${zoom})`,
           transformOrigin: "top center",
           transition: "transform 0.2s",
-          justifySelf:"center"
+          justifySelf: "center",
         }}
-       
       >
         <Tree
           lineWidth={"3px"}
           lineColor={"#444"}
           lineBorderRadius={"8px"}
-          
           label={
             <div className="flex justify-center">
               {" "}
