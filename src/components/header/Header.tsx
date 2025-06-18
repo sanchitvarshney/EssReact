@@ -186,7 +186,7 @@ function Header() {
                 anchorEl={profileRef}
                 width={240}
               >
-                <ProfileDropDown />
+                <ProfileDropDown  close={() => setAnchorElUser(false)}/>
               </CustomPopover>
             )}
           </Box>

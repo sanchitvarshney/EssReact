@@ -11,7 +11,7 @@ const EmployeeProfilePage = () => {
     console.log(event);
   };
   return (
-    <div className="w-full h-[calc(100vh-90px)] p-4">
+    <div className="w-full h-[calc(100vh-90px)] overflow-y-auto p-4">
       <div className="w-200  px-3 py-6 m-auto flex  items-center gap-15">
         <Avatar sx={{ width: 140, height: 140 }} />
         <div>
@@ -35,14 +35,34 @@ const EmployeeProfilePage = () => {
         <Tabs
           value={value}
           onChange={handleChange}
-          textColor="secondary"
-          indicatorColor="secondary"
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: "#2eacb3",
+            },
+          }}
+          textColor="inherit"
+          sx={{
+            "& .MuiTab-root": {
+              color: "#333",
+            },
+            "& .Mui-selected": {
+              color: "#2eacb3",
+            },
+          }}
         >
-          <Tab value="info" label="Information" />
-          <Tab value="chart" label="Hierarchy" />
+          <Tab
+            value="info"
+            label="Information"
+            sx={{ fontSize: 16, fontWeight: "medium" }}
+          />
+          <Tab
+            value="chart"
+            label="Hierarchy"
+            sx={{ fontSize: 16, fontWeight: "medium" }}
+          />
         </Tabs>
       </Box>
-      <div className="w-full">
+      <div className="w-full ">
         {value === "info" ? (
           <EmployeeInformationPage />
         ) : (

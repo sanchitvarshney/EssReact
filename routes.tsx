@@ -16,14 +16,18 @@ import EmployeeProfilePage from "./src/pages/EmployeeProfilePage";
 export const route = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />, // This layout includes <Header /> and <Outlet />
+    element: <MainLayout />, 
     children: [
       {
         index: true,
         element: <HomePage />,
       },
       {
-        element: <SideMenuBar />, // This includes <SideMenuBar /> and <Outlet />
+        path: "manage-account",
+        element: <EmployeeProfilePage />,
+      },
+      {
+        element: <SideMenuBar />, 
         children: [
           {
             path: "self-service/attendance",
@@ -57,10 +61,10 @@ export const route = createBrowserRouter([
             path: "home/hierarchy",
             element: <HierarchyChart />,
           },
-             {
-            path: "employee",
-            element: <EmployeeProfilePage />,
-          },
+          //    {
+          //   path: "employee",
+          //   element: <EmployeeProfilePage />,
+          // },
         ],
       },
     ],
