@@ -6,21 +6,21 @@ type ImageCardProps = {
   image: string;
 };
 
-const   ImageCard: FC<ImageCardProps> = ({ title, image }) => {
+const ImageCard: FC<ImageCardProps> = ({ title, image }) => {
   return (
     <Card
       sx={{
-        // width: "100%",          
+        // width: "100%",
         borderRadius: 0,
         boxShadow: "none",
-        display:"flex",
-        justifyContent:"center",
-        alignItems:"center",
-        backgroundColor:"transparent"
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "transparent",
       }}
     >
-      <CardContent sx={{ p: 0, justifySelf:"center" }}>
-        <div className="flex h-40 w-40 items-center justify-center rounded-md bg-gray-600/10">
+      <CardContent sx={{ p: 0, justifySelf: "center" }}>
+        <div className="flex h-50 w-50 p-3 sm:w-30 sm:h-30 md:w-35 md:h-35 lg:w-40 lg:h-40 xl:w-45 xl:h-45 items-center justify-center rounded-2xl bg-gray-500/10">
           {/* object-contain keeps the image inside its box without distortion */}
           <img
             src={image}
@@ -35,7 +35,7 @@ const   ImageCard: FC<ImageCardProps> = ({ title, image }) => {
             fontWeight: 600,
             mt: 1,
             textAlign: "center",
-            fontSize: { xs: "0.9rem", sm: "1rem" },
+            fontSize: { xs: "1.1rem", sm: "1.12rem" },
           }}
         >
           {title}

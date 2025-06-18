@@ -1,17 +1,28 @@
 import empIcon from "../assets/staff.png";
+import taskbox from "../assets/to-do-list.png"
+import vibe from "../assets/speech-bubble.png"
+import compensation from "../assets/money.png"
+import attendance from "../assets/calendar.png"
+import leave from "../assets/sunbed.png"
+import policice from "../assets/policy.png"
+import doc from "../assets/documentation.png"
+import recruitment from "../assets/selection.png"
+import calendar from "../assets/calendar (1).png"
+import performance from "../assets/performance.png"
+import help from "../assets/help.png"
 import type { homeDataTypes } from "../types/home-data-types/homepagetypes";
 
 export const homeData: homeDataTypes[] = [
-  { id: "taskbox", title: "Task Box", icon: empIcon, path: "/task-box" },
+  { id: "taskbox", title: "Task Box", icon: taskbox, path: "/task-box" },
   { id: "employee", title: "Employees", icon: empIcon, path: "/employees" },
-  { id: "vibe", title: "Vibe", icon: empIcon, path: "/vibe" },
-  { id: "compensation", title: "Compensation", icon: empIcon, path: "/compensations" },
-  { id: "attendance", title: "Attendance", icon: empIcon, path: "/attendances" },
-  { id: "leave", title: "Leave", icon: empIcon, path: "/leaves" },
-  { id: "policie", title: "HR Policies", icon: empIcon, path: "/hr-policies" },
-  { id: "document", title: "HR Documents", icon: empIcon, path: "/hr-documents" },
-  { id: "recruitment", title: "recruitment", icon: empIcon, path: "/recruitments" },
-  { id: "calender", title: "Calendar", icon: empIcon, path: "/calendar" },
-  { id: "performance", title: "Performance", icon: empIcon, path: "/performance" },
-  { id: "help", title: "Helpdesk", icon: empIcon, path: "/help" },
+  { id: "vibe", title: "Vibe", icon: vibe, path: "/vibe" },
+  { id: "compensation", title: "Compensation", icon: compensation, path: "/compensations" },
+  { id: "attendance", title: "Attendance", icon: attendance, path: "/attendances" },
+  { id: "leave", title: "Leave", icon: leave, path: "/leaves" },
+  { id: "policie", title: "HR Policies", icon: policice, path: "/hr-policies" },
+  { id: "document", title: "HR Documents", icon: doc, path: "/hr-documents" },
+  { id: "recruitment", title: "Recruitment", icon: recruitment, path: "/recruitments" },
+  { id: "calender", title: "Calendar", icon: calendar, path: "/calendar" },
+  { id: "performance", title: "Performance", icon: performance, path: "/performance" },
+  { id: "help", title: "Helpdesk", icon: help, path: "/help" },
 ];

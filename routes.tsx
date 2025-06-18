@@ -5,7 +5,7 @@ import Custom404Page from "./src/pages/Custom404Page";
 
 import LeavePage from "./src/pages/LeavePage";
 import SideMenuBar from "./src/components/sidemenubar/SideMenuBar";
-import Dashboard from "./src/pages/Dashboard";
+
 
 import AttendancePage from "./src/pages/AttendancePage";
 
