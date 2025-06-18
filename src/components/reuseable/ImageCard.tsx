@@ -1,12 +1,15 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import type { FC } from "react";
+import { useNavigate } from "react-router-dom";
 
 type ImageCardProps = {
   title: string;
   image: string;
+  path:string
 };
 
-const ImageCard: FC<ImageCardProps> = ({ title, image }) => {
+const ImageCard: FC<ImageCardProps> = ({ title, image,path }) => {
+  const navigation = useNavigate()
   return (
     <Card
       sx={{
@@ -20,6 +23,7 @@ const ImageCard: FC<ImageCardProps> = ({ title, image }) => {
       }}
     >
       <CardContent sx={{ p: 0, justifySelf: "center" }}>
+        <div onClick={()=>navigation(path)}>
         <div className="flex h-50 w-50 p-3 sm:w-30 sm:h-30 md:w-35 md:h-35 lg:w-40 lg:h-40 xl:w-45 xl:h-45 items-center justify-center rounded-2xl bg-gray-500/10">
           {/* object-contain keeps the image inside its box without distortion */}
           <img
@@ -40,6 +44,7 @@ const ImageCard: FC<ImageCardProps> = ({ title, image }) => {
         >
           {title}
         </Typography>
+        </div>
       </CardContent>
     </Card>
   );

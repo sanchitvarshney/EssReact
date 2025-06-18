@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "../ui/CustomAccordion";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 import CustomToolTip from "../reuseable/CustomToolTip";
 
@@ -171,7 +171,7 @@ interface CustomSideBarMenuProps {
   //   item:any
 }
 
-const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
+const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
   const {isExpended,setIsExpended,accordionValues,setAccordionValues} = useDrawerContext()
   // const navigate = useNavigate();
 
@@ -254,7 +254,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = ({ children }) => {
         </div>
       </Box>
       {/* Main content area */}
-      <div className="flex-1 overflow-y-auto w-full ">{children}</div>
+      <div className="flex-1 overflow-y-auto w-full "><Outlet /></div>
       <CustomDrawer />
     </div>
   );

@@ -13,7 +13,7 @@ const HomePage = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full lg:grid-cols-5 xl:grid-cols-6 gap-8 px-4  mx-auto ">
           {homeData.map((item: homeDataTypes) => (
-            <ImageCard title={item.title} image={item.icon} />
+            <ImageCard title={item.title} image={item.icon} path={item.path}/>
           ))}
         </div>
       </div>

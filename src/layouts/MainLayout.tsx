@@ -1,15 +1,17 @@
 import styled from "styled-components";
 
 import Header from "../components/header/Header";
+import { Outlet } from "react-router-dom";
 
-function MainLayout(props: { children: React.ReactNode }) {
+// props: { children: React.ReactNode }
+function MainLayout() {
   return (
     <Wrapper className="">
       <div>
         <Header />
       </div>
 
-      <main className=" bg-[#ffffff] h-full  custom-scrollbar-for-menu ">{props.children}</main>
+      <main className=" bg-[#ffffff] h-full  custom-scrollbar-for-menu "><Outlet /></main>
     </Wrapper>
   );
 }

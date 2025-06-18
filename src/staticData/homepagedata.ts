@@ -18,7 +18,7 @@ export const homeData: homeDataTypes[] = [
   { id: "vibe", title: "Vibe", icon: vibe, path: "/vibe" },
   { id: "compensation", title: "Compensation", icon: compensation, path: "/compensations" },
   { id: "attendance", title: "Attendance", icon: attendance, path: "/attendances" },
-  { id: "leave", title: "Leave", icon: leave, path: "/leaves" },
+  { id: "leave", title: "Leave", icon: leave, path: "/self-service/apply-leave" },
   { id: "policie", title: "HR Policies", icon: policice, path: "/hr-policies" },
   { id: "document", title: "HR Documents", icon: doc, path: "/hr-documents" },
   { id: "recruitment", title: "Recruitment", icon: recruitment, path: "/recruitments" },

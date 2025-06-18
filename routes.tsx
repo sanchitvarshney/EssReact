@@ -17,100 +17,158 @@ import AnnouncementPage from "./src/pages/AnnouncementPage";
 import HomePage from "./src/pages/HomePage";
 
 
+// export const route = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: (
+//       <MainLayout>
+//         {/* <SideMenuBar> */}
+//           <HomePage />
+//         {/* </SideMenuBar> */}
+//       </MainLayout>
+//     ),
+//   },
+//   {
+//     path: "/self-service/attendance",
+//     element: (
+//       <MainLayout>
+//         <SideMenuBar>
+//           <AttendancePage />
+//         </SideMenuBar>
+//       </MainLayout>
+//     ),
+//   },
+    
+//   {
+//     path: "/calendar",
+//     element: (
+//       <MainLayout>
+//         <SideMenuBar>
+//           <HolidayPage />
+//         </SideMenuBar>
+//       </MainLayout>
+//     ),
+//   },
+//   {
+//     path: "/self-service/apply-leave",
+//     element: (
+//       <MainLayout>
+//         <SideMenuBar>
+//           <LeavePage />
+//         </SideMenuBar>
+//       </MainLayout>
+//     ),
+//   },
+//     {
+//     path: "/self-service/leave-status",
+//     element: (
+//       <MainLayout>
+//         <SideMenuBar>
+//           <LeaveStatusPage />
+//         </SideMenuBar>
+//       </MainLayout>
+//     ),
+//   },
+//      {
+//     path: "/self-service/wfh",
+//     element: (
+//       <MainLayout>
+//         <SideMenuBar>
+//           <WFHPage />
+//         </SideMenuBar>
+//       </MainLayout>
+//     ),
+//   },
+
+//        {
+//     path: "/self-service/payslip",
+//     element: (
+//       <MainLayout>
+//         <SideMenuBar>
+//           <PaySlipPage />
+//         </SideMenuBar>
+//       </MainLayout>
+//     ),
+//   },
+//          {
+//     path: "/home/announcement",
+//     element: (
+//       <MainLayout>
+//         <SideMenuBar>
+//           <AnnouncementPage />
+//         </SideMenuBar>
+//       </MainLayout>
+//     ),
+//   },
+//        {
+//     path: "/home/hierarchy",
+//     element: (
+//       <MainLayout>
+//         <SideMenuBar>
+//           <HierarchyChart />
+//         </SideMenuBar>
+//       </MainLayout>
+//     ),
+//   },
+
+//   {
+//     path: "*",
+//     element: <Custom404Page />,
+//   },
+// ]);
+
+
+
+
+
 export const route = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <MainLayout>
-        {/* <SideMenuBar> */}
-          <HomePage />
-        {/* </SideMenuBar> */}
-      </MainLayout>
-    ),
+    element: <MainLayout />, // This layout includes <Header /> and <Outlet />
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        element: <SideMenuBar />, // This includes <SideMenuBar /> and <Outlet />
+        children: [
+          {
+            path: "self-service/attendance",
+            element: <AttendancePage />,
+          },
+          {
+            path: "calendar",
+            element: <HolidayPage />,
+          },
+          {
+            path: "self-service/apply-leave",
+            element: <LeavePage />,
+          },
+          {
+            path: "self-service/leave-status",
+            element: <LeaveStatusPage />,
+          },
+          {
+            path: "self-service/wfh",
+            element: <WFHPage />,
+          },
+          {
+            path: "self-service/payslip",
+            element: <PaySlipPage />,
+          },
+          {
+            path: "home/announcement",
+            element: <AnnouncementPage />,
+          },
+          {
+            path: "home/hierarchy",
+            element: <HierarchyChart />,
+          },
+        ],
+      },
+    ],
   },
-  {
-    path: "/self-service/attendance",
-    element: (
-      <MainLayout>
-        <SideMenuBar>
-          <AttendancePage />
-        </SideMenuBar>
-      </MainLayout>
-    ),
-  },
-    
-  {
-    path: "/calendar",
-    element: (
-      <MainLayout>
-        <SideMenuBar>
-          <HolidayPage />
-        </SideMenuBar>
-      </MainLayout>
-    ),
-  },
-  {
-    path: "/self-service/apply-leave",
-    element: (
-      <MainLayout>
-        <SideMenuBar>
-          <LeavePage />
-        </SideMenuBar>
-      </MainLayout>
-    ),
-  },
-    {
-    path: "/self-service/leave-status",
-    element: (
-      <MainLayout>
-        <SideMenuBar>
-          <LeaveStatusPage />
-        </SideMenuBar>
-      </MainLayout>
-    ),
-  },
-     {
-    path: "/self-service/wfh",
-    element: (
-      <MainLayout>
-        <SideMenuBar>
-          <WFHPage />
-        </SideMenuBar>
-      </MainLayout>
-    ),
-  },
-
-       {
-    path: "/self-service/payslip",
-    element: (
-      <MainLayout>
-        <SideMenuBar>
-          <PaySlipPage />
-        </SideMenuBar>
-      </MainLayout>
-    ),
-  },
-         {
-    path: "/home/announcement",
-    element: (
-      <MainLayout>
-        <SideMenuBar>
-          <AnnouncementPage />
-        </SideMenuBar>
-      </MainLayout>
-    ),
-  },
-       {
-    path: "/home/hierarchy",
-    element: (
-      <MainLayout>
-        <SideMenuBar>
-          <HierarchyChart />
-        </SideMenuBar>
-      </MainLayout>
-    ),
-  },
-
   {
     path: "*",
     element: <Custom404Page />,
