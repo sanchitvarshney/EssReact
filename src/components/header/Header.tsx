@@ -12,46 +12,51 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuItem from "@mui/material/MenuItem";
 import Badge from "@mui/material/Badge";
 import CustomSearch from "../reuseable/CustomSearch";
-import CustomToolTip from "../reuseable/CustomToolTip";
+
 import { useMediaQuery } from "@mui/material";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
-import SearchBarComponent from "../SearchBarComponent";
-import NotificationDropDown from "../NotificationDropDown";
+import SearchBarComponent from "../dropdowns/SearchBarComponent";
+
 import { customColor } from "../../constants/themeConstant";
 
+import CustomPopover from "../reuseable/CustomPopover";
+import NotificationDropDown from "../dropdowns/NotificationDropDown";
+import ProfileDropDown from "../dropdowns/ProfileDropDown";
+
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Account", "Logout"];
 
 function Header() {
   const inputRef = React.useRef(null);
   const notificationRef = React.useRef(null);
+  const profileRef = React.useRef(null);
   const [searchText, setSearchText] = React.useState("");
   const [openSearch, setOpenSearch] = React.useState(false);
   const { toggleDrawerOpen } = useDrawerContext();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElUser, setAnchorElUser] = React.useState<boolean>(false);
 
   const [isOpenNotification, setIsOpenNotification] = React.useState(false);
   const isSmallScreen = useMediaQuery("(max-width:450px)");
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
+  const handleOpenUserMenu = () => {
+    setAnchorElUser(true);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   return (
-    <AppBar position="static" sx={{ backgroundColor: customColor.bgColor, paddingTop:1.5, paddingBottom:1.5 }}>
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: customColor.bgColor,
+        paddingTop: 1.5,
+        paddingBottom: 1.5,
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
@@ -137,23 +142,25 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             {!isSmallScreen && (
               <>
-                <CustomToolTip title="Notification" placement="bottom">
-                  <IconButton
-                    onClick={() => setIsOpenNotification(true)}
-                    ref={notificationRef}
-                  >
-                    <Badge badgeContent={4} color="error" sx={{ p: 0, mr: 3 }}>
-                      <NotificationsIcon sx={{ fontSize: 30, color: "#fff" }} />
-                    </Badge>
-                  </IconButton>
-                </CustomToolTip>
+                <IconButton onClick={() => setIsOpenNotification(true)}>
+                  <Badge badgeContent={4} color="error" sx={{ p: 0, mr: 3 }}>
+                    <NotificationsIcon
+                      ref={notificationRef}
+                      sx={{ fontSize: 30, color: "#fff" }}
+                    />
+                  </Badge>
+                </IconButton>
+
                 {isOpenNotification && (
-                  <NotificationDropDown
+                  <CustomPopover
                     open={isOpenNotification}
                     close={() => setIsOpenNotification(false)}
                     //@ts-ignore
                     anchorEl={notificationRef}
-                  />
+                    width={400}
+                  >
+                    <NotificationDropDown />
+                  </CustomPopover>
                 )}
               </>
             )}
@@ -164,33 +171,23 @@ function Header() {
                 p: 0,
               }}
             >
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <Avatar
+                ref={profileRef}
+                alt="Remy Sharp"
+                src="/static/images/avatar/2.jpg"
+              />
             </IconButton>
 
-            <Menu
-              sx={{ mt: 5 }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            {anchorElUser && (
+              <CustomPopover
+                open={anchorElUser}
+                close={() => setAnchorElUser(false)}
+                anchorEl={profileRef}
+                width={300}
+              >
+                <ProfileDropDown />
+              </CustomPopover>
+            )}
           </Box>
         </Toolbar>
       </Container>

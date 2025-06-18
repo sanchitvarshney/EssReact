@@ -1,0 +1,86 @@
+import React, { useEffect, useState } from "react";
+import { Popover } from "@mui/material";
+import { AnimatePresence } from "framer-motion";
+
+interface Props {
+  open: boolean;
+  close: () => void;
+  anchorEl?: any;
+  width?: string | number;
+  children: React.ReactNode;
+}
+
+const CustomPopover: React.FC<Props> = ({
+  open,
+  close,
+  anchorEl,
+  width,
+  children,
+}) => {
+  const [arrowLeft, setArrowLeft] = useState<number>(0);
+
+  useEffect(() => {
+    if (anchorEl?.current) {
+      const anchorRect = anchorEl.current.getBoundingClientRect();
+
+      const arrowOffset = 10;
+      const calculatedLeft = anchorRect.width / 2 - arrowOffset;
+
+      setArrowLeft(calculatedLeft);
+    }
+  }, [anchorEl, open]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <Popover
+          open={open}
+          anchorEl={anchorEl?.current || null}
+          onClose={close}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          disableAutoFocus
+          disableEnforceFocus
+          PaperProps={{
+            style: {
+              transformOrigin: "top",
+              position: "relative",
+              borderRadius: "6px",
+              overflow: "visible",
+            },
+            sx: {
+              mt: 2,
+              width: width ? width : 400,
+              height: 350,
+            },
+          }}
+        >
+          {/* Triangle dynamically positioned */}
+          <div
+            style={{
+              position: "absolute",
+              top: "-10px",
+              right: `${arrowLeft}px`,
+              width: 0,
+              height: 0,
+              borderLeft: "10px solid transparent",
+              borderRight: "10px solid transparent",
+              borderBottom: "10px solid #ffffff",
+              zIndex: 5,
+            }}
+          />
+
+          {children}
+        </Popover>
+      )}
+    </AnimatePresence>
+  );
+};
+
+export default CustomPopover;

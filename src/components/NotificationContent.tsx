@@ -12,7 +12,11 @@ const NotificationContent: FC<NotificationContentPropsType> = ({
   time,
 }) => {
   return (
-    <Card  elevation={0} sx={{ borderRadius: 0 }} className="py-2 px-4 showdow-none bg-red-700 flex items-start gap-4 my-2 border-b-1 border-gray-600/40 rounded-none justify-between">
+    <Card
+      elevation={0}
+      sx={{ borderRadius: 0 }}
+      className="py-2 px-4 showdow-none bg-red-700 flex items-start gap-4 my-2 border-b-1 border-gray-600/40 rounded-none justify-between"
+    >
       <div>
         {" "}
         <h5 className="text-lg font-semibold text-gray-800 dark:text-gray-100">

@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import ImageCard from "../components/reuseable/ImageCard";
 import { homeData } from "../staticData/homepagedata";
-import type { homeDataTypes } from "../types/home-data-types/homepagetypes";
+import type { homeMenuTypes } from "../types/home-data-types/homepagetypes";
 
 const HomePage = () => {
   return (
@@ -12,7 +12,7 @@ const HomePage = () => {
         </Typography>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full lg:grid-cols-5 xl:grid-cols-6 gap-8 px-4  mx-auto ">
-          {homeData.map((item: homeDataTypes) => (
+          {homeData.map((item: homeMenuTypes) => (
             <ImageCard title={item.title} image={item.icon} path={item.path}/>
           ))}
         </div>

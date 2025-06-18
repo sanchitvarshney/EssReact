@@ -1,4 +1,4 @@
-export type homeDataTypes = {
+export type homeMenuTypes = {
 id:string;
 title:string;
 icon: string;
