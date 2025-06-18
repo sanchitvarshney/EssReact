@@ -103,8 +103,12 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
     <div className="w-full ">
       {/* Search Results */}
       {inputText && (
-        <div className="bg-white  shadow-0 h-90 mt-2 overflow-y-auto custom-scrollbar-for-menu">
-          <List sx={{padding:0}} className="p-0">
+        <div
+          tabIndex={0}
+          onMouseEnter={(e) => e.currentTarget.focus()}
+          className="bg-white  shadow-0 h-90 mt-2 overflow-y-auto custom-scrollbar-for-menu focus:outline-none focus:ring-0"
+        >
+          <List sx={{ padding: 0 }} className="p-0">
             {searchResults.map((result) => (
               <React.Fragment key={result.id}>
                 <ListItem className="hover:bg-gray-50 transition-colors cursor-pointer">

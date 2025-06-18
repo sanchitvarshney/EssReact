@@ -15,7 +15,7 @@ function MainLayout() {
     </Wrapper>
   );
 }
-const Wrapper = styled.div`
+const Wrapper = styled.div` 
   .btn {
     overflow: hidden;
     position: relative;

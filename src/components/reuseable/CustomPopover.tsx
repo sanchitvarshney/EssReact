@@ -7,6 +7,7 @@ interface Props {
   close: () => void;
   anchorEl?: any;
   width?: string | number;
+  height?: string | number;
   children: React.ReactNode;
 }
 
@@ -15,6 +16,7 @@ const CustomPopover: React.FC<Props> = ({
   close,
   anchorEl,
   width,
+  height,
   children,
 }) => {
   const [arrowLeft, setArrowLeft] = useState<number>(0);
@@ -51,27 +53,26 @@ const CustomPopover: React.FC<Props> = ({
             style: {
               transformOrigin: "top",
               position: "relative",
-              borderRadius: "6px",
+              borderRadius: "10px",
               overflow: "visible",
             },
             sx: {
               mt: 2,
               width: width ? width : 400,
-              height: 350,
+              height: height && height ,
             },
           }}
         >
-          {/* Triangle dynamically positioned */}
           <div
             style={{
               position: "absolute",
-              top: "-10px",
+              top: "-11px",
               right: `${arrowLeft}px`,
               width: 0,
               height: 0,
-              borderLeft: "10px solid transparent",
-              borderRight: "10px solid transparent",
-              borderBottom: "10px solid #ffffff",
+              borderLeft: "12px solid transparent",
+              borderRight: "12px solid transparent",
+              borderBottom: "12px solid rgb(255, 255, 255)",
               zIndex: 5,
             }}
           />

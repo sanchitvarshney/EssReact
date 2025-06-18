@@ -9,6 +9,10 @@ import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
  import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
  import FolderIcon from '@mui/icons-material/Folder';
  import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+ import SettingsIcon from '@mui/icons-material/Settings';
+ import LockOutlineIcon from '@mui/icons-material/LockOutline';
+ import LogoutIcon from '@mui/icons-material/Logout';
 
 export const Icons = {
   home: HomeIcon,
@@ -21,6 +25,9 @@ export const Icons = {
   MonetizationOnIcon:WorkOutlineIcon,
   reimbursement:MonetizationOnIcon,
   folder: FolderIcon,
-  support:SupportAgentIcon
- 
+  support:SupportAgentIcon,
+ account:ManageAccountsIcon,
+ setting:SettingsIcon,
+ password: LockOutlineIcon,
+ logout: LogoutIcon
 };

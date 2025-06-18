@@ -1,21 +1,34 @@
-import { Typography } from "@mui/material";
-
-import NotificationContent from "../NotificationContent";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import DynamicIcon from "../reuseable/DynamicIcon";
+import {
+  profileOption,
+  type profileOptionType,
+} from "../../staticData/profileoption";
 
 const ProfileDropDown = () => {
   return (
-    <>
-      <div className="w-full flex justify-between items-center p-3 border-b-1 border-gray-700/40">
-        <Typography sx={{ fontSize: 19, fontWeight: 600 }}>
-          Notifications
-        </Typography>
-        <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-          See All <ArrowForwardIcon sx={{ fontSize: 16 }} />
-        </Typography>
-      </div>
-      <NotificationContent title={"name"} message={"hii"} time={"9:23 am"} />
-    </>
+    <div className="w-full p-4">
+      <List
+        sx={{
+          display: "flex",
+          gap: 2,
+          flexDirection: "column",
+        }}
+      >
+        {profileOption.map((item: profileOptionType) => (
+          <ListItem
+            disablePadding
+            key={item.id}
+            className="hover:bg-gray-600/10 px-1"
+          >
+            <ListItemIcon>
+              <DynamicIcon name={item.icon} size="medium" />
+            </ListItemIcon>
+            <ListItemText sx={{ userSelect: "none" }} primary={item.name} />
+          </ListItem>
+        ))}
+      </List>
+    </div>
   );
 };
 

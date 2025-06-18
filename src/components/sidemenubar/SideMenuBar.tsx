@@ -177,7 +177,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
 
 
   return (
-    <div className="w-full h-[calc(100vh-65px)] flex flex-row ">
+    <div className="w-full h-[calc(100vh-90px)] flex flex-row ">
       <Box sx={{ display: { xs: "none", md: "flex" } }}>
         {/* Sidebar container */}
         <div

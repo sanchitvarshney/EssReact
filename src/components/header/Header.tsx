@@ -59,7 +59,7 @@ function Header() {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { xs: "none", md: "flex" }}}>
             <img
               src="https://hrms.mscorpres.online/assets/images/hrms_logo.png"
               alt="mscorpres"
@@ -101,13 +101,13 @@ function Header() {
             </Menu>
           </Box>
 
-          <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1, mr: 2 }}>
-            {/* {isSmallScreen && ( */}
+          <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1, mr: 2, }}>
+        
             <img
               src="https://hrms.mscorpres.online/assets/images/hrms_logo.png"
               alt="mscorpres"
             />
-            {/* )} */}
+ 
           </Box>
 
           <Box
@@ -158,6 +158,7 @@ function Header() {
                     //@ts-ignore
                     anchorEl={notificationRef}
                     width={400}
+                    height={350}
                   >
                     <NotificationDropDown />
                   </CustomPopover>
@@ -183,7 +184,7 @@ function Header() {
                 open={anchorElUser}
                 close={() => setAnchorElUser(false)}
                 anchorEl={profileRef}
-                width={300}
+                width={240}
               >
                 <ProfileDropDown />
               </CustomPopover>
