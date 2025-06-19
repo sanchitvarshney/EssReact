@@ -3,7 +3,7 @@ import moment from "moment-timezone";
 import accept from "../assets/accept.png";
 import clock from "../assets/clock (1).png";
 import warning from "../assets/warning.png";
-import cancel from "../assets/multiply.png"
+import cancel from "../assets/multiply.png";
 // import dayjs from "dayjs";
 
 // import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -21,6 +21,7 @@ import {
 // import { CustomButton } from "./ui/CustomButton";
 // import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CardForAttendance from "./reuseable/CardForAttendance";
+import { dummyEvents } from "../dummydata/CalenderData";
 
 export const Button_OPTIONS = [
   { id: "back", label: "Back" },
@@ -73,13 +74,13 @@ const CustomCalender = () => {
     let backgroundColor = "";
 
     switch (event.status) {
-      case "Present":
+      case "P":
         backgroundColor = "#4ade80";
         break;
-      case "Absent":
+      case "A":
         backgroundColor = "#f87171";
         break;
-      case "WFH":
+      case "WH":
         backgroundColor = "#60a5fa";
         break;
       case "Off":
@@ -100,6 +101,36 @@ const CustomCalender = () => {
       },
     };
   };
+
+  const realEvent = [
+    {
+      title: "P",
+      start: moment.tz("2025-06-10T09:00:00", "Asia/Kolkata").toDate(),
+      end: moment.tz("2025-06-10T18:00:00", "Asia/Kolkata").toDate(),
+      status: "WFH",
+    },
+    {
+      title: "A",
+      start: moment.tz("2025-06-11T09:00:00", "Asia/Kolkata").toDate(),
+      end: moment.tz("2025-06-11T18:00:00", "Asia/Kolkata").toDate(),
+      status: "Off",
+    },
+    {
+      title: "P",
+      start: moment.tz("2025-06-12T09:00:00", "Asia/Kolkata").toDate(),
+      end: moment.tz("2025-06-12T18:00:00", "Asia/Kolkata").toDate(),
+      status: "WFO",
+    },
+  ];
+
+  const mergedEvents = dummyEvents.map((event) => {
+    const matchedRealEvent = realEvent.find((real) =>
+      moment(real.start).isSame(event.start, "day")
+    );
+    return matchedRealEvent || event;
+  });
+
+  // console.log(mergedEvents)
   return (
     <div className="w-full ">
       <div className="flex flex-wrap justify-between items-center p-2    ">
@@ -160,76 +191,22 @@ const CustomCalender = () => {
           <CardForAttendance title={"Absent"} icon={cancel} value={6} />
           <CardForAttendance title={"Mispunch"} icon={warning} value={6} />
           <CardForAttendance title={"Short"} icon={clock} value={1} />
-
-          {/*   <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              value={dayjsDate}
-              onChange={handleDateChange}
-              format="DD-MM-YYYY"
-              slotProps={{
-                textField: {
-                  size: "small",
-                  fullWidth: false,
-                  variant: "outlined",
-                  placeholder: "Select Date",
-                  InputProps: {
-                    disableUnderline: true,
-                    className:
-                      "border-1 border-black rounded-md text-sm focus:outline-none",
-                    sx: {
-                      "& .MuiInputBase-input::placeholder": {
-                        color: "#94a3b8",
-                        opacity: 1,
-                      },
-                    },
-                  },
-                  sx: {
-                    "& .MuiOutlinedInput-root": {
-                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "#000",
-                      },
-                      "&.Mui-focused": {
-                        boxShadow: "none",
-                      },
-                    },
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-
-          <CustomButton
-            onClick={onTodayClick}
-            className="bg-[#2a2929] text-white px-4 py-2 rounded"
-          >
-            Today
-          </CustomButton>*/}
         </div>
       </div>
 
-      {/* Calendar Component */}
       <Calendar
         defaultView="month"
         components={{
           event: CalenderEvent,
         }}
         localizer={localizer}
-        events={[
-          {
-            title: "Present",
-            start: moment.tz("2025-06-10T09:00:00", "Asia/Kolkata").toDate(),
-            end: moment.tz("2025-06-10T18:00:00", "Asia/Kolkata").toDate(),
-            status: "Work from home",
-          },
-        ]}
+        events={mergedEvents}
         startAccessor="start"
         endAccessor="end"
         style={{ height: "80vh", width: "100%" }}
         eventPropGetter={eventStyleGetter}
         views={["month"]}
         toolbar={false}
-        // view={view}
-        // onView={setView}
         onNavigate={setDate}
         date={date}
       />

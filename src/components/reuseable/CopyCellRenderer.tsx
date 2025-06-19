@@ -1,4 +1,3 @@
-
 import { CopyIcon } from "lucide-react";
 
 import styled from "styled-components";
@@ -22,17 +21,17 @@ const TextWithEllipsis = styled.span`
 const CopyCellRenderer = (params: any) => {
   const copyToClipboard = (value: any) => {
     navigator.clipboard.writeText(value).then(() => {
-    //   toast({
-    //     title: "Copied to clipboard: " + value,
-    //     className: "bg-blue-600 text-white items-center",
-    //   });
+      //   toast({
+      //     title: "Copied to clipboard: " + value,
+      //     className: "bg-blue-600 text-white items-center",
+      //   });
     });
   };
 
   return (
     <CopyCellWrapper>
       <TextWithEllipsis title={params.value}>{params.value}</TextWithEllipsis>
-      <CustomToolTip title={params.value} placement="top" >
+      <CustomToolTip title={params.value} placement="top">
         <CopyIcon
           onClick={() => copyToClipboard(params.value)}
           style={{

@@ -10,21 +10,21 @@
 .rbc-allday-cell {
   display: none;
 }
-.rbc-time-header-cell .rbc-today {
-  background-color: #04aa6d ;
-}
+/* .rbc-time-header-cell .rbc-today {
+  background-color: #04aa6d;
+} */
 
 .rbc-time-slot {
-    color: #000000 !important;
-    z-index: 1;
+  color: #000000 !important;
+  z-index: 1;
 }
 .rbc-time-slot:not(.rbc-today .rbc-time-slot) {
-    background-color: antiquewhite;
+  background-color: antiquewhite;
 }
 
-/* Background for today in month view */  
-.rbc-month-view .rbc-day-bg.rbc-today { 
-  background-color: #2ac88e !important;
+/* Background for today in month view */
+.rbc-month-view .rbc-day-bg.rbc-today {
+  background-color: #ffffff !important;
   height: 100% !important;
   width: 100% !important;
 }
@@ -33,10 +33,10 @@
 } */
 
 /* Style weekend cells */
-.rbc-month-view .rbc-day-bg:nth-child(1) {  /* Sunday */
-
-  background-color: #fef3c7 !important;
+.rbc-month-row .rbc-row-content .rbc-date-cell:nth-child(1) {
+  color: red !important;
 }
+
 
 /* Style date numbers */
 .rbc-month-view .rbc-date-cell {
@@ -44,16 +44,15 @@
   color: z;
 }
 
-
 /* eventstyle */
 .rbc-event,
 .rbc-background-event {
   z-index: 2;
   border: none !important;
-  border-radius: 4px;
+  /* border-radius: 4px; */
   padding: 2px 4px;
   border-radius: 0px !important;
-  background-color: #b8b6b6 !important;
+  background-color: #fff !important;
   color: white !important;
   /* height: 100% !important;  */
   display: flex;
@@ -68,11 +67,11 @@
 }
 
 .rbc-event-label {
-    display: none !important;
+  display: none !important;
 }
 .rbc-events-container {
-    width: 100% !important;
-    height: 100% !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* Toolbar background and layout */
@@ -113,7 +112,5 @@
 
 .rbc-toolbar button:hover {
   background-color: #50545a; /* hover effect */
-  color: #ffffff
+  color: #ffffff;
 }
-
-

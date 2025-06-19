@@ -14,6 +14,7 @@ import HomePage from "./src/pages/HomePage";
 import EmployeeProfilePage from "./src/pages/EmployeeProfilePage";
 import { EmployeesListPage } from "./src/pages/EmployeesListPage";
 
+
 export const route = createBrowserRouter([
   {
     path: "/",
@@ -34,6 +35,7 @@ export const route = createBrowserRouter([
             path: "self-service/attendance",
             element: <AttendancePage />,
           },
+
           {
             path: "calendar",
             element: <HolidayPage />,
