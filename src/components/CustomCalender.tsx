@@ -1,10 +1,10 @@
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment-timezone";
-import accept from "../assets/accept.png"
-import clock from "../assets/clock (1).png"
-import warning from "../assets/warning.png"
+import accept from "../assets/accept.png";
+import clock from "../assets/clock (1).png";
+import warning from "../assets/warning.png";
+import cancel from "../assets/multiply.png"
 // import dayjs from "dayjs";
-
 
 // import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -16,7 +16,6 @@ import {
   ButtonGroup,
   Typography,
   Button,
- 
 } from "@mui/material";
 // import DatePicker from "react-datepicker";
 // import { CustomButton } from "./ui/CustomButton";
@@ -102,7 +101,7 @@ const CustomCalender = () => {
     };
   };
   return (
-    <div className="w-full b">
+    <div className="w-full ">
       <div className="flex flex-wrap justify-between items-center p-2    ">
         {/* Button Group */}
         <div className="flex flex-wrap">
@@ -158,9 +157,10 @@ const CustomCalender = () => {
         {/* Date Picker & Today Button */}
         <div className="flex items-center flex-wrap gap-x-2">
           <CardForAttendance title={"Present"} icon={accept} value={6} />
-           <CardForAttendance title={"Mispunch"} icon={warning} value={6} />
-            <CardForAttendance title={"Short"} icon={clock} value={1} />
-         
+          <CardForAttendance title={"Absent"} icon={cancel} value={6} />
+          <CardForAttendance title={"Mispunch"} icon={warning} value={6} />
+          <CardForAttendance title={"Short"} icon={clock} value={1} />
+
           {/*   <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               value={dayjsDate}
@@ -212,7 +212,6 @@ const CustomCalender = () => {
         defaultView="month"
         components={{
           event: CalenderEvent,
-          
         }}
         localizer={localizer}
         events={[

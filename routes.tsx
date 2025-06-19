@@ -12,6 +12,7 @@ import HierarchyChart from "./src/pages/HierarchyChart";
 import AnnouncementPage from "./src/pages/AnnouncementPage";
 import HomePage from "./src/pages/HomePage";
 import EmployeeProfilePage from "./src/pages/EmployeeProfilePage";
+import { EmployeesListPage } from "./src/pages/EmployeesListPage";
 
 export const route = createBrowserRouter([
   {
@@ -61,10 +62,10 @@ export const route = createBrowserRouter([
             path: "home/hierarchy",
             element: <HierarchyChart />,
           },
-          //    {
-          //   path: "employee",
-          //   element: <EmployeeProfilePage />,
-          // },
+             {
+            path: "employees/employees-list",
+            element: <EmployeesListPage />,
+          },
         ],
       },
     ],

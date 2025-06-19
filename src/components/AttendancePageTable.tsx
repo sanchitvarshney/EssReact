@@ -1,8 +1,9 @@
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+
 import Typography from "@mui/material/Typography";
-import { Divider } from "@mui/material";
+import { Divider, Box } from "@mui/material";
 import type { FC } from "react";
+import { CustomButton } from "./ui/CustomButton";
 
 type AttendancePageTablePropsType = {
   value: string | number;
@@ -10,69 +11,96 @@ type AttendancePageTablePropsType = {
 
 const AttendancePageTable: FC<AttendancePageTablePropsType> = ({ value }) => {
   console.log(value);
+
   return (
     <Card
+      elevation={0}
       sx={{
-        minWidth: { xs: "100%", sm: 180 },
+        width: "100%",
         borderRadius: 2,
-        boxShadow: 3,
-        // m: 1,
+        boxShadow: 0,
+        // p: 2,
       }}
     >
-      <CardContent>
+      {/* <CardContent> */}
+      {/* Header Row */}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+        gap={2}
+        // sx={{pt:2}}
+      >
         <Typography
           variant="h6"
-          component="div"
-          sx={{
-            fontWeight: 600,
-            fontSize: { xs: "0.9rem", sm: "1.1rem" },
-          }}
+          sx={{ fontWeight: 600, fontSize: { xs: "1rem", sm: "1.2rem" } }}
         >
-          Present Shift{" "}
+          Present Shift
         </Typography>
 
-        <Divider sx={{ mt: 2 }} />
+        {/* In/Out Stats */}
+        <Box display="flex" gap={4}>
+          <Box textAlign="center">
+            <Typography
+              fontWeight={600}
+              fontSize={{ xs: "0.9rem", sm: "1rem" }}
+            >
+              Today In
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              --
+            </Typography>
+          </Box>
+          <Box textAlign="center">
+            <Typography
+              fontWeight={600}
+              fontSize={{ xs: "0.9rem", sm: "1rem" }}
+            >
+              Total Hours
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              -- h & -- m
+            </Typography>
+          </Box>
+        </Box>
+        <CustomButton className="bg-gray-900 text-white hover:bg-gray-800/80">
+          Download
+        </CustomButton>
+      </Box>
 
-        <div className="grid grid-cols-2  mt-2 px-5 py-2">
-          {" "}
-          <Typography variant="body2" color="text.secondary">
-            Shift Code (Division)
+      <Divider sx={{ my: 2 }} />
+
+      {/* Shift Details */}
+      {[
+        { label: "Shift Code (Division)", value: "D1 (MS01)" },
+        { label: "Start Time", value: "09:00 AM" },
+        { label: "End Time", value: "06:00 PM" },
+      ].map((item, index) => (
+        <Box
+          key={index}
+          display="flex"
+          // justifyContent="space-between"
+          gap={3}
+          alignItems="center"
+          px={1}
+          py={1}
+        >
+          <Typography variant="body2" flex={0.3} color="text.secondary">
+            {item.label}
           </Typography>
           <Typography
+            flex={1}
             variant="body2"
             color="text.primary"
-            sx={{ textAlign: "right" }}
+            fontWeight={500}
           >
-            D1 (MS01)
+            {item.value}
           </Typography>
-        </div>
-        <div className="grid grid-cols-2  mt-2 px-5 py-2">
-          {" "}
-          <Typography variant="body2" color="text.secondary">
-            Start Time
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.primary"
-            sx={{ textAlign: "right" }}
-          >
-            09:00 AM
-          </Typography>
-        </div>
-        <div className="grid grid-cols-2  mt-2 px-5 py-2">
-          {" "}
-          <Typography variant="body2" color="text.secondary">
-            End Time
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.primary"
-            sx={{ textAlign: "right" }}
-          >
-            18:00 PM
-          </Typography>
-        </div>
-      </CardContent>
+        </Box>
+      ))}
+      <Divider sx={{ mt: 2 }} />
+      {/* </CardContent> */}
     </Card>
   );
 };

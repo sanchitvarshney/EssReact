@@ -39,7 +39,8 @@ export const renderMenu = (
   accordionValues: any,
   setAccordionValues: (value: { [key: string]: string }) => void,
   level: number = 0,
-  path: string = ""
+  path: string = "",
+
 ) => {
   const {toggleDrawerClose} = useDrawerContext()
   return (
@@ -62,7 +63,7 @@ export const renderMenu = (
                   className="border-0 w-full transition-all duration-100"
                 >
                   <div className="flex flex-col px-4">
-                    {!isExpended ? (
+                    {(!isExpended ) ? (
                       <>
                         <CustomToolTip title={item?.title} placement="right">
                           <div

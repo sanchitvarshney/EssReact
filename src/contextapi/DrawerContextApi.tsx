@@ -2,9 +2,9 @@ import React, { createContext, useContext, useState, type FC } from "react";
 
 type DrawerContextType = {
   open: boolean;
-  isExpended:boolean;
-  setIsExpended:any;
-  accordionValues:any;
+  isExpended: boolean;
+  setIsExpended: any;
+  accordionValues: any;
   setAccordionValues: any;
   toggleDrawerOpen: () => void;
   toggleDrawerClose: () => void;
@@ -23,8 +23,14 @@ export const DrawerContextApi: FC<DrawerContextApiPropsType> = ({
   const [accordionValues, setAccordionValues] = useState<{
     [key: string]: string;
   }>({});
-  const toggleDrawerOpen = () => setOpen(true);
-  const toggleDrawerClose = () => setOpen(false);
+  const toggleDrawerOpen = () => {
+    setOpen(true);
+    setIsExpended(true);
+  };
+  const toggleDrawerClose = () => {
+    setOpen(false);
+    setIsExpended(false);
+  };
 
   return (
     <DrawerContext.Provider
