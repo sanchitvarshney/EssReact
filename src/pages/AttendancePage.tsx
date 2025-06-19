@@ -1,19 +1,60 @@
 import CustomCalender from "../components/CustomCalender";
-
+import accept from "../assets/accept.png";
+import clock from "../assets/clock (1).png";
+import warning from "../assets/warning.png";
+import cancel from "../assets/multiply.png";
 import AttendancePageTable from "../components/AttendancePageTable";
-import { useState } from "react";
-import { Box, ButtonGroup, IconButton, Typography } from "@mui/material";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useCallback, useMemo, useState } from "react";
+import {  ButtonGroup, IconButton, Typography } from "@mui/material";
+// import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+// import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import moment from "moment";
 import CalendarListView from "./ListViewOfCalender";
 import ListIcon from "@mui/icons-material/List";
-
+import { Button } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import CustomToolTip from "../components/reuseable/CustomToolTip";
+import CardForAttendance from "../components/reuseable/CardForAttendance";
+
+
+
+
+export const Button_OPTIONS = [
+  { id: "back", label: "Back" },
+  { id: "next", label: "Next" },
+  { id: "today", label: "Today" },
+];
 const AttendancePage = () => {
   const [tabvalue, setTabvalue] = useState<string>("calendar");
-  const [currentMonth, setCurrentMonth] = useState(moment());
+  // const [currentMonth, setCurrentMonth] = useState(moment());
+ const [date, setDate] = useState<any>(moment("2025-06-10").toDate());
+
+  const onTodayClick = useCallback(() => {
+    setDate(moment().toDate());
+  }, []);
+
+  const dateText = useMemo(() => {
+    return moment(date).format("MMMM YYYY");
+  }, [date]);
+
+  const onPrevClick = useCallback(() => {
+    setDate(moment(date).subtract(1, "M").toDate());
+  }, [date]);
+
+  const onNextClick = useCallback(() => {
+    setDate(moment(date).add(1, "M").toDate());
+  }, [date]);
+
+ 
+   const handleCalender = (id: string) => {
+    if (id === "back") {
+      onPrevClick();
+    } else if (id === "next") {
+      onNextClick();
+    } else {
+      onTodayClick();
+    }
+  };
   return (
     <div className="w-full px-4 py-2">
       <AttendancePageTable value={""} />
@@ -32,11 +73,71 @@ const AttendancePage = () => {
         </ButtonGroup>
       </div>
       <div className="w-full ">
+        <div className="flex flex-wrap justify-between items-center p-2    ">
+          {/* Button Group */}
+          <div className="flex flex-wrap">
+            <ButtonGroup
+              size="small"
+              variant="contained"
+              disableElevation
+              sx={{
+                "& .MuiButtonGroup-grouped": {
+                  borderColor: "#fff",
+                  margin: 0,
+                },
+              }}
+            >
+              {Button_OPTIONS.map(({ id, label }) => (
+                <Button
+                  key={id}
+                  onClick={() => handleCalender(id)}
+                  sx={{
+                    backgroundColor: "#2a2929",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "grey.800",
+                      color: "white",
+                    },
+                    borderRadius: 0,
+                    textTransform: "none",
+                  }}
+                >
+                  {label}
+                </Button>
+              ))}
+            </ButtonGroup>
+          </div>
+
+          {/* Navigation Arrows & Date Text */}
+          {/* <div className="flex items-center gap-2 flex-wrap">
+          <div onClick={onPrevClick} className="text-black cursor-pointer">
+            <ArrowBackIosIcon style={{ fontSize: 18 }} />
+          </div> */}
+          <div className="">
+            <Typography fontSize={"1.5rem"} fontWeight="bold" color="gray">
+              {dateText}
+            </Typography>
+          </div>
+          {/* <div onClick={onNextClick} className="text-black cursor-pointer">
+            <ArrowBackIosIcon
+              style={{ transform: "rotate(180deg)", fontSize: 18 }}
+            />
+          </div>
+        </div> */}
+
+          {/* Date Picker & Today Button */}
+          <div className="flex items-center flex-wrap gap-x-2">
+            <CardForAttendance title={"Present"} icon={accept} value={6} />
+            <CardForAttendance title={"Absent"} icon={cancel} value={6} />
+            <CardForAttendance title={"Mispunch"} icon={warning} value={6} />
+            <CardForAttendance title={"Short"} icon={clock} value={1} />
+          </div>
+        </div>
         {tabvalue === "calendar" ? (
-          <CustomCalender />
+          <CustomCalender date={date} setDate={setDate} />
         ) : (
           <>
-            <Box
+            {/* <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -62,8 +163,8 @@ const AttendancePage = () => {
               >
                 <ArrowForwardIosIcon />
               </IconButton>
-            </Box>
-            <CalendarListView currentMonth={currentMonth} />
+            </Box> */}
+            <CalendarListView currentMonth={date} />
           </>
         )}
       </div>

@@ -9,8 +9,10 @@ import {
   TableCell,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { tableCellClasses } from "@mui/material/TableCell";
 
 import { dummyEvents } from "../dummydata/CalenderData";
+import { useMemo } from "react";
 
 // Sample real events
 const realEvent = [
@@ -34,25 +36,40 @@ const realEvent = [
   },
 ];
 
-const CalendarListView = ({ currentMonth }: { currentMonth: any }) => {
+const CalendarListView = ({
+  currentMonth,
+}: {
+  currentMonth: moment.Moment;
+}) => {
+  const safeMonth = useMemo(() => moment(currentMonth), [currentMonth]);
   const mergedEvents = useMemo(() => {
     return dummyEvents.map((event) => {
-      const matched = realEvent.find((real) =>
+      const match = realEvent.find((real) =>
         moment(real.start).isSame(event.start, "day")
       );
-      return matched || event;
+      return match || event;
     });
-  }, []);
+  }, [dummyEvents, realEvent]);
 
   const daysInMonth = useMemo(() => {
-    const days = [];
-    const start = currentMonth.clone().startOf("month");
-    const end = currentMonth.clone().endOf("month");
+    const days: {
+      date: moment.Moment;
+      event: {
+        title: string;
+        start: Date | null;
+        end: Date | null;
+        status: string;
+      };
+    }[] = [];
+
+    const start = safeMonth.clone().startOf("month");
+    const end = safeMonth.clone().endOf("month");
 
     for (let day = start.clone(); day.isSameOrBefore(end); day.add(1, "day")) {
       const matched = mergedEvents.find((ev) =>
         moment(ev.start).isSame(day, "day")
       );
+
       days.push({
         date: day.clone(),
         event: matched || {
@@ -63,15 +80,12 @@ const CalendarListView = ({ currentMonth }: { currentMonth: any }) => {
         },
       });
     }
+
     return days;
   }, [currentMonth, mergedEvents]);
 
   return (
     <div className="w-full p-4">
-      {/* <Paper elevation={3} sx={{ p: 3, mt: 4, borderRadius: 2 }}> */}
-      {/* Header */}
-
-      {/* List View Table */}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -104,7 +118,6 @@ const CalendarListView = ({ currentMonth }: { currentMonth: any }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* </Paper> */}
     </div>
   );
 };
@@ -112,9 +125,6 @@ const CalendarListView = ({ currentMonth }: { currentMonth: any }) => {
 export default CalendarListView;
 
 // Styled components
-import { tableCellClasses } from "@mui/material/TableCell";
-import { useMemo } from "react";
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#000",
