@@ -108,24 +108,15 @@ const AttendancePage = () => {
             </ButtonGroup>
           </div>
 
-          {/* Navigation Arrows & Date Text */}
-          {/* <div className="flex items-center gap-2 flex-wrap">
-          <div onClick={onPrevClick} className="text-black cursor-pointer">
-            <ArrowBackIosIcon style={{ fontSize: 18 }} />
-          </div> */}
+         
           <div className="">
-            <Typography fontSize={"1.5rem"} fontWeight="bold" color="gray">
+            <Typography fontSize={"1.5rem"} fontWeight="bold" >
               {dateText}
             </Typography>
           </div>
-          {/* <div onClick={onNextClick} className="text-black cursor-pointer">
-            <ArrowBackIosIcon
-              style={{ transform: "rotate(180deg)", fontSize: 18 }}
-            />
-          </div>
-        </div> */}
+       
 
-          {/* Date Picker & Today Button */}
+        
           <div className="flex items-center flex-wrap gap-x-2">
             <CardForAttendance title={"Present"} icon={accept} value={6} />
             <CardForAttendance title={"Absent"} icon={cancel} value={6} />
@@ -136,36 +127,10 @@ const AttendancePage = () => {
         {tabvalue === "calendar" ? (
           <CustomCalender date={date} setDate={setDate} />
         ) : (
-          <>
-            {/* <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              mb={4}
-              sx={{ backgroundColor: "#f5f5f5", p: 2, borderRadius: 2 }}
-            >
-              <IconButton
-                onClick={() =>
-                  setCurrentMonth((prev) => prev.clone().subtract(1, "month"))
-                }
-                sx={{ color: "#1976d2" }}
-              >
-                <ArrowBackIosNewIcon />
-              </IconButton>
-              <Typography variant="h5" fontWeight={600} color="#1976d2">
-                {currentMonth.format("MMMM YYYY")}
-              </Typography>
-              <IconButton
-                onClick={() =>
-                  setCurrentMonth((prev) => prev.clone().add(1, "month"))
-                }
-                sx={{ color: "#1976d2" }}
-              >
-                <ArrowForwardIosIcon />
-              </IconButton>
-            </Box> */}
+         
+          
             <CalendarListView currentMonth={date} />
-          </>
+       
         )}
       </div>
     </div>

@@ -87,32 +87,39 @@ const CalendarListView = ({
   return (
     <div className="w-full p-4">
       <TableContainer component={Paper}>
-        <Table>
+        <Table
+          sx={{
+            borderCollapse: "separate",
+            borderSpacing: 0,
+            "& th, & td": {
+              borderRight: "1px solid #e0e0e0",
+            },
+            "& tr:last-child td": {
+              borderRight: "1px solid #e0e0e0",
+            },
+          }}
+        >
           <TableHead>
             <TableRow>
               <StyledTableCell>Date</StyledTableCell>
-              <StyledTableCell align="right">Status</StyledTableCell>
-              <StyledTableCell align="right">Time In</StyledTableCell>
-              <StyledTableCell align="right">Time Out</StyledTableCell>
-              <StyledTableCell align="right">Assignment</StyledTableCell>
+              <StyledTableCell>Status</StyledTableCell>
+              <StyledTableCell>Time In</StyledTableCell>
+              <StyledTableCell>Time Out</StyledTableCell>
+              <StyledTableCell>Assignment</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {daysInMonth.map(({ date, event }) => (
               <StyledTableRow key={date.format("YYYY-MM-DD")}>
                 <StyledTableCell>{date.format("DD MMM YYYY")}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {event.status || "N/A"}
-                </StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell>{event.status || "N/A"}</StyledTableCell>
+                <StyledTableCell>
                   {event.start ? moment(event.start).format("hh:mm A") : "--"}
                 </StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell>
                   {event.end ? moment(event.end).format("hh:mm A") : "--"}
                 </StyledTableCell>
-                <StyledTableCell align="right">
-                  {event.title || "N/A"}
-                </StyledTableCell>
+                <StyledTableCell>{event.title || "N/A"}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

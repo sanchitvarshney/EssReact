@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Divider, Box } from "@mui/material";
 import type { FC } from "react";
 import { CustomButton } from "./ui/CustomButton";
+import CustomToolTip from "./reuseable/CustomToolTip";
 
 type AttendancePageTablePropsType = {
   value: string | number;
@@ -67,12 +68,7 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({ value }) => {
         <CustomButton className="bg-gray-900 text-white hover:bg-gray-800/80">
           Download
         </CustomButton>
-      </Box>
-
-      <Divider sx={{ my: 2 }} />
-
-      {/* Shift Details */}
-      {[
+        <CustomToolTip  title= {[
         { label: "Shift Code (Division)", value: "D1 (MS01)" },
         { label: "Start Time", value: "09:00 AM" },
         { label: "End Time", value: "06:00 PM" },
@@ -86,21 +82,29 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({ value }) => {
           px={1}
           py={1}
         >
-          <Typography variant="body2" flex={0.3} color="text.secondary">
+          <Typography variant="body2" flex={0.3} color="#fff">
             {item.label}
           </Typography>
           <Typography
             flex={1}
             variant="body2"
-            color="text.primary"
+            color="#fff"
             fontWeight={500}
           >
             {item.value}
           </Typography>
         </Box>
-      ))}
+      ))} placement={"bottom"} >
+          <CustomButton className="bg-gray-900 text-white hover:bg-gray-800/80">
+          Shift Details
+        </CustomButton>
+       
+        </CustomToolTip>
+      </Box>
+
+      
       <Divider sx={{ mt: 2 }} />
-      {/* </CardContent> */}
+     
     </Card>
   );
 };
