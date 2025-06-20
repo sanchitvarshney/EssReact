@@ -15,9 +15,10 @@ const EmployeeProfilePage = () => {
   };
   return (
     <div className="w-full h-[calc(100vh-90px)] overflow-y-auto p-4">
-      <div className="w-300  px-4 py-6 m-auto flex justify-between ">
-        <div className="flex items-center gap-15 ">
-          <Avatar sx={{ width: 140, height: 140 }} />
+      <div className="w-[100%] sm:w-[80%] px-4 py-6 m-auto flex justify-between ">
+        <div className="flex items-center gap-x-15 gap-y-8 flex-wrap ">
+          <div> <Avatar sx={{ width: 140, height: 140 }} /></div>
+         
           <div>
             <Typography variant="h5" sx={{ fontWeight: 600 }}>
               Rahul Mehra (EMP-1003)
@@ -28,11 +29,11 @@ const EmployeeProfilePage = () => {
           </div>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex  inline-block">
           <CustomButton className="bg-gray-900 text-white  hover:bg-gray-800/80">
             Edit Profile
           </CustomButton>{" "}
-          <CustomButton className="bg-gray-900 text-white hover:bg-gray-800/80" onClick={()=>navigate("/")}>
+          <CustomButton className="bg-gray-900 text-white hover:bg-gray-800/80 mt-2 sm:mt-2" onClick={()=>navigate("/")}>
             My Access
           </CustomButton>
         </div>

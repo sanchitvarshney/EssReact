@@ -65,46 +65,46 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({ value }) => {
             </Typography>
           </Box>
         </Box>
+        <CustomToolTip
+          title={[
+            { label: "Shift Code (Division)", value: "D1 (MS01)" },
+            { label: "Start Time", value: "09:00 AM" },
+            { label: "End Time", value: "06:00 PM" },
+          ].map((item, index) => (
+            <Box
+              key={index}
+              display="flex"
+              // justifyContent="space-between"
+              // gap={3}
+              alignItems="center"
+              px={1}
+              py={1}
+            >
+              <Typography variant="body2" flex={0.5} color="#fff">
+                {item.label}
+              </Typography>
+              <Typography
+                flex={0.5}
+                variant="body2"
+                color="#fff"
+                fontWeight={500}
+              >
+                {item.value}
+              </Typography>
+            </Box>
+          ))}
+          placement={"bottom"}
+        >
+          <span className=" text-black font-semibold text-[18px] border-b-1 ">
+            Shift Details
+          </span>
+        </CustomToolTip>
         <CustomButton className="bg-gray-900 text-white hover:bg-gray-800/80">
           Download
         </CustomButton>
-        <CustomToolTip  title= {[
-        { label: "Shift Code (Division)", value: "D1 (MS01)" },
-        { label: "Start Time", value: "09:00 AM" },
-        { label: "End Time", value: "06:00 PM" },
-      ].map((item, index) => (
-        <Box
-          key={index}
-          display="flex"
-          // justifyContent="space-between"
-          gap={3}
-          alignItems="center"
-          px={1}
-          py={1}
-        >
-          <Typography variant="body2" flex={0.3} color="#fff">
-            {item.label}
-          </Typography>
-          <Typography
-            flex={1}
-            variant="body2"
-            color="#fff"
-            fontWeight={500}
-          >
-            {item.value}
-          </Typography>
-        </Box>
-      ))} placement={"bottom"} >
-          <CustomButton className="bg-gray-900 text-white hover:bg-gray-800/80">
-          Shift Details
-        </CustomButton>
-       
-        </CustomToolTip>
       </Box>
 
-      
       <Divider sx={{ mt: 2 }} />
-     
     </Card>
   );
 };

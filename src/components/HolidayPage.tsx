@@ -31,10 +31,25 @@ const HolidayPage = () => {
         value={selectedYear}
         onChange={handleChange}
         aria-label="Holiday Year Tabs"
-        sx={{ mb: 2 }}
+   
+           TabIndicatorProps={{
+            style: {
+              backgroundColor: "#2eacb3",
+            },
+          }}
+          textColor="inherit"
+          sx={{
+            mb:2,
+            "& .MuiTab-root": {
+              color: "#333",
+            },
+            "& .Mui-selected": {
+              color: "#2eacb3",
+            },
+          }}
       >
         {years.map((year) => (
-          <Tab key={year} label={year} value={year} />
+          <Tab  sx={{ fontSize: 16, fontWeight: "bold" }} key={year} label={year} value={year} />
         ))}
       </Tabs>
 

@@ -14,6 +14,23 @@ import { tableCellClasses } from "@mui/material/TableCell";
 import { dummyEvents } from "../dummydata/CalenderData";
 import { useMemo } from "react";
 
+
+const getTextColor = (key: string) => {
+  const statusLower = key.toLowerCase();
+  switch (statusLower) {
+    case "p":
+      return "green";
+    case "a":
+      return "red";
+    case "wfh":
+      return "blue";
+    case "off":
+      return "gray";
+    default:
+      return "black";
+  }
+};
+
 // Sample real events
 const realEvent = [
   {
@@ -80,7 +97,7 @@ const CalendarListView = ({
         },
       });
     }
-
+    console.log(days);
     return days;
   }, [currentMonth, mergedEvents]);
 
@@ -112,13 +129,22 @@ const CalendarListView = ({
             {daysInMonth.map(({ date, event }) => (
               <StyledTableRow key={date.format("YYYY-MM-DD")}>
                 <StyledTableCell>{date.format("DD MMM YYYY")}</StyledTableCell>
-                <StyledTableCell>{event.status || "N/A"}</StyledTableCell>
+                {/*@ts-ignore */}
+                <TableCell sx={{ color: getTextColor(event.title), fontWeight:600 }}>
+                  {event.status || "N/A"}
+                </TableCell>
                 <StyledTableCell>
-                  {event.start ? moment(event.start).format("hh:mm A") : "--"}
+                  {event.start &&
+                  moment(event.start).format("HH:mm") !== "00:00"
+                    ? moment(event.start).format("hh:mm A")
+                    : "--"}
                 </StyledTableCell>
                 <StyledTableCell>
-                  {event.end ? moment(event.end).format("hh:mm A") : "--"}
+                  {event.end && moment(event.end).format("HH:mm") !== "00:00"
+                    ? moment(event.end).format("hh:mm A")
+                    : "--"}
                 </StyledTableCell>
+
                 <StyledTableCell>{event.title || "N/A"}</StyledTableCell>
               </StyledTableRow>
             ))}
