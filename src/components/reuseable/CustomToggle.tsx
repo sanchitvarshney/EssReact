@@ -25,14 +25,17 @@ const CustomToggle: FC<CustomTogglePropsTypes> = ({
     }
   };
   return (
-    <span onClick={() => toggleDayStatus(value)} className="flex items-center">
+    <div className="flex items-center">
+    <span onClick={() => toggleDayStatus(value)} >
       {state ? (
         <ToggleOnOutlinedIcon sx={{ color: "green", fontSize: 36, mr: 1 }} />
       ) : (
         <ToggleOffOutlinedIcon sx={{ color: "gray", fontSize: 36, mr: 1 }} />
       )}
-      {title}
+   
     </span>
+    <span>{title}</span>
+    </div>
   );
 };
 

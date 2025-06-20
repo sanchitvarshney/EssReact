@@ -17,23 +17,21 @@ const CustomModal: React.FC<ConfirmationModalProps> = ({
   children,
 }) => {
   return (
- <Dialog
-  open={open}
-  
-  onOpenChange={(isOpen: boolean) => !isOpen && onClose(false)}
->
-  <DialogContent
-    onInteractOutside={(e: any) => e.preventDefault()}
-    className="bg-white  h-[90vh] flex flex-col"
-  >
-    <DialogHeader>
-      <DialogTitle className="text-black">{title}</DialogTitle>
-    </DialogHeader>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen: boolean) => !isOpen && onClose(false)}
+    >
+      <DialogContent
+        onInteractOutside={(e: any) => e.preventDefault()}
+        className="bg-white h-[90vh] flex flex-col"
+      >
+        <DialogHeader>
+          <DialogTitle className="text-black">{title}</DialogTitle>
+        </DialogHeader>
 
-    <div className="mt-2 overflow-auto flex-1">{children}</div>
-  </DialogContent>
-</Dialog>
-
+        <div className="mt-2 overflow-auto  flex-1">{children}</div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

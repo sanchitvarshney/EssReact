@@ -30,6 +30,7 @@ import CustomToggle from "../components/reuseable/CustomToggle";
 
 import CalenderView from "../components/reuseable/CalederView";
 import { IconButton } from "@mui/material";
+import { Input } from "../components/ui/input";
 
 const schema = z.object({
   wise: z.string().min(2, { message: "Select value is required" }),
@@ -50,6 +51,7 @@ const ApplyLeavePage = () => {
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
   const [isFirst, setIsFirst] = useState<boolean>(false);
   const [isLast, setIsLast] = useState<boolean>(false);
+  const [addRecipient, setAddRecipient] = useState<boolean>(false);
   const [leaveDuration, setLeaveDuration] = useState<number | string>(0);
 
   const form = useForm<z.infer<typeof schema>>({
@@ -75,12 +77,20 @@ const ApplyLeavePage = () => {
     }
   }, [toDate]);
   return (
-    <div className="bg-[#fff] flex flex-col overflow-y-auto">
-      <span className="text-sm font-semibold border-b-1 transition-transform duration-200  hover:scale-104 mb-4 cursor-pointer mr-1 self-end">
+    <div className="bg-[#fff]  flex flex-col overflow-y-auto">
+      <span
+        onClick={() => setAddRecipient(!addRecipient)}
+        className="text-sm font-semibold border-b-1 transition-transform duration-200  hover:scale-104 mb-4 cursor-pointer mr-1 self-end"
+      >
         Add Recipients
       </span>
-
-      <div>
+      {addRecipient && (
+        <div className="mx-4">
+          
+          <Input placeholder="Add  Recipients" />
+        </div>
+      )}
+      <div className="mx-4 mt-2 ">
         {wise && (
           <CustomToggle
             value={"Half Day"}
@@ -286,7 +296,11 @@ const ApplyLeavePage = () => {
                   )}
                 </div>
                 {openCalendar && (
-                  <CalenderView startDate={fromDate} endDate={toDate} />
+                  <CalenderView
+                    startDate={fromDate}
+                    endDate={toDate}
+                    paid={leaveDuration}
+                  />
                 )}
                 <FormField
                   control={form.control}
