@@ -159,6 +159,7 @@ function Header() {
                     anchorEl={notificationRef}
                     width={400}
                     height={350}
+                    isCone={true}
                   >
                     <NotificationDropDown />
                   </CustomPopover>
@@ -185,6 +186,7 @@ function Header() {
                 close={() => setAnchorElUser(false)}
                 anchorEl={profileRef}
                 width={240}
+                 isCone={true}
               >
                 <ProfileDropDown  close={() => setAnchorElUser(false)}/>
               </CustomPopover>

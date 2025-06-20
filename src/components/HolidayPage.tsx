@@ -26,7 +26,7 @@ const HolidayPage = () => {
   };
 
   return (
-    <Box sx={{ width: "100%", paddingRight: 3, paddingLeft: 3, paddingTop: 1 }}>
+    <Box sx={{ width: "100%", paddingRight: 3, paddingLeft: 3, paddingTop: 1, overflow:"hidden" }}>
       <Tabs
         value={selectedYear}
         onChange={handleChange}
@@ -64,17 +64,17 @@ const HolidayPage = () => {
         <TableContainer component={Paper}>
           <Table>
             <TableHead className="bg-gray-200">
-              <TableRow>
-                <TableCell>
+              <TableRow sx={{backgroundColor:"#000"}}>
+                <TableCell sx={{color:"#fff"}}>
                   <b>S.No</b>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{color:"#fff"}}>
                   <b>Occasion/Festival</b>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{color:"#fff"}}>
                   <b>Date</b>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{color:"#fff"}}>
                   <b>Day</b>
                 </TableCell>
               </TableRow>
@@ -109,4 +109,10 @@ const HolidayPage = () => {
   );
 };
 
+
+
 export default HolidayPage;
+
+
+
+

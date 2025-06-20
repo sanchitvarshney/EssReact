@@ -1,4 +1,4 @@
-import { Box, IconButton, Modal, Typography } from "@mui/material";
+import { Box, IconButton, Modal } from "@mui/material";
 import { CustomButton } from "../components/ui/CustomButton";
 import LeaveCard from "../components/reuseable/LeaveCard";
 import { leaveData } from "../dummydata/DataforLeave";
@@ -12,14 +12,14 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "80%",
-  height: "95%",
+  // width: "90%",
+  // height: "100%",
   bgcolor: "background.paper",
   // border: '2px solid #000',
   boxShadow: 24,
+  //  zIndex: 1300, // must be high enough
   // p: 4,
-  overflow:"hidden"
-  
+  overflow: "visible",
 };
 
 const LeavePage = () => {
@@ -31,8 +31,8 @@ const LeavePage = () => {
     <div className="w-full px-6 py-5">
       <div className="flex w-full justify-between items-center flex-wrap gap-4">
         <div className="flex gap-[2px] flex-wrap">
-          <Typography>Your Leave balance as of (Date)</Typography>
-          <span className="text-sm font-semibold bg-yellow-500 px-2 rounded-full">
+          {/* <Typography>Your Leave balance as of (Date)</Typography> */}
+          <span className="text-sm font-semibold bg-[#2eacb3] px-3 py-2 rounded-full">
             Pending Requests (0)
           </span>
         </div>
@@ -82,6 +82,7 @@ const LeavePage = () => {
               <CloseIcon />
             </IconButton>
           </div>
+
           <HolidayPage />
         </Box>
       </Modal>

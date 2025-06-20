@@ -9,6 +9,7 @@ interface Props {
   width?: string | number;
   height?: string | number;
   children: React.ReactNode;
+  isCone?: boolean;
 }
 
 const CustomPopover: React.FC<Props> = ({
@@ -18,6 +19,7 @@ const CustomPopover: React.FC<Props> = ({
   width,
   height,
   children,
+  isCone,
 }) => {
   const [arrowLeft, setArrowLeft] = useState<number>(0);
 
@@ -36,6 +38,8 @@ const CustomPopover: React.FC<Props> = ({
     <AnimatePresence>
       {open && (
         <Popover
+          // disablePortal
+          // tabIndex={-1}
           open={open}
           anchorEl={anchorEl?.current || null}
           onClose={close}
@@ -59,23 +63,26 @@ const CustomPopover: React.FC<Props> = ({
             sx: {
               mt: 2,
               width: width ? width : 400,
-              height: height && height ,
+              height: height && height,
+              zIndex: 1600,
             },
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: "-11px",
-              right: `${arrowLeft}px`,
-              width: 0,
-              height: 0,
-              borderLeft: "12px solid transparent",
-              borderRight: "12px solid transparent",
-              borderBottom: "12px solid rgb(255, 255, 255)",
-              zIndex: 5,
-            }}
-          />
+          {isCone && (
+            <div
+              style={{
+                position: "absolute",
+                top: "-11px",
+                right: `${arrowLeft}px`,
+                width: 0,
+                height: 0,
+                borderLeft: "12px solid transparent",
+                borderRight: "12px solid transparent",
+                borderBottom: "12px solid rgb(255, 255, 255)",
+                zIndex: 5,
+              }}
+            />
+          )}
 
           {children}
         </Popover>

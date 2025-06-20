@@ -15,7 +15,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Textarea } from "../components/ui/textarea";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {
   Select,
   SelectContent,
@@ -24,9 +24,15 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { CustomButton } from "../components/ui/CustomButton";
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import CustomToggle from "../components/reuseable/CustomToggle";
+
+import CalenderView from "../components/reuseable/CalederView";
+import { IconButton } from "@mui/material";
 
 const schema = z.object({
-  wise: z.string().min(2, { message: "Address label is required" }),
+  wise: z.string().min(2, { message: "Select value is required" }),
   pan: z
     .string()
     .length(10, { message: "PAN Number must be exactly 10 characters" })
@@ -40,35 +46,78 @@ const schema = z.object({
 });
 
 const ApplyLeavePage = () => {
+  const [isHalf, setIsHalf] = useState<boolean>(false);
+  const [openCalendar, setOpenCalendar] = useState<boolean>(false);
+  const [isFirst, setIsFirst] = useState<boolean>(false);
+  const [isLast, setIsLast] = useState<boolean>(false);
+  const [leaveDuration, setLeaveDuration] = useState<number | string>(0);
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       fromDate: new Date(),
-      toDate: new Date(),
     },
   });
 
+  const wise = form.watch("wise");
+  const toDate = form.watch("toDate");
+  const fromDate = form.watch("fromDate");
+
+  useEffect(() => {
+    if (fromDate && toDate) {
+      const start = dayjs(fromDate);
+      const end = dayjs(toDate);
+
+      if (start.isValid() && end.isValid()) {
+        const leaveDays = end.diff(start, "day") + 1;
+        setLeaveDuration(leaveDays);
+      }
+    }
+  }, [toDate]);
   return (
-    <div className="bg-[#fff] overflow-y-auto">
+    <div className="bg-[#fff] flex flex-col overflow-y-auto">
+      <span className="text-sm font-semibold border-b-1 transition-transform duration-200  hover:scale-104 mb-4 cursor-pointer mr-1 self-end">
+        Add Recipients
+      </span>
+      <div className="">
+        <div>
+          {wise && (
+            <CustomToggle
+              value={"Half Day"}
+              state={isHalf}
+              title={"Half Day"}
+              setMethod={setIsHalf}
+            />
+          )}
+        </div>{" "}
+        {toDate && (
+          <div className="flex items-center justify-between">
+            <span className="select-none">Leave duration: {leaveDuration}</span>
+            <IconButton onClick={() => setOpenCalendar(!openCalendar)}>
+              <KeyboardArrowDownIcon />
+            </IconButton>
+          </div>
+        )}
+      </div>
+      {openCalendar && <CalenderView startDate={fromDate} endDate={toDate} />}
       <div>
         <div className="flex">
           <Form {...form}>
-            <form onSubmit={() => {}}>
+            <form onSubmit={form.handleSubmit(() => {})}>
               <div className=" p-[20px] space-y-6 ">
                 <FormField
                   control={form.control}
                   name="wise"
-                  render={() => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel className={LableStyle}>
                         Select Leave Type
                       </FormLabel>
                       <FormControl>
                         <Select
-                          onValueChange={() => {
-                            // setWise(value);
-                          }}
-                          defaultValue={""}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Select Leave Type" />
@@ -98,24 +147,29 @@ const ApplyLeavePage = () => {
                 <div className="grid grid-cols-2 gap-[20px]">
                   <FormField
                     control={form.control}
-                    name="toDate"
-                    render={() => (
+                    name="fromDate"
+                    render={({ field }) => (
                       <FormItem>
-                        <FormLabel className={LableStyle}>To Date</FormLabel>
+                        <FormLabel className={LableStyle}>From Date</FormLabel>
                         <FormControl className="">
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                               className="border-none"
-                              onChange={() =>
-                                // setInvoiceDate(
-                                //   newValue
-                                //     ? newValue.format("DD-MM-YYYY")
-                                //     : undefined
-                                // )
-                                {}
-                              }
+                              value={field.value ? dayjs(field.value) : null}
+                              onChange={(date) => {
+                                if (date && date.isValid()) {
+                                  // console.log(" valid date");
+                                  field.onChange(date.toDate());
+                                } else {
+                                  // console.log("not valid date");
+                                  field.onChange(null);
+                                }
+                              }}
                               format="DD-MM-YYYY"
                               slotProps={{
+                                popper: {
+                                  disablePortal: true,
+                                },
                                 textField: {
                                   fullWidth: true,
                                   variant: "outlined",
@@ -135,19 +189,17 @@ const ApplyLeavePage = () => {
 
                                           opacity: 1,
                                         },
-                                      // Remove focus border
                                     },
                                   },
                                   sx: {
-                                    // 👇 override default and focused border colors
                                     "& .MuiOutlinedInput-notchedOutline": {
-                                      borderColor: "red", // normal border color
+                                      borderColor: "red",
                                     },
                                     "&.Mui-focused .MuiOutlinedInput-notchedOutline":
                                       {
-                                        borderColor: "transparent", // or your custom color
+                                        borderColor: "transparent",
                                       },
-                                    // Optional: remove hover border color
+
                                     "&:hover .MuiOutlinedInput-notchedOutline":
                                       {
                                         borderColor: "red",
@@ -164,26 +216,28 @@ const ApplyLeavePage = () => {
                   />
                   <FormField
                     control={form.control}
-                    name="fromDate"
-                    render={() => (
+                    name="toDate"
+                    render={({ field }) => (
                       <FormItem>
-                        <FormLabel className={LableStyle}>From Date</FormLabel>
+                        <FormLabel className={LableStyle}>To Date</FormLabel>
                         <FormControl>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                              onChange={() =>
-                                // setInvoiceDate(
-                                //   newValue
-                                //     ? newValue.format("DD-MM-YYYY")
-                                //     : undefined
-                                // )
-                                {}
-                              }
+                              className="z-10"
+                              value={field.value ? dayjs(field.value) : null}
+                              onChange={(date) => {
+                                field.onChange(date ? date.toDate() : null);
+                                // console.log(date);
+                              }}
                               format="DD-MM-YYYY"
                               slotProps={{
+                                popper: {
+                                  disablePortal: true,
+                                },
                                 textField: {
                                   fullWidth: true,
                                   // variant: "standard",
+
                                   placeholder: "Select Date",
                                   InputProps: {
                                     disableUnderline: true,
@@ -210,17 +264,34 @@ const ApplyLeavePage = () => {
                     )}
                   />
                 </div>
-
+                <div>
+                  {toDate && (
+                    <div className="flex gap-x-5 gap-y-2 flex-col sm:flex-row">
+                      <CustomToggle
+                        value={"First day, Second half"}
+                        state={isFirst}
+                        title={"First day, Second half"}
+                        setMethod={setIsFirst}
+                      />
+                      <CustomToggle
+                        value={"Last day, First half"}
+                        state={isLast}
+                        title={"Last day, First half"}
+                        setMethod={setIsLast}
+                      />
+                    </div>
+                  )}
+                </div>
                 <FormField
                   control={form.control}
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className={LableStyle}>Message</FormLabel>
+                      <FormLabel className={LableStyle}>Reasion</FormLabel>
                       <FormControl>
                         <Textarea
                           className={InputStyle}
-                          placeholder="Enter Message"
+                          placeholder="Enter Reasion"
                           {...field}
                         />
                       </FormControl>
@@ -230,7 +301,10 @@ const ApplyLeavePage = () => {
                 />
               </div>
               <div className=" my-4 justify-end flex px-3">
-                <CustomButton className="bg-green-600 text-[#fff]">
+                <CustomButton
+                  type="submit"
+                  className="bg-green-600 text-[#fff]"
+                >
                   Submit
                 </CustomButton>
               </div>
