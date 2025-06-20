@@ -79,27 +79,18 @@ const ApplyLeavePage = () => {
       <span className="text-sm font-semibold border-b-1 transition-transform duration-200  hover:scale-104 mb-4 cursor-pointer mr-1 self-end">
         Add Recipients
       </span>
-      <div className="">
-        <div>
-          {wise && (
-            <CustomToggle
-              value={"Half Day"}
-              state={isHalf}
-              title={"Half Day"}
-              setMethod={setIsHalf}
-            />
-          )}
-        </div>{" "}
-        {toDate && (
-          <div className="flex items-center justify-between">
-            <span className="select-none">Leave duration: {leaveDuration}</span>
-            <IconButton onClick={() => setOpenCalendar(!openCalendar)}>
-              <KeyboardArrowDownIcon />
-            </IconButton>
-          </div>
+
+      <div>
+        {wise && (
+          <CustomToggle
+            value={"Half Day"}
+            state={isHalf}
+            title={"Half Day"}
+            setMethod={setIsHalf}
+          />
         )}
       </div>
-      {openCalendar && <CalenderView startDate={fromDate} endDate={toDate} />}
+
       <div>
         <div className="flex">
           <Form {...form}>
@@ -281,7 +272,22 @@ const ApplyLeavePage = () => {
                       />
                     </div>
                   )}
+                  {toDate && (
+                    <div className="flex items-center justify-between">
+                      <span className="select-none">
+                        Leave duration: {leaveDuration}
+                      </span>
+                      <IconButton
+                        onClick={() => setOpenCalendar(!openCalendar)}
+                      >
+                        <KeyboardArrowDownIcon />
+                      </IconButton>
+                    </div>
+                  )}
                 </div>
+                {openCalendar && (
+                  <CalenderView startDate={fromDate} endDate={toDate} />
+                )}
                 <FormField
                   control={form.control}
                   name="message"
