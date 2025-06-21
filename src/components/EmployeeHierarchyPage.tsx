@@ -63,7 +63,7 @@ const NodeCard = ({
       <Avatar
         alt={name}
         src={imageUrl}
-        sx={{ width: 48, height: 48, border: "2px solid #444" }}
+        sx={{ width: 48, height: 48, border: "2px solid #444",backgroundColor:"#2eacb3" }}
       />
       <div style={{ flex: 1 }}>
         <div style={{ fontWeight: 600, fontSize: 18 }}>{name}</div>
@@ -174,7 +174,7 @@ const EmployeeHierarchyPage = ({ selectedId = "hr" }) => {
                   <Avatar
                     alt={orgData.name}
                     src={orgData.imageUrl}
-                    sx={{ width: 48, height: 48, border: "2px solid #444" }}
+                    sx={{ width: 48, height: 48, border: "2px solid #444",backgroundColor:"#2eacb3" }}
                   />
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: 18 }}>

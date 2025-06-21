@@ -17,7 +17,7 @@ const EmployeeProfilePage = () => {
     <div className="w-full h-[calc(100vh-90px)] overflow-y-auto p-4">
       <div className="w-[100%] sm:w-[80%] px-4 py-6 m-auto flex justify-between ">
         <div className="flex items-center gap-x-15 gap-y-8 flex-wrap ">
-          <div> <Avatar sx={{ width: 140, height: 140 }} /></div>
+          <div> <Avatar sx={{ width: 140, height: 140 ,backgroundColor:"#2eacb3"}} /></div>
          
           <div>
             <Typography variant="h5" sx={{ fontWeight: 600 }}>

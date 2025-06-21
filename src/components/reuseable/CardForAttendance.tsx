@@ -13,7 +13,7 @@ const CardForAttendance: React.FC<CardForAttendancePropsType> = ({
   return (
     <div className="w-25  h-15  flex flex-col justify-center items-center">
       <div className="flex items-center gap-2">
-        <p className="text-sm ">{title} </p> <Avatar src={icon} alt="icon" sx={{width:18, height:18}}/>
+        <p className="text-sm ">{title} </p> <Avatar src={icon} alt="icon" sx={{width:18, height:18,backgroundColor:"#2eacb3"}}/>
       </div>
 
       <span>{value}</span>

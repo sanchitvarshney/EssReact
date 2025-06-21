@@ -16,20 +16,20 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Textarea } from "../components/ui/textarea";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "../components/ui/select";
 import { CustomButton } from "../components/ui/CustomButton";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import CustomToggle from "../components/reuseable/CustomToggle";
 
 import CalenderView from "../components/reuseable/CalederView";
-import { IconButton } from "@mui/material";
+import { IconButton, MenuItem, Select } from "@mui/material";
 import { Input } from "../components/ui/input";
 
 const schema = z.object({
@@ -86,7 +86,6 @@ const ApplyLeavePage = () => {
       </span>
       {addRecipient && (
         <div className="mx-4">
-          
           <Input placeholder="Add  Recipients" />
         </div>
       )}
@@ -116,28 +115,32 @@ const ApplyLeavePage = () => {
                       </FormLabel>
                       <FormControl>
                         <Select
-                          onValueChange={field.onChange}
+                          popover="manual"
                           value={field.value}
-                          defaultValue={field.value}
+                          onChange={field.onChange}
+                          size="small"
+                          sx={{
+                            zIndex: 1300,
+                            minWidth: 200,
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#000",
+                            },
+                            "&:hover .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#2eacb3",
+                            },
+                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#2eacb3",
+                            },
+                          }}
                         >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Leave Type" />
-                          </SelectTrigger>
-
-                          <SelectContent className="bg-[#fff]">
-                            {[
-                              { label: "Option 1", value: "option1" },
-                              { label: "Option 2", value: "option2" },
-                            ].map((data) => (
-                              <SelectItem
-                                className="bg-[#fff]"
-                                key={data.value}
-                                value={data.value}
-                              >
-                                {data.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
+                          {[
+                            { label: "Option 1", value: "option1" },
+                            { label: "Option 2", value: "option2" },
+                          ].map((type) => (
+                            <MenuItem key={type.value} value={type.value}>
+                              {type.label}
+                            </MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                       <FormMessage />

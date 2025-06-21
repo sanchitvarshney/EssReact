@@ -10,10 +10,17 @@ import {
   ListItemText,
   Typography,
   Paper,
+  IconButton,
 } from "@mui/material";
-import { CustomButton } from "../ui/CustomButton";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import AddCommentIcon from '@mui/icons-material/AddComment';
+
+
+import ComponentIconWithtitle from "./ComponentIconWithtitle";
+import { Input } from "../ui/input";
+import AttachmentIcon from '@mui/icons-material/Attachment';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import SendIcon from '@mui/icons-material/Send';
+import { postCardData } from "../../staticData/postdata";
+
 
 
 interface PostAnnouncementCardProps {
@@ -32,27 +39,24 @@ const PostAnnouncementCard = ({
   images = [],
   timeAgo = "3 months ago",
 }: PostAnnouncementCardProps) => {
-
- 
   return (
-  
     <Card
       elevation={0}
       sx={{
-        maxWidth: "800px",
+        maxWidth: "1050px",
         borderRadius: 3,
         boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
         background: "#ffffff",
         border: "1px solid #f0f0f0",
       }}
     >
-      <CardContent sx={{ p: 2 }}>
-        <ListItem className="hover:bg-gray-50 flex flex-col sm:flex-row justify-start items-start sm:items-center transition-colors rounded-lg relative">
+      <CardContent >
+        <ListItem className="hover:bg-gray-50 flex  justify-start items-start  transition-colors rounded-lg relative">
           <ListItemAvatar>
             <Avatar
-              className="text-white font-semibold"
+              className="text-white font-semibold "
               sx={{
-                backgroundColor: "#4caf50",
+                backgroundColor:"#2eacb3",
                 width: 48,
                 height: 48,
               }}
@@ -112,6 +116,7 @@ const PostAnnouncementCard = ({
                 display: "flex",
                 flexWrap: "wrap",
                 gap: 2,
+                px: 2,
               }}
             >
               {images.map((image, index) => (
@@ -132,7 +137,7 @@ const PostAnnouncementCard = ({
                   <Paper
                     elevation={2}
                     sx={{
-                      borderRadius: 2,
+                      borderRadius: 4,
                       overflow: "hidden",
                     }}
                   >
@@ -149,20 +154,31 @@ const PostAnnouncementCard = ({
                 </Box>
               ))}
             </Box>
-            <CustomButton className="mt-10 mr-4 bg-gray-900 text-white text-[18px] hover:bg-gray-900/80">
-            
-              <ThumbUpIcon sx={{marginRight:1}}/> Like
-            </CustomButton>
-               <CustomButton className="mt-10 bg-gray-900 font-[] text-white text-[18px] hover:bg-gray-900/80">
-            
-              <AddCommentIcon sx={{marginRight:1}}/> comment
-            </CustomButton>
+            <div className="flex justify-between flex-wrap px-5 mt-3">
+              {postCardData.map((item) => (
+                <ComponentIconWithtitle
+                  key={item.title}
+                  icon={item.icon}
+                  title={item.title}
+                />
+              ))}
+           
+            </div>
+            <Divider sx={{ my: 2 }} />
+            <div className="mt-3 flex justify-between">
+              <div className="flex-[0.8] ">
+                <Input  placeholder="Write your comment" className="rounded-[20px]"/>
+              </div>
+              <div className="flex items-center gap-2">
+                <IconButton><AttachmentIcon /></IconButton>
+                  <IconButton><EmojiEmotionsIcon /></IconButton>
+                <IconButton><SendIcon /></IconButton>
+              </div>
+            </div>
           </Box>
         )}
       </CardContent>
-      <Box></Box>
     </Card>
-   
   );
 };
 

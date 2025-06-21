@@ -16,7 +16,7 @@ export default function CustomDrawer() {
         <Avatar
           alt="Remy Sharp"
           src="/static/images/avatar/2.jpg"
-          sx={{ width: 80, height: 80 }}
+          sx={{ width: 80, height: 80,backgroundColor:"#2eacb3" }}
         />
         <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">
           Rahul Mehra

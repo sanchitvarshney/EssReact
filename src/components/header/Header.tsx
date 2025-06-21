@@ -177,6 +177,7 @@ function Header() {
                 ref={profileRef}
                 alt="Remy Sharp"
                 src="/static/images/avatar/2.jpg"
+                sx={{backgroundColor:"#2eacb3"}}
               />
             </IconButton>
 
