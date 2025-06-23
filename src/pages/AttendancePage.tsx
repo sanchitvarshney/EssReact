@@ -57,9 +57,9 @@ const AttendancePage = () => {
       <AttendancePageTable value={""} />
       <div className="w-full flex justify-between flex-wrap gap-y-5 gap-x-1 py-3 px-4">
         <div className="flex gap-x-8 gap-y-4 flex-wrap">
-          {dotColor.map((item: any, index: number) => (
+          {dotColor.map((item, index) => (
             <div key={index} className="flex items-center space-x-2 mb-1">
-              <div className={`w-3 h-3 rounded-full bg-${item.color}`} />
+              <div className={`w-3 h-3 rounded-full ${item.color}`} />
               <span>{item.name}</span>
             </div>
           ))}

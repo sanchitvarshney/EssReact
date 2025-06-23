@@ -1,5 +1,6 @@
-import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
-import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
+
+import ToggleOffIcon from '@mui/icons-material/ToggleOff';
+import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import type { FC } from "react";
 
 interface CustomTogglePropsTypes {
@@ -28,9 +29,10 @@ const CustomToggle: FC<CustomTogglePropsTypes> = ({
     <div className="flex items-center">
     <span onClick={() => toggleDayStatus(value)} >
       {state ? (
-        <ToggleOnOutlinedIcon sx={{ color: "green", fontSize: 36, mr: 1 }} />
+
+        <ToggleOnIcon sx={{ color: "green", fontSize: 36, mr: 1 }} />
       ) : (
-        <ToggleOffOutlinedIcon sx={{ color: "gray", fontSize: 36, mr: 1 }} />
+        <ToggleOffIcon sx={{ color: "gray", fontSize: 36, mr: 1 }} />
       )}
    
     </span>

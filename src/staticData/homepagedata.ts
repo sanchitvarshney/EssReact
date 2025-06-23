@@ -1,4 +1,3 @@
-import empIcon from "../assets/staff.png";
 import taskbox from "../assets/to-do-list.png";
 import vibe from "../assets/speech-bubble.png";
 import compensation from "../assets/money.png";
@@ -14,12 +13,7 @@ import type { homeMenuTypes } from "../types/home-data-types/homepagetypes";
 
 export const homeData: homeMenuTypes[] = [
   { id: "taskbox", title: "Task Box", icon: taskbox, path: "/task-box" },
-  {
-    id: "employee",
-    title: "Employees",
-    icon: empIcon,
-    path: "employees/employees-list",
-  },
+
   { id: "vibe", title: "Vibe", icon: vibe, path: "/vibe" },
   {
     id: "compensation",

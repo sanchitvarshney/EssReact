@@ -18,6 +18,7 @@ const CustomModal: React.FC<ConfirmationModalProps> = ({
 }) => {
   return (
     <Dialog
+    
       open={open}
       onOpenChange={(isOpen: boolean) => !isOpen && onClose(false)}
     >

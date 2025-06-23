@@ -91,7 +91,7 @@ export const menu: MenuItem[] = [
       {
         id: "grant",
         title: "Grant",
-        path: "/reimbursement/grant",
+        path: "",
       },
     ],
   },
@@ -99,7 +99,7 @@ export const menu: MenuItem[] = [
     id: "documents",
     title: "Documents",
     icon: "folder",
-    path: "/documents",
+    path: "/hr-documents",
   },
   {
     id: "support",

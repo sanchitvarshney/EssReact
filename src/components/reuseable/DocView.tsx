@@ -10,6 +10,9 @@ interface Props {
   height?: string | number;
   children: React.ReactNode;
   isCone?: boolean;
+  vertical?:any
+  horizontal?:any
+  transformOrigin?:any
 }
 
 const DocView: React.FC<Props> = ({
@@ -17,35 +20,39 @@ const DocView: React.FC<Props> = ({
   close,
   anchorEl,
   width,
- 
+
   children,
+    vertical="center",
+  horizontal="right",
+  transformOrigin="right"
 }) => {
   return (
     <AnimatePresence>
       {open && (
         <Popover
+        
           open={open}
           anchorEl={anchorEl?.current || null}
           onClose={close}
           anchorOrigin={{
-            vertical: "center",
-            horizontal: "right",
+            vertical: vertical,
+            horizontal: horizontal,
           }}
           transformOrigin={{
-            vertical: "center",
-            horizontal: "right",
+            vertical: vertical,
+            horizontal: horizontal,
           }}
           disableAutoFocus
           disableEnforceFocus
           PaperProps={{
             style: {
-              transformOrigin: "right",
-              position: "relative",
+              transformOrigin: transformOrigin,
+              margin: 0,
               borderRadius: "2px",
               overflow: "visible",
+             
             },
             sx: {
-            
               width: width ? width : 800,
               height: "95vh",
               zIndex: 1600,

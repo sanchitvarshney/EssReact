@@ -16,21 +16,23 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Textarea } from "../components/ui/textarea";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "../components/ui/select";
+import { GlobalStyles } from '@mui/material';
+
 import { CustomButton } from "../components/ui/CustomButton";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import CustomToggle from "../components/reuseable/CustomToggle";
 
 import CalenderView from "../components/reuseable/CalederView";
-import { IconButton, MenuItem, Select } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { Input } from "../components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
 
 const schema = z.object({
   wise: z.string().min(2, { message: "Select value is required" }),
@@ -45,6 +47,31 @@ const schema = z.object({
   fromDate: z.date({ required_error: "From Date is required" }),
   toDate: z.date({ required_error: "To Date is required" }),
 });
+
+
+
+<GlobalStyles
+  styles={{
+    '.MuiPickersPopper-root .MuiPaper-root': {
+      backgroundColor: 'red',
+      color: 'green',
+    },
+    '.MuiPickersDay-root': {
+      color: 'green', 
+    },
+    '.MuiPickersDay-root.Mui-selected': {
+      backgroundColor: 'red', 
+      color: 'green',
+    },
+    '.MuiPickersDay-root:not(.Mui-selected):hover': {
+      backgroundColor: 'red', 
+    },
+    '.MuiPickersCalendarHeader-root': {
+      backgroundColor: 'red', 
+      color: 'green',
+    },
+  }}
+/>
 
 const ApplyLeavePage = () => {
   const [isHalf, setIsHalf] = useState<boolean>(false);
@@ -115,32 +142,23 @@ const ApplyLeavePage = () => {
                       </FormLabel>
                       <FormControl>
                         <Select
-                          popover="manual"
-                          value={field.value}
-                          onChange={field.onChange}
-                          size="small"
-                          sx={{
-                            zIndex: 1300,
-                            minWidth: 200,
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#000",
-                            },
-                            "&:hover .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#2eacb3",
-                            },
-                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#2eacb3",
-                            },
-                          }}
+                          onValueChange={field.onChange}
+                          defaultValue={wise}
                         >
-                          {[
-                            { label: "Option 1", value: "option1" },
-                            { label: "Option 2", value: "option2" },
-                          ].map((type) => (
-                            <MenuItem key={type.value} value={type.value}>
-                              {type.label}
-                            </MenuItem>
-                          ))}
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a filter type" />
+                          </SelectTrigger>
+
+                          <SelectContent className="bg-white">
+                            {[
+                              { label: "Option 1", value: "option1" },
+                              { label: "Option 2", value: "option2" },
+                            ].map((data) => (
+                              <SelectItem key={data.value} value={data.value}>
+                                {data.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
                         </Select>
                       </FormControl>
                       <FormMessage />
@@ -157,10 +175,15 @@ const ApplyLeavePage = () => {
                         <FormLabel className={LableStyle}>From Date</FormLabel>
                         <FormControl className="">
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
+                            <DatePicker 
+                             minDate={dayjs()} 
                               className="border-none"
                               value={field.value ? dayjs(field.value) : null}
                               onChange={(date) => {
+                                if (openCalendar) {
+                                  setOpenCalendar(!openCalendar);
+                                }
+
                                 if (date && date.isValid()) {
                                   // console.log(" valid date");
                                   field.onChange(date.toDate());
@@ -225,18 +248,24 @@ const ApplyLeavePage = () => {
                       <FormItem>
                         <FormLabel className={LableStyle}>To Date</FormLabel>
                         <FormControl>
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                              className="z-10"
+                          <LocalizationProvider dateAdapter={AdapterDayjs} >
+                            <DatePicker 
+                             minDate={dayjs()} 
+                            // sx={{overflow:"hidden"}}
                               value={field.value ? dayjs(field.value) : null}
                               onChange={(date) => {
+                                if(openCalendar){
+                                   setOpenCalendar(!openCalendar)
+                                }
                                 field.onChange(date ? date.toDate() : null);
-                                // console.log(date);
                               }}
                               format="DD-MM-YYYY"
                               slotProps={{
+                              
                                 popper: {
                                   disablePortal: true,
+                                  
+                                  
                                 },
                                 textField: {
                                   fullWidth: true,
@@ -247,6 +276,8 @@ const ApplyLeavePage = () => {
                                     disableUnderline: true,
                                     className: InputStyle,
                                     sx: {
+                                     
+                                   
                                       "& .MuiInputBase-input::placeholder": {
                                         // color: "#94a3b8",
                                         opacity: 1,
@@ -303,6 +334,7 @@ const ApplyLeavePage = () => {
                     startDate={fromDate}
                     endDate={toDate}
                     paid={leaveDuration}
+                    
                   />
                 )}
                 <FormField

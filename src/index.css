@@ -27,3 +27,13 @@
  .clip-cone {
     clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
   }
+
+
+
+.rdp-root {
+  --rdp-accent-color: red; /* Use blue as the accent color. */
+}
+[data-theme="dark"] .rdp-root {
+  --rdp-accent-color: yellow; /* Use yellow as the accent color in dark mode. */
+}
+

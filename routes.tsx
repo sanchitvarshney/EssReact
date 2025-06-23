@@ -12,14 +12,15 @@ import HierarchyChart from "./src/pages/HierarchyChart";
 import AnnouncementPage from "./src/pages/AnnouncementPage";
 import HomePage from "./src/pages/HomePage";
 import EmployeeProfilePage from "./src/pages/EmployeeProfilePage";
-import { EmployeesListPage } from "./src/pages/EmployeesListPage";
-import PolicyPage from "./src/pages/PolicyPage";
 
+import PolicyPage from "./src/pages/PolicyPage";
+import DocumentsPage from "./src/pages/DocumentsPage";
+import LeaveGrantPage from "./src/pages/LeaveGrantPage";
 
 export const route = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />, 
+    element: <MainLayout />,
     children: [
       {
         index: true,
@@ -29,12 +30,12 @@ export const route = createBrowserRouter([
         path: "manage-account",
         element: <EmployeeProfilePage />,
       },
-           {
+      {
         path: "hr-policy",
         element: <PolicyPage />,
       },
       {
-        element: <SideMenuBar />, 
+        element: <SideMenuBar />,
         children: [
           {
             path: "self-service/attendance",
@@ -69,9 +70,13 @@ export const route = createBrowserRouter([
             path: "home/hierarchy",
             element: <HierarchyChart />,
           },
-             {
-            path: "employees/employees-list",
-            element: <EmployeesListPage />,
+                {
+            path: "/hr-documents",
+            element: <DocumentsPage />,
+          },
+          {
+            path: "/self-service/leave-grant",
+            element: <LeaveGrantPage />,
           },
         ],
       },

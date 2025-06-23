@@ -27,12 +27,12 @@ const PolicyCard: React.FC<PolicyCardPropsType> = ({
           {title}
         </Typography>{" "}
         <ButtonGroup variant="outlined" aria-label="Basic button group">
-          <CustomToolTip title={"Annoucement"} placement={"bottom"}>
+          <CustomToolTip title={"View"} placement={"bottom"}>
             <IconButton onClick={open}>
               <VisibilityIcon sx={{ fontSize: 26, color: "#000" }} />
             </IconButton>
           </CustomToolTip>
-          <CustomToolTip title={"BirthDay"} placement={"bottom"}>
+          <CustomToolTip title={"Download"} placement={"bottom"}>
             <IconButton>
               <CloudDownloadIcon sx={{ fontSize: 26, color: "#000" }} />
             </IconButton>
