@@ -22,10 +22,12 @@ import { customColor } from "../../constants/themeConstant";
 import CustomPopover from "../reuseable/CustomPopover";
 import NotificationDropDown from "../dropdowns/NotificationDropDown";
 import ProfileDropDown from "../dropdowns/ProfileDropDown";
+import { useNavigate } from "react-router-dom";
 
 const pages = ["Products", "Pricing", "Blog"];
 
 function Header() {
+  const navigate = useNavigate();
   const inputRef = React.useRef(null);
   const notificationRef = React.useRef(null);
   const profileRef = React.useRef(null);
@@ -59,10 +61,12 @@ function Header() {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ display: { xs: "none", md: "flex" }}}>
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <img
+              onClick={() => navigate("/")}
               src="https://hrms.mscorpres.online/assets/images/hrms_logo.png"
               alt="mscorpres"
+              className="cursor-pointer"
             />
           </Box>
 
@@ -101,13 +105,12 @@ function Header() {
             </Menu>
           </Box>
 
-          <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1, mr: 2, }}>
-        
+          <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1, mr: 2 }}>
             <img
+            
               src="https://hrms.mscorpres.online/assets/images/hrms_logo.png"
               alt="mscorpres"
             />
- 
           </Box>
 
           <Box
@@ -177,7 +180,7 @@ function Header() {
                 ref={profileRef}
                 alt="Remy Sharp"
                 src="/static/images/avatar/2.jpg"
-                sx={{backgroundColor:"#2eacb3"}}
+                sx={{ backgroundColor: "#2eacb3" }}
               />
             </IconButton>
 
@@ -187,9 +190,9 @@ function Header() {
                 close={() => setAnchorElUser(false)}
                 anchorEl={profileRef}
                 width={240}
-                 isCone={true}
+                isCone={true}
               >
-                <ProfileDropDown  close={() => setAnchorElUser(false)}/>
+                <ProfileDropDown close={() => setAnchorElUser(false)} />
               </CustomPopover>
             )}
           </Box>

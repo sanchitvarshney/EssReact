@@ -9,7 +9,7 @@ export const menu: MenuItem[] = [
       {
         id: "announcement",
         title: "Announcement",
-        path: "/home/announcement",
+        path: "/vibe",
       },
       {
         id: "dashboard",

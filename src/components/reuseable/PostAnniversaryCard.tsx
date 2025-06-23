@@ -116,7 +116,7 @@ const PostAnniversaryCard = ({
             <div className="ml-4 ">
               <Typography variant="h4">Happy Anniversary!</Typography>
               <Typography variant="h6">
-                Join us in sending him/her lots of best wishes on this secial
+                Join us in sending him/her lots of best wishes on this Special
                 day!
               </Typography>
             </div>

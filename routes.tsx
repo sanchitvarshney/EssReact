@@ -13,6 +13,7 @@ import AnnouncementPage from "./src/pages/AnnouncementPage";
 import HomePage from "./src/pages/HomePage";
 import EmployeeProfilePage from "./src/pages/EmployeeProfilePage";
 import { EmployeesListPage } from "./src/pages/EmployeesListPage";
+import PolicyPage from "./src/pages/PolicyPage";
 
 
 export const route = createBrowserRouter([
@@ -27,6 +28,10 @@ export const route = createBrowserRouter([
       {
         path: "manage-account",
         element: <EmployeeProfilePage />,
+      },
+           {
+        path: "hr-policy",
+        element: <PolicyPage />,
       },
       {
         element: <SideMenuBar />, 
@@ -57,7 +62,7 @@ export const route = createBrowserRouter([
             element: <PaySlipPage />,
           },
           {
-            path: "home/announcement",
+            path: "vibe",
             element: <AnnouncementPage />,
           },
           {

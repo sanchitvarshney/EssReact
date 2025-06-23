@@ -3,10 +3,10 @@ import { useState } from "react";
 import EmployeeHierarchyPage from "../components/EmployeeHierarchyPage";
 import EmployeeInformationPage from "../components/EmployeeInformationPage";
 import { CustomButton } from "../components/ui/CustomButton";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const EmployeeProfilePage = () => {
-  const navigate= useNavigate()
+  // const navigate= useNavigate()
   const [value, setValue] = useState("info");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -33,9 +33,7 @@ const EmployeeProfilePage = () => {
           <CustomButton className="bg-gray-900 text-white  hover:bg-gray-800/80">
             Edit Profile
           </CustomButton>{" "}
-          <CustomButton className="bg-gray-900 text-white hover:bg-gray-800/80 mt-2 sm:mt-2" onClick={()=>navigate("/")}>
-            My Access
-          </CustomButton>
+         
         </div>
       </div>
       <Divider sx={{ marginTop: 2 }} />

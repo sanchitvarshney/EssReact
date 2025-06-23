@@ -25,7 +25,7 @@ export const homeData: homeMenuTypes[] = [
     id: "compensation",
     title: "Compensation",
     icon: compensation,
-    path: "/compensations",
+    path: "self-service/payslip",
   },
   {
     id: "attendance",
@@ -39,7 +39,7 @@ export const homeData: homeMenuTypes[] = [
     icon: leave,
     path: "/self-service/apply-leave",
   },
-  { id: "policie", title: "HR Policies", icon: policice, path: "/hr-policies" },
+  { id: "policie", title: "HR Policies", icon: policice, path: "/hr-policy" },
   { id: "document", title: "HR Documents", icon: doc, path: "/hr-documents" },
   {
     id: "recruitment",
