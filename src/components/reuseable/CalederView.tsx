@@ -53,9 +53,12 @@ const CalenderView: FC<CalenderViewPropsType> = ({
         toMonth={toDate}
         disabled={isOutsideRange}
         showOutsideDays={false}
-      
+      classNames={{  
+        chevron:"text-white",
+
+      }}
         modifiersClassNames={{
-            root: " rounded-md shadow-lg  bg-white",
+          
           range_start:
             "bg-[#2eacb3] border-0 text-white rounded-full font-bold",
           range_end: "bg-[#2eacb3] text-white rounded-full font-bold",
