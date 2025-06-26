@@ -55,7 +55,7 @@ export const homeData: homeMenuTypes[] = [
     id: "reimbursement",
     title: "Reimbursement",
     icon: reimb,
-    path: "/support-protal",
+    path: "/reimbursement/claim",
   },
   { id: "org", title: "Org View", icon: org, path: "/home/hierarchy" },
 ];

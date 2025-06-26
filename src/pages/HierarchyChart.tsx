@@ -23,9 +23,12 @@ type NodeCardProps = {
   title: string;
   imageUrl: string;
   tags: string[];
+  hasChildren: boolean;
+  isExpanded: boolean;
+  onToggle: () => void;
 };
 
-const NodeCard = ({ name, title, imageUrl, tags }: NodeCardProps) => (
+const NodeCard = ({ name, title, imageUrl, tags, hasChildren, isExpanded, onToggle }: NodeCardProps) => (
   <Card
     sx={{
       background: "#23272f",
@@ -71,31 +74,69 @@ const NodeCard = ({ name, title, imageUrl, tags }: NodeCardProps) => (
           ))}
         </div>
       </div>
+      {hasChildren && (
+        <IconButton
+          size="small"
+          onClick={onToggle}
+          sx={{
+            position: "absolute",
+            top: 4,
+            right: 4,
+            background: "#1f2937",
+            color: "#fff",
+            "&:hover": { background: "#374151" },
+            zIndex: 1,
+            width: 24,
+            height: 24,
+            fontSize: 16,
+            fontWeight: "bold",
+          }}
+        >
+          {isExpanded ? "−" : "+"}
+        </IconButton>
+      )}
     </CardContent>
   </Card>
 );
 
-const renderTree = (node: OrgNode): JSX.Element => (
-  <TreeNode
-    label={
-      <NodeCard
-        name={node.name}
-        title={node.title}
-        imageUrl={node.imageUrl}
-        tags={node.tags}
-      />
-    }
-    key={node.id}
-  >
-    {(node.children ?? []).map(renderTree)}
-  </TreeNode>
-);
-
 const HierarchyChart = () => {
   const [zoom, setZoom] = useState(1);
+  const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>({});
+
+  const toggleNode = (id: string) => {
+    setExpandedNodes((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const renderTree = (node: OrgNode): JSX.Element => {
+    const hasChildren = Boolean(node.children && node.children.length > 0);
+    const isExpanded = expandedNodes[node.id] ?? true;
+
+    return (
+      <TreeNode
+        label={
+          <NodeCard
+            name={node.name}
+            title={node.title}
+            imageUrl={node.imageUrl}
+            tags={node.tags}
+            hasChildren={hasChildren}
+            isExpanded={isExpanded}
+            onToggle={() => toggleNode(node.id)}
+          />
+        }
+        key={node.id}
+      >
+        {isExpanded && hasChildren && (node.children ?? []).map(renderTree)}
+      </TreeNode>
+    );
+  };
+
   return (
     <div
-      className="overflow-auto p-6 h-[calc(100vh-65px)]  w-full flex"
+      className="overflow-auto p-6 h-[calc(100vh-90px)]  w-full flex"
       style={{ position: "relative" }}
     >
       <div
@@ -219,12 +260,33 @@ const HierarchyChart = () => {
                       ))}
                     </div>
                   </div>
+                  {orgData.children && orgData.children.length > 0 && (
+                    <IconButton
+                      size="small"
+                      onClick={() => toggleNode(orgData.id)}
+                      sx={{
+                        position: "absolute",
+                        top: 4,
+                        right: 4,
+                        background: "#1f2937",
+                        color: "#fff",
+                        "&:hover": { background: "#374151" },
+                        zIndex: 1,
+                        width: 24,
+                        height: 24,
+                        fontSize: 16,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {expandedNodes[orgData.id] ?? true ? "−" : "+"}
+                    </IconButton>
+                  )}
                 </CardContent>
               </Card>
             </div>
-          } // Invisible wrapper
+          }
         >
-          {(orgData.children ?? []).map(renderTree)}
+          {(expandedNodes[orgData.id] ?? true) && (orgData.children ?? []).map(renderTree)}
         </Tree>
       </div>
     </div>

@@ -20,6 +20,7 @@ import LeaveGrantPage from "./src/pages/LeaveGrantPage";
 import HelpPortal from "./src/pages/HelpPortal";
 import RecruitmentsPage from "./src/pages/RecruitmentsPage";
 import PerformancePage from "./src/pages/PerformancePage";
+import ReimbursementClaim from "./src/pages/ReimbursementClaim";
 
 export const route = createBrowserRouter([
   {
@@ -86,9 +87,13 @@ export const route = createBrowserRouter([
             path: "/self-service/leave-grant",
             element: <LeaveGrantPage />,
           },
-                  {
+          {
             path: "/performance",
             element: <PerformancePage />,
+          },
+          {
+            path: "/reimbursement/claim",
+            element: <ReimbursementClaim />,
           },
         ],
       },
