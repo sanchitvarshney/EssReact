@@ -14,7 +14,7 @@ interface PerformanceCardProps {
   title: string;
   svg: any;
   des?: string;
-  width: string;
+  width?: string;
   hight: string;
   children?:ReactNode
 }

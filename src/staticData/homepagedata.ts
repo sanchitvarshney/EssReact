@@ -8,7 +8,9 @@ import doc from "../assets/documentation.png";
 import recruitment from "../assets/selection.png";
 import calendar from "../assets/calendar (1).png";
 import performance from "../assets/performance.png";
+import reimb from "../assets/dollar.png";
 import help from "../assets/help.png";
+import org from "../assets/hierarchy-structure.png";
 import type { homeMenuTypes } from "../types/home-data-types/homepagetypes";
 
 export const homeData: homeMenuTypes[] = [
@@ -49,4 +51,11 @@ export const homeData: homeMenuTypes[] = [
     path: "/performance",
   },
   { id: "help", title: "Helpdesk", icon: help, path: "/support-protal" },
+  {
+    id: "reimbursement",
+    title: "Reimbursement",
+    icon: reimb,
+    path: "/support-protal",
+  },
+  { id: "org", title: "Org View", icon: org, path: "/home/hierarchy" },
 ];
