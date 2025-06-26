@@ -21,6 +21,7 @@ import HelpPortal from "./src/pages/HelpPortal";
 import RecruitmentsPage from "./src/pages/RecruitmentsPage";
 import PerformancePage from "./src/pages/PerformancePage";
 import ReimbursementClaim from "./src/pages/ReimbursementClaim";
+import PeripheralPage from "./src/pages/PeripheralPage";
 
 export const route = createBrowserRouter([
   {
@@ -35,17 +36,18 @@ export const route = createBrowserRouter([
         path: "manage-account",
         element: <EmployeeProfilePage />,
       },
-      {
-        path: "hr-policy",
-        element: <PolicyPage />,
-      },
-      {
-        path: "/support-protal",
-        element: <HelpPortal />,
-      },
+
       {
         element: <SideMenuBar />,
         children: [
+          {
+            path: "hr-policy",
+            element: <PolicyPage />,
+          },
+          {
+            path: "/support-protal",
+            element: <HelpPortal />,
+          },
           {
             path: "self-service/attendance",
             element: <AttendancePage />,
@@ -95,11 +97,15 @@ export const route = createBrowserRouter([
             path: "/reimbursement/claim",
             element: <ReimbursementClaim />,
           },
+          {
+            path: "/recruitments",
+            element: <RecruitmentsPage />,
+          },
+               {
+            path: "/peripheral",
+            element: <PeripheralPage  />,
+          },
         ],
-      },
-      {
-        path: "/recruitments",
-        element: <RecruitmentsPage />,
       },
     ],
   },
