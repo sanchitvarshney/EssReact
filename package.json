@@ -44,6 +44,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.2",
     "react-select": "^5.10.1",
+    "react-simple-wysiwyg": "^3.2.2",
     "react-transition-group": "^4.4.5",
     "recharts": "^2.15.3",
     "rsuite": "^5.83.0",

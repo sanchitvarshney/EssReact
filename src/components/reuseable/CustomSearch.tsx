@@ -23,7 +23,7 @@ const CustomSearch = forwardRef<HTMLInputElement, CustomSearchPropsType>(
         <StyledInputBase
           placeholder={placeholder}
           inputProps={{ "aria-label": "search" }}
-          sx={{ width }}
+          sx={{ width:width }}
           onChange={onChange}
           inputRef={ref}
           textColor={textColor}

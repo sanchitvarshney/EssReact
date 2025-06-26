@@ -250,6 +250,7 @@ const ApplyLeavePage = () => {
                         <FormControl>
                           <LocalizationProvider dateAdapter={AdapterDayjs} >
                             <DatePicker 
+                            className="static "
                              minDate={dayjs()} 
                             // sx={{overflow:"hidden"}}
                               value={field.value ? dayjs(field.value) : null}

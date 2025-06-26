@@ -48,5 +48,5 @@ export const homeData: homeMenuTypes[] = [
     icon: performance,
     path: "/performance",
   },
-  { id: "help", title: "Helpdesk", icon: help, path: "/help" },
+  { id: "help", title: "Helpdesk", icon: help, path: "/support-protal" },
 ];

@@ -30,7 +30,7 @@ const DocView: React.FC<Props> = ({
     <AnimatePresence>
       {open && (
         <Popover
-        
+        className="custom-scrollbar-for-menu"
           open={open}
           anchorEl={anchorEl?.current || null}
           onClose={close}
@@ -49,7 +49,7 @@ const DocView: React.FC<Props> = ({
               transformOrigin: transformOrigin,
               margin: 0,
               borderRadius: "2px",
-              overflow: "visible",
+              overflow: "auto",
              
             },
             sx: {

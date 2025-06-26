@@ -17,6 +17,10 @@ import PolicyPage from "./src/pages/PolicyPage";
 import DocumentsPage from "./src/pages/DocumentsPage";
 import LeaveGrantPage from "./src/pages/LeaveGrantPage";
 
+import HelpPortal from "./src/pages/HelpPortal";
+import RecruitmentsPage from "./src/pages/RecruitmentsPage";
+import PerformancePage from "./src/pages/PerformancePage";
+
 export const route = createBrowserRouter([
   {
     path: "/",
@@ -33,6 +37,10 @@ export const route = createBrowserRouter([
       {
         path: "hr-policy",
         element: <PolicyPage />,
+      },
+      {
+        path: "/support-protal",
+        element: <HelpPortal />,
       },
       {
         element: <SideMenuBar />,
@@ -70,7 +78,7 @@ export const route = createBrowserRouter([
             path: "home/hierarchy",
             element: <HierarchyChart />,
           },
-                {
+          {
             path: "/hr-documents",
             element: <DocumentsPage />,
           },
@@ -78,7 +86,15 @@ export const route = createBrowserRouter([
             path: "/self-service/leave-grant",
             element: <LeaveGrantPage />,
           },
+                  {
+            path: "/performance",
+            element: <PerformancePage />,
+          },
         ],
+      },
+      {
+        path: "/recruitments",
+        element: <RecruitmentsPage />,
       },
     ],
   },

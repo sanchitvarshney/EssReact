@@ -11,41 +11,41 @@ import {
   // Tooltip,
 } from "@mui/material";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import { CustomButton } from "../components/ui/CustomButton";
-import DescriptionIcon from "@mui/icons-material/Description";
-import MessageIcon from "@mui/icons-material/Message";
+
 import PendingIcon from "@mui/icons-material/Pending";
 import { leaveLogData } from "../dummydata/LeaveSentData";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import CustomSearch from "../components/reuseable/CustomSearch";
 
 // Styled components for better visual appeal
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.common.black,
+    borderBottom:"none"
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(even)": {
-    backgroundColor: theme.palette.action.hover,
-  },
+const StyledTableRow = styled(TableRow)(() => ({
+//   "&:nth-of-type(even)": {
+//     backgroundColor: theme.palette.action.hover,
+//   },
 
-  // "&:hover": {
-  //   backgroundColor: "#f3f4g9",
-  //   transition: "background-color 0.4s ease-in-out",
-  // },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
+//   // "&:hover": {
+//   //   backgroundColor: "#f3f4g9",
+//   //   transition: "background-color 0.4s ease-in-out",
+//   // },
+//   "&:last-child td, &:last-child th": {
+//     border: 0,
+//   },
 }));
 
-const LeaveStatusPage = () => {
+const ViewStatusTicketPage = () => {
   const getStatus = (status: any) => {
     switch (status) {
       case "Approved":
@@ -75,38 +75,37 @@ const LeaveStatusPage = () => {
 
   return (
     <Box sx={{ width: "100%", p: 2 }}>
-      <div className="w-full flex justify-between items-center p-0 mb-3 ">
-        <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
-          Leave Sent {leaveLogData.length}
-        </Typography>
+         {/* <div className="w-full flex justify-between items-center p-0 mb-3 ">
+        <Typography sx={{ fontWeight: "n", fontSize: 18 }}>
+          Ticket Status 
+        </Typography> */}
         <div>
-          <CustomButton className="bg-[#000000] text-white">
-            {" "}
-            <DescriptionIcon className="mr-1" /> Leave Log
-          </CustomButton>
+        <CustomSearch bgColor="#000000" textColor="#" width="600" placeholder={"Search id, name or status"} onChange={()=>{}} />
         </div>
-      </div>
+      {/* </div> */}
 
       {/* <Divider sx={{ backgroundColor: "#000000" }} /> */}
       <div>
         <TableContainer
           component={Paper}
+          elevation={0}
           sx={{
             borderRadius: "0px",
-            maxHeight: "75vh",
+            maxHeight: "67vh",
             overflow: "auto",
-            border: "1px solid #000",
+            // border: "1px solid #000",
           }}
         >
           <Table
             sx={{
+                
               borderCollapse: "separate",
               borderSpacing: 0,
               "& th, & td": {
-                borderRight: "1px solid #e0e0e0",
+                borderBottom: "1px solid gray",
               },
               "& tr:last-child td": {
-                borderRight: "1px solid #e0e0e0",
+                borderBottom: "1px solid gray",
               },
             }}
           >
@@ -122,7 +121,7 @@ const LeaveStatusPage = () => {
                     zIndex: 1,
                   }}
                 >
-                  <b>APPLICATION</b>
+                  <b>ID</b>
                 </StyledTableCell>
                 <StyledTableCell
                   sx={{
@@ -132,7 +131,7 @@ const LeaveStatusPage = () => {
                     zIndex: 1,
                   }}
                 >
-                  <b>FROM TO</b>
+                  <b>REQUESTER</b>
                 </StyledTableCell>
                 <StyledTableCell
                   sx={{
@@ -142,7 +141,7 @@ const LeaveStatusPage = () => {
                     zIndex: 1,
                   }}
                 >
-                  <b>REPORTING TO</b>
+                  <b>SUBJECT</b>
                 </StyledTableCell>
                 <StyledTableCell
                   sx={{
@@ -152,7 +151,7 @@ const LeaveStatusPage = () => {
                     zIndex: 1,
                   }}
                 >
-                  <b>ACTION</b>
+                  <b>STATUS</b>
                 </StyledTableCell>
               </TableRow>
             </TableHead>
@@ -177,38 +176,11 @@ const LeaveStatusPage = () => {
                         >
                           {row?.applicationId}
                         </Typography>
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            color: "#6b7280",
-                            backgroundColor: "#f3f4f6",
-                            px: 2,
-                            py: 0.5,
-                            borderRadius: "8px",
-                            display: "inline-block",
-                          }}
-                        >
-                          {row?.appliedFor}
-                        </Typography>
                       </Box>
                     </TableCell>
-                    <TableCell sx={{ py: 3 }}>
-                      <Box>
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            fontWeight: 600,
-                            color: "#1f2937",
-                            mb: 0.5,
-                          }}
-                        >
-                          {`${row.fromDate} to ${row.toDate}`}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell sx={{ py: 3 }}>
-                      <Box>
-                        <Typography
+                    <TableCell sx={{  }}>
+                   
+                           <Typography
                           variant="body1"
                           sx={{
                             fontWeight: 600,
@@ -218,26 +190,28 @@ const LeaveStatusPage = () => {
                         >
                           {row.reportingTo}
                         </Typography>
-                        {getStatus(row?.status)}
-                      </Box>
+                    
                     </TableCell>
-                    <TableCell sx={{ py: 3 }}>
-                      {/* <Tooltip title="Send Message">
-                        <IconButton
+                    <TableCell sx={{  }}>
+                           <Typography
+                          variant="body1"
                           sx={{
-                            backgroundColor: "#f3f4f6",
-                            color: "#6b7280",
-                            "&:hover": {
-                              backgroundColor: "#e5e7eb",
-                              color: "#374151",
-                              transform: "scale(1.1)",
-                            },
-                            transition: "all 0.2s ease",
+                            fontWeight: 600,
+                            color: "#1f2937",
+                            mb: 1,
                           }}
-                        > */}
-                      <MessageIcon />
-                      {/* </IconButton>
-                      </Tooltip> */}
+                        >
+                          {row.reportingTo}
+                        </Typography>
+                    </TableCell>
+                    <TableCell sx={{  }}>
+                    
+                   
+                   
+                        {getStatus(row?.status)}
+                 
+
+                      
                     </TableCell>
                   </StyledTableRow>
                 ))
@@ -250,4 +224,4 @@ const LeaveStatusPage = () => {
   );
 };
 
-export default LeaveStatusPage;
+export default ViewStatusTicketPage;
