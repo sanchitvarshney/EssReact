@@ -1,18 +1,29 @@
-import { Typography } from "@mui/material";
+import { Typography, Paper, IconButton } from "@mui/material";
 import { Input } from "../components/ui/input";
 import { useState } from "react";
 import Editor from "react-simple-wysiwyg";
 import { CustomButton } from "../components/ui/CustomButton";
+import { useNavigate } from "react-router-dom";
+import {
+  ArrowBack,
+  CloudUpload,
+  Description,
+  Close,
+  Support,
+  Refresh,
+} from "@mui/icons-material";
 
 const CreateTicketPage = () => {
+  const navigation = useNavigate();
   const [html, setHtml] = useState("");
-  const [files, setFiles] = useState<File[]>([]); // store all uploaded files
+  const [files, setFiles] = useState<File[]>([]);
 
   const onChange = (e: any) => {
     setHtml(e.target.value);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("call");
     const uploaded = e.target.files;
     if (!uploaded) return;
 
@@ -20,48 +31,185 @@ const CreateTicketPage = () => {
     setFiles((prev) => [...prev, ...fileArray]);
   };
 
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleReset = () => {
+    setHtml("");
+    setFiles([]);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    setFiles((prev) => [...prev, ...droppedFiles]);
+  };
+
   return (
-    <div className="w-full p-4">
-      <Typography variant="subtitle1" sx={{ fontSize: 18, fontWeight: 600 }}>
-        Ticket Details
-      </Typography>
-      <Typography variant="subtitle2">Please Describe Your Issue</Typography>
+    <div className="min-h-screen bg-[#fff] p-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-1">
+          <div className="flex items-center gap-3 mb-2">
+            <div>
+              <Typography
+                variant="h4"
+                className="font-bold text-gray-800 mb-1"
+                sx={{ fontSize: "2rem", fontWeight: 700 }}
+              >
+                Create Support Ticket
+              </Typography>
+              <Typography
+                variant="body1"
+                className="text-gray-600"
+                sx={{ fontSize: "1.1rem" }}
+              >
+                Describe your issue and we'll help you resolve it
+              </Typography>
+            </div>
+          </div>
+        </div>
 
-      <div className="my-2">
-        <span className="text-md font-semibold">Summary</span>
-        <Input placeholder="Please enter Reason" className="w-100 mt-1" />
-      </div>
+        <Paper elevation={0} className="p-8 bg-white rounded-2xl ">
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-3">
+              <Description className="text-blue-600" />
+              <Typography variant="h6" className="font-semibold text-gray-800">
+                Ticket Summary
+              </Typography>
+            </div>
+            <Input
+              placeholder="Brief description of your issue..."
+              className="w-100 p-4 text-lg border-2 border-gray-200 rounded-md focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all duration-200"
+            />
+          </div>
 
-      {/* Upload Any File */}
-         <div className="my-4">
-            <Input type="file" className="border-none w-50 bg-black text-white  "  multiple  onChange={handleFileUpload}/>
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <CloudUpload className="text-green-600" />
+              <Typography variant="h6" className="font-semibold text-gray-800">
+                Attachments
+              </Typography>
+            </div>
+
+            <div
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-[#2eacb3] transition-colors duration-200 relative"
+            >
+              <CloudUpload className="text-[#2eacb3] text-4xl mb-3 mx-auto" />
+
+              <Typography variant="body1" className="text-gray-600 mb-4">
+                Upload files here, or click below to browse
+              </Typography>
+
+              <Input
+                type="file"
+                id="file-upload"
+                className="hidden"
+                multiple
+                onChange={handleFileUpload}
+              />
+
+              <label
+                htmlFor="file-upload"
+                className="inline-block bg-[#2eacb3] mt-2 text-white px-6 py-2 rounded-lg transition-colors duration-200 hover:bg-[#279aa0] cursor-pointer"
+              >
+                Choose Files
+              </label>
+            </div>
+
+            {/* Uploaded Files List */}
             {files.length > 0 && (
-              <div className="mt-2 space-y-1">
-                <Typography variant="subtitle2">Uploaded Files:</Typography>
-                <ul className="list-disc ml-6">
+              <div className="mt-4">
+                <Typography
+                  variant="subtitle1"
+                  className="font-semibold text-gray-700 mb-3"
+                >
+                  Uploaded Files ({files.length})
+                </Typography>
+                <div className="space-y-2">
                   {files.map((file, index) => (
-                    <li key={index} className="text-sm">
-                      {file.name} ({(file.size / 1024).toFixed(1)} KB)
-                    </li>
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Description className="text-blue-500" />
+                        <div>
+                          <Typography
+                            variant="body2"
+                            className="font-medium text-gray-800"
+                          >
+                            {file.name}
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            className="text-gray-500"
+                          >
+                            {(file.size / 1024).toFixed(1)} KB
+                          </Typography>
+                        </div>
+                      </div>
+                      <IconButton
+                        onClick={() => removeFile(index)}
+                        className="text-red-500 hover:bg-red-50"
+                        size="small"
+                      >
+                        <Close />
+                      </IconButton>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </div>
 
-      {/* WYSIWYG Editor */}
-      <Editor
-        className="h-50 overflow-y-auto"
-        value={html}
-        onChange={onChange}
-        placeholder="Describe Your Reason"
-        
-   
-      />
-      <div className="w-full flex justify-center items-center space-x-4 mt-5">
-        <CustomButton  className="bg-[gray] text-white  ">Cancel</CustomButton>
-         <CustomButton className="bg-[red] text-white ">Reset</CustomButton>
-          <CustomButton className="bg-[#2eacb3] text-white ">Create Ticket</CustomButton>
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-3">
+              <Support className="text-purple-600" />
+              <Typography variant="h6" className="font-semibold text-gray-800">
+                Detailed Description
+              </Typography>
+            </div>
+            <div className="border-2 border-gray-200 rounded-xl overflow-hidden">
+              <Editor
+                className="min-h-[200px] p-4 focus:outline-none"
+                value={html}
+                onChange={onChange}
+                placeholder="Please provide a detailed description of your issue, including any steps to reproduce, error messages, or additional context that might help us assist you better..."
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-center items-center gap-4 pt-4 ">
+            <CustomButton
+              className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center gap-2"
+              onClick={() => navigation("/support-protal")}
+            >
+              <ArrowBack className="text-sm" />
+              Back
+            </CustomButton>
+            <CustomButton
+              className="bg-red-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center gap-2"
+              onClick={handleReset}
+            >
+              <Refresh className="text-sm" />
+              Reset
+            </CustomButton>
+            <CustomButton className="bg-[#2eacb3] hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl">
+              <Support className="text-sm" />
+              Create Ticket
+            </CustomButton>
+          </div>
+        </Paper>
       </div>
     </div>
   );

@@ -64,7 +64,7 @@ function Header() {
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <img
               onClick={() => navigate("/")}
-              src="https://hrms.mscorpres.online/assets/images/hrms_logo.png"
+              src="https://hrms.mscorpres.com/assets/images/hrms_logo.png"
               alt="mscorpres"
               className="cursor-pointer"
             />
@@ -107,8 +107,7 @@ function Header() {
 
           <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1, mr: 2 }}>
             <img
-            
-              src="https://hrms.mscorpres.online/assets/images/hrms_logo.png"
+              src="https://hrms.mscorpres.com/assets/images/hrms_logo.png"
               alt="mscorpres"
             />
           </Box>

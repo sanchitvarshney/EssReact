@@ -22,6 +22,10 @@ import RecruitmentsPage from "./src/pages/RecruitmentsPage";
 import PerformancePage from "./src/pages/PerformancePage";
 import ReimbursementClaim from "./src/pages/ReimbursementClaim";
 import PeripheralPage from "./src/pages/PeripheralPage";
+import CreateTicketPage from "./src/pages/CreateTicketPage";
+import ViewStatusTicketPage from "./src/pages/ViewStatusTicketPage";
+import ReimbursementStatusPage from "./src/pages/ReimbursementStatusPage";
+import ReimbursementGrantPage from "./src/pages/ReimbursementGrantPage";
 
 export const route = createBrowserRouter([
   {
@@ -101,10 +105,27 @@ export const route = createBrowserRouter([
             path: "/recruitments",
             element: <RecruitmentsPage />,
           },
-               {
+          {
             path: "/peripheral",
-            element: <PeripheralPage  />,
+            element: <PeripheralPage />,
           },
+          {
+            path: "/create-new-ticket",
+            element: <CreateTicketPage />,
+          },
+          {
+            path: "/ticket-status",
+            element: <ViewStatusTicketPage />,
+          },
+          {
+            path: "/reimbursement/status",
+            element: <ReimbursementStatusPage />,
+          },
+              {
+            path: "/reimbursement/grant",
+            element: <ReimbursementGrantPage />,
+          },
+          
         ],
       },
     ],

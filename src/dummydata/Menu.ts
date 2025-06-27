@@ -91,7 +91,7 @@ export const menu: MenuItem[] = [
       {
         id: "grant",
         title: "Grant",
-        path: "",
+        path: "/reimbursement/grant",
       },
     ],
   },
