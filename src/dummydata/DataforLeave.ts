@@ -28,4 +28,11 @@ export const leaveData: LeaveData[] = [
     creditedFromLastYear: 0,
     annualAllotment: 12,
   },
+    {
+    type: "Compensatory Leave",
+    currentlyAvailable: 6,
+    accruedThisYear: 6,
+    creditedFromLastYear: 0,
+    annualAllotment: 12,
+  },
 ];

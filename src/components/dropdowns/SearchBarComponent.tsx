@@ -6,6 +6,8 @@ interface Props {
   close: () => void;
   anchorRef: any;
   searchQuary: string;
+  width: string;
+  onSelect?: (user: any) => void;
 }
 
 const SearchBarComponent: React.FC<Props> = ({
@@ -13,9 +15,12 @@ const SearchBarComponent: React.FC<Props> = ({
   close,
   anchorRef,
   searchQuary,
+  width,
+  onSelect,
 }) => {
   return (
     <Popover
+    
       open={open}
       anchorEl={anchorRef?.current || null}
       onClose={close}
@@ -32,8 +37,10 @@ const SearchBarComponent: React.FC<Props> = ({
       PaperProps={{
         sx: {
           mt: "2px",
-          width: 533,
+          width: width,
           // maxHeight: 600,
+          zIndex:999,
+          
           p: 2,
           transformOrigin: "top",
           borderRadius: 0,
@@ -46,7 +53,7 @@ const SearchBarComponent: React.FC<Props> = ({
       <>
         <Typography sx={{ fontSize: 14 }}>Discover</Typography>
 
-        <SearchBarComponentContent inputText={searchQuary} />
+        <SearchBarComponentContent inputText={searchQuary} onSelect={onSelect} />
       </>
     </Popover>
   );

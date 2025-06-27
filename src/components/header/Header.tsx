@@ -137,6 +137,7 @@ function Header() {
                 close={() => setOpenSearch(false)}
                 searchQuary={searchText}
                 anchorRef={inputRef}
+                width="533px"
               />
             )}
           </Box>

@@ -19,7 +19,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { GlobalStyles } from '@mui/material';
 
 import { CustomButton } from "../components/ui/CustomButton";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import CustomToggle from "../components/reuseable/CustomToggle";
 
@@ -33,6 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
+import SearchBarComponent from "../components/dropdowns/SearchBarComponent";
 
 const schema = z.object({
   wise: z.string().min(2, { message: "Select value is required" }),
@@ -74,8 +75,11 @@ const schema = z.object({
 />
 
 const ApplyLeavePage = () => {
+   const inputRef = useRef(null);
+  const [searchText,setSearchText]=useState<string>("")
   const [isHalf, setIsHalf] = useState<boolean>(false);
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
+  const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [isFirst, setIsFirst] = useState<boolean>(false);
   const [isLast, setIsLast] = useState<boolean>(false);
   const [addRecipient, setAddRecipient] = useState<boolean>(false);
@@ -113,7 +117,21 @@ const ApplyLeavePage = () => {
       </span>
       {addRecipient && (
         <div className="mx-4">
-          <Input placeholder="Add  Recipients" />
+          <Input ref={inputRef} placeholder="Add  Recipients"   onChange={(e) => {
+                const value = e.target.value;
+
+                setSearchText(value);
+                setOpenSearch(value.trim().length > 0);
+              }}/>
+          {searchText && (
+              <SearchBarComponent
+                open={openSearch}
+                close={() => setOpenSearch(false)}
+                searchQuary={searchText}
+                anchorRef={inputRef}
+                width="430px"
+              />
+            )}
         </div>
       )}
       <div className="mx-4 mt-2 ">

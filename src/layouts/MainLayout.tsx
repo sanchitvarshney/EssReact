@@ -2,16 +2,33 @@ import styled from "styled-components";
 
 import Header from "../components/header/Header";
 import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 // props: { children: React.ReactNode }
 function MainLayout() {
+
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+useEffect(() => {
+  const handleOnline = () => setIsOnline(true);
+  const handleOffline = () => setIsOnline(false);
+
+  window.addEventListener("online", handleOnline);
+  window.addEventListener("offline", handleOffline);
+
+  return () => {
+    window.removeEventListener("online", handleOnline);
+    window.removeEventListener("offline", handleOffline);
+  };
+}, []);
   return (
     <Wrapper className="">
-      <div>
+      {!isOnline && <div className="absolute text-white bg-[red] w-full">No Internet Connection</div>}
+      <div className="">
         <Header />
       </div>
 
-      <main className=" bg-[#ffffff] h-full  custom-scrollbar-for-menu "><Outlet /></main>
+      <main className=" relative bottom-0 bg-[#ffffff] h-full  custom-scrollbar-for-menu "><Outlet /></main>
     </Wrapper>
   );
 }

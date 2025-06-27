@@ -95,9 +95,11 @@ const searchResults = [
 
 type SearchBarComponentContentType = {
   inputText: string;
+  onSelect?: (user: typeof searchResults[0]) => void;
 };
 const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
   inputText,
+  onSelect,
 }) => {
   const [filteredData, setFilteredData] = useState(searchResults);
 
@@ -126,12 +128,12 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
         <div
           tabIndex={0}
           onMouseEnter={(e) => e.currentTarget.focus()}
-          className="bg-white  shadow-0 h-90 mt-2 overflow-y-auto custom-scrollbar-for-menu focus:outline-none focus:ring-0"
+          className="bg-white  shadow-0 h-60 mt-2 overflow-y-auto custom-scrollbar-for-menu focus:outline-none focus:ring-0"
         >
           <List sx={{ padding: 0 }} className="p-0">
             {filteredData.map((result) => (
               <React.Fragment key={result.id}>
-                <ListItem className="hover:bg-gray-50 transition-colors cursor-pointer">
+                <ListItem className="hover:bg-gray-50 transition-colors cursor-pointer" onClick={() => onSelect && onSelect(result)}>
                   <ListItemText
                     primary={
                       <Typography
