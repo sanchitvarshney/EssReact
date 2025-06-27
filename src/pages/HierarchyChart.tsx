@@ -4,7 +4,9 @@ import { Chip } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { useState } from "react";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
-import ZoomOutIcon from "@mui/icons-material/ZoomOut";
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import type { JSX } from "react";
 
@@ -41,22 +43,23 @@ const NodeCard = ({ name, title, imageUrl, tags, hasChildren, isExpanded, onTogg
       py: 1.5,
       border: "1px solid #333",
       position: "relative",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center"
     }}
   >
     <CardContent
-      sx={{ display: "flex", alignItems: "center", gap: 2, pb: 1, pt: 1 }}
+      sx={{ display: "flex", alignItems: "center", gap: 2, pb: 1, pt: 1, width: "100%" }}
     >
       <Avatar
         alt={name}
         src={imageUrl}
-        sx={{ width: 48, height: 48, border: "2px solid #444",backgroundColor:"#2eacb3" }}
+        sx={{ width: 48, height: 48, border: "2px solid #444", backgroundColor: "#2eacb3" }}
       />
       <div style={{ flex: 1 }}>
         <div style={{ fontWeight: 600, fontSize: 18 }}>{name}</div>
         <div style={{ fontSize: 14, color: "#cbd5e1" }}>{title}</div>
-        <div
-          style={{ marginTop: 6, display: "flex", gap: 6, flexWrap: "wrap" }}
-        >
+        <div style={{ marginTop: 6, display: "flex", gap: 6, flexWrap: "wrap" }}>
           {tags?.map((tag: string) => (
             <Chip
               key={tag}
@@ -74,28 +77,29 @@ const NodeCard = ({ name, title, imageUrl, tags, hasChildren, isExpanded, onTogg
           ))}
         </div>
       </div>
-      {hasChildren && (
-        <IconButton
-          size="small"
-          onClick={onToggle}
-          sx={{
-            position: "absolute",
-            top: 4,
-            right: 4,
-            background: "#1f2937",
-            color: "#fff",
-            "&:hover": { background: "#374151" },
-            zIndex: 1,
-            width: 24,
-            height: 24,
-            fontSize: 16,
-            fontWeight: "bold",
-          }}
-        >
-          {isExpanded ? "−" : "+"}
-        </IconButton>
-      )}
     </CardContent>
+    {hasChildren && (
+      <IconButton
+        size="small"
+        onClick={onToggle}
+        sx={{
+          position: "absolute",
+          left: "50%",
+          bottom: 4,
+          transform: "translate(-50%, 50%)",
+          background: "#1f2937",
+          color: "#fff",
+          "&:hover": { background: "#374151" },
+          zIndex: 1,
+          width: 32,
+          height: 32,
+          fontSize: 20,
+          fontWeight: "bold",
+        }}
+      >
+        {isExpanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+      </IconButton>
+    )}
   </Card>
 );
 
@@ -259,28 +263,32 @@ const HierarchyChart = () => {
                         />
                       ))}
                     </div>
+                    <div className="mt-4">{orgData.children && orgData.children.length > 0 && (
+                        <IconButton
+                          size="small"
+                          onClick={() => toggleNode(orgData.id)}
+                          sx={{
+                            position: "absolute",
+                            left: "50%",
+                            bottom: 3,
+                            transform: "translate(-50%, 50%)",
+                            background: "#1f2937",
+                            color: "#fff",
+                            "&:hover": { background: "#374151" },
+                            zIndex: 1,
+                            width: 32,
+                            height: 32,
+                            fontSize: 20,
+                            fontWeight: "bold",
+                          }}
+                        >
+                         
+                          {expandedNodes[orgData.id] ?? true ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        </IconButton>
+                    
+                  )}</div>
                   </div>
-                  {orgData.children && orgData.children.length > 0 && (
-                    <IconButton
-                      size="small"
-                      onClick={() => toggleNode(orgData.id)}
-                      sx={{
-                        position: "absolute",
-                        top: 4,
-                        right: 4,
-                        background: "#1f2937",
-                        color: "#fff",
-                        "&:hover": { background: "#374151" },
-                        zIndex: 1,
-                        width: 24,
-                        height: 24,
-                        fontSize: 16,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {expandedNodes[orgData.id] ?? true ? "−" : "+"}
-                    </IconButton>
-                  )}
+                  
                 </CardContent>
               </Card>
             </div>

@@ -50,7 +50,7 @@ const DocView: React.FC<Props> = ({
               margin: 0,
               borderRadius: "2px",
               overflow: "auto",
-             
+      
             },
             sx: {
               width: width ? width : 800,

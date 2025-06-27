@@ -33,7 +33,7 @@ const SearchBarComponent: React.FC<Props> = ({
         sx: {
           mt: "2px",
           width: 533,
-          maxHeight: 600,
+          // maxHeight: 600,
           p: 2,
           transformOrigin: "top",
           borderRadius: 0,

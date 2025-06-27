@@ -7,7 +7,9 @@ import MilestonesAndEventsCard from "../components/MilestonesAndEventsCard";
 import PostHeader from "../components/header/PostHeader";
 import PostAnniversaryCard from "../components/reuseable/PostAnniversaryCard";
 
+
 const AnnouncementPage = () => {
+
   return (
     <Box className=" h-[calc(100vh-90px)] overflow-auto p-4 gap-4 grid  sm:grid-cols-[2fr_1fr] grid-cols-[2fr]  md:grid-cols-[3fr_1fr] ">
       <div className="flex flex-col gap-4">
@@ -51,6 +53,7 @@ const AnnouncementPage = () => {
         <NoticeboardCard />
         <MilestonesAndEventsCard />
       </div>
+
     </Box>
   );
 };

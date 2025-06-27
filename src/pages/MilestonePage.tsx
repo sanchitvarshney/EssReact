@@ -1,4 +1,8 @@
-import { Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, IconButton, Typography } from "@mui/material";
+import DocView from "../components/reuseable/DocView";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CommentView from "../components/reuseable/CommentView";
+import { useState } from "react";
 
 const dummyData: any = [
   {
@@ -51,6 +55,7 @@ const dummyData: any = [
   },
 ];
 const MilestonePage = () => {
+  const [isViewAll, setIsViewAll] = useState(false);
   const displayedData = dummyData.slice(0, 4);
 
   return (
@@ -77,8 +82,42 @@ const MilestonePage = () => {
         </div>
       ))}
       <div className="flex justify-center items-center mt-3">
-        <span className="border-b-1 text-sm font-bold">View All</span>
+        <span
+          className="border-b-1 text-sm font-bold select-none cursor-pointer "
+          onClick={() => setIsViewAll(true)}
+        >
+          View All
+        </span>
       </div>
+      <DocView
+        open={isViewAll}
+        close={() => setIsViewAll(false)}
+        vertical={"bottom"}
+        horizontal={"center"}
+        transformOrigin={"bottom"}
+      >
+        <div className="p-4">
+          <IconButton
+            onClick={() => setIsViewAll(false)}
+            sx={{
+              bgcolor: "rgba(255,255,255,0.1)",
+              backdropFilter: "blur(10px)",
+              "&:hover": { bgcolor: "rgba(255,255,255,0.2)" },
+            }}
+          >
+            <ArrowBackIcon sx={{ color: "black" }} />
+          </IconButton>
+          <Typography
+            variant="subtitle1"
+            fontSize={18}
+            fontWeight={"600"}
+            sx={{ py: 1 }}
+          >
+            All Current Month's BirthDay And Anniversary
+          </Typography>
+          <CommentView />
+        </div>
+      </DocView>
     </div>
   );
 };

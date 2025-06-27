@@ -39,10 +39,9 @@ export const renderMenu = (
   accordionValues: any,
   setAccordionValues: (value: { [key: string]: string }) => void,
   level: number = 0,
-  path: string = "",
-
+  path: string = ""
 ) => {
-  const {toggleDrawerClose} = useDrawerContext()
+  const { toggleDrawerClose } = useDrawerContext();
   return (
     <Accordion
       type="single"
@@ -63,7 +62,7 @@ export const renderMenu = (
                   className="border-0 w-full transition-all duration-100"
                 >
                   <div className="flex flex-col px-4">
-                    {(!isExpended ) ? (
+                    {!isExpended ? (
                       <>
                         <CustomToolTip title={item?.title} placement="right">
                           <div
@@ -145,7 +144,7 @@ export const renderMenu = (
                       onClick={() => {
                         // setIsExpended(false);
                         setAccordionValues({});
-                        toggleDrawerClose()
+                        toggleDrawerClose();
                       }}
                     >
                       {isNew && <DynamicIcon name={item.icon} size="medium" />}
@@ -173,16 +172,18 @@ interface CustomSideBarMenuProps {
 }
 
 const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
-  const {isExpended,setIsExpended,accordionValues,setAccordionValues} = useDrawerContext()
+  const { isExpended, setIsExpended, accordionValues, setAccordionValues } =
+    useDrawerContext();
   // const navigate = useNavigate();
-
 
   return (
     <div className="w-full h-[calc(100vh-90px)] flex flex-row ">
       <Box sx={{ display: { xs: "none", md: "flex" } }}>
         {/* Sidebar container */}
         <div
-          className={`${isExpended ? "w-[40vh]" : "w-[10vh]"} flex flex-col border-r-1 transition-all duration-500 ease-in-out`}
+          className={`${
+            isExpended ? "w-[40vh]" : "w-[10vh]"
+          } flex flex-col border-r-1 transition-all duration-500 ease-in-out`}
         >
           {/* Profile section */}
           {isExpended && (
@@ -203,7 +204,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
                   <Avatar
                     alt="Remy Sharp"
                     src="/static/images/avatar/2.jpg"
-                    sx={{ width: 80, height: 80,backgroundColor:"#2eacb3" }}
+                    sx={{ width: 80, height: 80, backgroundColor: "#2eacb3" }}
                   />
                   <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">
                     Rahul Mehra
@@ -217,7 +218,6 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
                   <p className=" break-words max-w-full text-[0.9rem] font-medium ">
                     EMP-1003
                   </p>
-           
                 </div>
               </div>
               <Divider className="w-[90%] self-center " />{" "}
@@ -255,7 +255,9 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
         </div>
       </Box>
       {/* Main content area */}
-      <div className="flex-1 overflow-y-auto w-full "><Outlet /></div>
+      <div className="flex-1 overflow-y-auto w-full ">
+        <Outlet />
+      </div>
       <CustomDrawer />
     </div>
   );

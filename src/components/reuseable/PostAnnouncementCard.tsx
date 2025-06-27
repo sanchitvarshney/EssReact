@@ -12,16 +12,16 @@ import {
   Paper,
   IconButton,
 } from "@mui/material";
-
-
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ComponentIconWithtitle from "./ComponentIconWithtitle";
 import { Input } from "../ui/input";
-import AttachmentIcon from '@mui/icons-material/Attachment';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import SendIcon from '@mui/icons-material/Send';
+import AttachmentIcon from "@mui/icons-material/Attachment";
+import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
+import SendIcon from "@mui/icons-material/Send";
 import { postCardData } from "../../staticData/postdata";
-
-
+import DocView from "./DocView";
+import CommentView from "./CommentView";
+import { useState } from "react";
 
 interface PostAnnouncementCardProps {
   postDate: Date;
@@ -39,6 +39,11 @@ const PostAnnouncementCard = ({
   images = [],
   timeAgo = "3 months ago",
 }: PostAnnouncementCardProps) => {
+  const [isCommentView, setIsCommentView] = useState(false);
+
+  const handleView = (id: string) => {
+    if (id.toLowerCase() === "comments") setIsCommentView(true);
+  };
   return (
     <Card
       elevation={0}
@@ -50,13 +55,13 @@ const PostAnnouncementCard = ({
         border: "1px solid #f0f0f0",
       }}
     >
-      <CardContent >
+      <CardContent>
         <ListItem className="hover:bg-gray-50 flex  justify-start items-start  transition-colors rounded-lg relative">
           <ListItemAvatar>
             <Avatar
               className="text-white font-semibold "
               sx={{
-                backgroundColor:"#2eacb3",
+                backgroundColor: "#2eacb3",
                 width: 48,
                 height: 48,
               }}
@@ -154,30 +159,69 @@ const PostAnnouncementCard = ({
                 </Box>
               ))}
             </Box>
-            <div className="flex justify-between flex-wrap px-5 mt-3">
+            <div className="flex  flex-wrap px-5 mt-3">
               {postCardData.map((item) => (
                 <ComponentIconWithtitle
                   key={item.title}
                   icon={item.icon}
                   title={item.title}
+                  view={() => handleView(item.title)}
                 />
               ))}
-           
             </div>
             <Divider sx={{ my: 2 }} />
             <div className="mt-3 flex justify-between">
               <div className="flex-[0.8] ">
-                <Input  placeholder="Write your comment" className="rounded-[20px]"/>
+                <Input
+                  placeholder="Write your comment"
+                  className="rounded-[20px]"
+                />
               </div>
               <div className="flex items-center gap-2">
-                <IconButton><AttachmentIcon /></IconButton>
-                  <IconButton><EmojiEmotionsIcon /></IconButton>
-                <IconButton><SendIcon /></IconButton>
+                <IconButton>
+                  <AttachmentIcon />
+                </IconButton>
+                <IconButton>
+                  <EmojiEmotionsIcon />
+                </IconButton>
+                <IconButton>
+                  <SendIcon />
+                </IconButton>
               </div>
             </div>
           </Box>
         )}
       </CardContent>
+
+      <DocView
+        open={isCommentView}
+        close={() => setIsCommentView(false)}
+        vertical={"bottom"}
+        horizontal={"center"}
+        transformOrigin={"bottom"}
+      >
+        <div className="p-4">
+          <IconButton
+            onClick={() => setIsCommentView(false)}
+            sx={{
+              bgcolor: "rgba(255,255,255,0.1)",
+              backdropFilter: "blur(10px)",
+              "&:hover": { bgcolor: "rgba(255,255,255,0.2)" },
+            }}
+          >
+            <ArrowBackIcon sx={{ color: "black" }} />
+          </IconButton>
+          <Typography
+            variant="subtitle1"
+            fontSize={18}
+            fontWeight={"600"}
+            sx={{ py: 1 }}
+          >
+            Comments (5)
+          </Typography>
+          <CommentView />
+        </div>
+      </DocView>
     </Card>
   );
 };
