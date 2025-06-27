@@ -3,7 +3,7 @@ import  { type FC } from "react";
 type ComponentIconWithtitlePropsType = {
   icon: any;
   title: string;
-  view:any
+  view?:any
 };
 
 const ComponentIconWithtitle: FC<ComponentIconWithtitlePropsType> = ({ icon, title,view }) => {
