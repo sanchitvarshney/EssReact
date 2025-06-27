@@ -23,6 +23,7 @@ import CustomPopover from "../reuseable/CustomPopover";
 import NotificationDropDown from "../dropdowns/NotificationDropDown";
 import ProfileDropDown from "../dropdowns/ProfileDropDown";
 import { useNavigate } from "react-router-dom";
+import logoImg from "../../assets/img/hrms_mscorpres_logo.png"
 
 const pages = ["Products", "Pricing", "Blog"];
 
@@ -64,9 +65,9 @@ function Header() {
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <img
               onClick={() => navigate("/")}
-              src="https://hrms.mscorpres.com/assets/images/hrms_logo.png"
+              src={logoImg}
               alt="mscorpres"
-              className="cursor-pointer"
+              className="cursor-pointer w-65"
             />
           </Box>
 
@@ -107,7 +108,7 @@ function Header() {
 
           <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1, mr: 2 }}>
             <img
-              src="https://hrms.mscorpres.com/assets/images/hrms_logo.png"
+              src=""
               alt="mscorpres"
             />
           </Box>
