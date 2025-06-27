@@ -9,10 +9,13 @@ import ChangePasswordScreen from "./ChangePasswordScreen";
 const EmployeeProfilePage = () => {
   // const navigate= useNavigate()
   const [value, setValue] = useState("info");
+  const [editMode, setEditMode] = useState(false);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+    // If tab changes, exit edit mode
     console.log(event);
+    setEditMode(false);
   };
   return (
     <div className="w-full h-[calc(100vh-90px)]  overflow-y-auto p-4">
@@ -34,12 +37,23 @@ const EmployeeProfilePage = () => {
             <Typography variant="h6"></Typography>
           </div>
         </div>
-
-        <div className="flex  inline-block">
-          <CustomButton className="bg-gray-900 text-white  hover:bg-gray-800/80">
-            Edit Profile
-          </CustomButton>{" "}
-        </div>
+        {value === "info" && (
+          <div className="flex  inline-block">
+            <CustomButton
+              className={`bg-gray-900 text-white  hover:bg-gray-800/80`}
+              onClick={() => setEditMode((prev) => !prev)}
+              disabled={editMode}
+            >
+              Edit Profile
+            </CustomButton>
+            {editMode &&  <CustomButton
+              className="bg-gray-900 text-white ml-4  hover:bg-gray-800/80"
+              onClick={() => setEditMode((prev) => !prev)}
+            >
+              Cancel
+            </CustomButton>}
+          </div>
+        )}
       </div>
       <Divider sx={{ marginTop: 2 }} />
       <Box
@@ -87,8 +101,10 @@ const EmployeeProfilePage = () => {
       </Box>
       <div className="w-full ">
         {value === "info" ? (
-          <EmployeeInformationPage />
-        ) : value ==="password" ? (<ChangePasswordScreen />):(
+          <EmployeeInformationPage editMode={editMode} />
+        ) : value === "password" ? (
+          <ChangePasswordScreen />
+        ) : (
           <EmployeeHierarchyPage />
         )}
       </div>

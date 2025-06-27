@@ -15,4 +15,5 @@ export const helperFun = {
 
     return `${startTimeFormatted} to ${endTimeFormatted}`;
   },
+
 };
