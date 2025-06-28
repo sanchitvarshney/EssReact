@@ -12,11 +12,9 @@ import HierarchyChart from "./src/pages/HierarchyChart";
 import AnnouncementPage from "./src/pages/AnnouncementPage";
 import HomePage from "./src/pages/HomePage";
 import EmployeeProfilePage from "./src/pages/EmployeeProfilePage";
-
 import PolicyPage from "./src/pages/PolicyPage";
 import DocumentsPage from "./src/pages/DocumentsPage";
 import LeaveGrantPage from "./src/pages/LeaveGrantPage";
-
 import HelpPortal from "./src/pages/HelpPortal";
 import RecruitmentsPage from "./src/pages/RecruitmentsPage";
 import PerformancePage from "./src/pages/PerformancePage";
@@ -26,11 +24,19 @@ import CreateTicketPage from "./src/pages/CreateTicketPage";
 import ViewStatusTicketPage from "./src/pages/ViewStatusTicketPage";
 import ReimbursementStatusPage from "./src/pages/ReimbursementStatusPage";
 import ReimbursementGrantPage from "./src/pages/ReimbursementGrantPage";
+import RecoverPassword from "./src/pages/RecoverPassword";
+import Protected from "./src/routes/Protected";
+import SignInScreen from "./src/pages/SignInScreen";
+import TaskPage from "./src/pages/TaskPage";
 
 export const route = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <Protected>
+        <MainLayout />
+      </Protected>
+    ),
     children: [
       {
         index: true,
@@ -40,23 +46,25 @@ export const route = createBrowserRouter([
         path: "manage-account",
         element: <EmployeeProfilePage />,
       },
-
       {
         element: <SideMenuBar />,
         children: [
+              {
+            path: "task-box",
+            element: <TaskPage />,
+          },
           {
             path: "hr-policy",
             element: <PolicyPage />,
           },
           {
-            path: "/support-protal",
+            path: "support-portal",
             element: <HelpPortal />,
           },
           {
             path: "self-service/attendance",
             element: <AttendancePage />,
           },
-
           {
             path: "calendar",
             element: <HolidayPage />,
@@ -86,52 +94,72 @@ export const route = createBrowserRouter([
             element: <HierarchyChart />,
           },
           {
-            path: "/hr-documents",
+            path: "hr-documents",
             element: <DocumentsPage />,
           },
           {
-            path: "/self-service/leave-grant",
+            path: "self-service/leave-grant",
             element: <LeaveGrantPage />,
           },
           {
-            path: "/performance",
+            path: "performance",
             element: <PerformancePage />,
           },
           {
-            path: "/reimbursement/claim",
+            path: "reimbursement/claim",
             element: <ReimbursementClaim />,
           },
           {
-            path: "/recruitments",
+            path: "recruitments",
             element: <RecruitmentsPage />,
           },
           {
-            path: "/peripheral",
+            path: "peripheral",
             element: <PeripheralPage />,
           },
           {
-            path: "/create-new-ticket",
+            path: "create-new-ticket",
             element: <CreateTicketPage />,
           },
           {
-            path: "/ticket-status",
+            path: "ticket-status",
             element: <ViewStatusTicketPage />,
           },
           {
-            path: "/reimbursement/status",
+            path: "reimbursement/status",
             element: <ReimbursementStatusPage />,
           },
-              {
-            path: "/reimbursement/grant",
+          {
+            path: "reimbursement/grant",
             element: <ReimbursementGrantPage />,
           },
-          
         ],
       },
     ],
   },
   {
+    path: "/sign-in",
+    element: (
+      <Protected authentication={false}>
+        <SignInScreen />
+      </Protected>
+    ),
+  },
+  {
+    path: "/recover-password",
+
+    element: (
+      <Protected authentication={false}>
+        <RecoverPassword />{" "}
+      </Protected>
+    ),
+  },
+  {
     path: "*",
-    element: <Custom404Page />,
+    element: (
+      <Protected >
+        <Custom404Page />
+      </Protected>
+    ),
   },
 ]);

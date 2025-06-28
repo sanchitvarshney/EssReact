@@ -18,6 +18,7 @@ import {
   type OrgNode,
   type DepartmentNode,
 } from "../dummydata/HierarchyData";
+import CustomToolTip from "../components/reuseable/CustomToolTip";
 
 const tagColors: Record<string, string> = {
   Leadership: "#60a5fa",
@@ -168,7 +169,7 @@ const DepartmentCard = ({
       background: "#23272f",
       color: "#fff",
       borderRadius: 3,
-      minWidth:280,
+      minWidth: 280,
       maxWidth: 320,
       boxShadow: 6,
       px: 2,
@@ -268,7 +269,7 @@ const DepartmentCard = ({
 );
 
 const HierarchyChart = () => {
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(0.4);
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>(
     {}
   );
@@ -444,7 +445,6 @@ const HierarchyChart = () => {
           boxShadow: 6,
           border: "1px solid #333",
           position: "relative",
-
         }}
       >
         <CardContent
@@ -546,7 +546,7 @@ const HierarchyChart = () => {
 
   return (
     <div
-      className="overflow-auto p-6 h-[calc(100vh-90px)]  w-full flex"
+      className="overflow-auto p-4 h-[calc(100vh-90px)]   flex "
       style={{ position: "relative" }}
     >
       <div
@@ -557,45 +557,48 @@ const HierarchyChart = () => {
           zIndex: 10,
           display: "flex",
           gap: 8,
-          background: "#1f2937",
+          // background: "#1f2937",
           padding: "8px",
           borderRadius: "8px",
-          border: "1px solid #374151",
+          // border: "1px solid #374151",
         }}
       >
-        <IconButton
-          onClick={() => setViewMode("employee")}
-          size="small"
-          sx={{
-            color: viewMode === "employee" ? "#fff" : "#9ca3af",
-            background: viewMode === "employee" ? "#2eacb3" : "transparent",
-            "&:hover": {
-              backgroundColor: viewMode === "employee" ? "#2eacb3" : "#374151",
-            },
-            borderRadius: "6px",
-            padding: "8px",
-          }}
-          title="Employee Hierarchy"
-        >
-          <PeopleIcon />
-        </IconButton>
-        <IconButton
-          onClick={() => setViewMode("department")}
-          size="small"
-          sx={{
-            color: viewMode === "department" ? "#fff" : "#9ca3af",
-            background: viewMode === "department" ? "#2eacb3" : "transparent",
-            "&:hover": {
-              backgroundColor:
-                viewMode === "department" ? "#2eacb3" : "#374151",
-            },
-            borderRadius: "6px",
-            padding: "8px",
-          }}
-          title="Department Hierarchy"
-        >
-          <BusinessIcon />
-        </IconButton>
+        <CustomToolTip title={"Employee Hierarchy"} placement={"bottom"}>
+          <IconButton
+            onClick={() => setViewMode("employee")}
+            size="small"
+            sx={{
+              color: viewMode === "employee" ? "#fff" : "#9ca3af",
+              background: viewMode === "employee" ? "#2eacb3" : "gray",
+              "&:hover": {
+                backgroundColor:
+                  viewMode === "employee" ? "#2eacb3" : "#374151",
+              },
+              borderRadius: "6px",
+              padding: "8px",
+            }}
+          >
+            <PeopleIcon sx={{color:"#fff"}} />
+          </IconButton>
+        </CustomToolTip>
+        <CustomToolTip title={"Department Hierarchy"} placement={"bottom"}>
+          <IconButton
+            onClick={() => setViewMode("department")}
+            size="small"
+            sx={{
+              color: viewMode === "department" ? "#fff" : "#9ca3af",
+              background: viewMode === "department" ? "#2eacb3" : "gray",
+              "&:hover": {
+                backgroundColor:
+                  viewMode === "department" ? "#2eacb3" : "#374151",
+              },
+              borderRadius: "6px",
+              padding: "8px",
+            }}
+          >
+            <BusinessIcon sx={{color:"#fff"}}/>
+          </IconButton>
+        </CustomToolTip>
       </div>
 
       <div
@@ -651,11 +654,10 @@ const HierarchyChart = () => {
           transform: `scale(${zoom})`,
           transformOrigin: "top center",
           transition: "transform 0.2s",
-          // justifySelf: "center",
+     
         }}
       >
         <Tree
-     
           lineWidth={"3px"}
           lineColor={viewMode === "employee" ? "#444" : "#475569"}
           lineBorderRadius={"20px"}
