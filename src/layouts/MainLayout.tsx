@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Header from "../components/header/Header";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Typography } from "@mui/material";
 
 // props: { children: React.ReactNode }
 function MainLayout() {
@@ -23,7 +24,7 @@ useEffect(() => {
 }, []);
   return (
     <Wrapper className="">
-      {!isOnline && <div className="absolute text-white bg-[red] w-full">No Internet Connection</div>}
+      {!isOnline && <div className="absolute text-white  bg-[red] w-full z-10"><Typography textAlign={"center"}>No Internet Connection</Typography></div>}
       <div className="">
         <Header />
       </div>

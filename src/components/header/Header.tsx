@@ -162,8 +162,9 @@ function Header() {
                     //@ts-ignore
                     anchorEl={notificationRef}
                     width={400}
-                    height={350}
+                    height={360}
                     isCone={true}
+                
                   >
                     <NotificationDropDown />
                   </CustomPopover>

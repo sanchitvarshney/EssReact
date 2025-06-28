@@ -27,7 +27,7 @@ const SignInScreen = () => {
       <div className="relative z-10 w-full max-w-md mx-auto">
         <div className="bg-white shadow-2xl border border-gray-100 rounded-3xl px-8 py-10 w-full space-y-7 flex flex-col items-center">
           <div className="flex flex-col items-center gap-2">
-            <img src={logoImg} alt="mscorpres" className="h-16 w-auto mb-2 drop-shadow-md" />
+            <img src={logoImg} alt="mscorpres" className="h-16 w-auto mb-2 " />
             <h2 className="text-2xl font-bold text-gray-800 tracking-tight text-center">Sign in to continue</h2>
           </div>
 

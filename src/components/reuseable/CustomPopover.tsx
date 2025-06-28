@@ -38,6 +38,7 @@ const CustomPopover: React.FC<Props> = ({
     <AnimatePresence>
       {open && (
         <Popover
+        elevation={2}
           // disablePortal
           // tabIndex={-1}
           open={open}

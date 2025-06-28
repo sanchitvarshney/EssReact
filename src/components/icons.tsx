@@ -13,6 +13,7 @@ import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
  import SettingsIcon from '@mui/icons-material/Settings';
  import LockOutlineIcon from '@mui/icons-material/LockOutline';
  import LogoutIcon from '@mui/icons-material/Logout';
+ import PolicyIcon from '@mui/icons-material/Policy';
 
 export const Icons = {
   home: HomeIcon,
@@ -29,5 +30,6 @@ export const Icons = {
  account:ManageAccountsIcon,
  setting:SettingsIcon,
  password: LockOutlineIcon,
- logout: LogoutIcon
+ logout: LogoutIcon,
+ policyicon:PolicyIcon
 };

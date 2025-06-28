@@ -1,21 +1,31 @@
 import { Typography } from "@mui/material";
 
 import NotificationContent from "../NotificationContent";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
 
 const NotificationDropDown = () => {
   return (
-    <>
-      <div className="w-full flex justify-between items-center p-3 border-b-1 border-gray-700/40">
-        <Typography sx={{ fontSize: 19, fontWeight: 600 }}>
+
+      <div className="h-90 bg-white rounded-lg overflow-y-auto w-full p-3  custom-scrollbar-for-menu space-y-2 ">
+        <Typography sx={{ fontSize: 19, fontWeight: 600 , mb:1}}>
           Notifications
         </Typography>
-        <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
-          See All <ArrowForwardIcon sx={{ fontSize: 16 }} />
-        </Typography>
+          <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+        <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+          <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+            <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+              <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+                <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+                  <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+                    <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+                      <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+
+                        <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+                          <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+                            <NotificationContent title={"name"} message={"This is dummy msg"} time={"9:23 am"} />
+  
       </div>
-      <NotificationContent title={"name"} message={"hii"} time={"9:23 am"} />
-    </>
+    
   );
 };
 
