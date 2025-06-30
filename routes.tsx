@@ -118,8 +118,16 @@ export const route = createBrowserRouter([
             element: <PeripheralPage />,
           },
           {
-            path: "create-new-ticket",
+            path: "/support-protal",
+            element: <HelpPortal />,
+          },
+                 {
+            path: "/support-protal/create-new-ticket",
             element: <CreateTicketPage />,
+          },
+                          {
+            path: "/support-protal/ticket-status",
+            element: <ViewStatusTicketPage />,
           },
           {
             path: "ticket-status",

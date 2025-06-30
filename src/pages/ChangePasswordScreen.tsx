@@ -43,7 +43,7 @@ const ChangePasswordScreen = () => {
 
   const getStrengthColor = (value: number) => {
     switch (value) {
-      case 0:
+    
       case 1:
         return "error";
       case 2:
@@ -203,15 +203,19 @@ const ChangePasswordScreen = () => {
               );
             })}
           </List>
-          <Typography variant="subtitle1">Password Strength</Typography>
-        <LinearProgress
-          variant="determinate"
-          value={(strength / 5) * 100}
-          color={getStrengthColor(strength)}
-          sx={{ height: 10, borderRadius: 5, my: 1 }}
-        />
-        </Box>
+          {strength > 0 && (
+            <>
+              <Typography variant="subtitle1">Password Strength</Typography>
+              <LinearProgress
+                variant="determinate"
+                value={(strength / 5) * 100}
+                color={getStrengthColor(strength)}
+                sx={{ height: 10, borderRadius: 5, my: 1 }}
+              />
+            </>
+          )}
         
+        </Box>
       </div>
       <div className="w-full p-4 bg-white space-y-3 flex flex-col justify-center  items-center">
         <h3 className="text-lg font-semibold text-gray-700">

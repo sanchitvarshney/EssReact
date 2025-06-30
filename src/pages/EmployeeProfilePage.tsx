@@ -39,13 +39,14 @@ const EmployeeProfilePage = () => {
         </div>
         {value === "info" && (
           <div className="flex  inline-block">
-            <CustomButton
+            {!editMode &&          <CustomButton
               className={`bg-gray-900 text-white  hover:bg-gray-800/80`}
               onClick={() => setEditMode((prev) => !prev)}
-              disabled={editMode}
+             
             >
               Edit Profile
-            </CustomButton>
+            </CustomButton>}
+  
             {editMode &&  <CustomButton
               className="bg-gray-900 text-white ml-4  hover:bg-gray-800/80"
               onClick={() => setEditMode((prev) => !prev)}

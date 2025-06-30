@@ -5,16 +5,19 @@ import { motion } from "framer-motion";
 import NoticeboardCard from "../components/NoticeboardCard";
 import MilestonesAndEventsCard from "../components/MilestonesAndEventsCard";
 import PostHeader from "../components/header/PostHeader";
-import PostAnniversaryCard from "../components/reuseable/PostAnniversaryCard";
+import { useState } from "react";
+// import PostAnniversaryCard from "../components/reuseable/PostAnniversaryCard";
 
 
 const AnnouncementPage = () => {
+   const [postFilter, setPostFilter] = useState<string>("announcement");
+
 
   return (
     <Box className=" h-[calc(100vh-90px)] overflow-auto p-4 gap-4 grid  sm:grid-cols-[2fr_1fr] grid-cols-[2fr]  md:grid-cols-[3fr_1fr] ">
       <div className="flex flex-col gap-4">
         <div className="sticky top-[-30px] z-10 ">
-          <PostHeader />
+          <PostHeader setFilter={setPostFilter} postFilter={postFilter}/>
         </div>
         {[...Array(6)].map((_, index) => {
           const { ref, inView } = useInView({
@@ -47,7 +50,7 @@ const AnnouncementPage = () => {
             </motion.div>
           );
         })}
-           <PostAnniversaryCard authorName={"test"} />
+           {/* <PostAnniversaryCard authorName={"test"} /> */}
       </div>
       <div className="flex flex-col items-center gap-4">
         <NoticeboardCard />

@@ -25,7 +25,7 @@ useEffect(() => {
   return (
     <Wrapper className="">
       {!isOnline && <div className="absolute text-white  bg-[red] w-full z-10"><Typography textAlign={"center"}>No Internet Connection</Typography></div>}
-      <div className="">
+      <div className="sticky top-0 z-50">
         <Header />
       </div>
 

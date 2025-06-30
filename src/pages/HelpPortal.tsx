@@ -26,8 +26,8 @@ const HelpPortal = () => {
           required to submit a ticket.
         </Typography>
         <div className="space-x-4">
-          <CustomButton className=" bg-[#2eacb3]" onClick={()=>navigation("/create-new-ticket")}>Create New Ticket</CustomButton>
-          <CustomButton className=" bg-[#2eacb3]" onClick={()=>navigation("/ticket-status")}>Ticket Status</CustomButton>
+          <CustomButton className=" bg-[#2eacb3]" onClick={()=>navigation("/support-protal/create-new-ticket")}>Create New Ticket</CustomButton>
+          <CustomButton className=" bg-[#2eacb3]" onClick={()=>navigation("/support-protal/ticket-status")}>Ticket Status</CustomButton>
         </div>
       </div>
     </div>
