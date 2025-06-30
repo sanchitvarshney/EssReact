@@ -60,7 +60,7 @@ const AttendancePage = () => {
           {dotColor.map((item, index) => (
             <div key={index} className="flex items-center space-x-2 mb-1">
               <div className={`w-3 h-3 rounded-full ${item.color}`} />
-              <span>{item.name}</span>
+              <span className=" select-none ">{item.name}</span>
             </div>
           ))}
         </div>

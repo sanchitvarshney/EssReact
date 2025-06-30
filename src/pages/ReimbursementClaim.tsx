@@ -350,7 +350,7 @@ const ReimbursementClaim = () => {
             <div className="flex justify-center pt-6 pb-4">
               <CustomButton
                 type="submit"
-                className="px-12 py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-105 transition-all duration-200 text-white"
+                className="px-12 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-105 transition-all duration-200 text-white"
               >
                 Submit Reimbursement Request
               </CustomButton>

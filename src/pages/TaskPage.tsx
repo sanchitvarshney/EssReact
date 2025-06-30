@@ -295,25 +295,35 @@ const TaskPage = () => {
   return (
     <Box
       sx={{
-        p: 3,
-        backgroundColor: "#f8fafc",
-        minHeight: "85vh",
-        overflowY: "auto",
+        width: "100%",
+        p: 2,
+        backgroundColor: "#fff",
+        minHeight: "87vh",
       }}
     >
       <Box sx={{ mb: 1 }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
-          <AssignmentIcon sx={{ fontSize: 32, color: "#2eacb3" }} />
-          <Typography variant="h4" sx={{ fontWeight: 700, color: "#1f2937" }}>
-            Task Management
-          </Typography>
-        </Box>
+        <div
+        className="flex justify-between items-center"
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <AssignmentIcon sx={{ fontSize: 32, color: "#2eacb3" }} />
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: 600, fontSize: 22, color: "#1f2937" }}
+            >
+              Task
+            </Typography>
+          </div>
+     
+            {/* <CustomButton className="bg-[#000] hover:bg-gray-800 text-md text-white font-bold cursor-pointer">+ Add</CustomButton> */}
+     
+        </div>
       </Box>
 
       <Card
         sx={{ borderRadius: 3, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
       >
-        <TableContainer sx={{ maxHeight: "73vh", overflow: "auto" }}>
+        <TableContainer sx={{ maxHeight: "75vh", overflow: "auto" }}>
           <Table>
             <TableHead>
               <TableRow sx={{ backgroundColor: "#f9fafb" }}>
@@ -550,14 +560,14 @@ const TaskPage = () => {
             <div className="flex justify-end gap-2 mt-4">
               <CustomButton
                 onClick={handleCloseDialog}
-                className="bg-gray-400 hover:bg-gray-400/80  text-white"
+                className="bg-gray-400 hover:bg-gray-400/80  text-white cursor-pointer"
               >
                 {" "}
                 Close
               </CustomButton>
               <CustomButton
                 onClick={handleAddComment}
-                className="bg-[#2eacb3] text-white hover:bg-[#2eacb3]/80"
+                className="bg-[#2eacb3] text-white hover:bg-[#2eacb3]/80 cursor-pointer"
               >
                 {" "}
                 Comment

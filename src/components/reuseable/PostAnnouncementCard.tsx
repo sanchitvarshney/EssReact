@@ -15,7 +15,7 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ComponentIconWithtitle from "./ComponentIconWithtitle";
 import { Input } from "../ui/input";
-import AttachmentIcon from "@mui/icons-material/Attachment";
+
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import SendIcon from "@mui/icons-material/Send";
 import { postCardData } from "../../staticData/postdata";
@@ -178,9 +178,7 @@ const PostAnnouncementCard = ({
                 />
               </div>
               <div className="flex items-center gap-2">
-                <IconButton>
-                  <AttachmentIcon />
-                </IconButton>
+      
                 <IconButton>
                   <EmojiEmotionsIcon />
                 </IconButton>

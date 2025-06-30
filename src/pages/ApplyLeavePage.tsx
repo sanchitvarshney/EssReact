@@ -16,7 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Textarea } from "../components/ui/textarea";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { GlobalStyles } from '@mui/material';
+import { GlobalStyles } from "@mui/material";
 
 import { CustomButton } from "../components/ui/CustomButton";
 import { useEffect, useRef, useState } from "react";
@@ -35,6 +35,31 @@ import {
 } from "../components/ui/select";
 import SearchBarComponent from "../components/dropdowns/SearchBarComponent";
 
+const ApplyLeaveOption = [
+ 
+  {
+    value: "el",
+    label: "Earned Leave",
+  },
+  {
+    value: "sl",
+    label: "Sick/Casual Leave",
+  },
+  {
+    value: "wfh",
+    label: "Work From Home",
+  },
+    {
+    value: "onduty",
+    label: "On Duty",
+  },
+    {
+    value: "compensatory",
+    label: "Compensatory Leave",
+  },
+
+];
+
 const schema = z.object({
   wise: z.string().min(2, { message: "Select value is required" }),
   pan: z
@@ -49,34 +74,32 @@ const schema = z.object({
   toDate: z.date({ required_error: "To Date is required" }),
 });
 
-
-
 <GlobalStyles
   styles={{
-    '.MuiPickersPopper-root .MuiPaper-root': {
-      backgroundColor: 'red',
-      color: 'green',
+    ".MuiPickersPopper-root .MuiPaper-root": {
+      backgroundColor: "red",
+      color: "green",
     },
-    '.MuiPickersDay-root': {
-      color: 'green', 
+    ".MuiPickersDay-root": {
+      color: "green",
     },
-    '.MuiPickersDay-root.Mui-selected': {
-      backgroundColor: 'red', 
-      color: 'green',
+    ".MuiPickersDay-root.Mui-selected": {
+      backgroundColor: "red",
+      color: "green",
     },
-    '.MuiPickersDay-root:not(.Mui-selected):hover': {
-      backgroundColor: 'red', 
+    ".MuiPickersDay-root:not(.Mui-selected):hover": {
+      backgroundColor: "red",
     },
-    '.MuiPickersCalendarHeader-root': {
-      backgroundColor: 'red', 
-      color: 'green',
+    ".MuiPickersCalendarHeader-root": {
+      backgroundColor: "red",
+      color: "green",
     },
   }}
-/>
+/>;
 
 const ApplyLeavePage = () => {
-   const inputRef = useRef(null);
-  const [searchText,setSearchText]=useState<string>("")
+  const inputRef = useRef(null);
+  const [searchText, setSearchText] = useState<string>("");
   const [isHalf, setIsHalf] = useState<boolean>(false);
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
   const [openSearch, setOpenSearch] = useState<boolean>(false);
@@ -117,21 +140,25 @@ const ApplyLeavePage = () => {
       </span>
       {addRecipient && (
         <div className="mx-4">
-          <Input ref={inputRef} placeholder="Add  Recipients"   onChange={(e) => {
-                const value = e.target.value;
+          <Input
+            ref={inputRef}
+            placeholder="Add  Recipients"
+            onChange={(e) => {
+              const value = e.target.value;
 
-                setSearchText(value);
-                setOpenSearch(value.trim().length > 0);
-              }}/>
+              setSearchText(value);
+              setOpenSearch(value.trim().length > 0);
+            }}
+          />
           {searchText && (
-              <SearchBarComponent
-                open={openSearch}
-                close={() => setOpenSearch(false)}
-                searchQuary={searchText}
-                anchorRef={inputRef}
-                width="430px"
-              />
-            )}
+            <SearchBarComponent
+              open={openSearch}
+              close={() => setOpenSearch(false)}
+              searchQuary={searchText}
+              anchorRef={inputRef}
+              width="430px"
+            />
+          )}
         </div>
       )}
       <div className="mx-4 mt-2 ">
@@ -164,14 +191,11 @@ const ApplyLeavePage = () => {
                           defaultValue={wise}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a filter type" />
+                            <SelectValue placeholder="Select Leave Type" />
                           </SelectTrigger>
 
                           <SelectContent className="bg-white">
-                            {[
-                              { label: "Option 1", value: "option1" },
-                              { label: "Option 2", value: "option2" },
-                            ].map((data) => (
+                            {ApplyLeaveOption.map((data) => (
                               <SelectItem key={data.value} value={data.value}>
                                 {data.label}
                               </SelectItem>
@@ -193,8 +217,8 @@ const ApplyLeavePage = () => {
                         <FormLabel className={LableStyle}>From Date</FormLabel>
                         <FormControl className="">
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker 
-                             minDate={dayjs()} 
+                            <DatePicker
+                              minDate={dayjs()}
                               className="border-none"
                               value={field.value ? dayjs(field.value) : null}
                               onChange={(date) => {
@@ -266,25 +290,22 @@ const ApplyLeavePage = () => {
                       <FormItem>
                         <FormLabel className={LableStyle}>To Date</FormLabel>
                         <FormControl>
-                          <LocalizationProvider dateAdapter={AdapterDayjs} >
-                            <DatePicker 
-                            className="static "
-                             minDate={dayjs()} 
-                            // sx={{overflow:"hidden"}}
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                              className="static "
+                              minDate={dayjs()}
+                              // sx={{overflow:"hidden"}}
                               value={field.value ? dayjs(field.value) : null}
                               onChange={(date) => {
-                                if(openCalendar){
-                                   setOpenCalendar(!openCalendar)
+                                if (openCalendar) {
+                                  setOpenCalendar(!openCalendar);
                                 }
                                 field.onChange(date ? date.toDate() : null);
                               }}
                               format="DD-MM-YYYY"
                               slotProps={{
-                              
                                 popper: {
                                   disablePortal: true,
-                                  
-                                  
                                 },
                                 textField: {
                                   fullWidth: true,
@@ -295,8 +316,6 @@ const ApplyLeavePage = () => {
                                     disableUnderline: true,
                                     className: InputStyle,
                                     sx: {
-                                     
-                                   
                                       "& .MuiInputBase-input::placeholder": {
                                         // color: "#94a3b8",
                                         opacity: 1,
@@ -353,7 +372,6 @@ const ApplyLeavePage = () => {
                     startDate={fromDate}
                     endDate={toDate}
                     paid={leaveDuration}
-                    
                   />
                 )}
                 <FormField
@@ -377,7 +395,7 @@ const ApplyLeavePage = () => {
               <div className=" my-4 justify-end flex px-3">
                 <CustomButton
                   type="submit"
-                  className="bg-green-600 text-[#fff]"
+                  className="bg-green-600 text-[#fff] cursor-pointer "
                 >
                   Submit
                 </CustomButton>

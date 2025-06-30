@@ -169,7 +169,7 @@ const ChangePasswordScreen = () => {
 
         <button
           type="submit"
-          className=" bg-[#2eacb3] text-white font-semibold py-2 px-2 rounded-lg hover:bg-[#279aa0] transition-colors duration-200"
+                      className=" cursor-pointer py-2 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-101 transition-all duration-200 text-white"
         >
           Change Password
         </button>

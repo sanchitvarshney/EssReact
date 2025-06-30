@@ -24,7 +24,7 @@ const NotificationContent: FC<NotificationContentPropsType> = ({
           boxShadow: "0 8px 25px rgba(0, 0, 0, 0.1)",
         }
       }}
-      className="py-2 px-3 bg-gradient-to-br from-[#f0f7fa] to-[#e0f2f1]  border border-gray-100 dark:border-gray-700 hover:border-[#000]  cursor-pointer"
+      className="py-2 px-3 bg-gradient-to-br from-[#f0f7fa] to-[#e0f2f1]  border border-gray-100  hover:border-[#2eacb3]  cursor-pointer"
     >
       <div className="flex items-start gap-4">
     

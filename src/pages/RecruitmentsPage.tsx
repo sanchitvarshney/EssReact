@@ -64,7 +64,7 @@ const RecruitmentsPage = () => {
           of our growing family.
         </Typography>
       </div>
-      <div className="w-full grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="w-full grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
         {jobOpenings.map((job, idx) => (
           <Card
             key={idx}
@@ -87,10 +87,10 @@ const RecruitmentsPage = () => {
                 </Box>
               </div>
               <div className="space-x-3">
-                <CustomButton onClick={() => setDetailsView(true)} className="bg-[#2eacb3] text-white">
+                <CustomButton onClick={() => setDetailsView(true)} className="bg-[#2eacb3] text-white  cursor-pointer">
                   View
                 </CustomButton>
-                <CustomButton onClick={()=>setView(true)} className="bg-[#2eacb3] text-white">
+                <CustomButton onClick={()=>setView(true)} className="bg-[#2eacb3] text-white cursor-pointer">
                   Reffer
                 </CustomButton>
               </div>
@@ -106,7 +106,7 @@ const RecruitmentsPage = () => {
         transformOrigin={"bottom"}
         
       >
-        <ReferalPage />
+        <ReferalPage onClose={() => setView(false)} />
       </DocView>
           <DocView
         open={detailsView}
@@ -116,7 +116,7 @@ const RecruitmentsPage = () => {
         transformOrigin={"bottom"}
         
       >
-        <JobDetailsPage />
+        <JobDetailsPage onClose={() => setDetailsView(false)}  />
       </DocView>
     </div>
   );

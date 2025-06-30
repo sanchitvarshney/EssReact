@@ -19,8 +19,8 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import BusinessIcon from "@mui/icons-material/Business";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import ShareIcon from "@mui/icons-material/Share";
+// import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+// import ShareIcon from "@mui/icons-material/Share";
 
 const jobData = {
   title: "Frontend Developer",
@@ -67,7 +67,7 @@ const jobData = {
   ],
 };
 
-function JobDetailsPage() {
+function JobDetailsPage({onClose}:{onClose:()=>void}) {
   const theme = useTheme();
 
   return (
@@ -95,10 +95,11 @@ function JobDetailsPage() {
               backdropFilter: "blur(10px)",
               "&:hover": { bgcolor: "rgba(255,255,255,0.2)" },
             }}
+            onClick={onClose}
           >
             <ArrowBackIcon sx={{ color: "black" }} />
           </IconButton>
-          <Stack direction="row" spacing={1}>
+          {/* <Stack direction="row" spacing={1}>
             <IconButton
               sx={{
                 bgcolor: "rgba(255,255,255,0.1)",
@@ -117,7 +118,7 @@ function JobDetailsPage() {
             >
               <ShareIcon sx={{ color: "black" }} />
             </IconButton>
-          </Stack>
+          </Stack> */}
         </Box>
 
         <Grid container spacing={3}>

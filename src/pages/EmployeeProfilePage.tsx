@@ -40,7 +40,7 @@ const EmployeeProfilePage = () => {
         {value === "info" && (
           <div className="flex  inline-block">
             {!editMode &&          <CustomButton
-              className={`bg-gray-900 text-white  hover:bg-gray-800/80`}
+              className={`bg-gray-900 text-white  hover:bg-gray-800/80 cursor-pointer`}
               onClick={() => setEditMode((prev) => !prev)}
              
             >
@@ -48,7 +48,7 @@ const EmployeeProfilePage = () => {
             </CustomButton>}
   
             {editMode &&  <CustomButton
-              className="bg-gray-900 text-white ml-4  hover:bg-gray-800/80"
+              className="bg-gray-900 text-white ml-4  hover:bg-gray-800/80 cursor-pointer"
               onClick={() => setEditMode((prev) => !prev)}
             >
               Cancel

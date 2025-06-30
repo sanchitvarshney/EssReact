@@ -95,11 +95,11 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({ value }) => {
           ))}
           placement={"bottom"}
         >
-          <span className=" text-black font-semibold text-[18px] border-b-1 ">
+          <span className=" text-black select-none font-semibold text-[18px] border-b-1 ">
             Shift Details
           </span>
         </CustomToolTip>
-        <CustomButton className="bg-gray-900 text-white hover:bg-gray-800/80">
+        <CustomButton className="bg-gray-900 text-white hover:bg-gray-800/80 cursor-pointer">
           Download
         </CustomButton>
       </Box>

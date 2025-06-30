@@ -32,20 +32,20 @@ const LeavePage = () => {
       <div className="flex w-full justify-between items-center flex-wrap gap-2   ">
         <div className="flex gap-[2px] flex-wrap">
           {/* <Typography>Your Leave balance as of (Date)</Typography> */}
-          <span className="text-sm font-semibold bg-[#2eacb3] px-3 py-2 rounded-full">
+          <span className="text-sm  select-none  font-semibold bg-[#2eacb3] px-3 py-2 rounded-full">
             Pending Requests (0)
           </span>
         </div>
         <div className="flex gap-[20px] flex-wrap">
           <CustomButton
             onClick={() => setOpen(true)}
-            className="bg-[#fff] text-[#000] border-[#000] border-1 rounded-[2px]"
+            className="bg-[#fff] text-[#000] border-[#000] border-1 rounded-[2px] cursor-pointer"
           >
             LIST OF HOLYDAYS
           </CustomButton>
           <CustomButton
             onClick={() => setIsOpenModal(true)}
-            className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px]"
+            className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer"
           >
             APPLY LEAVE
           </CustomButton>

@@ -191,20 +191,20 @@ const CreateTicketPage = () => {
 
           <div className="flex justify-center items-center gap-4 pt-4 ">
             <CustomButton
-              className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center gap-2"
+              className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center gap-2 cursor-pointer "
               onClick={() => navigation("/support-protal")}
             >
               <ArrowBack className="text-sm" />
               Back
             </CustomButton>
             <CustomButton
-              className="bg-red-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center gap-2"
+              className="bg-red-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center gap-2 cursor-pointer "
               onClick={handleReset}
             >
               <Refresh className="text-sm" />
               Reset
             </CustomButton>
-            <CustomButton className="bg-[#2eacb3] hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl">
+            <CustomButton className=" cursor-pointer bg-[#2eacb3] hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl">
               <Support className="text-sm" />
               Create Ticket
             </CustomButton>

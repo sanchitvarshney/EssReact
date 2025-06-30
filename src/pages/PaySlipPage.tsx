@@ -126,7 +126,7 @@ const PaySlipPage = () => {
                   </FormItem>
                 )}
               />
-              <CustomButton className="bg-green-600 text-[#fff]" type="submit">
+              <CustomButton className="bg-green-600 text-[#fff] cursor-pointer" type="submit">
                 Generate
               </CustomButton>
             </form>
@@ -187,7 +187,7 @@ const PaySlipPage = () => {
               <div className="text-3xl font-bold text-green-600 mb-4">
                 ₹ {netSalary.toLocaleString()}
               </div>
-              <CustomButton className="bg-gray-700 flex items-center gap-2">
+              <CustomButton className="bg-gray-700 flex items-center gap-2 cursor-pointer">
                 <FileDownloadIcon sx={{ color: "#ffffff" }} />
                 <span className="text-white">Download Pay Slip</span>
               </CustomButton>

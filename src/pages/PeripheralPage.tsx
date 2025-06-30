@@ -82,27 +82,20 @@ const PeripheralPage: React.FC = () => {
               className="w-60 h-60 p-4 md:w-80 md:h-80   object-contain mx-auto mb-4 rounded-lg"
             />
           </div>
-          <div className="  h-30  ">
-            
-      <div className="   flex justify-center space-x-4">
+       
+           <div className="w-full flex justify-center  ">
+            <div className="mt-10">
               <button
                 onClick={handlePrev}
                 className="  bg-[#2eacb3]  shadow-lg p-2 rounded-full transform -translate-y-1/2 top-1/2 transition-transform hover:scale-110"
               >
                 <FiChevronLeft size={24} className="text-white" />
               </button>
-              <button
-                onClick={handleNext}
-                className=" right-0  z-10 bg-[#2eacb3]  shadow-lg p-2 rounded-full transform -translate-y-1/2 top-1/2 transition-transform hover:scale-110"
-              >
-                <FiChevronRight size={24} className="text-white" />
-              </button>
             </div>
             <div
-              className=" w-full h-full justify-center flex items-center"
+              className="w-full  justify-center flex items-center"
               style={{ perspective: "1000px" }}
             >
-       
               <AnimatePresence>
                 {[-2, -1, 0, 1, 2].map((offset) => {
                   const index =
@@ -161,47 +154,74 @@ const PeripheralPage: React.FC = () => {
                 })}
               </AnimatePresence>
             </div>
+            <div className="mt-10">
+              <button
+                onClick={handleNext}
+                className="  bg-[#2eacb3]  shadow-lg p-2 rounded-full transform -translate-y-1/2 top-1/2 transition-transform hover:scale-110"
+              >
+                <FiChevronRight size={24} className="text-white" />
+              </button>
+            </div>
           </div>
+        
         </div>
- <div className=" max-w-4xl m-auto overflow-y-auto  h-[75vh] rounded-2xl shadow-2xl transition-transform hover:scale-102 duration-300 border border-gray-200">
-  {/* <div className="relative  h-[40vh] overflow-y-auto flex flex-col bg-[green]"> */}
-   
-    <div className="h-2 w-full bg-[#2eacb3] rounded-t-2xl mb-2" />
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={selectedPeripheral.id}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.5 }}
-        className="p-6"
-      >
-        <h2 className="text-2xl md:text-3xl font-extrabold text-[#2eacb3] mb-6 flex items-center gap-2">
-          <span className="text-gray-400 font-bold">#{currentIndex + 1}</span>
-          {selectedPeripheral.name}
-        </h2>
-        <div className="space-y-6">
-          <div className="flex items-center gap-2">
-            <p className="w-40 font-semibold text-gray-500 text-base">Serial ID:</p>
-            <p className="text-gray-800 text-base">{selectedPeripheral.serialNo}</p>
-          </div>
-          <div className="flex items-start gap-2">
-            <p className="w-40 font-semibold text-gray-500 text-base">Description:</p>
-            <p className="text-gray-800 text-base flex-1 text-justify">{selectedPeripheral.description}</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <p className="w-40 font-semibold text-gray-500 text-base">Allotted Date:</p>
-            <p className="text-gray-800 text-base">{selectedPeripheral.allotedon}</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <p className="w-40 font-semibold text-gray-500 text-base">Age of Device:</p>
-            <p className="text-gray-800 text-base">{selectedPeripheral.ageofdevice}</p>
-          </div>
+        <div className=" max-w-4xl m-auto overflow-y-auto  h-[75vh] rounded-2xl shadow-2xl transition-transform hover:scale-102 duration-300 border border-gray-200">
+      
+
+          <div className="h-2 w-full bg-[#2eacb3] rounded-t-2xl mb-2" />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedPeripheral.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="p-6"
+            >
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[#2eacb3] mb-6 flex items-center gap-2">
+                <span className="text-gray-400 font-bold">
+                  #{currentIndex + 1}
+                </span>
+                {selectedPeripheral.name}
+              </h2>
+              <div className="space-y-6">
+                <div className="flex items-center gap-2">
+                  <p className="w-40 font-semibold text-gray-500 text-base">
+                    Serial ID:
+                  </p>
+                  <p className="text-gray-800 text-base">
+                    {selectedPeripheral.serialNo}
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <p className="w-40 font-semibold text-gray-500 text-base">
+                    Description:
+                  </p>
+                  <p className="text-gray-800 text-base flex-1 text-justify">
+                    {selectedPeripheral.description}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <p className="w-40 font-semibold text-gray-500 text-base">
+                    Allotted Date:
+                  </p>
+                  <p className="text-gray-800 text-base">
+                    {selectedPeripheral.allotedon}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <p className="w-40 font-semibold text-gray-500 text-base">
+                    Age of Device:
+                  </p>
+                  <p className="text-gray-800 text-base">
+                    {selectedPeripheral.ageofdevice}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+          {/* </div> */}
         </div>
-      </motion.div>
-    </AnimatePresence>
-  {/* </div> */}
-</div>
       </div>
     </div>
   );

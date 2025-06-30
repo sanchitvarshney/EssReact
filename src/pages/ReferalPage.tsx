@@ -2,9 +2,14 @@ import { useState } from "react";
 import { Input } from "../components/ui/input";
 import { CustomButton } from "../components/ui/CustomButton";
 import { Textarea } from "../components/ui/textarea";
+import { IconButton } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
-
-function ReferalPage() {
+type ReferalPageProps = {
+  onClose: () => void;
+};
+  
+function ReferalPage({ onClose }: ReferalPageProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,7 +29,12 @@ function ReferalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4 ">
+    <div className="min-h-screen bg-gradient-to-br  from-blue-50 via-white to-indigo-50 p-4">
+ <div className="flex justify-end my-2">
+       <IconButton onClick={onClose}>
+<CloseIcon />
+      </IconButton>
+ </div>
       <div className="max-w-2xl mx-auto ">
         {/* Header Section */}
         <div className="text-center mb-8">

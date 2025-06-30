@@ -12,12 +12,7 @@ export const profileOption: profileOptionType[] = [
     path: "/manage-account",
   },
 
-  {
-    id: "change",
-    name: "Change Password",
-    icon: "password",
-    path: "/change-password",
-  },
+ 
   {
     id: "logout",
     name: "Logout",

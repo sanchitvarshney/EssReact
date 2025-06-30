@@ -26,7 +26,7 @@ const CustomModal: React.FC<ConfirmationModalProps> = ({
     >
       <DialogContent
         onInteractOutside={(e: any) => e.preventDefault()}
-        className="bg-white h-[90vh] flex flex-col"
+        className="bg-white h-[90vh] flex flex-col  select-none "
       >
         <DialogHeader>
           <DialogTitle className="text-black">{title}</DialogTitle>

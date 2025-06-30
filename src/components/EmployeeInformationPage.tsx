@@ -20,12 +20,7 @@ const Information = ({
     <div className="flex flex-col gap-2">
       <span className="text-lg font-semibold">{label}</span>
       {editMode ? (
-        <Input
-    
-          value={value}
-          name={name}
-          onChange={onChange}
-        />
+        <Input value={value} name={name} onChange={onChange} />
       ) : (
         <span className="text-base">{value}</span>
       )}
@@ -108,7 +103,7 @@ const EmployeeInformationPage = ({
       {editMode && (
         <div className="w-full my-5 flex">
           <CustomButton
-            className={`bg-red-600 mx-auto text-white  hover:bg-red-800/80`}
+            className=" mx-auto px-12 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-102 transition-all duration-200 text-white"
             // onClick={() => setEditMode((prev) => !prev)}
           >
             Update information Approval

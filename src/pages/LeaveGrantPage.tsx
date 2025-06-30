@@ -6,7 +6,7 @@ import { Divider, Typography } from "@mui/material";
 const LeaveGrantPage = () => {
   const [view, setView] = useState(false);
   return (
-    <div>
+    <div className="w-full p-4 flex flex-col h-[calc(100vh-100px)]">
       <LeaveGrantCard open={() => setView(true)} maxWidth={600} isView={false} />
       <DocView
         open={view}

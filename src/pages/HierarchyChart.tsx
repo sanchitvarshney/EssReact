@@ -546,21 +546,16 @@ const HierarchyChart = () => {
 
   return (
     <div
-      className="overflow-auto p-4 h-[calc(100vh-90px)]   flex "
+      className="overflow-auto p-4 h-[calc(100vh-90px)]   flex  flex-col"
       style={{ position: "relative" }}
     >
       <div
         style={{
-          position: "fixed",
-          top: 90,
-          left: 300,
-          zIndex: 10,
           display: "flex",
           gap: 8,
-          // background: "#1f2937",
-          padding: "8px",
+
+          position: "fixed",
           borderRadius: "8px",
-          // border: "1px solid #374151",
         }}
       >
         <CustomToolTip title={"Employee Hierarchy"} placement={"bottom"}>
@@ -578,7 +573,7 @@ const HierarchyChart = () => {
               padding: "8px",
             }}
           >
-            <PeopleIcon sx={{color:"#fff"}} />
+            <PeopleIcon sx={{ color: "#fff" }} />
           </IconButton>
         </CustomToolTip>
         <CustomToolTip title={"Department Hierarchy"} placement={"bottom"}>
@@ -596,7 +591,7 @@ const HierarchyChart = () => {
               padding: "8px",
             }}
           >
-            <BusinessIcon sx={{color:"#fff"}}/>
+            <BusinessIcon sx={{ color: "#fff" }} />
           </IconButton>
         </CustomToolTip>
       </div>
@@ -654,7 +649,8 @@ const HierarchyChart = () => {
           transform: `scale(${zoom})`,
           transformOrigin: "top center",
           transition: "transform 0.2s",
-     
+
+          marginRight: "300px",
         }}
       >
         <Tree

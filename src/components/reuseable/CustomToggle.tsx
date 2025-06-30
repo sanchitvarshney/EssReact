@@ -27,7 +27,7 @@ const CustomToggle: FC<CustomTogglePropsTypes> = ({
   };
   return (
     <div className="flex items-center">
-    <span onClick={() => toggleDayStatus(value)} >
+    <span onClick={() => toggleDayStatus(value)} className='cursor-pointer'>
       {state ? (
 
         <ToggleOnIcon sx={{ color: "green", fontSize: 36, mr: 1 }} />
