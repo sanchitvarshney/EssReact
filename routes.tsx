@@ -42,10 +42,7 @@ export const route = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
-      {
-        path: "manage-account",
-        element: <EmployeeProfilePage />,
-      },
+
       {
         element: <SideMenuBar />,
         children: [
@@ -53,6 +50,10 @@ export const route = createBrowserRouter([
             path: "task-box",
             element: <TaskPage />,
           },
+                {
+        path: "manage-account",
+        element: <EmployeeProfilePage />,
+      },
           {
             path: "hr-policy",
             element: <PolicyPage />,

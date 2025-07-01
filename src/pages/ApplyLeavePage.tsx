@@ -16,7 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Textarea } from "../components/ui/textarea";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { GlobalStyles } from "@mui/material";
+import { Chip, GlobalStyles } from "@mui/material";
 
 import { CustomButton } from "../components/ui/CustomButton";
 import { useEffect, useRef, useState } from "react";
@@ -36,7 +36,6 @@ import {
 import SearchBarComponent from "../components/dropdowns/SearchBarComponent";
 
 const ApplyLeaveOption = [
- 
   {
     value: "el",
     label: "Earned Leave",
@@ -49,15 +48,14 @@ const ApplyLeaveOption = [
     value: "wfh",
     label: "Work From Home",
   },
-    {
+  {
     value: "onduty",
     label: "On Duty",
   },
-    {
+  {
     value: "compensatory",
     label: "Compensatory Leave",
   },
-
 ];
 
 const schema = z.object({
@@ -107,6 +105,7 @@ const ApplyLeavePage = () => {
   const [isLast, setIsLast] = useState<boolean>(false);
   const [addRecipient, setAddRecipient] = useState<boolean>(false);
   const [leaveDuration, setLeaveDuration] = useState<number | string>(0);
+  const [recipient, setRecipient] = useState<any>([]);
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -130,6 +129,12 @@ const ApplyLeavePage = () => {
       }
     }
   }, [toDate]);
+
+  const handleSetRecipient = (value: any) => {
+    console.log(value);
+    setRecipient((prev: any) => [...prev, value]);
+    setSearchText("");
+  };
   return (
     <div className="bg-[#fff]  flex flex-col overflow-y-auto">
       <span
@@ -142,6 +147,7 @@ const ApplyLeavePage = () => {
         <div className="mx-4">
           <Input
             ref={inputRef}
+            className="w-60 md:w-100"
             placeholder="Add  Recipients"
             onChange={(e) => {
               const value = e.target.value;
@@ -150,13 +156,36 @@ const ApplyLeavePage = () => {
               setOpenSearch(value.trim().length > 0);
             }}
           />
+          <div className="mt-3">
+            {recipient.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {recipient.map((value: any, index: number) => (
+                  <Chip
+                    label={value?.name}
+                    sx={{
+                      bgcolor: "rgba(90, 181, 215, 0.14)",
+                      color: "#2eacb3",
+                      fontWeight: 500,
+                    }}
+                    onDelete={() => {
+                      setRecipient((prev: any) =>
+                        prev.filter((_: any, i: number) => i !== index)
+                      );
+                    }}
+                  />
+                  
+                ))}
+              </div>
+            )}
+          </div>
           {searchText && (
             <SearchBarComponent
               open={openSearch}
               close={() => setOpenSearch(false)}
               searchQuary={searchText}
               anchorRef={inputRef}
-              width="430px"
+              width="300px"
+              onSelect={handleSetRecipient}
             />
           )}
         </div>

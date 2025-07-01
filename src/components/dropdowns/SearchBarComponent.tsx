@@ -8,6 +8,7 @@ interface Props {
   searchQuary: string;
   width: string;
   onSelect?: (user: any) => void;
+  
 }
 
 const SearchBarComponent: React.FC<Props> = ({
