@@ -25,7 +25,7 @@ const LeaveCard: FC<LeaveCardPropsType> = ({
         minWidth: { xs: "100%", sm: 180 },
         borderRadius: 2,
         boxShadow: 3,
-        m: 1,
+      
       }}
     >
       <CardContent>

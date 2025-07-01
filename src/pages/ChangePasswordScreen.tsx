@@ -86,7 +86,7 @@ const ChangePasswordScreen = () => {
   );
 
   return (
-    <div className=" w-full  flex items-center justify-center gap-20  p-2">
+    <div className=" w-full  flex flex-col items-center justify-center sm:flex-row gap-20  p-2">
       <form
         onSubmit={handleChangePassword}
         className="w-full flex flex-col justify-center  space-y-4"

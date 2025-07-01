@@ -36,7 +36,7 @@ const ReimbursementGrantCard: FC<ReimbursementGrantCardProps> = ({
       elevation={0}
       sx={{
         maxWidth:  maxWidth,
-        height:225,
+        height:240,
         borderRadius: 2,
         boxShadow: isView ? 0 : 2,
       }}

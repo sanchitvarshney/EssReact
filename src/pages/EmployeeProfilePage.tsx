@@ -70,7 +70,9 @@ const EmployeeProfilePage = () => {
           onChange={handleChange}
           TabIndicatorProps={{
             style: {
+           
               backgroundColor: "#2eacb3",
+           
             },
           }}
           textColor="inherit"

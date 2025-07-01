@@ -90,7 +90,7 @@ const statusIcons: Record<string, React.ReactNode> = {
 
 const ReimbursementStatusPage = () => {
   return (
-    <div className="w-full h-[calc(100vh-90px)] bg-gradient-to-br from-[#f0f7fa] to-[#e0f2f1] py-4 overflow-y-auto">
+    <div className="w-full h-[calc(100vh-90px)] bg-gradient-to-br from-[#f0f7fa] to-[#e0f2f1] p-4 overflow-y-auto">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-4">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] rounded-full mb-2 shadow-lg">
@@ -101,7 +101,7 @@ const ReimbursementStatusPage = () => {
           </h2>
         </div>
 
-        <div className="flex justify-end mb-6">
+        <div className="flex justify-center mb-6">
           <div className="relative w-full max-w-xs">
             <input
               type="text"

@@ -17,7 +17,6 @@ export default function CreateNewPostPage() {
 
   return (
     <div className=" mx-auto p-2 bg-white  rounded-lg my-3 space-y-6">
-        
       <div className="flex items-center gap-2">
         <img
           src="https://i.pravatar.cc/40?img=12"
@@ -52,11 +51,13 @@ export default function CreateNewPostPage() {
                 alt="preview"
                 className="w-full h-full object-cover rounded-lg border"
               />
-    
-              <span className="absolute top-1 right-1 bg-[#2eacb3] bg-opacity-50 text-white rounded-full w-6 h-6 flex items-center justify-center items-center text-xs hover:bg-red-600">
-                <DeleteIcon sx={{fontSize:16}} />
+
+              <span
+                onClick={() => setImages(images.filter((_, i) => i !== idx))}
+                className="absolute top-1 right-1 bg-[#2eacb3] bg-opacity-50 text-white rounded-full w-6 h-6 flex items-center justify-center items-center text-xs hover:bg-red-600"
+              >
+                <DeleteIcon sx={{ fontSize: 16 }} />
               </span>
-         
             </div>
           ))}
 
@@ -74,7 +75,9 @@ export default function CreateNewPostPage() {
       </div>
 
       <div className="text-right">
-        <CustomButton className=" bg-[#2eacb3] text-white cursor-pointer">Post</CustomButton>
+        <CustomButton className=" bg-[#2eacb3] text-white cursor-pointer">
+          Post
+        </CustomButton>
       </div>
     </div>
   );

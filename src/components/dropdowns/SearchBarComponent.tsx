@@ -46,7 +46,7 @@ const SearchBarComponent: React.FC<Props> = ({
           borderRadius: 0,
           borderBottomLeftRadius: 8,
           borderBottomRightRadius: 8,
-          display: { xs: "none", md: "block" },
+          display: { xs: "block", md: "block" },
         },
       }}
     >

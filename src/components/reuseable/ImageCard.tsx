@@ -27,7 +27,7 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
     >
       <CardContent sx={{ p: 0, justifySelf: "center" }}>
         <div onClick={() => navigation(path)} className="cursor-pointer ">
-          <div className="flex h-50 w-50 p-3 sm:w-30 sm:h-30 md:w-35 md:h-35 lg:w-40 lg:h-40 xl:w-45 xl:h-45 items-center justify-center rounded-2xl bg-gray-500/10">
+          <div className="flex h-30 w-40 p-10 sm:p-3 sm:w-30 sm:h-30 md:w-35 md:h-35 lg:w-40 lg:h-40 xl:w-45 xl:h-45 items-center justify-center rounded-2xl bg-gray-500/10">
             <img
               src={image}
               alt={title}
@@ -41,7 +41,8 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
               fontWeight: 600,
               mt: 1,
               textAlign: "center",
-              fontSize: { xs: "1.1rem", sm: "1.12rem" },
+              fontSize: { xs: "1rem", sm: "1.1rem" },
+          
             }}
           >
             {title}

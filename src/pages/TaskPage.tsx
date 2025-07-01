@@ -467,8 +467,8 @@ const TaskPage = () => {
           </IconButton>
         </DialogTitle>
 
-        <DialogContent sx={{ pt: 3 }}>
-          <div className="p-6">
+        <DialogContent sx={{ pt: 2 }}>
+          <div className="py-3">
             {selectedTask && (
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="col-span-12 flex items-center gap-4">

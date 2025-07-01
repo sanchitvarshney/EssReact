@@ -121,7 +121,7 @@ const PostAnnouncementCard = ({
                 display: "flex",
                 flexWrap: "wrap",
                 gap: 2,
-                px: 2,
+                // px: 2,
               }}
             >
               {images.map((image, index) => (
@@ -136,7 +136,7 @@ const PostAnnouncementCard = ({
                         : images.length === 3
                         ? { xs: "100%", sm: "calc(33.33% - 8px)" }
                         : { xs: "calc(50% - 8px)", sm: "calc(25% - 8px)" },
-                    minWidth: images.length === 1 ? "300px" : "200px",
+                    minWidth: images.length === 1 ? "250px" : "200px",
                   }}
                 >
                   <Paper
@@ -159,7 +159,7 @@ const PostAnnouncementCard = ({
                 </Box>
               ))}
             </Box>
-            <div className="flex  flex-wrap px-5 mt-3">
+            <div className="flex   px-5 mt-3">
               {postCardData.map((item) => (
                 <ComponentIconWithtitle
                   key={item.title}

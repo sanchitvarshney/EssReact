@@ -14,7 +14,7 @@ const AnnouncementPage = () => {
 
 
   return (
-    <Box className=" h-[calc(100vh-90px)] overflow-auto p-4 gap-4 grid  sm:grid-cols-[2fr_1fr] grid-cols-[2fr]  md:grid-cols-[3fr_1fr] ">
+    <Box className=" h-[calc(100vh-90px)] overflow-auto p-4 gap-4 grid  sm:grid-cols-[2fr_1fr] grid-cols-1  md:grid-cols-[2fr_1fr] lg:grid-cols-[3fr_1fr] ">
       <div className="flex flex-col gap-4">
         <div className="sticky top-[-30px] z-10 ">
           <PostHeader setFilter={setPostFilter} postFilter={postFilter}/>
@@ -52,10 +52,12 @@ const AnnouncementPage = () => {
         })}
            {/* <PostAnniversaryCard authorName={"test"} /> */}
       </div>
-      <div className="flex flex-col items-center gap-4">
+      {
+        <div className="flex flex-col items-center  sm:gap-4  hidden sm:flex">
         <NoticeboardCard />
         <MilestonesAndEventsCard />
       </div>
+      }
 
     </Box>
   );

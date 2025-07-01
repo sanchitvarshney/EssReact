@@ -21,6 +21,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
 import CreateNewPostPage from "../../pages/CreateNewPostPage";
+import { Note } from "@mui/icons-material";
+import NoticeboardCard from "../NoticeboardCard";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+import MilestonesAndEventsCard from "../MilestonesAndEventsCard";
 
 const postOption = [
   { label: "All Post", value: "all" },
@@ -30,18 +34,16 @@ const postOption = [
   { label: "Announcement Post", value: "announcement" },
 ];
 
-
 type PostHeaderProps = {
-  setFilter:(e:string)=>void;
-  postFilter:string
-}
-const PostHeader:FC<PostHeaderProps> = ({setFilter,postFilter}) => {
- 
+  setFilter: (e: string) => void;
+  postFilter: string;
+};
+const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
   const [isNewPost, setIsNewPost] = useState<boolean>(false);
   const [postType, setPostType] = useState("");
+  const [isNoticeView, setIsNoticeView] = useState<boolean>(false);
 
   const handleNewPost = (value: string) => {
-  
     switch (value) {
       case "Anniversary":
         setPostType(value);
@@ -76,9 +78,18 @@ const PostHeader:FC<PostHeaderProps> = ({setFilter,postFilter}) => {
         mb: 1,
       }}
     >
-      <Typography variant="h6" fontWeight={600} mb={2}>
-        Create a Post
-      </Typography>
+      <div className="flex items-center justify-between">
+        <Typography variant="h6" fontWeight={600}>
+          Create a Post
+        </Typography>
+        <div className="block sm:hidden">
+          <CustomToolTip title={"Notice And Birthdays"} placement={"bottom"}>
+            <IconButton onClick={() => setIsNoticeView(true)}>
+              <Note sx={{ color: "#000" }} />
+            </IconButton>
+          </CustomToolTip>
+        </div>
+      </div>
 
       <Box
         display="flex"
@@ -175,6 +186,46 @@ const PostHeader:FC<PostHeaderProps> = ({setFilter,postFilter}) => {
 
         <DialogContent sx={{ pt: 3 }}>
           <CreateNewPostPage />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={isNoticeView}
+        onClose={() => setIsNoticeView(false)}
+        fullWidth
+        maxWidth="md"
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            // pb: 1,
+            borderBottom: "1px solid #e5e7eb",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <EventNoteIcon sx={{ color: "#2eacb3", mr: 1 }} />
+            <Typography variant="h6" sx={{ fontSize: 18, fontWeight: 600 }}>
+              Notice And Events
+            </Typography>
+          </Box>
+
+          <IconButton onClick={() => setIsNoticeView(false)} size="small">
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ pt: 0 }}>
+          <div className="flex flex-col items-center my-2  gap-4 block sm:hidden">
+            <NoticeboardCard />
+            <MilestonesAndEventsCard />
+          </div>
         </DialogContent>
       </Dialog>
     </Box>

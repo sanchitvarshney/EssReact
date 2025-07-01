@@ -64,7 +64,7 @@ const PaySlipPage = () => {
           Pay Slip
         </h2>
    
-        <div className="w-[90%] mx-auto p-2 flex justify-center items-center  mb-8 bg-white rounded-lg">
+        <div className="w-[100%] mx-auto p-2 flex justify-center items-center  mb-8 bg-white rounded-lg">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}

@@ -76,14 +76,14 @@ function JobDetailsPage({onClose}:{onClose:()=>void}) {
         minHeight: "100vh",
         background:
           "linear-gradient(135deg,rgb(255, 255, 255) 0%,rgb(255, 255, 255) 100%)",
-        py: { xs: 2, md: 4 },
+        py: { xs: 2, md: 2 },
         px: { xs: 1, md: 2 },
       }}
     >
       <Container maxWidth="lg">
         <Box
           sx={{
-            mb: 3,
+        
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -99,26 +99,7 @@ function JobDetailsPage({onClose}:{onClose:()=>void}) {
           >
             <ArrowBackIcon sx={{ color: "black" }} />
           </IconButton>
-          {/* <Stack direction="row" spacing={1}>
-            <IconButton
-              sx={{
-                bgcolor: "rgba(255,255,255,0.1)",
-                backdropFilter: "blur(10px)",
-                "&:hover": { bgcolor: "rgba(255,255,255,0.2)" },
-              }}
-            >
-              <BookmarkBorderIcon sx={{ color: "black" }} />
-            </IconButton>
-            <IconButton
-              sx={{
-                bgcolor: "rgba(255,255,255,0.1)",
-                backdropFilter: "blur(10px)",
-                "&:hover": { bgcolor: "rgba(255,255,255,0.2)" },
-              }}
-            >
-              <ShareIcon sx={{ color: "black" }} />
-            </IconButton>
-          </Stack> */}
+   
         </Box>
 
         <Grid container spacing={3}>

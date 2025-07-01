@@ -17,11 +17,11 @@ import CustomToolTip from "../components/reuseable/CustomToolTip";
 
 const DocumentsPage = () => {
   return (
-    <div className="w-full p-3 h-[calc(100vh-100px)]">
+    <div className="w-full p-2 h-[calc(100vh-100px)]">
       <Typography sx={{ fontWeight: 600, fontSize: 18, py: 2 }}>
         Documents
       </Typography>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 w-full lg:grid-cols-3 xl:grid-cols-3 gap-8 px-4  mx-auto ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 w-full lg:grid-cols-3 xl:grid-cols-3 gap-8 px-2  mx-auto ">
         {leaveLogData?.length === 0 ? (
           <Box
             display="flex"

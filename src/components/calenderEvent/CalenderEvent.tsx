@@ -15,7 +15,7 @@ const CalenderEvent = ({ event }: { event: any }) => {
       >
         <span className={`text-sm font-bold uppercase p-1 ${statusStyle.bgColor} `}>{event.title}</span>
       </div>
-      <div className=" hidden sm:block">
+      <div className=" hidden sm:hidden lg:block">
         {event.start && event.end && event.status && (
           <div className="  flex flex-col items-center">
             <span className="text-sm text-gray-600 font-bold break-all">

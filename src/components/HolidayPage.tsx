@@ -28,9 +28,7 @@ const HolidayPage = () => {
     <Box
       sx={{
         width: "100%",
-        paddingRight: 3,
-        paddingLeft: 3,
-        paddingTop: 1,
+        p:2,
         overflow: "hidden",
       }}
     >
@@ -64,7 +62,7 @@ const HolidayPage = () => {
         ))}
       </Tabs>
 
-      <div key={selectedYear} className="h-[75vh] overflow-y-auto">
+      <div key={selectedYear} className="h-[75vh] overflow-y-auto custom-scrollbar-for-menu">
         <TableContainer component={Paper}>
           <Table>
             <TableHead className="bg-gray-200">

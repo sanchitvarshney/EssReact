@@ -54,7 +54,7 @@ const CreateTicketPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fff] p-6">
+    <div className="min-h-screen bg-[#fff] p-4">
       <div className="max-w-6xl mx-auto">
         <div className="mb-1">
           <div className="flex items-center gap-3 mb-2">
@@ -77,7 +77,7 @@ const CreateTicketPage = () => {
           </div>
         </div>
 
-        <Paper elevation={0} className="p-8 bg-white rounded-2xl ">
+        <Paper elevation={0} className="p-2 bg-white rounded-2xl ">
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-3">
               <Description className="text-blue-600" />
@@ -87,7 +87,7 @@ const CreateTicketPage = () => {
             </div>
             <Input
               placeholder="Brief description of your issue..."
-              className="w-100 p-4 text-lg border-2 border-gray-200 rounded-md focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all duration-200"
+              className="w-70 sm:w-1/2 p-4 text-lg border-2 border-gray-200 rounded-md focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all duration-200"
             />
           </div>
 
@@ -179,9 +179,9 @@ const CreateTicketPage = () => {
                 Detailed Description
               </Typography>
             </div>
-            <div className="border-2 border-gray-200 rounded-xl overflow-hidden">
+            <div className="border-2 w-full border-gray-200 rounded-xl overflow-hidden">
               <Editor
-                className="min-h-[200px] p-4 focus:outline-none"
+                className="min-h-[200px] w-full p-4 focus:outline-none"
                 value={html}
                 onChange={onChange}
                 placeholder="Please provide a detailed description of your issue, including any steps to reproduce, error messages, or additional context that might help us assist you better..."
@@ -189,7 +189,7 @@ const CreateTicketPage = () => {
             </div>
           </div>
 
-          <div className="flex justify-center items-center gap-4 pt-4 ">
+          <div className="w-full flex flex-col  justify-center items-center sm:flex-row gap-4 pt-4 ">
             <CustomButton
               className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center gap-2 cursor-pointer "
               onClick={() => navigation("/support-protal")}

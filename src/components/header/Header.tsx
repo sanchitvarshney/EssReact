@@ -23,11 +23,14 @@ import CustomPopover from "../reuseable/CustomPopover";
 import NotificationDropDown from "../dropdowns/NotificationDropDown";
 import ProfileDropDown from "../dropdowns/ProfileDropDown";
 import { useNavigate } from "react-router-dom";
-import logoImg from "../../assets/img/hrms_mscorpres_logo.png"
+import logoImg from "../../assets/img/hrms_mscorpres_logo.png";
+
 
 const pages = ["Products", "Pricing", "Blog"];
 
 function Header() {
+  const path = window.location.pathname;
+
   const navigate = useNavigate();
   const inputRef = React.useRef(null);
   const notificationRef = React.useRef(null);
@@ -41,6 +44,7 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState<boolean>(false);
 
   const [isOpenNotification, setIsOpenNotification] = React.useState(false);
+
   const isSmallScreen = useMediaQuery("(max-width:450px)");
 
   const handleOpenUserMenu = () => {
@@ -71,60 +75,57 @@ function Header() {
             />
           </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={toggleDrawerOpen}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", md: "none" } }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {path === "/" ? null : (
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={toggleDrawerOpen}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{ display: { xs: "block", md: "none" } }}
+              >
+                {pages.map((page) => (
+                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                    <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
 
-          <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1, mr: 2 }}>
-            <img
-              src=""
-              alt="mscorpres"
-            />
-          </Box>
+   
 
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: "none", md: "flex" },
+              display: { xs: "flex", md: "flex" },
               justifyContent: "center",
               alignItems: "center",
             }}
           >
             <CustomSearch
               ref={inputRef}
-              width={"60ch"}
-              placeholder="Search by Employee Name, Designation or Department"
+              width={ isSmallScreen ? "20ch" : "60ch"}
+              placeholder={`${isSmallScreen ? "Search" : "Search by Employee Name, Designation or Department"}`} 
               onChange={(e) => {
                 const value = e.target.value;
 
@@ -138,39 +139,39 @@ function Header() {
                 close={() => setOpenSearch(false)}
                 searchQuary={searchText}
                 anchorRef={inputRef}
-                width="533px"
+                width={`${isSmallScreen ? "180px" : "533px"}`} 
               />
             )}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            {!isSmallScreen && (
-              <>
-                <IconButton onClick={() => setIsOpenNotification(true)}>
-                  <Badge badgeContent={4} color="error" sx={{ p: 0, mr: 3 }}>
-                    <NotificationsIcon
-                      ref={notificationRef}
-                      sx={{ fontSize: 30, color: "#fff" }}
-                    />
-                  </Badge>
-                </IconButton>
+        <Box sx={{ flexGrow: 0 }}>
+          
+            {/* {!isSmallScreen && ( */}
+            <>
+              <IconButton onClick={() => setIsOpenNotification(true)}>
+                <Badge badgeContent={4} color="error" sx={{ p: 0, mr: 2 }}>
+                  <NotificationsIcon
+                    ref={notificationRef}
+                    sx={{ fontSize: 30, color: "#fff" }}
+                  />
+                </Badge>
+              </IconButton>
 
-                {isOpenNotification && (
-                  <CustomPopover
-                    open={isOpenNotification}
-                    close={() => setIsOpenNotification(false)}
-                    //@ts-ignore
-                    anchorEl={notificationRef}
-                    width={400}
-                    height={360}
-                    isCone={true}
-                
-                  >
-                    <NotificationDropDown />
-                  </CustomPopover>
-                )}
-              </>
-            )}
+              {isOpenNotification && (
+                <CustomPopover
+                  open={isOpenNotification}
+                  close={() => setIsOpenNotification(false)}
+                  //@ts-ignore
+                  anchorEl={notificationRef}
+                  width={400}
+                  height={360}
+                  isCone={true}
+                >
+                  <NotificationDropDown />
+                </CustomPopover>
+              )}
+            </>
+            {/* )} */}
 
             <IconButton
               onClick={handleOpenUserMenu}

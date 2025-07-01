@@ -43,11 +43,11 @@ const ReimbursementGrantPage = () => {
   };
 
   return (
-    <div className="w-full py-4 flex flex-col h-[calc(100vh-100px)]">
+    <div className="w-full py-4 flex  flex-col h-[calc(100vh-100px)]">
       <Typography variant="h4" className="font-bold text-center mb-6 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] bg-clip-text text-transparent">
         Reimbursement Grant
       </Typography>
-      <div className=" grid grid-cols-2 w-full  h-[76vh]  my-4 overflow-y-auto p-2  ">
+      <div className=" grid grid-cols-1 sm:grid-cols-1  lg:grid-cols-2 w-full  h-[76vh]  overflow-y-auto p-2   ">
         {reimbursements.map((item) => (
           <ReimbursementGrantCard
             key={item.id}

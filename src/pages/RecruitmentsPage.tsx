@@ -86,7 +86,7 @@ const RecruitmentsPage = () => {
                   <Chip label={job.type} color="secondary" size="small" />
                 </Box>
               </div>
-              <div className="space-x-3">
+              <div className="space-y-2 space-x-2">
                 <CustomButton onClick={() => setDetailsView(true)} className="bg-[#2eacb3] text-white  cursor-pointer">
                   View
                 </CustomButton>
