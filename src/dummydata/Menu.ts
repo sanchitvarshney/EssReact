@@ -109,8 +109,8 @@ export const menu: MenuItem[] = [
   },
   {
     id: "support",
-    title: "Support Protal",
+    title: "Support Portal",
     icon: "support",
-    path: "/support-protal",
+    path: "/support-portal",
   },
 ];

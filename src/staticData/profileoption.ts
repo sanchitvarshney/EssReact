@@ -11,8 +11,7 @@ export const profileOption: profileOptionType[] = [
     icon: "account",
     path: "/manage-account",
   },
-
- 
+  
   {
     id: "logout",
     name: "Logout",

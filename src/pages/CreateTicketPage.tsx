@@ -192,7 +192,7 @@ const CreateTicketPage = () => {
           <div className="w-full flex flex-col  justify-center items-center sm:flex-row gap-4 pt-4 ">
             <CustomButton
               className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 flex items-center gap-2 cursor-pointer "
-              onClick={() => navigation("/support-protal")}
+              onClick={() => navigation("/support-portal")}
             >
               <ArrowBack className="text-sm" />
               Back

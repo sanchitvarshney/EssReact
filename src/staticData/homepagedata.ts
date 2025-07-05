@@ -21,7 +21,7 @@ export const homeData: homeMenuTypes[] = [
     id: "compensation",
     title: "Compensation",
     icon: compensation,
-    path: "self-service/payslip",
+    path: "/self-service/payslip",
   },
   {
     id: "attendance",
@@ -50,7 +50,7 @@ export const homeData: homeMenuTypes[] = [
     icon: performance,
     path: "/performance",
   },
-  { id: "help", title: "Helpdesk", icon: help, path: "/support-protal" },
+  { id: "help", title: "Helpdesk", icon: help, path: "/support-portal" },
   {
     id: "reimbursement",
     title: "Reimbursement",

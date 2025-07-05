@@ -29,6 +29,7 @@ import Protected from "./src/routes/Protected";
 import SignInScreen from "./src/pages/SignInScreen";
 import TaskPage from "./src/pages/TaskPage";
 
+
 export const route = createBrowserRouter([
   {
     path: "/",
@@ -46,14 +47,15 @@ export const route = createBrowserRouter([
       {
         element: <SideMenuBar />,
         children: [
-              {
+          {
             path: "task-box",
             element: <TaskPage />,
           },
-                {
-        path: "manage-account",
-        element: <EmployeeProfilePage />,
-      },
+          {
+            path: "manage-account",
+            element: <EmployeeProfilePage />,
+          },
+      
           {
             path: "hr-policy",
             element: <PolicyPage />,
@@ -119,19 +121,11 @@ export const route = createBrowserRouter([
             element: <PeripheralPage />,
           },
           {
-            path: "/support-protal",
-            element: <HelpPortal />,
-          },
-                 {
-            path: "/support-protal/create-new-ticket",
+            path: "support-portal/create-new-ticket",
             element: <CreateTicketPage />,
           },
-                          {
-            path: "/support-protal/ticket-status",
-            element: <ViewStatusTicketPage />,
-          },
           {
-            path: "ticket-status",
+            path: "support-portal/ticket-status",
             element: <ViewStatusTicketPage />,
           },
           {
@@ -156,10 +150,9 @@ export const route = createBrowserRouter([
   },
   {
     path: "/recover-password",
-
     element: (
       <Protected authentication={false}>
-        <RecoverPassword />{" "}
+        <RecoverPassword />
       </Protected>
     ),
   },

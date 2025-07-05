@@ -26,13 +26,13 @@ const HelpPortal = () => {
         <div className=" w-full space-x-4 space-y-4 flex flex-col justify-center items-center">
           <CustomButton
             className=" px-10 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-105 transition-all duration-200 text-white"
-            onClick={() => navigation("/support-protal/create-new-ticket")}
+            onClick={() => navigation("/support-portal/create-new-ticket")}
           >
             Create New Ticket
           </CustomButton>
           <CustomButton
             className=" px-10 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-105 transition-all duration-200 text-white"
-            onClick={() => navigation("/support-protal/ticket-status")}
+            onClick={() => navigation("/support-portal/ticket-status")}
           >
             Ticket Status
           </CustomButton>
