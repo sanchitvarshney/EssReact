@@ -11,33 +11,37 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useToast } from "../hooks/useToast";
 const SignInScreen = () => {
   const navigation = useNavigate();
-  const {showToast} = useToast();
+  const { showToast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [employeeCode, setEmployeeCode] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState("");
-  const [login, { isLoading, error }] = useLoginMutation();
-  
+  const [login, { isLoading, error, data }] = useLoginMutation();
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   useEffect(() => {
-  if (!error) return;
+    if (!error) return;
 
-  if ("status" in error) {
-  
-    const errData = error.data as { message?: string };
-    showToast(errData?.message || "Something went wrong", "error");
-  } else if ("message" in error) {
-  
-    showToast(error.message || "An unexpected error occurred", "error");
-  }
-}, [error]);
+    if ("status" in error) {
+      const errData = error.data as { message?: string };
+      showToast(errData?.message || "Something went wrong", "error");
+    } else if ("message" in error) {
+      showToast(error.message || "An unexpected error occurred", "error");
+    }
+  }, [error]);
 
+  useEffect(() => {
+    if (!data) return;
 
+    localStorage.setItem("user", JSON.stringify(data.data));
 
+    sessionStorage.setItem("user", JSON.stringify(data.data));
 
-  const handleSignIn = (e: React.FormEvent) => {
+    showToast("Login successful!", "success");
+        navigation("/");
+  }, [data]);
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsError("");
 
@@ -55,14 +59,11 @@ const SignInScreen = () => {
       username: employeeCode,
       password: password,
     };
-    const result = login(payload);
-    console.log(result, "result===================");
-    // onSignIn(employeeCode);
+    await login(payload);
   };
 
   return (
     <>
-     
       <div
         className="h-screen w-full bg-cover bg-center flex items-center justify-center relative"
         style={{ backgroundImage: `url(${bgImg})` }}
@@ -147,7 +148,9 @@ const SignInScreen = () => {
               </div>
 
               {isLoading ? (
-                <CircularProgress color="success" />
+                <div className="flex items-center justify-center">
+                  <CircularProgress color="success" size={"40px"} />
+                </div>
               ) : (
                 <button
                   type="submit"

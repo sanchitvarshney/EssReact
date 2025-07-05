@@ -1,42 +1,41 @@
 import { LinearProgress } from "@mui/material";
 import React, { useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/img/hrms_mscorpres_logo.png"
+import logo from "../assets/img/hrms_mscorpres_logo.png";
 
 interface ProtectedProps {
   children: ReactNode;
   authentication?: boolean;
 }
 
-const Protected: React.FC<ProtectedProps> = ({ children, authentication = true }) => {
+const Protected: React.FC<ProtectedProps> = ({
+  children,
+  authentication = true,
+}) => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  
- 
-  const isAuthenticated = false;
+
+  const isAuthenticated = !!sessionStorage.getItem("user");
 
   useEffect(() => {
     const checkAuth = async () => {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      
-   
+
       if (authentication && !isAuthenticated) {
         navigate("/sign-in");
         return;
       }
-      
-     
+
       if (!authentication && isAuthenticated) {
         navigate("/");
         return;
       }
-      
+
       setIsLoading(false);
     };
 
     checkAuth();
   }, [authentication, navigate, isAuthenticated]);
-
 
   if (isLoading) {
     return (
@@ -48,7 +47,6 @@ const Protected: React.FC<ProtectedProps> = ({ children, authentication = true }
       </div>
     );
   }
-
 
   return <>{children}</>;
 };
