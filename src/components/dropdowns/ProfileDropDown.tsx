@@ -16,8 +16,8 @@ const ProfileDropDown = ({close}:{close:any}) => {
       signOut();
     } else {
       navigation(item.path);
+      close();
     }
-    close();
   };
 
   return (

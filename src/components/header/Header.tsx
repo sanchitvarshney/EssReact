@@ -24,12 +24,13 @@ import NotificationDropDown from "../dropdowns/NotificationDropDown";
 import ProfileDropDown from "../dropdowns/ProfileDropDown";
 import { useNavigate } from "react-router-dom";
 import logoImg from "../../assets/img/hrms_mscorpres_logo.png";
-
+import { useAuth } from "../../contextapi/AuthContext";
 
 const pages = ["Products", "Pricing", "Blog"];
 
 function Header() {
   const path = window.location.pathname;
+  const { user, } = useAuth();
 
   const navigate = useNavigate();
   const inputRef = React.useRef(null);
@@ -112,8 +113,6 @@ function Header() {
             </Box>
           )}
 
-   
-
           <Box
             sx={{
               flexGrow: 1,
@@ -124,8 +123,12 @@ function Header() {
           >
             <CustomSearch
               ref={inputRef}
-              width={ isSmallScreen ? "20ch" : "60ch"}
-              placeholder={`${isSmallScreen ? "Search" : "Search by Employee Name, Designation or Department"}`} 
+              width={isSmallScreen ? "20ch" : "60ch"}
+              placeholder={`${
+                isSmallScreen
+                  ? "Search"
+                  : "Search by Employee Name, Designation or Department"
+              }`}
               onChange={(e) => {
                 const value = e.target.value;
 
@@ -139,13 +142,12 @@ function Header() {
                 close={() => setOpenSearch(false)}
                 searchQuary={searchText}
                 anchorRef={inputRef}
-                width={`${isSmallScreen ? "180px" : "533px"}`} 
+                width={`${isSmallScreen ? "180px" : "533px"}`}
               />
             )}
           </Box>
 
-        <Box sx={{ flexGrow: 0 }}>
-          
+          <Box sx={{ flexGrow: 0 }}>
             {/* {!isSmallScreen && ( */}
             <>
               <IconButton onClick={() => setIsOpenNotification(true)}>
@@ -182,7 +184,8 @@ function Header() {
               <Avatar
                 ref={profileRef}
                 alt="Remy Sharp"
-                src="/static/images/avatar/2.jpg"
+                //@ts-ignore
+                src={user?.imgUrl}
                 sx={{ backgroundColor: "#2eacb3" }}
               />
             </IconButton>

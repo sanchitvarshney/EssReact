@@ -17,6 +17,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CustomDrawer from "../CustomDrawer";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
+import { useAuth } from "../../contextapi/AuthContext";
+
 
 const getTextSize = (level: number) => {
   switch (level) {
@@ -172,6 +174,7 @@ interface CustomSideBarMenuProps {
 }
 
 const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
+  const { user } = useAuth();
   const { isExpended, setIsExpended, accordionValues, setAccordionValues } =
     useDrawerContext();
   // const navigate = useNavigate();
@@ -202,12 +205,15 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
                 </div>
                 <div className="flex flex-col items-center text-center py-1 gap-y-1 w-full ">
                   <Avatar
-                    alt="Remy Sharp"
-                    src="/static/images/avatar/2.jpg"
+                    //@ts-ignore
+                    alt={user?.name}
+                    //@ts-ignore
+                    src={user?.imgUrl}
                     sx={{ width: 80, height: 80, backgroundColor: "#2eacb3" }}
                   />
                   <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">
-                    Rahul Mehra
+                    {/*@ts-ignore */}
+                    {user?.name}
                   </h2>
                   <h2 className=" break-words max-w-full text-[1rem] font-medium  ">
                     Assistant Manager
@@ -216,7 +222,8 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
                     Marketing
                   </h2>
                   <p className=" break-words max-w-full text-[0.9rem] font-medium ">
-                    EMP-1003
+                    {/* @ts-ignore */}
+                    {user?.id}
                   </p>
                 </div>
               </div>

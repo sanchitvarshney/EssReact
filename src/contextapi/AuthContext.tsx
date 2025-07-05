@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useState } from 'react';
-import type { ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import type { ReactNode } from "react";
+
 
 interface AuthContextType {
   user: string | null;
-  signIn: (userData: string) => void;
-  signOut: () => void;
+  signIn: any;
+  signOut: any;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -12,7 +13,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -22,19 +23,42 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<string | null>("");
+  const [user, setUser] = useState<any | null>({
+    name: "",
+    imgUrl: "",
+    id: "",
+  });
 
-  const signIn = (userData: string) => {
-    setUser(userData);
-  };
+  const signIn = useCallback(() => {
+    const storedUserStr = localStorage.getItem("user");
+    if (storedUserStr) {
+      const storedUser = JSON.parse(storedUserStr);
 
-  const signOut = () => {
+      const userData = {
+        name: storedUser.userName,
+        imgUrl: storedUser.photo,
+        id: storedUser.userID,
+      };
+
+      setUser(userData);
+    }
+  }, []);
+
+  useEffect(() => {
+    signIn();
+  }, [signIn]);
+
+  const signOut = useCallback(() => {
     setUser(null);
-  };
+    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
+   
+    window.location.href = "/sign-in";
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
-}; 
+};

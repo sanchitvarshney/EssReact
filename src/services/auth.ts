@@ -12,14 +12,9 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
         body: credentials,
       }),
     }),
-    logout: builder.mutation({
-      query: () => ({
-        url: 'auth/logout',
-        method: 'POST',
-      }),
-    }),
+  
   }),
   overrideExisting: false,
 });
 
-export const { useLoginMutation, useLogoutMutation } = extendedAuthApi;
+export const { useLoginMutation,  } = extendedAuthApi;

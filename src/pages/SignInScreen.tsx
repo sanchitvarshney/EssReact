@@ -9,7 +9,9 @@ import { useLoginMutation } from "../services/auth";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { useToast } from "../hooks/useToast";
+import { useAuth } from "../contextapi/AuthContext";
 const SignInScreen = () => {
+  const {signIn} = useAuth()
   const navigation = useNavigate();
   const { showToast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
@@ -39,6 +41,7 @@ const SignInScreen = () => {
     sessionStorage.setItem("user", JSON.stringify(data.data));
 
     showToast("Login successful!", "success");
+    signIn();
     navigation("/");
   }, [data]);
   const handleSignIn = async (e: React.FormEvent) => {
