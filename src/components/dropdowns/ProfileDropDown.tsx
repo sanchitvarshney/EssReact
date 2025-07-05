@@ -1,4 +1,10 @@
-import { IconButton, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import DynamicIcon from "../reuseable/DynamicIcon";
 import {
   profileOption,
@@ -6,14 +12,17 @@ import {
 } from "../../staticData/profileoption";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contextapi/AuthContext";
+import ConfirmationModal from "../reuseable/ConfirmationModal";
+import { useState } from "react";
 
-const ProfileDropDown = ({close}:{close:any}) => {
+const ProfileDropDown = ({ close }: { close: any }) => {
   const navigation = useNavigate();
+  const [open, setOpen] = useState(false);
   const { signOut } = useAuth();
 
   const handleOptionClick = (item: profileOptionType) => {
     if (item.id === "logout") {
-      signOut();
+      setOpen(true);
     } else {
       navigation(item.path);
       close();
@@ -34,13 +43,13 @@ const ProfileDropDown = ({close}:{close:any}) => {
             key={item.id}
             className="hover:bg-gray-600/10 "
           >
-            <IconButton 
-              onClick={() => handleOptionClick(item)} 
+            <IconButton
+              onClick={() => handleOptionClick(item)}
               sx={{
-                borderRadius: 0, 
+                borderRadius: 0,
                 "&:hover": {
-                  backgroundColor: "transparent"
-                }
+                  backgroundColor: "transparent",
+                },
               }}
             >
               <ListItemIcon>
@@ -51,6 +60,13 @@ const ProfileDropDown = ({close}:{close:any}) => {
           </ListItem>
         ))}
       </List>
+      <ConfirmationModal
+        open={open}
+        close={() => setOpen(false)}
+        aggree={() => signOut()}
+        title={"Are you sure you want to logout?"}
+        description="Logging out will end your current session and return you to the login screen."
+      />
     </div>
   );
 };
