@@ -13,7 +13,7 @@ const Protected: React.FC<ProtectedProps> = ({ children, authentication = true }
   const navigate = useNavigate();
   
  
-  const isAuthenticated = true;
+  const isAuthenticated = false;
 
   useEffect(() => {
     const checkAuth = async () => {
