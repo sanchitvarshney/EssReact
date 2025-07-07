@@ -19,7 +19,6 @@ import CustomDrawer from "../CustomDrawer";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 import { useAuth } from "../../contextapi/AuthContext";
 
-
 const getTextSize = (level: number) => {
   switch (level) {
     case 0:
@@ -216,10 +215,12 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
                     {user?.name}
                   </h2>
                   <h2 className=" break-words max-w-full text-[1rem] font-medium  ">
-                    Assistant Manager
+                    {/* @ts-ignore */}
+                    {user?.role}
                   </h2>
                   <h2 className=" break-words max-w-full text-[1rem] font-medium ">
-                    Marketing
+                    {/* @ts-ignore */}
+                    {user?.dept}
                   </h2>
                   <p className=" break-words max-w-full text-[0.9rem] font-medium ">
                     {/* @ts-ignore */}

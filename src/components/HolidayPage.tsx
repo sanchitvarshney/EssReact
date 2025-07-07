@@ -67,7 +67,7 @@ const HolidayPage = () => {
           <Table>
             <TableHead className="bg-gray-200">
               <TableRow sx={{ backgroundColor: "#000" }}>
-                <TableCell sx={{ color: "#fff" }}>
+                <TableCell sx={{ color: "#fff", }}     >
                   <b>S.No</b>
                 </TableCell>
                 <TableCell sx={{ color: "#fff" }}>

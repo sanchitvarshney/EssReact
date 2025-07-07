@@ -12,9 +12,18 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
         body: credentials,
       }),
     }),
+
+     getuserdata: builder.mutation({
+      query: (credentials) => ({
+        
+        url: '/profile/view',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
   
   }),
   overrideExisting: false,
 });
 
-export const { useLoginMutation,  } = extendedAuthApi;
+export const { useLoginMutation, useGetuserdataMutation  } = extendedAuthApi;

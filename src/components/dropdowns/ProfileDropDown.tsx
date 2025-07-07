@@ -23,6 +23,7 @@ const ProfileDropDown = ({ close }: { close: any }) => {
   const handleOptionClick = (item: profileOptionType) => {
     if (item.id === "logout") {
       setOpen(true);
+     
     } else {
       navigation(item.path);
       close();
@@ -62,7 +63,10 @@ const ProfileDropDown = ({ close }: { close: any }) => {
       </List>
       <ConfirmationModal
         open={open}
-        close={() => setOpen(false)}
+        close={() =>  {setOpen(false)
+          close()
+        }}
+     
         aggree={() => signOut()}
         title={"Are you sure you want to logout?"}
         description="Logging out will end your current session and return you to the login screen."

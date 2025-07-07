@@ -13,7 +13,8 @@ interface ConfirmationModalProps {
     close: () => void;
     aggree: () => void
     title: string;
-    description?: string
+    description?: string,
+   
 }
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({open,close,title,description,aggree}) => {
   return (
@@ -34,9 +35,9 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({open,close,title,d
           </DialogContentText>
         </DialogContent>}
         <DialogActions>
-          <Button color='error' variant='outlined' sx={{ }} onClick={close}>Cancel</Button>
-          <Button  variant='outlined' sx={{ color:"#2eacb3",}} onClick={aggree} autoFocus>
-            Sure
+          <Button color='error'variant="contained"   onClick={close}>No</Button>
+          <Button  variant="contained" color="success" onClick={aggree} autoFocus>
+            Yes
           </Button>
         </DialogActions>
       </Dialog>

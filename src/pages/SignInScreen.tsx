@@ -42,6 +42,7 @@ const SignInScreen = () => {
 
     showToast("Login successful!", "success");
     signIn();
+
     navigation("/");
   }, [data]);
   const handleSignIn = async (e: React.FormEvent) => {
