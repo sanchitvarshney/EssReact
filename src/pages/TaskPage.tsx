@@ -323,7 +323,7 @@ const TaskPage = () => {
         <TableContainer sx={{ maxHeight: "75vh", overflow: "auto" }}>
           <Table>
             <TableHead sx={{position: "sticky", top: 0, zIndex:99}}>
-              <TableRow sx={{ backgroundColor: "#f9fafb",  }}>
+              <TableRow sx={{   }}>
                 <StyledTableCell>
                   Employee Name
                 </StyledTableCell>

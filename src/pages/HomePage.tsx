@@ -11,7 +11,7 @@ const HomePage = () => {
           My Access
         </Typography>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 w-full lg:grid-cols-5 xl:grid-cols-6  gap-x-8 px-4  mx-auto ">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 w-full lg:grid-cols-5 xl:grid-cols-6  gap-x-8 px-4  mx-auto overflow-visible ">
           {homeData.map((item: homeMenuTypes) => (
             <ImageCard title={item.title} image={item.icon} path={item.path} />
           ))}

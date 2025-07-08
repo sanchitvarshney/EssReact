@@ -25,8 +25,9 @@ import LoadingComponent from "../components/reuseable/LoadingComponent";
 
 // Styled components for better visual appeal
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#232324",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {},
