@@ -8,3 +8,5 @@ export const customColor = {
     textColor:"#ffffff"
 }
 
+export const btnstyle = "px-5  cursor-pointer  text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-md transform hover:scale-101 transition-all duration-200 text-white"
+

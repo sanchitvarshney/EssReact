@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
@@ -11,10 +11,9 @@ import {
   FormControl,
   FormMessage,
 } from "../components/ui/form";
-import { InputStyle } from "../constants/themeConstant";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
+
+import CustomModalDatePicker from "../components/reuseable/CustomModalDatePicker";
+import { btnstyle } from "../constants/themeConstant";
 
 const earnings = [
   { label: "Basic", amount: 20000 },
@@ -63,7 +62,7 @@ const PaySlipPage = () => {
         <h2 className="text-3xl font-bold mb-4 text-center text-gray-800">
           Pay Slip
         </h2>
-   
+
         <div className="w-[100%] mx-auto p-2 flex justify-center items-center  mb-8 bg-white rounded-lg">
           <Form {...form}>
             <form
@@ -76,67 +75,30 @@ const PaySlipPage = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          className="border-none"
-                          views={["year", "month"]}
-                          value={dayjs(field.value)}
-                          onChange={(date) =>
-                            field.onChange(date ? date.toDate() : null)
-                          }
-                          format="MMMM YYYY"
-                          slotProps={{
-                            textField: {
-                              fullWidth: true,
-                              variant: "outlined",
-                              placeholder: "Select Month",
-                              InputProps: {
-                                disableUnderline: true,
-                                className: InputStyle,
-                                sx: {
-                                  "& .MuiInputBase-input::placeholder": {
-                                    color: "#94a3b8",
-                                    opacity: 1,
-                                    margin: 0,
-                                  },
-                                  "& .MuiInputBase-input:focus::placeholder": {
-                                    color: "#94a3b8",
-                                    opacity: 1,
-                                  },
-                                },
-                              },
-                              sx: {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "red",
-                                },
-                                "&.Mui-focused .MuiOutlinedInput-notchedOutline":
-                                  {
-                                    borderColor: "transparent",
-                                  },
-                                "&:hover .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "red",
-                                },
-                              },
-                            },
-                          }}
-                        />
-                      </LocalizationProvider>
+                      <CustomModalDatePicker
+                        field={field}
+                        view={["year", "month"]}
+                        openTo={"year"}
+                        label={"Select Date"}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <CustomButton className="bg-green-600 text-[#fff] cursor-pointer" type="submit">
+              <CustomButton
+                className="bg-green-600 text-[#fff] cursor-pointer"
+                type="submit"
+              >
                 Generate
               </CustomButton>
             </form>
           </Form>
         </div>
-      
+
         {showPayslip && (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-         
               <div className="bg-green-50 rounded-lg p-6 shadow-sm">
                 <h3 className="text-xl font-semibold mb-4 text-green-700">
                   Earnings
@@ -157,7 +119,7 @@ const PaySlipPage = () => {
                   <span>₹ {totalEarnings.toLocaleString()}</span>
                 </div>
               </div>
-          
+
               <div className="bg-red-50 rounded-lg p-6 shadow-sm">
                 <h3 className="text-xl font-semibold mb-4 text-red-500">
                   Deductions
@@ -179,7 +141,7 @@ const PaySlipPage = () => {
                 </div>
               </div>
             </div>
-        
+
             <div className="mt-10 flex flex-col items-center">
               <div className="text-lg font-semibold text-gray-700">
                 Net Salary
@@ -187,9 +149,9 @@ const PaySlipPage = () => {
               <div className="text-3xl font-bold text-green-600 mb-4">
                 ₹ {netSalary.toLocaleString()}
               </div>
-              <CustomButton className="bg-gray-700 flex items-center gap-2 cursor-pointer">
+              <CustomButton className={btnstyle}>
                 <FileDownloadIcon sx={{ color: "#ffffff" }} />
-                <span className="text-white">Download Pay Slip</span>
+                <span className="text-white">Download</span>
               </CustomButton>
             </div>
           </>

@@ -4,9 +4,10 @@ import {
   FiCheckCircle,
   FiClock,
   FiXCircle,
-  FiSearch,
+
 } from "react-icons/fi";
 import {
+  InputAdornment,
   Paper,
   Table,
   TableBody,
@@ -14,7 +15,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
 } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 
 // Mock data for demonstration
 const claims = [
@@ -103,12 +106,26 @@ const ReimbursementStatusPage = () => {
 
         <div className="flex justify-center mb-6">
           <div className="relative w-full max-w-xs">
-            <input
+            <TextField
+              fullWidth
+              id="outlined-basic"
+              label="Search by purpose or ID..."
+              variant="outlined"
+              size="small"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                 <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            {/* <input
               type="text"
               placeholder="Search by purpose or ID..."
               className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 bg-white focus:border-[#2eacb3] focus:ring-[#2eacb3] shadow-sm transition-all duration-200"
             />
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          */}
           </div>
         </div>
 

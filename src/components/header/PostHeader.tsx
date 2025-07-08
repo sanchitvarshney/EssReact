@@ -5,8 +5,7 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  MenuItem,
-  Select,
+  
   Typography,
 } from "@mui/material";
 import { useState, type FC } from "react";
@@ -25,6 +24,7 @@ import { Note } from "@mui/icons-material";
 import NoticeboardCard from "../NoticeboardCard";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import MilestonesAndEventsCard from "../MilestonesAndEventsCard";
+import CustomTextInput from "../reuseable/CustomTextInput";
 
 const postOption = [
   { label: "All Post", value: "all" },
@@ -96,32 +96,11 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
         justifyContent={"space-between"}
         gap={2}
         flexDirection={{ xs: "column", sm: "row" }}
+        marginTop={2}
       >
-        <div className="flex flex-col justify-start items-start gap-1">
-          <span className="text-lg font-semibold">Filter</span>
-          <Select
-            value={postFilter}
-            onChange={(e) => setFilter(e.target.value)}
-            size="small"
-            sx={{
-              minWidth: 200,
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#000",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#2eacb3",
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#2eacb3",
-              },
-            }}
-          >
-            {postOption.map((type) => (
-              <MenuItem key={type.value} value={type.value}>
-                {type.label}
-              </MenuItem>
-            ))}
-          </Select>
+        <div className="w-40 sm:w-60 flex flex-col justify-start items-start gap-1 ">
+         
+          <CustomTextInput field={{value:postFilter, onChange: (e: any) => setFilter(e.target.value)}} label={"Select Filter"} select={true} options={postOption}/>
         </div>
 
         <ButtonGroup

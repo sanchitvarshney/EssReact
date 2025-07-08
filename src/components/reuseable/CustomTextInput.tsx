@@ -1,0 +1,67 @@
+import { MenuItem, TextField } from "@mui/material";
+
+import React from "react";
+
+interface CustomTextInputProps {
+  field: any;
+  label: string;
+  type?: string | number;
+  select?: boolean;
+  options?:any[] 
+}
+const CustomTextInput: React.FC<CustomTextInputProps> = ({
+  field,
+  label,
+  type = "text",
+  select = false,
+  options,
+}) => {
+  return (
+    <TextField
+      fullWidth
+      id="outlined-basic"
+      label={label}
+      variant="outlined"
+      {...field}
+      size="small"
+      type={type}
+      select={select}
+      sx={{
+        
+        "& .MuiOutlinedInput-root": {
+          borderRadius: "4px",
+          backgroundColor: "#f9fafb",
+        
+          transition: "all 0.2s",
+          "& fieldset": {
+            borderColor: "#000",
+          },
+          "&:hover fieldset": {
+            borderColor: "#9ca3af",
+          },
+          "&.Mui-focused fieldset": {
+            borderColor: "#2eacb3",
+          },
+        },
+        "& label.Mui-focused": {
+          color: "#2eacb3",
+          
+        },
+         "& label": {
+        
+          fontWeight: "bold",
+        },
+      }}
+    >
+      {select && (
+         options?.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))
+      )}
+    </TextField>
+  );
+};
+
+export default CustomTextInput;

@@ -11,14 +11,18 @@ import {
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
-
 import CustomToolTip from "../components/reuseable/CustomToolTip";
 import { useGetDocumentsMutation } from "../services/doc";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LoadingComponent from "../components/reuseable/LoadingComponent";
+import CustomSearch from "../components/reuseable/CustomSearch";
+import {  customColor } from "../constants/themeConstant";
+
 
 const DocumentsPage = () => {
+  // const [searchQuary, setSearchQuary] = useState<string>("");
   const [getDocuments, { isLoading, data }] = useGetDocumentsMutation();
+  const [filteredData, setFilteredData] = useState([]);
 
   const fetchDocuments = async () => {
     try {
@@ -29,21 +33,52 @@ const DocumentsPage = () => {
   };
 
   useEffect(() => {
+    if (data?.data) {
+      setFilteredData(data.data);
+    }
+  }, [data]);
+
+  useEffect(() => {
     fetchDocuments();
   }, []);
 
+  const filterData = (searchQuary: string) => {
+    if (!searchQuary.trim()) {
+      setFilteredData(data?.data || []);
+      return;
+    }
+
+    const filtered = data?.data?.filter(
+      (item: any) =>
+        item.file_type.toLowerCase().includes(searchQuary.toLowerCase()) ||
+        item.name.toLowerCase().includes(searchQuary.toLowerCase())
+    );
+
+    setFilteredData(filtered || []);
+  };
+
   return (
-    <div className="w-full p-4 h-[calc(100vh-100px)]">
+    <div className="w-full p-4 h-[calc(90vh-80px)]">
       {isLoading ? (
         <LoadingComponent />
       ) : (
         <>
-          {" "}
-          <Typography sx={{ fontWeight: 600, fontSize: 22, pb: 1 }}>
-            Documents
-          </Typography>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 w-full lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2  mx-auto h-[calc(100vh-160px)] py-3 overflow-y-auto ">
-            {data?.data?.length === 0 ? (
+          <div className="w-full flex items-center justify-between mb-2">
+            <Typography sx={{ fontWeight: 600, fontSize: 22, pb: 1 }}>
+              Documents
+            </Typography>
+            <div className="flex items-center gap-2">
+              <CustomSearch
+                width={"40ch"}
+                placeholder={"Search your documents here..."}
+                bgColor={customColor.bgColor}
+                textColor="#000"
+                onChange={(e: any) => filterData(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 w-full lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2  mx-auto h-[calc(100vh-170px)] py-3 overflow-y-auto ">
+            {data?.data?.length === 0 || filteredData?.length === 0 ? (
               <Box
                 display="flex"
                 justifyContent="center"
@@ -53,7 +88,7 @@ const DocumentsPage = () => {
                 <Typography variant="body2">No Documents Found.</Typography>
               </Box>
             ) : (
-              data?.data?.map((row: any) => (
+              (filteredData || []).map((row: any) => (
                 <div key={row?.key} className="min-w-[350px]">
                   <Card
                     sx={{
@@ -67,28 +102,25 @@ const DocumentsPage = () => {
                     }}
                   >
                     <CardContent>
-                       <CustomToolTip
-                        title={row.name}
-                        placement={"bottom"}
-                      >
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          fontWeight: 700,
-                          color: "#1f2937",
-                          mb: 1,
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          maxWidth: 300,
-                          // display: "inline-block",
-                          userSelect: "none",
-                        }}
-                        color="text.secondary"
-                        gutterBottom
-                      >
-                        {row.name}
-                      </Typography>
+                      <CustomToolTip title={row.name} placement={"bottom"}>
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            fontWeight: 700,
+                            color: "#1f2937",
+                            mb: 1,
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            maxWidth: 300,
+                            // display: "inline-block",
+                            userSelect: "none",
+                          }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          {row.name}
+                        </Typography>
                       </CustomToolTip>
                       <CustomToolTip
                         title={row.description}
@@ -123,12 +155,21 @@ const DocumentsPage = () => {
                         pr: 2,
                       }}
                     >
-                      <Typography
-                        variant="body2"
-                        sx={{ color: "#374151", ml: 1 }}
-                      >
-                        <b>Size:</b> {row.file_size}
-                      </Typography>
+                      <div>
+                        {" "}
+                        <Typography
+                          variant="body2"
+                          sx={{ color: "#374151", ml: 1 }}
+                        >
+                          <b>Size:</b> {row.file_size}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{ color: "#374151", ml: 1 }}
+                        >
+                          <b>Type:</b> {row.file_type}
+                        </Typography>
+                      </div>
                       <ButtonGroup
                         variant="outlined"
                         aria-label="document actions"

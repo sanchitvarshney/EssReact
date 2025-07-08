@@ -5,6 +5,8 @@ import { Divider, Box } from "@mui/material";
 import type { FC } from "react";
 import { CustomButton } from "./ui/CustomButton";
 import CustomToolTip from "./reuseable/CustomToolTip";
+import { btnstyle } from "../constants/themeConstant";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 type AttendancePageTablePropsType = {
   value: string | number;
@@ -99,9 +101,12 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({ value }) => {
             Shift Details
           </span>
         </CustomToolTip>
-        <CustomButton className="bg-gray-900 text-white hover:bg-gray-800/80 cursor-pointer">
-          Download
+        <div className="mr-1">
+          <CustomButton className={btnstyle}>
+          <FileDownloadIcon sx={{ color: "#ffffff" }} />
+          <span className="text-white">Download</span>
         </CustomButton>
+        </div>
       </Box>
 
       <Divider sx={{ mt: 2 }} />

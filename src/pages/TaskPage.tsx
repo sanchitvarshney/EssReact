@@ -302,9 +302,7 @@ const TaskPage = () => {
       }}
     >
       <Box sx={{ mb: 1 }}>
-        <div
-        className="flex justify-between items-center"
-        >
+        <div className="flex justify-between items-center">
           <div className="flex items-center gap-2 mb-2">
             <AssignmentIcon sx={{ fontSize: 32, color: "#2eacb3" }} />
             <Typography
@@ -314,29 +312,28 @@ const TaskPage = () => {
               Task
             </Typography>
           </div>
-     
-            {/* <CustomButton className="bg-[#000] hover:bg-gray-800 text-md text-white font-bold cursor-pointer">+ Add</CustomButton> */}
-     
+
+          {/* <CustomButton className="bg-[#000] hover:bg-gray-800 text-md text-white font-bold cursor-pointer">+ Add</CustomButton> */}
         </div>
       </Box>
 
       <Card
-        sx={{ borderRadius: 3, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
+        sx={{ borderRadius: 1, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
       >
         <TableContainer sx={{ maxHeight: "75vh", overflow: "auto" }}>
           <Table>
-            <TableHead>
-              <TableRow sx={{ backgroundColor: "#f9fafb" }}>
-                <StyledTableCell sx={{ fontWeight: 600, color: "#374151" }}>
-                  Employee
+            <TableHead sx={{position: "sticky", top: 0, zIndex:99}}>
+              <TableRow sx={{ backgroundColor: "#f9fafb",  }}>
+                <StyledTableCell>
+                  Employee Name
                 </StyledTableCell>
-                <StyledTableCell sx={{ fontWeight: 600, color: "#374151" }}>
+                <StyledTableCell>
                   Task Details
                 </StyledTableCell>
-                <StyledTableCell sx={{ fontWeight: 600, color: "#374151" }}>
+                <StyledTableCell>
                   Due Date
                 </StyledTableCell>
-                <StyledTableCell sx={{ fontWeight: 600, color: "#374151" }}>
+                <StyledTableCell>
                   Actions
                 </StyledTableCell>
               </TableRow>
@@ -560,14 +557,14 @@ const TaskPage = () => {
             <div className="flex justify-end gap-2 mt-4">
               <CustomButton
                 onClick={handleCloseDialog}
-                className="bg-gray-400 hover:bg-gray-400/80  text-white cursor-pointer"
+                className="bg-gray-400 hover:bg-gray-400/80  text-white cursor-pointer transform hover:scale-105 transition-all duration-200 shadow-xl rounded-sm text-lg"
               >
                 {" "}
                 Close
               </CustomButton>
               <CustomButton
                 onClick={handleAddComment}
-                className="bg-[#2eacb3] text-white hover:bg-[#2eacb3]/80 cursor-pointer"
+                className=" cursor-pointer text-lg  shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-sm transform hover:scale-105 transition-all duration-200 text-white"
               >
                 {" "}
                 Comment

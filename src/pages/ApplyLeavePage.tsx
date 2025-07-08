@@ -9,12 +9,9 @@ import {
 } from "../components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import { InputStyle, LableStyle } from "../constants/themeConstant";
 
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Textarea } from "../components/ui/textarea";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Chip, GlobalStyles } from "@mui/material";
 
@@ -26,14 +23,11 @@ import CustomToggle from "../components/reuseable/CustomToggle";
 import CalenderView from "../components/reuseable/CalederView";
 import { IconButton } from "@mui/material";
 import { Input } from "../components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
+
 import SearchBarComponent from "../components/dropdowns/SearchBarComponent";
+import CustomTextInput from "../components/reuseable/CustomTextInput";
+import CustomModalDatePicker from "../components/reuseable/CustomModalDatePicker";
+import { btnstyle } from "../constants/themeConstant";
 
 const ApplyLeaveOption = [
   {
@@ -131,289 +125,137 @@ const ApplyLeavePage = () => {
   }, [toDate]);
 
   const handleSetRecipient = (value: any) => {
-    console.log(value);
     setRecipient((prev: any) => [...prev, value]);
     setSearchText("");
   };
   return (
-    <div className="bg-[#fff]  flex flex-col overflow-y-auto">
-      <span
-        onClick={() => setAddRecipient(!addRecipient)}
-        className="text-sm font-semibold border-b-1 transition-transform duration-200  hover:scale-104 mb-4 cursor-pointer mr-1 self-end"
-      >
-        Add Recipients
-      </span>
-      {addRecipient && (
-        <div className="mx-4">
-          <Input
-            ref={inputRef}
-            className="w-60 md:w-100"
-            placeholder="Add  Recipients"
-            onChange={(e) => {
-              const value = e.target.value;
-
-              setSearchText(value);
-              setOpenSearch(value.trim().length > 0);
-            }}
-          />
-          <div className="mt-3">
-            {recipient.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {recipient.map((value: any, index: number) => (
-                  <Chip
-                    label={value?.name}
-                    sx={{
-                      bgcolor: "rgba(90, 181, 215, 0.14)",
-                      color: "#2eacb3",
-                      fontWeight: 500,
-                    }}
-                    onDelete={() => {
-                      setRecipient((prev: any) =>
-                        prev.filter((_: any, i: number) => i !== index)
-                      );
-                    }}
-                  />
-                  
-                ))}
-              </div>
+    <div className=" flex flex-col items-center  ">
+      <div className="w-full bg-white rounded-2xl  p-6 md:p-6 flex flex-col gap-6">
+        <div className="flex flex-col items-end">
+          <span
+            onClick={() => setAddRecipient(!addRecipient)}
+            className="text-sm font-semibold border-b-2 border-dashed border-[#2eacb3] transition-transform duration-200 hover:scale-105 mb-2 cursor-pointer px-2 py-1 hover:bg-[#e0f7fa] rounded-md"
+          >
+            {addRecipient ? "Hide Recipients" : "Add Recipients"}
+          </span>
+        </div>
+        {addRecipient && (
+          <div className="mb-2">
+            <span className="text-[#2eacb3] font-semibold">Recipient</span>
+            <Input
+              ref={inputRef}
+              className="w-full md:w-96 rounded-lg mt-1 border border-[#b2ebf2] focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all"
+              placeholder="Add Recipients"
+              onChange={(e) => {
+                const value = e.target.value;
+                setSearchText(value);
+                setOpenSearch(value.trim().length > 0);
+              }}
+            />
+            <div className="mt-3">
+              {recipient.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {recipient.map((value: any, index: number) => (
+                    <Chip
+                      key={index}
+                      label={value?.name}
+                      sx={{
+                        bgcolor: "rgba(46, 172, 179, 0.12)",
+                        color: "#2eacb3",
+                        fontWeight: 500,
+                        borderRadius: 2,
+                        px: 1.5,
+                        py: 0.5,
+                        fontSize: 14,
+                        boxShadow: "0 1px 4px 0 rgba(46,172,179,0.08)",
+                      }}
+                      onDelete={() => {
+                        setRecipient((prev: any) =>
+                          prev.filter((_: any, i: number) => i !== index)
+                        );
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+            {searchText && (
+              <SearchBarComponent
+                open={openSearch}
+                close={() => setOpenSearch(false)}
+                searchQuary={searchText}
+                anchorRef={inputRef}
+                width="300px"
+                onSelect={handleSetRecipient}
+              />
             )}
           </div>
-          {searchText && (
-            <SearchBarComponent
-              open={openSearch}
-              close={() => setOpenSearch(false)}
-              searchQuary={searchText}
-              anchorRef={inputRef}
-              width="300px"
-              onSelect={handleSetRecipient}
-            />
-          )}
-        </div>
-      )}
-      <div className="mx-4 mt-2 ">
-        {wise && (
-          <CustomToggle
-            value={"Half Day"}
-            state={isHalf}
-            title={"Half Day"}
-            setMethod={setIsHalf}
-          />
         )}
-      </div>
+        {wise && (
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-[#2eacb3] mb-2">
+              Leave Details
+            </h2>
 
-      <div>
-        <div className="flex">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(() => {})}>
-              <div className=" p-[20px] space-y-6 ">
+            <CustomToggle
+              value={"Half Day"}
+              state={isHalf}
+              title={"Half Day"}
+              setMethod={setIsHalf}
+            />
+          </div>
+        )}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(() => {})}>
+            <div className="space-y-6">
+              <FormField
+                control={form.control}
+                name="wise"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="w-full sm:w-97">
+                        <CustomTextInput
+                          select={true}
+                          field={field}
+                          label={"Select Leave Type"}
+                          options={ApplyLeaveOption}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage className="text-[red] mt-1" />
+                  </FormItem>
+                )}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
-                  name="wise"
+                  name="fromDate"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className={LableStyle}>
-                        Select Leave Type
-                      </FormLabel>
                       <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={wise}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Leave Type" />
-                          </SelectTrigger>
-
-                          <SelectContent className="bg-white">
-                            {ApplyLeaveOption.map((data) => (
-                              <SelectItem key={data.value} value={data.value}>
-                                {data.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <CustomModalDatePicker
+                          field={field}
+                          openTo={"day"}
+                          view={["year", "month", "day"]}
+                          label={"From Date"}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
-                <div className="grid grid-cols-2 gap-[20px]">
-                  <FormField
-                    control={form.control}
-                    name="fromDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className={LableStyle}>From Date</FormLabel>
-                        <FormControl className="">
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                              minDate={dayjs()}
-                              className="border-none"
-                              value={field.value ? dayjs(field.value) : null}
-                              onChange={(date) => {
-                                if (openCalendar) {
-                                  setOpenCalendar(!openCalendar);
-                                }
-
-                                if (date && date.isValid()) {
-                                  // console.log(" valid date");
-                                  field.onChange(date.toDate());
-                                } else {
-                                  // console.log("not valid date");
-                                  field.onChange(null);
-                                }
-                              }}
-                              format="DD-MM-YYYY"
-                              slotProps={{
-                                popper: {
-                                  disablePortal: true,
-                                },
-                                textField: {
-                                  fullWidth: true,
-                                  variant: "outlined",
-                                  placeholder: "Select Date",
-                                  InputProps: {
-                                    disableUnderline: true,
-                                    className: InputStyle,
-                                    sx: {
-                                      "& .MuiInputBase-input::placeholder": {
-                                        color: "#94a3b8",
-                                        opacity: 1,
-                                        margin: 0,
-                                      },
-                                      "& .MuiInputBase-input:focus::placeholder":
-                                        {
-                                          color: "#94a3b8",
-
-                                          opacity: 1,
-                                        },
-                                    },
-                                  },
-                                  sx: {
-                                    "& .MuiOutlinedInput-notchedOutline": {
-                                      borderColor: "red",
-                                    },
-                                    "&.Mui-focused .MuiOutlinedInput-notchedOutline":
-                                      {
-                                        borderColor: "transparent",
-                                      },
-
-                                    "&:hover .MuiOutlinedInput-notchedOutline":
-                                      {
-                                        borderColor: "red",
-                                      },
-                                  },
-                                },
-                              }}
-                            />
-                          </LocalizationProvider>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="toDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className={LableStyle}>To Date</FormLabel>
-                        <FormControl>
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                              className="static "
-                              minDate={dayjs()}
-                              // sx={{overflow:"hidden"}}
-                              value={field.value ? dayjs(field.value) : null}
-                              onChange={(date) => {
-                                if (openCalendar) {
-                                  setOpenCalendar(!openCalendar);
-                                }
-                                field.onChange(date ? date.toDate() : null);
-                              }}
-                              format="DD-MM-YYYY"
-                              slotProps={{
-                                popper: {
-                                  disablePortal: true,
-                                },
-                                textField: {
-                                  fullWidth: true,
-                                  // variant: "standard",
-
-                                  placeholder: "Select Date",
-                                  InputProps: {
-                                    disableUnderline: true,
-                                    className: InputStyle,
-                                    sx: {
-                                      "& .MuiInputBase-input::placeholder": {
-                                        // color: "#94a3b8",
-                                        opacity: 1,
-                                      },
-                                      "& .MuiInputBase-input:focus::placeholder":
-                                        {
-                                          // color: "#94a3b8",
-                                          opacity: 1,
-                                        },
-                                    },
-                                  },
-                                },
-                              }}
-                            />
-                          </LocalizationProvider>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div>
-                  {toDate && (
-                    <div className="flex gap-x-5 gap-y-2 flex-col sm:flex-row">
-                      <CustomToggle
-                        value={"First day, Second half"}
-                        state={isFirst}
-                        title={"First day, Second half"}
-                        setMethod={setIsFirst}
-                      />
-                      <CustomToggle
-                        value={"Last day, First half"}
-                        state={isLast}
-                        title={"Last day, First half"}
-                        setMethod={setIsLast}
-                      />
-                    </div>
-                  )}
-                  {toDate && (
-                    <div className="flex items-center justify-between">
-                      <span className="select-none">
-                        Leave duration: {leaveDuration}
-                      </span>
-                      <IconButton
-                        onClick={() => setOpenCalendar(!openCalendar)}
-                      >
-                        <KeyboardArrowDownIcon />
-                      </IconButton>
-                    </div>
-                  )}
-                </div>
-                {openCalendar && (
-                  <CalenderView
-                    startDate={fromDate}
-                    endDate={toDate}
-                    paid={leaveDuration}
-                  />
-                )}
                 <FormField
                   control={form.control}
-                  name="message"
+                  name="toDate"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className={LableStyle}>Reasion</FormLabel>
                       <FormControl>
-                        <Textarea
-                          className={InputStyle}
-                          placeholder="Enter Reasion"
-                          {...field}
+                        <CustomModalDatePicker
+                          field={field}
+                          openTo={"day"}
+                          view={["year", "month", "day"]}
+                          label={"To Date"}
                         />
                       </FormControl>
                       <FormMessage />
@@ -421,17 +263,71 @@ const ApplyLeavePage = () => {
                   )}
                 />
               </div>
-              <div className=" my-4 justify-end flex px-3">
-                <CustomButton
-                  type="submit"
-                  className="bg-green-600 text-[#fff] cursor-pointer "
-                >
-                  Submit
-                </CustomButton>
-              </div>
-            </form>
-          </Form>
-        </div>
+              {toDate && (
+                <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
+                  <CustomToggle
+                    value={"First day, Second half"}
+                    state={isFirst}
+                    title={"First day, Second half"}
+                    setMethod={setIsFirst}
+                  />
+                  <CustomToggle
+                    value={"Last day, First half"}
+                    state={isLast}
+                    title={"Last day, First half"}
+                    setMethod={setIsLast}
+                  />
+                </div>
+              )}
+              {toDate && (
+                <div className="flex items-center justify-between bg-[#e0f7fa] rounded-lg px-4 py-2 mt-2">
+                  <span className="select-none text-[#2eacb3] font-medium">
+                    Leave duration: {leaveDuration}
+                  </span>
+                  <IconButton
+                    onClick={() => setOpenCalendar(!openCalendar)}
+                    className="hover:bg-[#b2ebf2] transition-all"
+                  >
+                    <KeyboardArrowDownIcon />
+                  </IconButton>
+                </div>
+              )}
+              {openCalendar && (
+                <div className="my-2">
+                  <CalenderView
+                    startDate={fromDate}
+                    endDate={toDate}
+                    paid={leaveDuration}
+                  />
+                </div>
+              )}
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[#2eacb3] font-semibold">
+                      Reason
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        className="border border-[#b2ebf2] rounded-lg focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all min-h-[80px]"
+                        placeholder="Enter Reason"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex justify-end mt-8">
+              <CustomButton type="submit" className={btnstyle}>
+                Submit
+              </CustomButton>
+            </div>
+          </form>
+        </Form>
       </div>
     </div>
   );

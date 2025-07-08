@@ -8,16 +8,21 @@ import { Alert } from "@mui/material";
 interface ToastShowProps {
   isOpen: boolean;
   msg: string;
-  onClose?: () => void; 
+  onClose?: () => void;
   type: "success" | "error";
 }
 
 // Slide direction function
 function SlideTransition(props: SlideProps) {
-  return <Slide {...props} direction="down" />; 
+  return <Slide {...props} direction="down" />;
 }
 
-const ToastShow: React.FC<ToastShowProps> = ({ isOpen, msg, onClose, type="success" }) => {
+const ToastShow: React.FC<ToastShowProps> = ({
+  isOpen,
+  msg,
+  onClose,
+  type = "success",
+}) => {
   return (
     <Box sx={{ width: 500 }}>
       <Snackbar
@@ -25,15 +30,13 @@ const ToastShow: React.FC<ToastShowProps> = ({ isOpen, msg, onClose, type="succe
         open={isOpen}
         autoHideDuration={5000}
         onClose={onClose}
-      
         TransitionComponent={SlideTransition}
         key={"top" + "center"}
-      
-    >
-         <Alert onClose={onClose} severity={type} sx={{ width: "100%" }}>
+      >
+        <Alert onClose={onClose} severity={type} sx={{ width: "100%" }}>
           {msg}
         </Alert>
-    </Snackbar>
+      </Snackbar>
     </Box>
   );
 };

@@ -11,16 +11,17 @@ import {
   FormMessage,
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "../components/ui/select";
+
 // import { Textarea } from '../components/ui/textarea';
 import { CustomButton } from "../components/ui/CustomButton";
-import { FiPlus, FiTrash2, FiUpload, FiDollarSign, FiCalendar, FiFileText } from "react-icons/fi";
+import {
+  FiPlus,
+  FiTrash2,
+  FiUpload,
+  FiDollarSign,
+  FiCalendar,
+  FiFileText,
+} from "react-icons/fi";
 import {
   Paper,
   Table,
@@ -30,6 +31,8 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import CustomTextInput from "../components/reuseable/CustomTextInput";
+import CustomModalDatePicker from "../components/reuseable/CustomModalDatePicker";
 
 const categories = [
   { value: "r", label: "--" },
@@ -83,7 +86,7 @@ const ReimbursementClaim = () => {
   });
 
   const onSubmit = (data: ReimbursementFormType) => {
-    console.log(data)
+    console.log(data);
     alert("Form submitted!");
   };
 
@@ -92,7 +95,6 @@ const ReimbursementClaim = () => {
       <div className="p-6 max-w-6xl mx-auto ">
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-         
             {/* Header Section */}
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] rounded-full mb-4 shadow-lg">
@@ -112,29 +114,21 @@ const ReimbursementClaim = () => {
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
                   <FiCalendar className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800">Basic Information</h3>
+                <h3 className="text-xl font-bold text-gray-800">
+                  Basic Information
+                </h3>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={control}
                   name="expenseDate"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-gray-700 text-sm uppercase tracking-wide">
-                        Expense Date
-                      </FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <Input
-                            type="date"
-                            placeholder="dd-mm-yyyy"
-                            {...field}
-                            className="bg-gray-50 border-gray-200 focus:border-[#2eacb3] focus:ring-[#2eacb3] rounded-xl h-12 pl-4 transition-all duration-200 hover:bg-gray-100"
-                          />
-                        </div>
+                        <CustomModalDatePicker field={field} openTo={"day"} view={["year", "month", "day"]} label={"Select Date"} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-[red] mt-2" />
                     </FormItem>
                   )}
                 />
@@ -143,19 +137,15 @@ const ReimbursementClaim = () => {
                   name="purpose"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-gray-700 text-sm uppercase tracking-wide">
-                        Purpose
-                      </FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input
-                            placeholder="Purpose of expense"
-                            {...field}
-                            className="bg-gray-50 border-gray-200 focus:border-[#2eacb3] focus:ring-[#2eacb3] rounded-xl h-12 pl-4 transition-all duration-200 hover:bg-gray-100"
+                          <CustomTextInput
+                            field={field}
+                            label="Purpose of expense"
                           />
                         </div>
                       </FormControl>
-                      <FormMessage />
+                       <FormMessage className="text-[red] mt-2" />
                     </FormItem>
                   )}
                 />
@@ -187,18 +177,33 @@ const ReimbursementClaim = () => {
               </div>
 
               <div className="overflow-hidden rounded-xl border border-gray-200">
-                <TableContainer component={Paper} sx={{border:"none", boxShadow:"none", borderRadius: "12px"}}>
+                <TableContainer
+                  component={Paper}
+                  sx={{
+                    border: "none",
+                    boxShadow: "none",
+                    borderRadius: "12px",
+                  }}
+                >
                   <Table
-                    sx={{ minWidth: 650, border:"none" }}
+                    sx={{ minWidth: 650, border: "none" }}
                     size="small"
                     aria-label="expense items table"
                   >
                     <TableHead>
                       <TableRow className="bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f]">
-                        <TableCell className="text-white font-semibold border-none">Category</TableCell>
-                        <TableCell className="text-white font-semibold border-none text-center">Description</TableCell>
-                        <TableCell className="text-white font-semibold border-none text-center">Amount</TableCell>
-                        <TableCell className="text-white font-semibold border-none text-center">Action</TableCell>
+                        <TableCell className="text-white font-semibold border-none">
+                          Category
+                        </TableCell>
+                        <TableCell className="text-white font-semibold border-none text-center">
+                          Description
+                        </TableCell>
+                        <TableCell className="text-white font-semibold border-none text-center">
+                          Amount
+                        </TableCell>
+                        <TableCell className="text-white font-semibold border-none text-center">
+                          Action
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -208,82 +213,68 @@ const ReimbursementClaim = () => {
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                             "&:hover": { backgroundColor: "#f8fafc" },
-                            transition: "background-color 0.2s ease"
+                            transition: "background-color 0.2s ease",
                           }}
                           className="hover:bg-gray-50"
                         >
-                          <TableCell component="th" scope="row" sx={{py: 3}}>
+                          <TableCell sx={{ py: 3 }} className=" w-60 sm:w-80">
                             <FormField
+                           
                               control={control}
                               name={`items.${idx}.category`}
                               render={({ field }) => (
-                                <FormItem className="mb-0">
-                                  <FormControl>
-                                    <Select
-                                      value={field.value}
-                                      onValueChange={field.onChange}
-                                    >
-                                      <SelectTrigger className="bg-gray-50 border-gray-200 focus:border-[#2eacb3] focus:ring-[#2eacb3] rounded-lg h-10 transition-all duration-200 hover:bg-gray-100">
-                                        <SelectValue placeholder="Select category" />
-                                      </SelectTrigger>
-                                      <SelectContent className="bg-white border border-gray-200 rounded-lg shadow-lg">
-                                        {categories.map((cat) => (
-                                          <SelectItem
-                                            key={cat.value}
-                                            value={cat.value}
-                                            className="hover:bg-gray-50 cursor-pointer"
-                                          >
-                                            {cat.label}
-                                          </SelectItem>
-                                        ))}
-                                      </SelectContent>
-                                    </Select>
+                                <FormItem className="mb-0 ">
+                                  <FormControl >
+                                   
+                                      <CustomTextInput
+                                        field={field}
+                                        label={"Select category"}
+                                        select={true}
+                                        options={categories}
+                                      />
+                                   
                                   </FormControl>
-                                  <FormMessage />
+                                  <FormMessage className="text-[red] mt-2" />
                                 </FormItem>
                               )}
                             />
                           </TableCell>
-                          <TableCell align="center">
+                          <TableCell>
                             <FormField
                               control={control}
                               name={`items.${idx}.description`}
                               render={({ field }) => (
                                 <FormItem className="mb-0">
                                   <FormControl>
-                                    <Input
-                                      placeholder="Description"
-                                      {...field}
-                                      className="bg-gray-50 border-gray-200 focus:border-[#2eacb3] focus:ring-[#2eacb3] rounded-lg h-10 transition-all duration-200 hover:bg-gray-100"
+                                    <CustomTextInput
+                                      field={field}
+                                      label={"Description"}
                                     />
                                   </FormControl>
-                                  <FormMessage />
+                                  <FormMessage className="text-[red] mt-2" />
                                 </FormItem>
                               )}
                             />
                           </TableCell>
-                          <TableCell align="center">
+                          <TableCell>
                             <FormField
                               control={control}
                               name={`items.${idx}.amount`}
                               render={({ field }) => (
                                 <FormItem className="mb-0">
                                   <FormControl>
-                                    <div className="relative">
-                                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                                      <Input
-                                        placeholder="0.00"
-                                        {...field}
-                                        className="bg-gray-50 border-gray-200 focus:border-[#2eacb3] focus:ring-[#2eacb3] rounded-lg h-10 pl-8 transition-all duration-200 hover:bg-gray-100"
-                                      />
-                                    </div>
+                                    <CustomTextInput
+                                      field={field}
+                                      label={"0.00"}
+                                      type={"number"}
+                                    />
                                   </FormControl>
-                                  <FormMessage />
+                                  <FormMessage className="text-[red] mt-2" />
                                 </FormItem>
                               )}
                             />
                           </TableCell>
-                          <TableCell align="center">
+                          <TableCell>
                             {fields.length > 1 && (
                               <CustomButton
                                 type="button"
@@ -310,9 +301,11 @@ const ReimbursementClaim = () => {
                 <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <FiUpload className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800">Receipt Upload</h3>
+                <h3 className="text-xl font-bold text-gray-800">
+                  Receipt Upload
+                </h3>
               </div>
-              
+
               <FormField
                 control={control}
                 name="receipt"

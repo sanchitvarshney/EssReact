@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, type FC } from "react";
 import {
   Box,
   Tabs,
@@ -11,12 +11,18 @@ import {
   TableRow,
   Paper,
   Typography,
+  IconButton,
 } from "@mui/material";
 import { holidayData } from "../dummydata/HolidayData";
+import CloseIcon from "@mui/icons-material/Close";
 
 const years = [2024, 2025, 2026];
+interface HolidayProps {
+  openClose?:any
+  open?:boolean
+}
 
-const HolidayPage = () => {
+const HolidayPage:FC<HolidayProps> = ({openClose,open=false}) => {
   const [selectedYear, setSelectedYear] = useState(2025);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -30,8 +36,10 @@ const HolidayPage = () => {
         width: "100%",
         p:2,
         overflow: "hidden",
+        height: "85vh",
       }}
     >
+      <div className="flex justify-between items-center">
       <Tabs
         value={selectedYear}
         onChange={handleChange}
@@ -43,6 +51,7 @@ const HolidayPage = () => {
         }}
         textColor="inherit"
         sx={{
+          width: "100%",
           mb: 2,
           "& .MuiTab-root": {
             color: "#333",
@@ -60,13 +69,19 @@ const HolidayPage = () => {
             value={year}
           />
         ))}
+         
       </Tabs>
-
-      <div key={selectedYear} className="h-[75vh] overflow-y-auto custom-scrollbar-for-menu">
-        <TableContainer component={Paper}>
+       {open && <div className="flex ">
+            <IconButton onClick={() => openClose()}>
+              <CloseIcon />
+            </IconButton>
+          </div>} 
+</div>
+      {/* <div key={selectedYear} className="h-[75vh] overflow-y-auto custom-scrollbar-for-menu"> */}
+        <TableContainer component={Paper} sx={{ maxHeight: "75vh", height: "75vh",overflow: "auto", pb:1.5 }} className="custom-scrollbar-for-menu">
           <Table>
             <TableHead className="bg-gray-200">
-              <TableRow sx={{ backgroundColor: "#000" }}>
+              <TableRow sx={{ backgroundColor: "#000", position: "sticky", top: 0 }}>
                 <TableCell sx={{ color: "#fff", }}     >
                   <b>S.No</b>
                 </TableCell>
@@ -106,7 +121,7 @@ const HolidayPage = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      </div>
+      {/* </div> */}
     </Box>
   );
 };

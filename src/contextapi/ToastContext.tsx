@@ -15,6 +15,7 @@ export const ToastContext = ({ children }: { children: ReactNode }) => {
   const [toastType, setToastType] = useState<ToastType>("success");
 
   const showToast = (msg: string, type: ToastType = "success") => {
+   
     setToastMessage(msg);
     setToastType(type);
     setToastOpen(true);

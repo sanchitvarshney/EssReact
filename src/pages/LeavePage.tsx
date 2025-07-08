@@ -1,11 +1,11 @@
-import { Box, IconButton, Modal } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import { CustomButton } from "../components/ui/CustomButton";
 import LeaveCard from "../components/reuseable/LeaveCard";
 import { leaveData } from "../dummydata/DataforLeave";
 import { useState } from "react";
 import CustomModal from "../components/reuseable/CustomModal";
 import ApplyLeavePage from "./ApplyLeavePage";
-import CloseIcon from "@mui/icons-material/Close";
+
 import HolidayPage from "../components/HolidayPage";
 const style = {
   position: "absolute",
@@ -13,13 +13,13 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "80%",
-  // height: "100%",
+
   bgcolor: "background.paper",
-  // border: '2px solid #000',
+
   boxShadow: 24,
-  //  zIndex: 1300, // must be high enough
-  // p: 4,
+
   overflow: "visible",
+  
 };
 
 const LeavePage = () => {
@@ -51,8 +51,8 @@ const LeavePage = () => {
           </CustomButton>
         </div>
       </div>
-     
-      <div className="  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-2  gap-4 ">
+
+      <div className="  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4  gap-4  ">
         {leaveData.map((leave) => (
           <LeaveCard
             key={leave.type}
@@ -64,12 +64,11 @@ const LeavePage = () => {
           />
         ))}
       </div>
-    
+
       <CustomModal
         open={isOpenModal}
         onClose={() => setIsOpenModal(false)}
         title={"Apply For Leave"}
-        
       >
         <ApplyLeavePage />
       </CustomModal>
@@ -80,13 +79,9 @@ const LeavePage = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className="flex justify-end m-1">
-            <IconButton onClick={() => setOpen(false)}>
-              <CloseIcon />
-            </IconButton>
-          </div>
+          
 
-          <HolidayPage />
+          <HolidayPage openClose={() => setOpen(false)} open={open} />
         </Box>
       </Modal>
     </div>

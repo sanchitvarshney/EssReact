@@ -33,6 +33,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ open, onClose, title, childre
           userSelect: 'none',
         },
       }}
+  
     >
       <DialogTitle sx={{ color: 'text.primary' }}>
         {title}
