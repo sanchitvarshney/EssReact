@@ -5,7 +5,7 @@ import { Divider, Box } from "@mui/material";
 import type { FC } from "react";
 import { CustomButton } from "./ui/CustomButton";
 import CustomToolTip from "./reuseable/CustomToolTip";
-import { btnstyle } from "../constants/themeConstant";
+import { btnstyle } from "../constants/themeConstant"
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 type AttendancePageTablePropsType = {
