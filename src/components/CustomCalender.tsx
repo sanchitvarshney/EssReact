@@ -4,18 +4,16 @@ import moment from "moment-timezone";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalenderEvent from "./calenderEvent/CalenderEvent";
 import "../css/CalenderCss.css";
-import { dummyEvents } from "../dummydata/CalenderData";
+
 import type { FC } from "react";
 
-interface customcalendartypes  {
-date:any;
-setDate:any;
+interface customcalendartypes {
+  date: any;
+  setDate: any;
+  data: any;
 }
-const CustomCalender:FC<customcalendartypes> = ({date,setDate}) => {
-  
- 
+const CustomCalender: FC<customcalendartypes> = ({ date, setDate, data }) => {
   const localizer = momentLocalizer(moment);
-
 
   const eventStyleGetter = (event: any) => {
     let backgroundColor = "";
@@ -49,46 +47,16 @@ const CustomCalender:FC<customcalendartypes> = ({date,setDate}) => {
     };
   };
 
-  const realEvent = [
-    {
-      title: "P",
-      start: moment.tz("2025-06-10T09:00:00", "Asia/Kolkata").toDate(),
-      end: moment.tz("2025-06-10T18:00:00", "Asia/Kolkata").toDate(),
-      status: "WFH",
-    },
-    {
-      title: "A",
-      start: moment.tz("2025-06-11T09:00:00", "Asia/Kolkata").toDate(),
-      end: moment.tz("2025-06-11T18:00:00", "Asia/Kolkata").toDate(),
-      status: "Off",
-    },
-    {
-      title: "P",
-      start: moment.tz("2025-06-12T09:00:00", "Asia/Kolkata").toDate(),
-      end: moment.tz("2025-06-12T18:00:00", "Asia/Kolkata").toDate(),
-      status: "WFO",
-    },
-  ];
-
-  const mergedEvents = dummyEvents.map((event) => {
-    const matchedRealEvent = realEvent.find((real) =>
-      moment(real.start).isSame(event.start, "day")
-    );
-    return matchedRealEvent || event;
-  });
-
   // console.log(mergedEvents)
   return (
     <div className="w-full ">
-    
-
       <Calendar
         defaultView="month"
         components={{
           event: CalenderEvent,
         }}
         localizer={localizer}
-        events={mergedEvents}
+        events={data}
         startAccessor="start"
         endAccessor="end"
         style={{ height: "80vh", width: "100%" }}

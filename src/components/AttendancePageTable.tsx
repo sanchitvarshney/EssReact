@@ -1,19 +1,68 @@
 import Card from "@mui/material/Card";
 
 import Typography from "@mui/material/Typography";
-import { Divider, Box } from "@mui/material";
-import type { FC } from "react";
+import { Divider, Box, CircularProgress } from "@mui/material";
+import { useEffect, type FC } from "react";
 import { CustomButton } from "./ui/CustomButton";
 import CustomToolTip from "./reuseable/CustomToolTip";
-import { btnstyle } from "../constants/themeConstant"
+import { btnstyle } from "../constants/themeConstant";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import type { ShiftDetailsTypes } from "../types/dataTypes/shiftDetailsTypes";
+import { useDownloadAttendanceMutation } from "../services/shift";
+import moment from "moment";
+import { useToast } from "../hooks/useToast";
+
 
 type AttendancePageTablePropsType = {
-  value: string | number;
+  value: ShiftDetailsTypes;
+  date: any;
 };
 
-const AttendancePageTable: FC<AttendancePageTablePropsType> = ({ value }) => {
-  console.log(value);
+const AttendancePageTable: FC<AttendancePageTablePropsType> = ({
+  value,
+  date,
+}) => {
+  const [downloadAttendance, { data, error, isLoading }] =
+    useDownloadAttendanceMutation();
+  const { showToast } = useToast();
+  const downloadPDF = (
+    bufferData: any,
+    filename: string = "document.pdf" 
+  ) => {
+   
+    const byteArray = new Uint8Array(bufferData);
+
+
+    const file = new Blob([byteArray], { type: "application/pdf" });
+
+    const url = URL.createObjectURL(file);
+   
+   
+    
+    
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+     URL.revokeObjectURL(url);
+  };
+
+  useEffect(() => {
+    if (data?.buffer) {
+      downloadPDF(data.buffer.data, data.filename);
+    }
+    if (error) {
+      //@ts-ignore
+      showToast(error?.data.message || "Something went wrong", "error");
+    }
+  }, [data?.buffer, error]);
+
+  const handleDownloadAttendance = () => {
+    const formatted = moment(date).format("YYYY-MM");
+    downloadAttendance({ period: formatted });
+  };
 
   return (
     <Card
@@ -25,15 +74,12 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({ value }) => {
         // p: 2,
       }}
     >
-      {/* <CardContent> */}
-      {/* Header Row */}
       <Box
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         flexWrap="wrap"
         gap={2}
-        // sx={{pt:2}}
       >
         <Typography
           variant="h6"
@@ -52,7 +98,7 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({ value }) => {
               Today In
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              --
+              {value?.today_in ? value?.today_in : "--"}
             </Typography>
           </Box>
           <Box textAlign="center">
@@ -63,15 +109,26 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({ value }) => {
               Total Hours
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              -- h & -- m
+              {value?.total_hour ? value?.total_hour : " -- h & -- m"}
             </Typography>
           </Box>
         </Box>
         <CustomToolTip
           title={[
-            { label: "Shift Code (Division)", value: "D1 (MS01)" },
-            { label: "Start Time", value: "09:00 AM" },
-            { label: "End Time", value: "06:00 PM" },
+            {
+              label: "Shift Code (Division)",
+              value: value?.shift
+                ? `${value?.shift} (${value?.division})`
+                : "--",
+            },
+            {
+              label: "Start Time",
+              value: value?.start_time ? value?.start_time : "--",
+            },
+            {
+              label: "End Time",
+              value: value?.end_time ? value?.end_time : "--",
+            },
           ].map((item, index) => (
             <Box
               key={index}
@@ -102,10 +159,17 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({ value }) => {
           </span>
         </CustomToolTip>
         <div className="mr-1">
-          <CustomButton className={btnstyle}>
-          <FileDownloadIcon sx={{ color: "#ffffff" }} />
-          <span className="text-white">Download</span>
-        </CustomButton>
+          <CustomButton className={btnstyle} onClick={handleDownloadAttendance}>
+            {isLoading ? (
+              <CircularProgress sx={{ color: "#ffffff" }} size={"20px"} />
+            ) : (
+              <FileDownloadIcon sx={{ color: "#ffffff" }} />
+            )}
+
+            <span className="text-white ml-2">Download</span>
+            {/* </>
+            )} */}
+          </CustomButton>
         </div>
       </Box>
 

@@ -4,7 +4,7 @@ import clock from "../assets/clock (1).png";
 import warning from "../assets/warning.png";
 import cancel from "../assets/multiply.png";
 import AttendancePageTable from "../components/AttendancePageTable";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ButtonGroup, IconButton, Typography } from "@mui/material";
 // import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 // import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -16,6 +16,12 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import CustomToolTip from "../components/reuseable/CustomToolTip";
 import CardForAttendance from "../components/reuseable/CardForAttendance";
 import { dotColor } from "../staticData/headerofattendance";
+import {
+  useGetShiftDetailsMutation,
+  useGetShiftsMutation,
+} from "../services/shift";
+import { useToast } from "../hooks/useToast";
+import AttendencePageSkeleton from "../skeleton/AttendencePageSkeleton";
 
 export const Button_OPTIONS = [
   { id: "back", label: "Back" },
@@ -23,9 +29,23 @@ export const Button_OPTIONS = [
   { id: "today", label: "Today" },
 ];
 const AttendancePage = () => {
+  const { showToast } = useToast();
   const [tabvalue, setTabvalue] = useState<string>("calendar");
-  // const [currentMonth, setCurrentMonth] = useState(moment());
-  const [date, setDate] = useState<any>(moment("2025-06-10").toDate());
+  const [formattedEvents, setFormattedEvents] = useState<any>([]);
+
+  const [date, setDate] = useState<any>(moment().toDate());
+  const [
+    getShiftDetails,
+    {
+      data: shiftDetails,
+      isLoading: shiftDetailsLoading,
+      error: shiftDetailsError,
+    },
+  ] = useGetShiftDetailsMutation();
+  const [
+    getShifts,
+    { data: shifts, isLoading: shiftsLoading, error: shiftsError },
+  ] = useGetShiftsMutation();
 
   const onTodayClick = useCallback(() => {
     setDate(moment().toDate());
@@ -52,87 +72,153 @@ const AttendancePage = () => {
       onTodayClick();
     }
   };
+
+  useEffect(() => {
+    getShiftDetails({
+      start: moment(date).startOf("month").format("YYYY-MM-DD"),
+      end: moment(date).endOf("month").format("YYYY-MM-DD"),
+    });
+    getShifts({
+      start: moment(date).startOf("month").format("YYYY-MM-DD"),
+      end: moment(date).endOf("month").format("YYYY-MM-DD"),
+    });
+  }, [date]);
+
+  useEffect(() => {
+    if (shiftDetailsError) {
+      // @ts-ignore
+      showToast(shiftDetailsError.data?.message || "Shift Not Found!", "error");
+    }
+    if (shiftsError) {
+      // @ts-ignore
+      showToast(shiftsError?.data?.message || "Shift Not Found!", "error");
+    }
+  }, [shiftDetailsError, shiftsError]);
+
+  useEffect(() => {
+    if (shifts?.data?.length > 0) {
+      const parsedEvents = shifts?.data?.map((item: any) => {
+        const start = new Date(item.start);
+        const end = new Date(start);
+        end.setHours(end.getHours() + 1);
+
+        return {
+          title: item.title,
+          start,
+          end,
+          status: item.title,
+          total_time: item.total_time,
+        };
+      });
+      setFormattedEvents(parsedEvents);
+    }
+  }, [shifts?.data]);
+
   return (
     <div className="w-full px-4 py-2 ">
-      <AttendancePageTable value={""} />
-      <div className="w-full flex justify-between flex-wrap gap-y-5 gap-x-1 py-3 px-4">
-        <div className="flex gap-x-8 gap-y-4 flex-wrap">
-          {dotColor.map((item, index) => (
-            <div key={index} className="flex items-center space-x-2 mb-1">
-              <div className={`w-3 h-3 rounded-full ${item.color}`} />
-              <span className=" select-none ">{item.name}</span>
-            </div>
-          ))}
-        </div>
-
-        <ButtonGroup variant="outlined" aria-label="Basic button group">
-          <CustomToolTip title={"Calendar View"} placement={"bottom"}>
-            <IconButton onClick={() => setTabvalue("calendar")}>
-              <CalendarMonthIcon sx={{ fontSize: 32, color: "#000" }} />
-            </IconButton>
-          </CustomToolTip>
-          <CustomToolTip title={"List View"} placement={"bottom"}>
-            <IconButton onClick={() => setTabvalue("listview")}>
-              <ListIcon sx={{ fontSize: 32, color: "#000" }} />
-            </IconButton>
-          </CustomToolTip>
-        </ButtonGroup>
-      </div>
-      <div className="w-full ">
-        <div className="flex flex-wrap justify-between items-center p-2    ">
-          {/* Button Group */}
-          <div className="flex flex-wrap">
-            <ButtonGroup
-              size="small"
-              variant="contained"
-              disableElevation
-              sx={{
-                "& .MuiButtonGroup-grouped": {
-                  borderColor: "#fff",
-                  margin: 0,
-                },
-              }}
-            >
-              {Button_OPTIONS.map(({ id, label }) => (
-                <Button
-                  key={id}
-                  onClick={() => handleCalender(id)}
-                  sx={{
-                    backgroundColor: "#2a2929",
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: "grey.800",
-                      color: "white",
-                    },
-                    borderRadius: 0,
-                    textTransform: "none",
-                  }}
-                >
-                  {label}
-                </Button>
+      {shiftDetailsLoading || shiftsLoading ? (
+        <AttendencePageSkeleton />
+      ) : (
+        <>
+          <AttendancePageTable value={shiftDetails} date={date}/>
+          <div className="w-full flex justify-between flex-wrap gap-y-5 gap-x-1 py-3 px-4">
+            <div className="flex gap-x-8 gap-y-4 flex-wrap">
+              {dotColor.map((item, index) => (
+                <div key={index} className="flex items-center space-x-2 mb-1">
+                  <div className={`w-3 h-3 rounded-full ${item.color}`} />
+                  <span className=" select-none ">{item.name}</span>
+                </div>
               ))}
+            </div>
+
+            <ButtonGroup variant="outlined" aria-label="Basic button group">
+              <CustomToolTip title={"Calendar View"} placement={"bottom"}>
+                <IconButton onClick={() => setTabvalue("calendar")}>
+                  <CalendarMonthIcon sx={{ fontSize: 32, color: "#000" }} />
+                </IconButton>
+              </CustomToolTip>
+              <CustomToolTip title={"List View"} placement={"bottom"}>
+                <IconButton onClick={() => setTabvalue("listview")}>
+                  <ListIcon sx={{ fontSize: 32, color: "#000" }} />
+                </IconButton>
+              </CustomToolTip>
             </ButtonGroup>
           </div>
+          <div className="w-full ">
+            <div className="flex flex-wrap justify-between items-center p-2    ">
+              {/* Button Group */}
+              <div className="flex flex-wrap">
+                <ButtonGroup
+                  size="small"
+                  variant="contained"
+                  disableElevation
+                  sx={{
+                    "& .MuiButtonGroup-grouped": {
+                      borderColor: "#fff",
+                      margin: 0,
+                    },
+                  }}
+                >
+                  {Button_OPTIONS.map(({ id, label }) => (
+                    <Button
+                      key={id}
+                      onClick={() => handleCalender(id)}
+                      sx={{
+                        backgroundColor: "#2a2929",
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: "grey.800",
+                          color: "white",
+                        },
+                        borderRadius: 0,
+                        textTransform: "none",
+                      }}
+                    >
+                      {label}
+                    </Button>
+                  ))}
+                </ButtonGroup>
+              </div>
 
-          <div className="">
-            <Typography fontSize={"1.5rem"} fontWeight="bold">
-              {dateText}
-            </Typography>
-          </div>
+              <div className="">
+                <Typography fontSize={"1.5rem"} fontWeight="bold">
+                  {dateText}
+                </Typography>
+              </div>
 
-          <div className="flex items-center flex-wrap gap-x-2">
-            <CardForAttendance title={"Present"} icon={accept} value={6} />
-            <CardForAttendance title={"Absent"} icon={cancel} value={6} />
-            <CardForAttendance title={"Mispunch"} icon={warning} value={6} />
-            <CardForAttendance title={"Short"} icon={clock} value={1} />
+              <div className="flex items-center flex-wrap gap-x-2">
+                <CardForAttendance
+                  title={"Present"}
+                  icon={accept}
+                  value={shifts?.total_present ? shifts?.total_present : "--"}
+                />
+                <CardForAttendance
+                  title={"Absent"}
+                  icon={cancel}
+                  value={"N/A"}
+                />
+                <CardForAttendance
+                  title={"Mispunch"}
+                  icon={warning}
+                  value={
+                    shifts?.total_misspunch ? shifts?.total_misspunch : "--"
+                  }
+                />
+                <CardForAttendance title={"Short"} icon={clock} value={"N/A"} />
+              </div>
+            </div>
+            {tabvalue === "calendar" ? (
+              <CustomCalender
+                data={formattedEvents}
+                setDate={setDate}
+                date={date}
+              />
+            ) : (
+              <CalendarListView currentMonth={date} data={formattedEvents} />
+            )}
           </div>
-        </div>
-        {tabvalue === "calendar" ? (
-          <CustomCalender date={date} setDate={setDate} />
-        ) : (
-          <CalendarListView currentMonth={date} />
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 };

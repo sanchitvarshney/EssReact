@@ -2,7 +2,7 @@ import { Avatar, Box, Divider, Tab, Tabs, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import EmployeeHierarchyPage from "../components/EmployeeHierarchyPage";
 import EmployeeInformationPage from "../components/EmployeeInformationPage";
-import { CustomButton } from "../components/ui/CustomButton";
+
 import ChangePasswordScreen from "./ChangePasswordScreen";
 import { useGetuserdataMutation } from "../services/auth";
 import { useAuth } from "../contextapi/AuthContext";
@@ -56,13 +56,15 @@ const EmployeeProfilePage = () => {
                   {/* @ts-ignore */}
                   {`${user?.name} (${user?.id}) `}
                 </Typography>
-                <Typography variant="h6">{data?.result?.basic[0].designation}</Typography>
-                <Typography variant="h6">{data?.result?.basic[0].department}</Typography>
-                <Typography variant="h6"></Typography>
+                {/* @ts-ignore */}
+                <Typography variant="subtitle2" >{user?.role}</Typography>
+                 {/* @ts-ignore */}
+                <Typography variant="subtitle2">{user?.dept}</Typography>
+             
               </div>
             </div>
-            {value === "info" && (
-              <div className="flex  inline-block">
+           
+              {/* <div className="flex  inline-block">
                 {!editMode && (
                   <CustomButton
                     className={`bg-gray-900 text-white  hover:bg-gray-800/80 cursor-pointer`}
@@ -81,7 +83,7 @@ const EmployeeProfilePage = () => {
                   </CustomButton>
                 )}
               </div>
-            )}
+            */}
           </div>
           <Divider sx={{ marginTop: 2 }} />
           <Box

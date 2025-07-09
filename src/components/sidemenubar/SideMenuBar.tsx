@@ -214,11 +214,11 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
                     {/*@ts-ignore */}
                     {user?.name}
                   </h2>
-                  <h2 className=" break-words max-w-full text-[1rem] font-medium  ">
+                  <h2 className=" break-words max-w-full text-[0.92rem] font-medium  ">
                     {/* @ts-ignore */}
                     {user?.role}
                   </h2>
-                  <h2 className=" break-words max-w-full text-[1rem] font-medium ">
+                  <h2 className=" break-words max-w-full text-[0.90rem] font-medium ">
                     {/* @ts-ignore */}
                     {user?.dept}
                   </h2>

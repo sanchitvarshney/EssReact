@@ -29,7 +29,7 @@ useEffect(() => {
         <Header />
       </div>
 
-      <main className=" relative bottom-0 bg-[#ffffff] h-full  custom-scrollbar-for-menu "><Outlet /></main>
+      <main className="  bottom-0 bg-[#ffffff] h-full  custom-scrollbar-for-menu "><Outlet /></main>
     </Wrapper>
   );
 }

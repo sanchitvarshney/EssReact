@@ -6,4 +6,7 @@ export const dotColor = [
   { id: "wfh", color: "bg-blue-600", name: "WFH" },
   { id: "sick", color: "bg-orange-500", name: "Sick Leave" },
   { id: "earn", color: "bg-indigo-600", name: "Earn Leave" },
+   { id: "halfday", color: "bg-teal-600", name: "Half Day" },
+
+  
 ];

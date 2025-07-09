@@ -21,25 +21,31 @@ export const getStatusStyle = (title: string) => {
           textColor: "text-blue-800",
           borderColor: "border-blue-300",
         };
-      case "cl":
-      case "casual leave":
+      case "mis":
+      case "mis":
         return {
           bgColor: "bg-yellow-100",
-          textColor: "text-yellow-800",
+          textColor: "text-yellow-600",
           borderColor: "border-yellow-300",
         };
-      case "sl":
+           case "hd":
+        return {
+          bgColor: "bg-teal-100",
+          textColor: "text-teal-600",
+          borderColor: "border-teal-300",
+        };
+      case "p/sl":
       case "sick leave":
         return {
           bgColor: "bg-orange-100",
           textColor: "text-orange-800",
           borderColor: "border-orange-300",
         };
-      case "shots":
+      case "srt":
         return {
-          bgColor: "bg-purple-100",
-          textColor: "text-purple-800",
-          borderColor: "border-purple-300",
+          bgColor: "bg-gray-100",
+          textColor: "text-gray-800",
+          borderColor: "border-gray-300",
         };
       case "el":
       case "earned leave":
@@ -58,7 +64,7 @@ export const getStatusStyle = (title: string) => {
         };
       default:
         return {
-          bgColor: "bg-gray-100",
+          // bgColor: "bg-red-100",
           textColor: "text-gray-900",
           borderColor: "border-gray-300",
         };

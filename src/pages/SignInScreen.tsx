@@ -27,6 +27,7 @@ const SignInScreen = () => {
 
     if ("status" in error) {
       const errData = error.data as { message?: string };
+     
       showToast(errData?.message || "Something went wrong", "error");
     } else if ("message" in error) {
       showToast(error.message || "An unexpected error occurred", "error");

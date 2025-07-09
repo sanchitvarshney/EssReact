@@ -18,6 +18,8 @@ const Protected: React.FC<ProtectedProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
+  
+
   const isAuthenticated = !!sessionStorage.getItem("user");
 
   const checkAuth = useCallback(async () => {

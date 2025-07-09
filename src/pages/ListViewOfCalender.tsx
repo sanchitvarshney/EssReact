@@ -11,9 +11,8 @@ import {
 import { styled } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
 
-import { dummyEvents } from "../dummydata/CalenderData";
 import { useMemo } from "react";
-
+import { customColor } from "../constants/themeConstant";
 
 const getTextColor = (key: string) => {
   const statusLower = key.toLowerCase();
@@ -31,42 +30,14 @@ const getTextColor = (key: string) => {
   }
 };
 
-// Sample real events
-const realEvent = [
-  {
-    title: "P",
-    start: moment.tz("2025-06-10T09:00:00", "Asia/Kolkata").toDate(),
-    end: moment.tz("2025-06-10T18:00:00", "Asia/Kolkata").toDate(),
-    status: "WFH",
-  },
-  {
-    title: "A",
-    start: moment.tz("2025-06-11T09:00:00", "Asia/Kolkata").toDate(),
-    end: moment.tz("2025-06-11T18:00:00", "Asia/Kolkata").toDate(),
-    status: "Off",
-  },
-  {
-    title: "P",
-    start: moment.tz("2025-06-12T09:00:00", "Asia/Kolkata").toDate(),
-    end: moment.tz("2025-06-12T18:00:00", "Asia/Kolkata").toDate(),
-    status: "WFO",
-  },
-];
-
 const CalendarListView = ({
   currentMonth,
+  data,
 }: {
   currentMonth: moment.Moment;
+  data: any;
 }) => {
   const safeMonth = useMemo(() => moment(currentMonth), [currentMonth]);
-  const mergedEvents = useMemo(() => {
-    return dummyEvents.map((event) => {
-      const match = realEvent.find((real) =>
-        moment(real.start).isSame(event.start, "day")
-      );
-      return match || event;
-    });
-  }, [dummyEvents, realEvent]);
 
   const daysInMonth = useMemo(() => {
     const days: {
@@ -76,6 +47,7 @@ const CalendarListView = ({
         start: Date | null;
         end: Date | null;
         status: string;
+        startTime: string;
       };
     }[] = [];
 
@@ -83,7 +55,7 @@ const CalendarListView = ({
     const end = safeMonth.clone().endOf("month");
 
     for (let day = start.clone(); day.isSameOrBefore(end); day.add(1, "day")) {
-      const matched = mergedEvents.find((ev) =>
+      const matched = data.find((ev: any) =>
         moment(ev.start).isSame(day, "day")
       );
 
@@ -99,7 +71,7 @@ const CalendarListView = ({
     }
     console.log(days);
     return days;
-  }, [currentMonth, mergedEvents]);
+  }, [currentMonth]);
 
   return (
     <div className="w-full p-4">
@@ -120,9 +92,9 @@ const CalendarListView = ({
             <TableRow>
               <StyledTableCell>Date</StyledTableCell>
               <StyledTableCell>Status</StyledTableCell>
-              <StyledTableCell>Time In</StyledTableCell>
-              <StyledTableCell>Time Out</StyledTableCell>
-              <StyledTableCell>Assignment</StyledTableCell>
+              {/* <StyledTableCell>Time In</StyledTableCell> */}
+              <StyledTableCell>Total Time</StyledTableCell>
+              {/* <StyledTableCell>Assignment</StyledTableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -130,22 +102,20 @@ const CalendarListView = ({
               <StyledTableRow key={date.format("YYYY-MM-DD")}>
                 <StyledTableCell>{date.format("DD MMM YYYY")}</StyledTableCell>
                 {/*@ts-ignore */}
-                <TableCell sx={{ color: getTextColor(event.title), fontWeight:600 }}>
+                <TableCell
+                  sx={{ color: getTextColor(event.title), fontWeight: 600 }}
+                >
                   {event.status || "N/A"}
                 </TableCell>
+                {/* <StyledTableCell>
+                  {event.startTime}
+                </StyledTableCell> */}
                 <StyledTableCell>
-                  {event.start &&
-                  moment(event.start).format("HH:mm") !== "00:00"
-                    ? moment(event.start).format("hh:mm A")
-                    : "--"}
-                </StyledTableCell>
-                <StyledTableCell>
-                  {event.end && moment(event.end).format("HH:mm") !== "00:00"
-                    ? moment(event.end).format("hh:mm A")
-                    : "--"}
+                  {/* @ts-ignore */}
+                  {event?.total_time || "--"}
                 </StyledTableCell>
 
-                <StyledTableCell>{event.title || "N/A"}</StyledTableCell>
+                {/* <StyledTableCell>{event.title || "N/A"}</StyledTableCell> */}
               </StyledTableRow>
             ))}
           </TableBody>
@@ -160,9 +130,12 @@ export default CalendarListView;
 // Styled components
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#000",
+    backgroundColor: customColor?.bgColor,
     color: theme.palette.common.white,
-    fontWeight: 600,
+    fontSize: 17,
+  fontWeight: 600,
+  
+  letterSpacing: 2,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
