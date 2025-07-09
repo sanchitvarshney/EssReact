@@ -16,7 +16,7 @@ import { useGetDocumentsMutation } from "../services/doc";
 import { useEffect, useState } from "react";
 import LoadingComponent from "../components/reuseable/LoadingComponent";
 import CustomSearch from "../components/reuseable/CustomSearch";
-import {  customColor } from "../constants/themeConstant";
+
 
 
 const DocumentsPage = () => {
@@ -71,8 +71,8 @@ const DocumentsPage = () => {
               <CustomSearch
                 width={"40ch"}
                 placeholder={"Search your documents here..."}
-                bgColor={customColor.bgColor}
-                textColor="#000"
+                 bgColor="#8a8a8a"
+          textColor="#000"
                 onChange={(e: any) => filterData(e.target.value)}
               />
             </div>

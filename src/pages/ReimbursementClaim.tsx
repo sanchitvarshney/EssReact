@@ -33,6 +33,7 @@ import {
 } from "@mui/material";
 import CustomTextInput from "../components/reuseable/CustomTextInput";
 import CustomModalDatePicker from "../components/reuseable/CustomModalDatePicker";
+import { customColor } from "../constants/themeConstant";
 
 const categories = [
   { value: "r", label: "--" },
@@ -126,7 +127,12 @@ const ReimbursementClaim = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <CustomModalDatePicker field={field} openTo={"day"} view={["year", "month", "day"]} label={"Select Date"} />
+                        <CustomModalDatePicker
+                          field={field}
+                          openTo={"day"}
+                          view={["year", "month", "day"]}
+                          label={"Select Date"}
+                        />
                       </FormControl>
                       <FormMessage className="text-[red] mt-2" />
                     </FormItem>
@@ -145,7 +151,7 @@ const ReimbursementClaim = () => {
                           />
                         </div>
                       </FormControl>
-                       <FormMessage className="text-[red] mt-2" />
+                      <FormMessage className="text-[red] mt-2" />
                     </FormItem>
                   )}
                 />
@@ -191,17 +197,26 @@ const ReimbursementClaim = () => {
                     aria-label="expense items table"
                   >
                     <TableHead>
-                      <TableRow className="bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f]">
-                        <TableCell className="text-white font-semibold border-none">
+                      <TableRow
+                        sx={{
+                          backgroundColor: customColor.bgColor,
+                          color: "#fff",
+                          fontSize: 18,
+                          fontWeight: 600,
+
+                          letterSpacing: 2,
+                        }}
+                      >
+                        <TableCell className="text-white font-semibold border-none tracking-wide">
                           Category
                         </TableCell>
-                        <TableCell className="text-white font-semibold border-none text-center">
+                        <TableCell className="text-white font-semibold border-none text-center tracking-wide">
                           Description
                         </TableCell>
-                        <TableCell className="text-white font-semibold border-none text-center">
+                        <TableCell className="text-white font-semibold border-none text-center tracking-wide">
                           Amount
                         </TableCell>
-                        <TableCell className="text-white font-semibold border-none text-center">
+                        <TableCell className="text-white font-semibold border-none text-center tracking-wide">
                           Action
                         </TableCell>
                       </TableRow>
@@ -219,20 +234,17 @@ const ReimbursementClaim = () => {
                         >
                           <TableCell sx={{ py: 3 }} className=" w-60 sm:w-80">
                             <FormField
-                           
                               control={control}
                               name={`items.${idx}.category`}
                               render={({ field }) => (
                                 <FormItem className="mb-0 ">
-                                  <FormControl >
-                                   
-                                      <CustomTextInput
-                                        field={field}
-                                        label={"Select category"}
-                                        select={true}
-                                        options={categories}
-                                      />
-                                   
+                                  <FormControl>
+                                    <CustomTextInput
+                                      field={field}
+                                      label={"Select category"}
+                                      select={true}
+                                      options={categories}
+                                    />
                                   </FormControl>
                                   <FormMessage className="text-[red] mt-2" />
                                 </FormItem>

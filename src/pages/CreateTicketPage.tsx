@@ -12,6 +12,8 @@ import {
   Support,
   Refresh,
 } from "@mui/icons-material";
+import CustomTextInput from "../components/reuseable/CustomTextInput";
+import { btnstyle } from "../constants/themeConstant";
 
 const CreateTicketPage = () => {
   const navigation = useNavigate();
@@ -85,10 +87,13 @@ const CreateTicketPage = () => {
                 Ticket Summary
               </Typography>
             </div>
-            <Input
+            {/* <Input
               placeholder="Brief description of your issue..."
               className="w-70 sm:w-1/2 p-4 text-lg border-2 border-gray-200 rounded-md focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all duration-200"
-            />
+            /> */}
+            <div className="w-100">
+              <CustomTextInput field={undefined} label={"Enter Ticket Summary"} />
+            </div>
           </div>
 
           <div className="mb-8">
@@ -120,7 +125,8 @@ const CreateTicketPage = () => {
 
               <label
                 htmlFor="file-upload"
-                className="inline-block bg-[#2eacb3] mt-2 text-white px-6 py-2 rounded-lg transition-colors duration-200 hover:bg-[#279aa0] cursor-pointer"
+                className={btnstyle}
+                style={{padding:"4px 8px ", marginTop:"10px"}}
               >
                 Choose Files
               </label>
@@ -181,7 +187,7 @@ const CreateTicketPage = () => {
             </div>
             <div className="border-2 w-full border-gray-200 rounded-xl overflow-hidden">
               <Editor
-                className="min-h-[200px] w-full p-4 focus:outline-none"
+                className="min-h-[200px] w-full p-4 focus:ring-none"
                 value={html}
                 onChange={onChange}
                 placeholder="Please provide a detailed description of your issue, including any steps to reproduce, error messages, or additional context that might help us assist you better..."
@@ -204,7 +210,7 @@ const CreateTicketPage = () => {
               <Refresh className="text-sm" />
               Reset
             </CustomButton>
-            <CustomButton className=" cursor-pointer bg-[#2eacb3] hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl">
+            <CustomButton className={btnstyle}>
               <Support className="text-sm" />
               Create Ticket
             </CustomButton>

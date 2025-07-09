@@ -17,15 +17,19 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
 import { leaveLogData } from "../dummydata/LeaveSentData";
 import CustomSearch from "../components/reuseable/CustomSearch";
+import { customColor } from "../constants/themeConstant";
 
 // Styled components
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#f3f4f6",
-    color: "#1f2937",
-    fontWeight: 700,
-    fontSize: "14px",
-    borderBottom: "1px solid #e5e7eb",
+    backgroundColor: customColor.bgColor,
+    color: "#fff",
+    
+   
+     fontSize: 18,
+  fontWeight: 600,
+ 
+  letterSpacing: 2,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -76,7 +80,7 @@ const ViewStatusTicketPage = () => {
         <CustomSearch
           bgColor="#8a8a8a"
           textColor="#000"
-          width="350"
+          width="40ch"
           placeholder="Search ID, name or status"
           onChange={() => {}}
         />
@@ -92,7 +96,7 @@ const ViewStatusTicketPage = () => {
         }}
       >
         <Table stickyHeader>
-          <TableHead>
+          <TableHead sx={{backgroundColor: customColor.bgColor}}>
             <TableRow>
               {["ID", "Requester", "Subject", "Status"].map((header) => (
                 <StyledTableCell
