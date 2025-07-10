@@ -11,8 +11,16 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
         // body: credentials,
       }),
     }),
+      getPeripheral: builder.mutation<any, void>({
+      query: (credentials) => ({
+        url: "/assets",
+        method: "POST",
+        body: credentials,
+      }),
+       transformResponse: (response: any) => response.data,
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetDocumentsMutation } = extendedAuthApi;
+export const { useGetDocumentsMutation, useGetPeripheralMutation } = extendedAuthApi;

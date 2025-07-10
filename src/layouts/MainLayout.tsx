@@ -24,12 +24,12 @@ useEffect(() => {
 }, []);
   return (
     <Wrapper className="">
-      {!isOnline && <div className="absolute text-white  bg-[red] w-full z-10"><Typography textAlign={"center"}>No Internet Connection</Typography></div>}
+      {!isOnline && <div className="absolute top-10 text-white  bg-[red] w-full z-99"><Typography textAlign={"center"}>No Internet Connection</Typography></div>}
       <div className="sticky top-0 z-50">
         <Header />
       </div>
 
-      <main className="  bottom-0 bg-[#ffffff] h-full  custom-scrollbar-for-menu "><Outlet /></main>
+      <main className=" relative bottom-0 bg-[#ffffff] h-full  custom-scrollbar-for-menu "><Outlet /></main>
     </Wrapper>
   );
 }
