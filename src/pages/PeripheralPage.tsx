@@ -17,6 +17,7 @@ interface Peripheral {
   name: string;
   category: string;
   serialNo: string;
+  model: string;
   description: string;
   allotedon: string;
   image: string;
@@ -85,6 +86,7 @@ const PeripheralPage: React.FC = () => {
       const res = data.map((item: any) => ({
         id: item.identity,
         name: item.name,
+        model: item.model,
         category: item.category || item.catergory, // support both spellings
         serialNo: item.serial,
         description: item.description,
@@ -292,12 +294,21 @@ const PeripheralPage: React.FC = () => {
               </h2>
 
               <div className="space-y-4 sm:space-y-6">
+               
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                   <p className="w-32 sm:w-40 min-w-[100px] sm:min-w-[120px] font-semibold text-gray-500 text-base">
                     Serial ID:
                   </p>
                   <p className="text-gray-800 text-base break-words">
                     {selectedPeripheral?.serialNo}
+                  </p>
+                </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <p className="w-32 sm:w-40 min-w-[100px] sm:min-w-[120px] font-semibold text-gray-500 text-base">
+                    Model:
+                  </p>
+                  <p className="text-gray-800 text-base break-words">
+                    {selectedPeripheral?.model}
                   </p>
                 </div>
 
@@ -319,14 +330,7 @@ const PeripheralPage: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                  <p className="w-32 sm:w-40 min-w-[100px] sm:min-w-[120px] font-semibold text-gray-500 text-base">
-                    Age of Device:
-                  </p>
-                  <p className="text-gray-800 text-base">
-                    {selectedPeripheral?.ageofdevice}
-                  </p>
-                </div>
+                
               </div>
             </motion.div>
           </AnimatePresence>

@@ -28,7 +28,7 @@ const PeripheralPageSkeleton = () => {
           
         </div>
         {/* Details Section */}
-        <div className="w-full max-w-2xl m-auto overflow-y-auto h-[60vh] sm:h-[70vh] rounded-2xl shadow-2xl border border-gray-200 bg-white flex flex-col">
+        <div className="w-full max-w-2xl m-auto  h-[60vh] sm:h-[70vh]   flex flex-col">
          
           <Skeleton variant="rectangular" animation={"wave"}  width={"100%"} height={"100%"} />
         </div>
