@@ -169,58 +169,56 @@ const PeripheralPage: React.FC = () => {
       
 
           <div className="h-2 w-full bg-[#2eacb3] rounded-t-2xl mb-2" />
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={selectedPeripheral.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="p-6"
-            >
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[#2eacb3] mb-6 flex items-center gap-2">
-                <span className="text-gray-400 font-bold">
-                  #{currentIndex + 1}
-                </span>
-                {selectedPeripheral.name}
-              </h2>
-              <div className="space-y-6">
-                <div className="flex items-center gap-2">
-                  <p className="w-40 font-semibold text-gray-500 text-base">
-                    Serial ID:
-                  </p>
-                  <p className="text-gray-800 text-base">
-                    {selectedPeripheral.serialNo}
-                  </p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <p className="w-40 font-semibold text-gray-500 text-base">
-                    Description:
-                  </p>
-                  <p className="text-gray-800 text-base flex-1 text-justify">
-                    {selectedPeripheral.description}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <p className="w-40 font-semibold text-gray-500 text-base">
-                    Allotted Date:
-                  </p>
-                  <p className="text-gray-800 text-base">
-                    {selectedPeripheral.allotedon}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <p className="w-40 font-semibold text-gray-500 text-base">
-                    Age of Device:
-                  </p>
-                  <p className="text-gray-800 text-base">
-                    {selectedPeripheral.ageofdevice}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-          {/* </div> */}
+     <AnimatePresence mode="wait">
+  <motion.div
+    key={selectedPeripheral.id}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    transition={{ duration: 0.5 }}
+    className="p-4 sm:p-6 w-full max-w-xl min-w-xl mx-auto"
+  >
+    <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#2eacb3] mb-6 flex items-center gap-2">
+      <span className="text-gray-400 font-bold">#{currentIndex + 1}</span>
+      {selectedPeripheral.name}
+    </h2>
+
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+        <p className="w-40 min-w-[120px] font-semibold text-gray-500 text-base">
+          Serial ID:
+        </p>
+        <p className="text-gray-800 text-base break-words">
+          {selectedPeripheral.serialNo}
+        </p>
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-2">
+        <p className="w-40 min-w-[120px] font-semibold text-gray-500 text-base">
+          Description:
+        </p>
+        <p className="text-gray-800 text-base flex-1 text-justify break-words">
+          {selectedPeripheral.description}
+        </p>
+      </div>
+
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+        <p className="w-40 min-w-[120px] font-semibold text-gray-500 text-base">
+          Allotted Date:
+        </p>
+        <p className="text-gray-800 text-base">{selectedPeripheral.allotedon}</p>
+      </div>
+
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+        <p className="w-40 min-w-[120px] font-semibold text-gray-500 text-base">
+          Age of Device:
+        </p>
+        <p className="text-gray-800 text-base">{selectedPeripheral.ageofdevice}</p>
+      </div>
+    </div>
+  </motion.div>
+</AnimatePresence>
+       
         </div>
       </div>
     </div>

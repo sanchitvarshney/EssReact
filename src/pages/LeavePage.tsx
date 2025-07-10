@@ -17,7 +17,6 @@ import { useAuth } from "../contextapi/AuthContext";
 import LeavePageSkeleton from "../skeleton/LeavePageSkeleton";
 import { useToast } from "../hooks/useToast";
 
-
 const style = {
   position: "absolute",
   top: "50%",

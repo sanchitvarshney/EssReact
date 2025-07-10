@@ -11,7 +11,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../contextapi/AuthContext";
 const SignInScreen = () => {
-  const {signIn} = useAuth()
+  const { signIn } = useAuth();
   const navigation = useNavigate();
   const { showToast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
@@ -25,11 +25,13 @@ const SignInScreen = () => {
   useEffect(() => {
     if (!error) return;
 
-    if ("status" in error) {
+    if (error) {
+      //@ts-ignore
       const errData = error.data as { message?: string };
-     
+
       showToast(errData?.message || "Something went wrong", "error");
-    } else if ("message" in error) {
+    } else {
+      //@ts-ignore
       showToast(error.message || "An unexpected error occurred", "error");
     }
   }, [error]);
