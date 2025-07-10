@@ -1,5 +1,5 @@
 export const getStatusStyle = (title: string) => {
-    const statusLower = title.toLowerCase();
+    const statusLower = title?.toLowerCase();
 
     switch (statusLower) {
       case "p":
@@ -21,7 +21,7 @@ export const getStatusStyle = (title: string) => {
           textColor: "text-blue-800",
           borderColor: "border-blue-300",
         };
-      case "mis":
+    
       case "mis":
         return {
           bgColor: "bg-yellow-100",

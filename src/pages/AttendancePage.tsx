@@ -2,7 +2,7 @@ import CustomCalender from "../components/CustomCalender";
 import accept from "../assets/accept.png";
 import clock from "../assets/clock (1).png";
 import warning from "../assets/warning.png";
-import cancel from "../assets/multiply.png";
+// import cancel from "../assets/multiply.png";
 import AttendancePageTable from "../components/AttendancePageTable";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ButtonGroup, IconButton, Typography } from "@mui/material";
@@ -192,11 +192,11 @@ const AttendancePage = () => {
                   icon={accept}
                   value={shifts?.total_present ? shifts?.total_present : "--"}
                 />
-                <CardForAttendance
+                {/* <CardForAttendance
                   title={"Absent"}
                   icon={cancel}
                   value={"N/A"}
-                />
+                /> */}
                 <CardForAttendance
                   title={"Mispunch"}
                   icon={warning}

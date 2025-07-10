@@ -34,7 +34,7 @@ const AttendencePageSkeleton = () => {
           </Box>
           <Skeleton variant="text" width={120} height={36} />
           <Box className="flex items-center flex-wrap gap-x-2">
-            {[...Array(4)].map((_, i) => (
+            {[...Array(3)].map((_, i) => (
               <Skeleton
                 key={i}
                 variant="rectangular"
