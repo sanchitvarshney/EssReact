@@ -14,8 +14,9 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CustomToolTip from "../components/reuseable/CustomToolTip";
 import { useGetDocumentsMutation } from "../services/doc";
 import { useEffect, useState } from "react";
-import LoadingComponent from "../components/reuseable/LoadingComponent";
+
 import CustomSearch from "../components/reuseable/CustomSearch";
+import DocumentsPageSkeleton from "../skeleton/DocumentsPageSkeleton";
 
 
 
@@ -60,10 +61,10 @@ const DocumentsPage = () => {
   return (
     <div className="w-full p-4 h-[calc(90vh-80px)]">
       {isLoading ? (
-        <LoadingComponent />
+        <DocumentsPageSkeleton />
       ) : (
         <>
-          <div className="w-full flex items-center justify-between mb-2">
+          <div className="w-full flex items-center flex-wrap justify-between mb-2">
             <Typography sx={{ fontWeight: 600, fontSize: 22, pb: 1 }}>
               Documents
             </Typography>

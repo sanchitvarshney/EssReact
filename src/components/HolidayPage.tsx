@@ -1,4 +1,4 @@
-import React, { useState, type FC } from "react";
+import React, { useEffect, useState, type FC } from "react";
 import {
   Box,
   Tabs,
@@ -13,24 +13,60 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
-import { holidayData } from "../dummydata/HolidayData";
+
 import CloseIcon from "@mui/icons-material/Close";
 import { customColor } from "../constants/themeConstant";
+import { useGetHolidaysListMutation } from "../services/Leave";
 
-const years = [2024, 2025, 2026];
+import { useToast } from "../hooks/useToast";
+import moment from "moment";
+import dayjs from "dayjs";
+import weekday from "dayjs/plugin/weekday";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import HolidayPageSkeleton from "../skeleton/HolidayPageSkeleton";
+
+const getDay = (date: string) => {
+ dayjs.extend(weekday);
+dayjs.extend(localizedFormat);
+
+const d = dayjs(date);
+
+const dayName = d.format("dddd");
+return dayName
+}
+
+const currentYear = new Date().getFullYear();
+const years = [currentYear - 1, currentYear, currentYear + 1];
 interface HolidayProps {
   openClose?: any;
   open?: boolean;
 }
 
 const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
-  const [selectedYear, setSelectedYear] = useState(2025);
-
+  const { showToast } = useToast();
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [getHolidaysList, { data, isLoading, error }] =
+    useGetHolidaysListMutation();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedYear(newValue);
     console.log(event);
   };
+  
 
+  useEffect(() => {
+    if (error) {
+      //@ts-ignore
+      showToast(error?.error || error.message, "error");
+    }
+  }, [error]);
+  useEffect(() => {
+    getHolidaysList({
+      start: `${selectedYear}-01-01`,
+      end: `${selectedYear}-12-31`,
+    });
+  }, [selectedYear]);
+
+  
   return (
     <Box
       sx={{
@@ -40,7 +76,9 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
         height: "85vh",
       }}
     >
-      <div className="flex justify-between items-center">
+      {isLoading  ? (
+        <HolidayPageSkeleton />
+      ): (<>  <div className="flex justify-between items-center">
         <Tabs
           value={selectedYear}
           onChange={handleChange}
@@ -142,8 +180,7 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {holidayData[selectedYear as keyof typeof holidayData]?.length ===
-            0 ? (
+            {data?.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={4} align="center">
                   <Typography variant="body2">
@@ -152,21 +189,22 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
                 </TableCell>
               </TableRow>
             ) : (
-              holidayData[selectedYear as keyof typeof holidayData]?.map(
-                (row: any) => (
-                  <TableRow key={row.no}>
-                    <TableCell>{row.no}</TableCell>
-                    <TableCell>{row.occasion}</TableCell>
-                    <TableCell>{row.date}</TableCell>
-                    <TableCell>{row.day}</TableCell>
-                  </TableRow>
-                )
-              )
+              data?.map((row: any,index:any) => (
+                <TableRow key={row.id}>
+                  <TableCell>{index+1}</TableCell>
+                  <TableCell>{row.title}</TableCell>
+                  <TableCell>
+                    {moment(row.start).format("DD-MM-YYYY")}
+                  </TableCell>
+                  <TableCell>{getDay(row.start)}</TableCell>
+                </TableRow>
+              ))
             )}
           </TableBody>
         </Table>
-      </TableContainer>
-      {/* </div> */}
+      </TableContainer></>)}
+    
+  
     </Box>
   );
 };

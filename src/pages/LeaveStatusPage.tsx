@@ -22,10 +22,11 @@ import { useGetLeaveStatusMutation } from "../services/Leave";
 import { useAuth } from "../contextapi/AuthContext";
 import { useEffect } from "react";
 import LoadingComponent from "../components/reuseable/LoadingComponent";
+import { useToast } from "../hooks/useToast";
+
 
 // Styled components for better visual appeal
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#232324",
     color: theme.palette.common.white,
@@ -49,22 +50,27 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const LeaveStatusPage = () => {
   const { user } = useAuth();
-  const [getLeaveStatus, { data, isLoading }] = useGetLeaveStatusMutation();
+  const { showToast } = useToast();
 
-  const fetchLeaveStatus = async () => {
-    try {
-      //@ts-ignore
-      await getLeaveStatus({ empcode: user?.id }).unwrap();
-    } catch (err) {
-      console.error("Failed to fetch leave status:", err);
-    }
-  };
+  const [getLeaveStatus, { data, isLoading, error }] =
+    useGetLeaveStatusMutation();
 
   useEffect(() => {
     if (user) {
-      fetchLeaveStatus();
+      //@ts-ignore
+      getLeaveStatus({ empcode: user?.id }).unwrap();
     }
   }, [user]);
+
+  useEffect(() => {
+    if (error) {
+      showToast(
+        //@ts-ignore
+        error?.message || error?.data?.message || "Something went wrong",
+        "error"
+      );
+    }
+  }, [error]);
 
   const getStatus = (status: any) => {
     switch (status) {
@@ -116,7 +122,8 @@ const LeaveStatusPage = () => {
           component={Paper}
           sx={{
             borderRadius: "0px",
-            maxHeight: "75vh",
+            maxHeight: "76vh",
+            height: "76vh",
             overflow: "auto",
             border: "1px solid #000",
           }}

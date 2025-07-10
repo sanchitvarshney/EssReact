@@ -7,7 +7,7 @@ import type { FC } from "react";
 type LeaveCardPropsType = {
   title: string;
   currentValue: string | number;
-  accrued: string | number;
+
   credited: string | number;
   annualAllotment: string | number;
 };
@@ -15,7 +15,7 @@ type LeaveCardPropsType = {
 const LeaveCard: FC<LeaveCardPropsType> = ({
   title,
   currentValue,
-  accrued,
+
   credited,
   annualAllotment,
 }) => {
@@ -25,7 +25,6 @@ const LeaveCard: FC<LeaveCardPropsType> = ({
         minWidth: { xs: "100%", sm: 180 },
         borderRadius: 2,
         boxShadow: 3,
-      
       }}
     >
       <CardContent>
@@ -58,20 +57,7 @@ const LeaveCard: FC<LeaveCardPropsType> = ({
         <div className="grid grid-cols-2  mt-2 px-5 py-2">
           {" "}
           <Typography variant="body2" color="text.secondary">
-            Accrued so far this year
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.primary"
-            sx={{ textAlign: "right" }}
-          >
-            {accrued}
-          </Typography>
-        </div>
-        <div className="grid grid-cols-2  mt-2 px-5 py-2">
-          {" "}
-          <Typography variant="body2" color="text.secondary">
-            Credited from last yaer
+            Credited from last month
           </Typography>
           <Typography
             variant="body2"

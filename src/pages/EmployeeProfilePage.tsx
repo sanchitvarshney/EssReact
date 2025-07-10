@@ -6,15 +6,18 @@ import EmployeeInformationPage from "../components/EmployeeInformationPage";
 import ChangePasswordScreen from "./ChangePasswordScreen";
 import { useGetuserdataMutation } from "../services/auth";
 import { useAuth } from "../contextapi/AuthContext";
-import LoadingComponent from "../components/reuseable/LoadingComponent";
+
+import { useToast } from "../hooks/useToast";
+import EmployeeProfilePageSkeleton from "../skeleton/EmployeeProfilePageSkeleton";
 // import { useNavigate } from "react-router-dom";
 
 const EmployeeProfilePage = () => {
   // const navigate= useNavigate()
+  const { showToast } = useToast();
   const [value, setValue] = useState("info");
   const [editMode, setEditMode] = useState(false);
   const { user } = useAuth();
-  const [getuserdata, { isLoading, data }] = useGetuserdataMutation();
+  const [getuserdata, { isLoading, data, error }] = useGetuserdataMutation();
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -27,21 +30,32 @@ const EmployeeProfilePage = () => {
     //@ts-ignore
     await getuserdata({ logedINUser: user?.id }).unwrap();
   };
+
   useEffect(() => {
     if (user) {
       fetchUserDetails();
     }
   }, [user]);
+  useEffect(() => {
+    if (error) {
+      // Fallback error message
+      const errorMsg =
+      //@ts-ignore
+        error?.data?.message ||
+        "Something went wrong while fetching user data.";
+      showToast(errorMsg, "error");
+    }
+  }, [error]);
   return (
     <div className="w-full h-[calc(100vh-90px)]  overflow-y-auto p-4">
       {isLoading ? (
-        <LoadingComponent />
+        <EmployeeProfilePageSkeleton />
       ) : (
         <>
           <div className="w-[100%] sm:w-[80%] px-4 py-6 m-auto flex justify-between ">
             <div className="flex items-center gap-x-15 gap-y-8 flex-wrap  ">
               <div>
-                {" "}
+         
                 <Avatar
                   //@ts-ignore
                   src={user?.imgUrl}
@@ -57,33 +71,11 @@ const EmployeeProfilePage = () => {
                   {`${user?.name} (${user?.id}) `}
                 </Typography>
                 {/* @ts-ignore */}
-                <Typography variant="subtitle2" >{user?.role}</Typography>
-                 {/* @ts-ignore */}
+                <Typography variant="subtitle2">{user?.role}</Typography>
+                {/* @ts-ignore */}
                 <Typography variant="subtitle2">{user?.dept}</Typography>
-             
               </div>
             </div>
-           
-              {/* <div className="flex  inline-block">
-                {!editMode && (
-                  <CustomButton
-                    className={`bg-gray-900 text-white  hover:bg-gray-800/80 cursor-pointer`}
-                    onClick={() => setEditMode((prev) => !prev)}
-                  >
-                    Edit Profile
-                  </CustomButton>
-                )}
-
-                {editMode && (
-                  <CustomButton
-                    className="bg-gray-900 text-white ml-4  hover:bg-gray-800/80 cursor-pointer"
-                    onClick={() => setEditMode((prev) => !prev)}
-                  >
-                    Cancel
-                  </CustomButton>
-                )}
-              </div>
-            */}
           </div>
           <Divider sx={{ marginTop: 2 }} />
           <Box

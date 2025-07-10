@@ -5,14 +5,16 @@ import { CustomButton } from "./ui/CustomButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { IconButton, Typography } from "@mui/material";
 import CustomTextInput from "./reuseable/CustomTextInput";
+import CancelIcon from "@mui/icons-material/Cancel";
+import SaveIcon from "@mui/icons-material/Save";
 
 const Information = ({
   label,
   value,
   editMode,
-  // onChange,
-  // name,
-}: {
+}: // onChange,
+// name,
+{
   label: any;
   value: any;
   editMode: boolean;
@@ -24,7 +26,7 @@ const Information = ({
       {/* <span className="text-lg font-semibold">{label}</span> */}
       {editMode ? (
         // <Input value={value} name={name} onChange={onChange} />
-        <CustomTextInput field={{value:value}} label={label} />
+        <CustomTextInput field={{ value: value }} label={label} />
       ) : (
         <span className="text-base">
           {value === null || value === "" ? "N/A" : value}
@@ -61,9 +63,24 @@ const EmployeeInformationPage = ({
           >
             Basic Information
           </Typography>
-          <IconButton onClick={() => setEditSection((prev) => ({ ...prev, basic: !prev.basic }))}>
-            <EditIcon sx={{ color: "#000" }} />
-          </IconButton>
+          <div className="flex gap-2">
+            {editSection.basic && (
+              <IconButton onClick={() => {}}>
+                <SaveIcon sx={{ color: "#000" }} />
+              </IconButton>
+            )}
+            <IconButton
+              onClick={() =>
+                setEditSection((prev) => ({ ...prev, basic: !prev.basic }))
+              }
+            >
+              {editSection.basic ? (
+                <CancelIcon sx={{ color: "red" }} />
+              ) : (
+                <EditIcon sx={{ color: "#000" }} />
+              )}
+            </IconButton>
+          </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
           <Information
@@ -144,9 +161,24 @@ const EmployeeInformationPage = ({
           >
             Contact Information
           </Typography>
-          <IconButton onClick={() => setEditSection((prev) => ({ ...prev, contact: !prev.contact }))}>
-            <EditIcon sx={{ color: "#000" }} />
-          </IconButton>
+          <div className="flex gap-2">
+            {editSection.contact && (
+              <IconButton onClick={() => {}}>
+                <SaveIcon sx={{ color: "#000" }} />
+              </IconButton>
+            )}
+            <IconButton
+              onClick={() =>
+                setEditSection((prev) => ({ ...prev, contact: !prev.contact }))
+              }
+            >
+              {editSection.contact ? (
+                <CancelIcon sx={{ color: "red" }} />
+              ) : (
+                <EditIcon sx={{ color: "#000" }} />
+              )}
+            </IconButton>
+          </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
           <Information
@@ -183,9 +215,24 @@ const EmployeeInformationPage = ({
           >
             Emergency Contact
           </Typography>
-          <IconButton  onClick={() => setEditSection((prev) => ({ ...prev, emergency: !prev.emergency }))}>
-            <EditIcon sx={{ color: "#000" }} />
-          </IconButton>
+          <div className="flex gap-2">
+            {editSection.emergency && (
+              <IconButton onClick={() => {}}>
+                <SaveIcon sx={{ color: "#000" }} />
+              </IconButton>
+            )}
+            <IconButton
+              onClick={() =>
+                setEditSection((prev) => ({ ...prev, emergency: !prev.emergency }))
+              }
+            >
+              {editSection.emergency ? (
+                <CancelIcon sx={{ color: "red" }} />
+              ) : (
+                <EditIcon sx={{ color: "#000" }} />
+              )}
+            </IconButton>
+          </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
           <Information
