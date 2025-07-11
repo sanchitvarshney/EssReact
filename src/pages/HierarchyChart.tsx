@@ -269,7 +269,7 @@ const DepartmentCard = ({
 );
 
 const HierarchyChart = () => {
-  const [zoom, setZoom] = useState(0.4);
+  const [zoom, setZoom] = useState(0.7);
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>(
     {}
   );

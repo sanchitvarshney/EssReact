@@ -20,7 +20,12 @@ const SignInScreen = () => {
   const [isError, setIsError] = useState("");
   const [login, { isLoading, error, data }] = useLoginMutation();
 
-  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
+  const togglePasswordVisibility = () => {
+    if (password === "") {
+      return
+    }
+    setShowPassword((prev) => !prev)
+  };
 
   useEffect(() => {
     if (!error) return;
@@ -71,7 +76,7 @@ const SignInScreen = () => {
 
   return (
     <div
-      className="h-screen w-full bg-cover bg-center flex items-center  justify-start relative pl-8 sm:pl-15 md:pl-20 lg:pl-25 xl:pl-30"
+      className="h-screen w-full bg-cover bg-center flex items-center  justify-start relative p-4 sm:pl-8 md:pl-10 lg:pl-25 xl:pl-30"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
       <div className="absolute inset-0 bg-black/40 z-0 "  />

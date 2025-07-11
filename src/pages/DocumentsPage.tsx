@@ -17,37 +17,34 @@ import { useEffect, useState } from "react";
 
 import CustomSearch from "../components/reuseable/CustomSearch";
 import DocumentsPageSkeleton from "../skeleton/DocumentsPageSkeleton";
+import { useToast } from "../hooks/useToast";
 
 const DocumentsPage = () => {
   // const [searchQuary, setSearchQuary] = useState<string>("");
-  const [getDocuments, { isLoading, data }] = useGetDocumentsMutation();
+  const { showToast } = useToast();
+  const [getDocuments, { isLoading, data, error }] = useGetDocumentsMutation();
   const [filteredData, setFilteredData] = useState([]);
 
+  const fnOpenNewWindow = (link: string) => {
+    var width = 1000;
+    var height = 600;
 
-  const  fnOpenNewWindow = (link:string) => {
-    
-    var width = 1200;
-    var height = 500;
+    var left = window.screen.width / 2 - width / 2;
+    var top = window.screen.height / 2 - height / 2;
 
-    
-    var left = (window.screen.width / 2) - (width / 2);
-    var top = (window.screen.height / 2) - (height / 2);
-
-   
     window.open(
-        link,
-        'MsCorpres',
-       `width=${width},height=${height},top=${top},left=${left},status=1,scrollbars=1,location=0,resizable=yes`
+      link,
+      "MsCorpres",
+      `width=${width},height=${height},top=${top},left=${left},status=1,scrollbars=1,location=0,resizable=yes`
     );
-}
+  };
 
-  const fetchDocuments = async () => {
-    try {
-      await getDocuments().unwrap();
-    } catch (err) {
-      
-      console.error("Failed to fetch documents:", err);
-    }
+  const downloadPDF = (pdfUrl: string, fileName: string = "document.pdf") => {
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = fileName;
+    link.target = "_blank";
+    link.click();
   };
 
   useEffect(() => {
@@ -57,8 +54,22 @@ const DocumentsPage = () => {
   }, [data]);
 
   useEffect(() => {
-    fetchDocuments();
+    getDocuments().unwrap();
   }, []);
+
+  useEffect(() => {
+    if (!error) return;
+
+    if (error) {
+      //@ts-ignore
+      const errData = error.data as { message?: string };
+
+      showToast(errData?.message || "Something went wrong", "error");
+    } else {
+      //@ts-ignore
+      showToast(error.message || "An unexpected error occurred", "error");
+    }
+  }, [error]);
 
   const filterData = (searchQuary: string) => {
     if (!searchQuary.trim()) {
@@ -192,22 +203,31 @@ const DocumentsPage = () => {
                         variant="outlined"
                         aria-label="document actions"
                       >
-                        {(!(row?.file_type === "other")) && (
+                        {!(row?.file_type === "other") && (
                           <CustomToolTip title={"View"} placement={"bottom"}>
-                            <IconButton onClick={() => fnOpenNewWindow(row.path)}>
+                            <IconButton
+                              onClick={() => fnOpenNewWindow(row.path)}
+                            >
                               <VisibilityIcon
                                 sx={{ fontSize: 24, color: "#2eacb3" }}
                               />
                             </IconButton>
                           </CustomToolTip>
                         )}
-                        <CustomToolTip title={"Download"} placement={"bottom"}>
-                          <IconButton>
-                            <CloudDownloadIcon
-                              sx={{ fontSize: 24, color: "#2eacb3" }}
-                            />
-                          </IconButton>
-                        </CustomToolTip>
+                        {row?.file_type === "other" && (
+                          <CustomToolTip
+                            title={"Download"}
+                            placement={"bottom"}
+                          >
+                            <IconButton
+                              onClick={() => downloadPDF(row.path, row.name)}
+                            >
+                              <CloudDownloadIcon
+                                sx={{ fontSize: 24, color: "#2eacb3" }}
+                              />
+                            </IconButton>
+                          </CustomToolTip>
+                        )}
                       </ButtonGroup>
                     </CardActions>
                   </Card>
