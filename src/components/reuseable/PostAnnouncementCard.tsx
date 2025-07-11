@@ -20,7 +20,7 @@ import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import SendIcon from "@mui/icons-material/Send";
 import { postCardData } from "../../staticData/postdata";
 import DocView from "./DocView";
-import CommentView from "./CommentView";
+// import CommentView from "./CommentView";
 import { useState } from "react";
 
 interface PostAnnouncementCardProps {
@@ -217,7 +217,7 @@ const PostAnnouncementCard = ({
           >
             Comments (5)
           </Typography>
-          <CommentView />
+          {/* <CommentView /> */}
         </div>
       </DocView>
     </Card>

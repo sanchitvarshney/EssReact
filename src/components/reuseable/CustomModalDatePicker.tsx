@@ -8,26 +8,30 @@ type CustomModalDatePickerProps = {
   field: any;
   openTo: string;
   view: any;
-  label:string
+  label: string;
 };
 
 const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
   field,
   openTo,
   view,
-  label
+  label,
 }) => {
   const value = field.value ? dayjs(field.value) : null;
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MobileDatePicker
-     minDate={dayjs('2000-01-01')} 
+        minDate={dayjs("2000-01-01")}
         {...field}
         openTo={openTo}
         views={view}
         value={value}
-        onChange={(date) => field.onChange(date?.toISOString())}
+        onChange={(date) => {
+          const nativeDate = date?.toDate?.();
+
+          field.onChange(nativeDate);
+        }}
         label={label}
         slots={{
           toolbar: () => null,

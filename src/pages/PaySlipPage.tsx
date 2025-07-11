@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
@@ -14,28 +14,14 @@ import {
 
 import CustomModalDatePicker from "../components/reuseable/CustomModalDatePicker";
 import { btnstyle } from "../constants/themeConstant";
+import { useGetPaySlipMutation } from "../services/payslip";
+import moment from "moment";
 
-const earnings = [
-  { label: "Basic", amount: 20000 },
-  { label: "Dearness Allowance", amount: 5000 },
-  { label: "House Rent Allowance", amount: 8000 },
-  { label: "Conveyance Allowance", amount: 2000 },
-  { label: "Education Allowance", amount: 1500 },
-  { label: "Books & Periodicals", amount: 1000 },
-  { label: "Mobile Reimbursement", amount: 1200 },
-  { label: "Medical Allowance", amount: 2000 },
-  { label: "LTA", amount: 3000 },
-];
+import DotLoading from "../components/reuseable/DotLoading";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import PaySlipPageSkeleton from "../skeleton/PaySlipPageSkeleton";
 
-const deductions = [
-  { label: "EPF", amount: 1800 },
-  { label: "ESI", amount: 500 },
-  { label: "Advance", amount: 1000 },
-];
-
-const totalEarnings = earnings.reduce((sum, item) => sum + item.amount, 0);
-const totalDeductions = deductions.reduce((sum, item) => sum + item.amount, 0);
-const netSalary = totalEarnings - totalDeductions;
+import { useToast } from "../hooks/useToast";
 
 const schema = z.object({
   toDate: z.date({ required_error: "Month is required" }),
@@ -44,26 +30,67 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 const PaySlipPage = () => {
+const { showToast } = useToast();
   const [showPayslip, setShowPayslip] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
+  const [netSalary, setNetSalary] = useState(0);
+  const star = "******";
+  const [getPaySlip, { isLoading, data, error }] = useGetPaySlipMutation();
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
+      //@ts-ignore
       toDate: new Date(),
     },
   });
 
-  const onSubmit = () => {
-    setShowPayslip(true);
+  const onSubmit = (data: any) => {
+    const period = moment(data.toDate).format("YYYY-MM");
+
+    getPaySlip({ period: period });
   };
 
+  useEffect(() => {
+    if (data?.total) {
+      const newSalary = data?.total[0]?.earnings - data?.total[0]?.deductions;
+      setNetSalary(newSalary);
+    }
+  }, [data?.total]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowLoader(false);
+    }, 1200);
+  }, [showPayslip]);
+
+  useEffect(() => {
+      if (!error) return;
+  
+      if (error) {
+        //@ts-ignore
+        const errData = error.data as { message?: string };
+  
+        showToast(errData?.message || "Something went wrong", "error");
+      } else {
+        //@ts-ignore
+        showToast(error.message || "An unexpected error occurred", "error");
+      }
+    }, [error]);
+  
+
+  if (isLoading ) {
+    return <PaySlipPageSkeleton />;
+    
+  }
+
   return (
-    <div className="h-[calc(100vh-90px)] flex flex-col items-center bg-gray-50 overflow-y-auto py-4 ">
-      <div className="w-full max-w-4xl  rounded-lg  p-4">
+    <div className="relative h-[calc(100vh-90px)] flex flex-col items-center overflow-hidden py-4 ">
+      <div className=" w-full max-w-5xl  rounded-lg  h-full  p-4">
         <h2 className="text-3xl font-bold mb-4 text-center text-gray-800">
           Pay Slip
         </h2>
 
-        <div className="w-[100%] mx-auto p-2 flex justify-center items-center  mb-8  rounded-lg">
+        <div className="w-[100%] mx-auto p-2 flex justify-center items-center  mb-4  rounded-lg">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -78,7 +105,7 @@ const PaySlipPage = () => {
                       <CustomModalDatePicker
                         field={field}
                         view={["year", "month"]}
-                        openTo={"year"}
+                        openTo={"month"}
                         label={"Select Date"}
                       />
                     </FormControl>
@@ -87,7 +114,7 @@ const PaySlipPage = () => {
                 )}
               />
               <CustomButton
-                className="bg-green-600 text-[#fff] cursor-pointer"
+                className={btnstyle}
                 type="submit"
               >
                 Generate
@@ -96,66 +123,109 @@ const PaySlipPage = () => {
           </Form>
         </div>
 
-        {showPayslip && (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
-              <div className="bg-green-50 rounded-lg p-6  shadow-md">
-                <h3 className="text-xl font-semibold mb-4  text-green-700">
-                  Earnings
-                </h3>
-                <div className="divide-y">
-                  {earnings.map((item) => (
-                    <div
-                      key={item.label}
-                      className="flex justify-between py-2 px-2 text-gray-800"
-                    >
-                      <span>{item.label}</span>
-                      <span>₹ {item.amount.toLocaleString()}</span>
+        {showLoader ? (
+          <div className="w-full h-[53vh] flex justify-center items-center">
+            <DotLoading />{" "}
+          </div>
+        ) : (
+          <div className="w-full h-[53vh] overflow-y-auto">
+            {data?.earing && (
+              <>
+                <div className=" mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 ">
+                  <div className="bg-green-50 p-4 rounded-lg shadow-md">
+                    <h3 className="text-xl font-semibold mb-4  text-green-700">
+                      Earnings
+                    </h3>
+                    <div className="divide-y">
+                      {data?.earing.map(
+                        (item: { label: string; value: string }) => (
+                          <div
+                            key={item.label}
+                            className="flex justify-between py-2 px-2 text-gray-800"
+                          >
+                            <span>{item.label}</span>
+                            <span>₹ {showPayslip ? item.value : star}</span>
+                          </div>
+                        )
+                      )}
                     </div>
-                  ))}
-                </div>
-                <div className="flex justify-between mt-4 pt-4 border-t font-bold text-green-800">
-                  <span>Total Earnings</span>
-                  <span>₹ {totalEarnings.toLocaleString()}</span>
-                </div>
-              </div>
-
-              <div className="bg-red-50 rounded-lg p-6 shadow-md">
-                <h3 className="text-xl font-semibold mb-4 text-red-500">
-                  Deductions
-                </h3>
-                <div className="divide-y">
-                  {deductions.map((item) => (
-                    <div
-                      key={item.label}
-                      className="flex justify-between py-2 px-2 text-gray-800"
-                    >
-                      <span>{item.label}</span>
-                      <span>₹ {item.amount.toLocaleString()}</span>
+                    <div className="flex justify-between mt-4 pt-4 border-t font-bold text-green-800">
+                      <span>Total Earnings</span>
+                      <span>
+                        ₹ {showPayslip ? data?.total[0]?.earnings : star}
+                      </span>
                     </div>
-                  ))}
-                </div>
-                <div className="flex justify-between mt-4 pt-4 border-t font-bold text-red-600">
-                  <span>Total Deductions</span>
-                  <span>₹ {totalDeductions.toLocaleString()}</span>
-                </div>
-              </div>
-            </div>
+                  </div>
 
-            <div className="mt-10 flex flex-col items-center">
-              <div className="text-lg font-semibold text-gray-700">
-                Net Salary
-              </div>
-              <div className="text-3xl font-bold text-green-600 mb-4">
-                ₹ {netSalary.toLocaleString()}
-              </div>
-              <CustomButton className={btnstyle}>
-                <FileDownloadIcon sx={{ color: "#ffffff" }} />
-                <span className="text-white">Download</span>
-              </CustomButton>
-            </div>
-          </>
+                  <div className="bg-red-50 rounded-lg p-6 shadow-md">
+                    <h3 className="text-xl font-semibold mb-4 text-red-500">
+                      Deductions
+                    </h3>
+                    <div className="divide-y">
+                      {data?.deduction.map(
+                        (item: { label: string; value: string }) => (
+                          <div
+                            key={item.label}
+                            className="flex justify-between py-2 px-2 text-gray-800"
+                          >
+                            <span>{item.label}</span>
+                            <span>₹ {showPayslip ? item.value : star}</span>
+                          </div>
+                        )
+                      )}
+                    </div>
+                    <div className="flex justify-between mt-4 pt-4 border-t font-bold text-red-600">
+                      <span>Total Deductions</span>
+                      <span>
+                        ₹ {showPayslip ? data?.total[0]?.deductions : star}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         )}
+      </div>
+
+      <div className="sticky  w-full flex flex-row items-center justify-between space-x-10 px-8 py-1">
+        <div>
+          {data?.earing && (
+            <>
+              {showLoader ? null : (
+                <>
+                  <div className="text-lg font-semibold text-gray-700">
+                    Net Salary
+                  </div>
+                  <div className="text-3xl font-bold text-green-600 mb-4">
+                    ₹ {showPayslip ? netSalary : star}
+                  </div>
+                </>
+              )}
+            </>
+          )}
+        </div>
+        <div className="space-x-4">
+          {data?.earing && (
+            <CustomButton
+              className={btnstyle}
+              onClick={() => {
+                setShowLoader(true);
+                setShowPayslip(!showPayslip);
+              }}
+            >
+              <VisibilityIcon sx={{ color: "#ffffff", fontSize: 20,mr:1 }} />
+              {showPayslip ? "Hide Payslip" : "Show Payslip"}
+            </CustomButton>
+          )}
+          <CustomButton
+            className={btnstyle}
+            disabled={data?.earing ? false : true}
+          >
+            <FileDownloadIcon sx={{ color: "#ffffff", fontSize: 20,mr:1 }} />
+            <span className="text-white">Download</span>
+          </CustomButton>
+        </div>
       </div>
     </div>
   );
