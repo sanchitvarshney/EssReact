@@ -11,22 +11,66 @@ import {
 import { styled } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
 
-import { useMemo } from "react";
+import {  useMemo } from "react";
 import { customColor } from "../constants/themeConstant";
+
 
 const getTextColor = (key: string) => {
   const statusLower = key.toLowerCase();
   switch (statusLower) {
     case "p":
-      return "green";
+      return {
+        backgroundColor: "#d1fae5",
+        textColor: "#065f46",
+      };
     case "a":
-      return "red";
+      return {
+        backgroundColor: "#fee2e2",
+        textColor: "#991b1b",
+      };
+    case "work from home":
     case "wfh":
-      return "blue";
+      return {
+        backgroundColor: "#dbeafe",
+        textColor: "#1e40af",
+      };
+    case "mis":
+      return {
+        backgroundColor: "#fef9c3",
+        textColor: "#ca8a04",
+      };
+    case "hd":
+      return {
+        backgroundColor: "#ccfbf1",
+        textColor: "#0f766e",
+      };
+    case "p/sl":
+    case "sick leave":
+      return {
+        backgroundColor: "#ffedd5", // bg-orange-100
+        textColor: "#c2410c", // text-orange-800
+      };
+    case "srt":
+      return {
+        backgroundColor: "#f3f4f6", // bg-gray-100
+        textColor: "#1f2937", // text-gray-800
+      };
+    case "el":
+    case "earned leave":
+      return {
+        backgroundColor: "#e0e7ff", // bg-indigo-100
+        textColor: "#3730a3", // text-indigo-800
+      };
+    case "weekly off":
     case "off":
-      return "gray";
+      return {
+        backgroundColor: "#f3f4f6", // bg-gray-100
+        textColor: "#1f2937", // text-gray-800
+      };
     default:
-      return "black";
+      return {
+        textColor: "red",
+      };
   }
 };
 
@@ -37,6 +81,7 @@ const CalendarListView = ({
   currentMonth: moment.Moment;
   data: any;
 }) => {
+ 
   const safeMonth = useMemo(() => moment(currentMonth), [currentMonth]);
 
   const daysInMonth = useMemo(() => {
@@ -69,9 +114,9 @@ const CalendarListView = ({
         },
       });
     }
-    console.log(days);
+
     return days;
-  }, [currentMonth]);
+  }, [currentMonth,data]);
 
   return (
     <div className="w-full p-4">
@@ -101,21 +146,30 @@ const CalendarListView = ({
             {daysInMonth.map(({ date, event }) => (
               <StyledTableRow key={date.format("YYYY-MM-DD")}>
                 <StyledTableCell>{date.format("DD MMM YYYY")}</StyledTableCell>
-                {/*@ts-ignore */}
                 <TableCell
-                  sx={{ color: getTextColor(event.title), fontWeight: 600 }}
+                  sx={{
+                    color: getTextColor(event.status).textColor,
+
+                    fontWeight: 600,
+                    textAlign: "center",
+                  }}
                 >
-                  {event.status || "N/A"}
+                  <span
+                    style={{
+                      backgroundColor: getTextColor(event.status)
+                        .backgroundColor,
+                      padding: 4,
+                    }}
+                  >
+                    {" "}
+                    {event.status || "N/A"}
+                  </span>
                 </TableCell>
-                {/* <StyledTableCell>
-                  {event.startTime}
-                </StyledTableCell> */}
+
                 <StyledTableCell>
                   {/* @ts-ignore */}
                   {event?.total_time || "--"}
                 </StyledTableCell>
-
-                {/* <StyledTableCell>{event.title || "N/A"}</StyledTableCell> */}
               </StyledTableRow>
             ))}
           </TableBody>
@@ -133,20 +187,20 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: customColor?.bgColor,
     color: theme.palette.common.white,
     fontSize: 17,
-  fontWeight: 600,
-  
-  letterSpacing: 2,
+    fontWeight: 600,
+
+    letterSpacing: 2,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
+const StyledTableRow = styled(TableRow)(() => ({
+  // "&:nth-of-type(odd)": {
+  //   backgroundColor: theme.palette.action.hover,
+  // },
+  // "&:last-child td, &:last-child th": {
+  //   border: 0,
+  // },
 }));

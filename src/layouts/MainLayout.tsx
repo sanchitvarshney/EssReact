@@ -30,7 +30,7 @@ useEffect(() => {
       </div>
 
       <main className=" relative  bg-gradient-to-br from-[#f8fbfc] to-[#eaf7f5]
- h-full  custom-scrollbar-for-menu bg-opacity-30"><Outlet /></main>
+ h-full  custom-scrollbar-for-menu bg-opacity-30 "><Outlet /></main>
     </Wrapper>
   );
 }
@@ -47,6 +47,7 @@ const Wrapper = styled.div`
       rotate: 30deg;
       left: -20px;
       transition: all 1.3s;
+      
     }
     &:hover {
       span {

@@ -6,7 +6,7 @@ const CalenderEvent = ({ event }: { event: any }) => {
   return (
     <div className={`flex flex-col p-2 w-full overflow-auto `}>
       <div
-        className={`flex items-center justify-center   ${statusStyle.textColor} ${statusStyle.bgColor} `}
+        className={`flex items-center justify-center   ${statusStyle.textColor} `}
       >
         <span
           className={`text-sm font-bold uppercase p-1 ${statusStyle.bgColor} `}

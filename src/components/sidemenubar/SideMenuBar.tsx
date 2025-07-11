@@ -51,6 +51,7 @@ export const renderMenu = (
       onValueChange={(val) =>
         setAccordionValues({ ...accordionValues, [path]: val })
       }
+      
     >
       <ul className="flex flex-col gap-[10px]">
         {menu?.map((item: any, index: number) => {

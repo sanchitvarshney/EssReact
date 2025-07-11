@@ -15,37 +15,27 @@ interface customcalendartypes {
 const CustomCalender: FC<customcalendartypes> = ({ date, setDate, data }) => {
   const localizer = momentLocalizer(moment);
 
-  const eventStyleGetter = (event: any) => {
-    let backgroundColor = "";
+const eventStyleGetter = (event: any) => {
+  let backgroundImage = "";
 
-    switch (event.status) {
-      case "P":
-        backgroundColor = "#4ade80";
-        break;
-      case "A":
-        backgroundColor = "#f87171";
-        break;
-      case "WH":
-        backgroundColor = "#60a5fa";
-        break;
-      case "Off":
-        backgroundColor = "#fbbf24";
-        break;
-      default:
-        backgroundColor = "#d1d5db";
-    }
+  switch (event.status) {
+    default:
+      backgroundImage = "linear-gradient(to right,rgb(240, 245, 247),rgb(235, 245, 244))";
+      break;
+  }
 
-    return {
-      style: {
-        backgroundColor,
-        borderRadius: "5px",
-        opacity: 0.8,
-        color: "white",
-        border: "0px",
-        display: "block",
-      },
-    };
+  return {
+    style: {
+      backgroundImage,
+      borderRadius: "5px",
+      opacity: 0.8,
+      color: "white",
+      border: "0px",
+      display: "block",
+    },
   };
+};
+
 
   // console.log(mergedEvents)
   return (

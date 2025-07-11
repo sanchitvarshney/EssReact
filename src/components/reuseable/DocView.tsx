@@ -56,6 +56,9 @@ const DocView: React.FC<Props> = ({
               width: width ? width : 800,
               height: "95vh",
               zIndex: 1600,
+              display:"flex",
+              justifyContent:"center"
+              
             },
           }}
         >

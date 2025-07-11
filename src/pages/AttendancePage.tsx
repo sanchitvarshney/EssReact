@@ -192,11 +192,7 @@ const AttendancePage = () => {
                   icon={accept}
                   value={shifts?.total_present ? shifts?.total_present : "--"}
                 />
-                {/* <CardForAttendance
-                  title={"Absent"}
-                  icon={cancel}
-                  value={"N/A"}
-                /> */}
+            
                 <CardForAttendance
                   title={"Mispunch"}
                   icon={warning}

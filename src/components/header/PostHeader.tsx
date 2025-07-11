@@ -20,10 +20,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
 import CreateNewPostPage from "../../pages/CreateNewPostPage";
-import { Note } from "@mui/icons-material";
-import NoticeboardCard from "../NoticeboardCard";
-import EventNoteIcon from "@mui/icons-material/EventNote";
-import MilestonesAndEventsCard from "../MilestonesAndEventsCard";
+// import { Note } from "@mui/icons-material";
+// import NoticeboardCard from "../NoticeboardCard";
+// import EventNoteIcon from "@mui/icons-material/EventNote";
+// import MilestonesAndEventsCard from "../MilestonesAndEventsCard";
 import CustomTextInput from "../reuseable/CustomTextInput";
 
 const postOption = [
@@ -41,7 +41,7 @@ type PostHeaderProps = {
 const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
   const [isNewPost, setIsNewPost] = useState<boolean>(false);
   const [postType, setPostType] = useState("");
-  const [isNoticeView, setIsNoticeView] = useState<boolean>(false);
+  // const [isNoticeView, setIsNoticeView] = useState<boolean>(false);
 
   const handleNewPost = (value: string) => {
     switch (value) {
@@ -82,13 +82,13 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
         <Typography variant="h6" fontWeight={600}>
           Create a Post
         </Typography>
-        <div className="block sm:hidden">
+        {/* <div className="block sm:hidden">
           <CustomToolTip title={"Notice And Birthdays"} placement={"bottom"}>
             <IconButton onClick={() => setIsNoticeView(true)}>
               <Note sx={{ color: "#000" }} />
             </IconButton>
           </CustomToolTip>
-        </div>
+        </div> */}
       </div>
 
       <Box
@@ -168,7 +168,7 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
         </DialogContent>
       </Dialog>
 
-      <Dialog
+      {/* <Dialog
         open={isNoticeView}
         onClose={() => setIsNoticeView(false)}
         fullWidth
@@ -203,10 +203,10 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
         <DialogContent sx={{ pt: 0 }}>
           <div className="flex flex-col items-center my-2  gap-4 block sm:hidden">
             <NoticeboardCard />
-            <MilestonesAndEventsCard />
+            <MilestonesAndEventsCard title={""} data={undefined} />
           </div>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </Box>
   );
 };
