@@ -24,7 +24,7 @@
 
 /* Background for today in month view */
 .rbc-month-view .rbc-day-bg.rbc-today {
-  background-color: #b0ebbc !important;
+  background-color: #ffffff !important;
   height: 100% !important;
   width: 100% !important;
 }

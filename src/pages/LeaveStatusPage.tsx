@@ -21,8 +21,9 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { useGetLeaveStatusMutation } from "../services/Leave";
 import { useAuth } from "../contextapi/AuthContext";
 import { useEffect } from "react";
-import LoadingComponent from "../components/reuseable/LoadingComponent";
+
 import { useToast } from "../hooks/useToast";
+import LeaveStatusPageSkeleton from "../skeleton/LeaveStatusPageSkeleton";
 
 
 // Styled components for better visual appeal
@@ -32,7 +33,7 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {},
-  fontSize: 18,
+  fontSize: 16,
   fontWeight: 600,
   color: "#374151",
   letterSpacing: 2,
@@ -100,7 +101,7 @@ const LeaveStatusPage = () => {
   };
 
   if (isLoading) {
-    return <LoadingComponent />;
+    return <LeaveStatusPageSkeleton />;
   }
 
   return (

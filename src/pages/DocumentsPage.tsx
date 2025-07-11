@@ -18,17 +18,34 @@ import { useEffect, useState } from "react";
 import CustomSearch from "../components/reuseable/CustomSearch";
 import DocumentsPageSkeleton from "../skeleton/DocumentsPageSkeleton";
 
-
-
 const DocumentsPage = () => {
   // const [searchQuary, setSearchQuary] = useState<string>("");
   const [getDocuments, { isLoading, data }] = useGetDocumentsMutation();
   const [filteredData, setFilteredData] = useState([]);
 
+
+  const  fnOpenNewWindow = (link:string) => {
+    
+    var width = 1200;
+    var height = 500;
+
+    
+    var left = (window.screen.width / 2) - (width / 2);
+    var top = (window.screen.height / 2) - (height / 2);
+
+   
+    window.open(
+        link,
+        'MsCorpres',
+       `width=${width},height=${height},top=${top},left=${left},status=1,scrollbars=1,location=0,resizable=yes`
+    );
+}
+
   const fetchDocuments = async () => {
     try {
       await getDocuments().unwrap();
     } catch (err) {
+      
       console.error("Failed to fetch documents:", err);
     }
   };
@@ -72,8 +89,8 @@ const DocumentsPage = () => {
               <CustomSearch
                 width={"40ch"}
                 placeholder={"Search your documents here..."}
-                 bgColor="#8a8a8a"
-          textColor="#000"
+                bgColor="#8a8a8a"
+                textColor="#000"
                 onChange={(e: any) => filterData(e.target.value)}
               />
             </div>
@@ -175,13 +192,15 @@ const DocumentsPage = () => {
                         variant="outlined"
                         aria-label="document actions"
                       >
-                        <CustomToolTip title={"View"} placement={"bottom"}>
-                          <IconButton>
-                            <VisibilityIcon
-                              sx={{ fontSize: 24, color: "#2eacb3" }}
-                            />
-                          </IconButton>
-                        </CustomToolTip>
+                        {(!(row?.file_type === "other")) && (
+                          <CustomToolTip title={"View"} placement={"bottom"}>
+                            <IconButton onClick={() => fnOpenNewWindow(row.path)}>
+                              <VisibilityIcon
+                                sx={{ fontSize: 24, color: "#2eacb3" }}
+                              />
+                            </IconButton>
+                          </CustomToolTip>
+                        )}
                         <CustomToolTip title={"Download"} placement={"bottom"}>
                           <IconButton>
                             <CloudDownloadIcon
