@@ -29,7 +29,8 @@ useEffect(() => {
         <Header />
       </div>
 
-      <main className=" relative bottom-0 bg-[#ffffff] h-full  custom-scrollbar-for-menu "><Outlet /></main>
+      <main className=" relative  bg-gradient-to-br from-[#f8fbfc] to-[#eaf7f5]
+ h-full  custom-scrollbar-for-menu bg-opacity-30"><Outlet /></main>
     </Wrapper>
   );
 }

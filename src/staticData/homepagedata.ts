@@ -6,11 +6,12 @@ import leave from "../assets/sunbed.png";
 import policice from "../assets/policy.png";
 import doc from "../assets/documentation.png";
 import recruitment from "../assets/selection.png";
-import calendar from "../assets/calendar (1).png";
+import calendar from "../assets/calendar (2).png";
 import performance from "../assets/performance.png";
 import reimb from "../assets/dollar.png";
 import help from "../assets/help.png";
 import org from "../assets/hierarchy-structure.png";
+import perip from "../assets/peripheral.png";
 import type { homeMenuTypes } from "../types/home-data-types/homepagetypes";
 
 export const homeData: homeMenuTypes[] = [
@@ -43,19 +44,27 @@ export const homeData: homeMenuTypes[] = [
     icon: recruitment,
     path: "/recruitments",
   },
-  { id: "calender", title: "Calendar", icon: calendar, path: "/calendar" },
+  { id: "holiday", title: "Holidays and Events", icon: calendar, path: "/calendar" },
   {
     id: "performance",
     title: "Performance",
     icon: performance,
     path: "/performance",
   },
-  { id: "help", title: "Helpdesk", icon: help, path: "/support-portal" },
+      {
+    id: "peripheral",
+    title: "Peripheral",
+    icon: perip,
+    path: "/peripheral",
+  },
+
   {
     id: "reimbursement",
     title: "Reimbursement",
     icon: reimb,
     path: "/reimbursement/claim",
   },
+
   { id: "org", title: "Org View", icon: org, path: "/home/hierarchy" },
+    { id: "help", title: "Helpdesk", icon: help, path: "/support-portal" },
 ];

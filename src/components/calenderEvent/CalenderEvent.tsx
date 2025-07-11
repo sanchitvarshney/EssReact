@@ -4,9 +4,9 @@ const CalenderEvent = ({ event }: { event: any }) => {
   const statusStyle = getStatusStyle(event.title);
 
   return (
-    <div className={`flex flex-col p-2 w-full overflow-auto`}>
+    <div className={`flex flex-col p-2 w-full overflow-auto `}>
       <div
-        className={`flex items-center justify-center   ${statusStyle.textColor} `}
+        className={`flex items-center justify-center   ${statusStyle.textColor} ${statusStyle.bgColor} `}
       >
         <span
           className={`text-sm font-bold uppercase p-1 ${statusStyle.bgColor} `}

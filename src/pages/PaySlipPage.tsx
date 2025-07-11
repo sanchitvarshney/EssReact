@@ -58,12 +58,12 @@ const PaySlipPage = () => {
 
   return (
     <div className="h-[calc(100vh-90px)] flex flex-col items-center bg-gray-50 overflow-y-auto py-4 ">
-      <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-4">
+      <div className="w-full max-w-4xl  rounded-lg  p-4">
         <h2 className="text-3xl font-bold mb-4 text-center text-gray-800">
           Pay Slip
         </h2>
 
-        <div className="w-[100%] mx-auto p-2 flex justify-center items-center  mb-8 bg-white rounded-lg">
+        <div className="w-[100%] mx-auto p-2 flex justify-center items-center  mb-8  rounded-lg">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -98,9 +98,9 @@ const PaySlipPage = () => {
 
         {showPayslip && (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-green-50 rounded-lg p-6 shadow-sm">
-                <h3 className="text-xl font-semibold mb-4 text-green-700">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
+              <div className="bg-green-50 rounded-lg p-6  shadow-md">
+                <h3 className="text-xl font-semibold mb-4  text-green-700">
                   Earnings
                 </h3>
                 <div className="divide-y">
@@ -120,7 +120,7 @@ const PaySlipPage = () => {
                 </div>
               </div>
 
-              <div className="bg-red-50 rounded-lg p-6 shadow-sm">
+              <div className="bg-red-50 rounded-lg p-6 shadow-md">
                 <h3 className="text-xl font-semibold mb-4 text-red-500">
                   Deductions
                 </h3>

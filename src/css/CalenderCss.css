@@ -52,9 +52,9 @@
   /* border-radius: 4px; */
   padding: 2px 4px;
   border-radius: 0px !important;
-  background-color: #fff !important;
+  /* background-color: #581a1a !important; */
   color: white !important;
-  /* height: 100% !important;  */
+  height: 100% !important; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,6 +64,7 @@
   text-overflow: ellipsis;
   padding: 0;
   overflow: auto;
+  
 }
 
 .rbc-event-label {

@@ -33,7 +33,7 @@ import {
 } from "@mui/material";
 import CustomTextInput from "../components/reuseable/CustomTextInput";
 import CustomModalDatePicker from "../components/reuseable/CustomModalDatePicker";
-import { customColor } from "../constants/themeConstant";
+
 
 const categories = [
   { value: "r", label: "--" },
@@ -196,27 +196,20 @@ const ReimbursementClaim = () => {
                     size="small"
                     aria-label="expense items table"
                   >
-                    <TableHead>
+                    <TableHead >
                       <TableRow
-                        sx={{
-                          backgroundColor: customColor.bgColor,
-                          color: "#fff",
-                          fontSize: 18,
-                          fontWeight: 600,
-
-                          letterSpacing: 2,
-                        }}
+                       
                       >
-                        <TableCell className="text-white font-semibold border-none tracking-wide">
+                        <TableCell className="text-[#fff] font-semibold border-none tracking-wide">
                           Category
                         </TableCell>
-                        <TableCell className="text-white font-semibold border-none text-center tracking-wide">
+                        <TableCell className="text-[#fff] font-semibold border-none text-center tracking-wide">
                           Description
                         </TableCell>
-                        <TableCell className="text-white font-semibold border-none text-center tracking-wide">
+                        <TableCell className="text-[#fff] font-semibold border-none text-center tracking-wide">
                           Amount
                         </TableCell>
-                        <TableCell className="text-white font-semibold border-none text-center tracking-wide">
+                        <TableCell className="text-[#fff] font-semibold border-none text-center tracking-wide">
                           Action
                         </TableCell>
                       </TableRow>

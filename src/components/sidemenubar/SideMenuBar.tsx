@@ -52,7 +52,7 @@ export const renderMenu = (
         setAccordionValues({ ...accordionValues, [path]: val })
       }
     >
-      <ul className="flex flex-col gap-[20px]">
+      <ul className="flex flex-col gap-[10px]">
         {menu?.map((item: any, index: number) => {
           const currentPath = `${path}/${item.title}-${index}`;
           return (
@@ -60,7 +60,7 @@ export const renderMenu = (
               {item?.children ? (
                 <AccordionItem
                   value={currentPath}
-                  className="border-0 w-full transition-all duration-100"
+                  className="border-0  w-full transition-all duration-100"
                 >
                   <div className="flex flex-col px-4">
                     {!isExpended ? (
@@ -89,7 +89,7 @@ export const renderMenu = (
                     ) : (
                       <>
                         <AccordionTrigger
-                          className="w-[100%] py-1   m-0 leading-none hover:no-underline cursor-pointer rounded-md hover:bg-white"
+                          className="w-[100%] py-2  m-0 leading-none hover:no-underline cursor-pointer rounded-md hover:bg-[#ffffff]"
                           onClick={() => {
                             setAccordionValues({
                               ...accordionValues,
@@ -97,7 +97,7 @@ export const renderMenu = (
                             });
                           }}
                         >
-                          <div className="w-full px-1 flex items-center cursor-pointer rounded-md gap-2">
+                          <div className="w-full px-1 flex items-center cursor-pointer  rounded-md gap-2">
                             {isNew && (
                               <DynamicIcon name={item.icon} size="medium" />
                             )}
@@ -138,9 +138,9 @@ export const renderMenu = (
                   >
                     <Link
                       to={item?.path}
-                      className={`w-full rounded-md cursor-pointer flex items-center gap-[10px] pl-1 ${
+                      className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] pl-1 ${
                         isExpended && "hover:bg-white"
-                      } p-[2px]
+                      } 
                       `}
                       onClick={() => {
                         // setIsExpended(false);
@@ -185,7 +185,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
         <div
           className={`${
             isExpended ? "w-[40vh]" : "w-[10vh]"
-          } flex flex-col border-r-1 transition-all duration-500 ease-in-out`}
+          } flex flex-col  transition-all shadow-xl  z-999 shadow-[#2eacb3]  duration-500 ease-in-out`}
         >
           {/* Profile section */}
           {isExpended && (

@@ -1,13 +1,6 @@
 import React from "react";
+import { FiFileText, FiCheckCircle, FiClock, FiXCircle } from "react-icons/fi";
 import {
-  FiFileText,
-  FiCheckCircle,
-  FiClock,
-  FiXCircle,
-
-} from "react-icons/fi";
-import {
-  InputAdornment,
   Paper,
   Table,
   TableBody,
@@ -15,9 +8,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
 } from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
+
+import CustomSearch from "../components/reuseable/CustomSearch";
 
 // Mock data for demonstration
 const claims = [
@@ -106,7 +99,14 @@ const ReimbursementStatusPage = () => {
 
         <div className="flex justify-center mb-6">
           <div className="relative w-full max-w-xs">
-            <TextField
+            <CustomSearch
+              width={"40ch"}
+              placeholder={"Search......"}
+              onChange={() => {}}
+              bgColor="#8a8a8a"
+              textColor="#000"
+            />
+            {/* <TextField
               fullWidth
               id="outlined-basic"
               label="Search by purpose or ID..."
@@ -119,7 +119,7 @@ const ReimbursementStatusPage = () => {
                   </InputAdornment>
                 ),
               }}
-            />
+            /> */}
             {/* <input
               type="text"
               placeholder="Search by purpose or ID..."
