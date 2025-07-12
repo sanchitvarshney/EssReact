@@ -78,7 +78,7 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
           >
             {title}
           </Typography>
-          {title.toLowerCase() === "compensation" && (
+          {title.toLowerCase() === "leave" && (
             <div className=" absolute top-[-20px]  right-0 z-999 overflow-visible">
               <CustomTag label="Api" />
             </div>
