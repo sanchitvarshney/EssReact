@@ -58,6 +58,14 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => response.data,
     }),
+    applyLeave: builder.mutation({
+      query: (credentials) => ({
+        url: "/leave/getEmpLeaveList",
+        method: "POST",
+        body: credentials,
+      }),
+      transformResponse: (response: any) => response.data,
+    }),
   }),
   overrideExisting: false,
 });
