@@ -157,7 +157,7 @@ const LeavePage = () => {
   }, [pendingReqData]);
 
   return (
-    <div className="w-full px-4 py-3">
+    <div className="w-full px-6 py-3">
       {eranLeaveLoading ||
       sickLeaveLoading ||
       wfhLoading ||
@@ -168,7 +168,7 @@ const LeavePage = () => {
           {" "}
           <div className="flex w-full justify-between items-center flex-wrap gap-2   ">
             <div className="flex gap-[2px] flex-wrap">
-              <span className="text-sm  select-none  font-semibold bg-[#2eacb3] px-3 py-2 rounded-full">
+              <span className="text-md  select-none  font-semibold   ">
                 Pending Requests ({countPendingReq})
               </span>
             </div>

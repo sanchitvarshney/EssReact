@@ -13,6 +13,7 @@ import {
 } from "../services/events";
 import AnnouncementPageSkeleton from "../skeleton/AnnouncementPageSkeleton";
 import { useToast } from "../hooks/useToast";
+import PostAnniversaryCard from "../components/reuseable/PostAnniversaryCard";
 
 const AnnouncementPage = () => {
   const { showToast } = useToast();
@@ -96,7 +97,7 @@ const AnnouncementPage = () => {
                 </motion.div>
               );
             })}
-            {/* <PostAnniversaryCard authorName={"test"} /> */}
+            <PostAnniversaryCard authorName={"test"} />
           </div>
           {
             <div className="flex flex-col items-center  sm:gap-4  hidden sm:flex">

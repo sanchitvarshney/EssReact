@@ -14,6 +14,7 @@ import org from "../assets/hierarchy-structure.png";
 import perip from "../assets/peripheral.png";
 import type { homeMenuTypes } from "../types/home-data-types/homepagetypes";
 
+
 export const homeData: homeMenuTypes[] = [
   { id: "taskbox", title: "Task Box", icon: taskbox, path: "/task-box" },
 
@@ -36,7 +37,7 @@ export const homeData: homeMenuTypes[] = [
     icon: leave,
     path: "/self-service/apply-leave",
   },
-  { id: "policie", title: "HR Policies", icon: policice, path: "/hr-policy" },
+  { id: "policie", title: "HR Policies", icon: policice, path: "/hr-policy",  },
   { id: "document", title: "HR Documents", icon: doc, path: "/hr-documents" },
   {
     id: "recruitment",

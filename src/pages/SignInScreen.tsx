@@ -26,6 +26,7 @@ const SignInScreen = () => {
     }
     setShowPassword((prev) => !prev)
   };
+ 
 
   useEffect(() => {
     if (!error) return;
@@ -34,7 +35,7 @@ const SignInScreen = () => {
       //@ts-ignore
       const errData = error.data as { message?: string };
 
-      showToast(errData?.message || "Something went wrong", "error");
+      showToast(errData?.message  || "Something went wrong", "error");
     } else {
       //@ts-ignore
       showToast(error.message || "An unexpected error occurred", "error");

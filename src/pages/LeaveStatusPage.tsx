@@ -10,8 +10,8 @@ import {
   IconButton,
 } from "@mui/material";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import { CustomButton } from "../components/ui/CustomButton";
-import DescriptionIcon from "@mui/icons-material/Description";
+// import { CustomButton } from "../components/ui/CustomButton";
+// import DescriptionIcon from "@mui/icons-material/Description";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PendingIcon from "@mui/icons-material/Pending";
 
@@ -110,12 +110,12 @@ const LeaveStatusPage = () => {
         <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
           {`Leave Sent (${data?.totalrequest})`}
         </Typography>
-        <div>
+        {/* <div>
           <CustomButton className="bg-[#000000] text-white">
             {" "}
             <DescriptionIcon className="mr-1" /> Leave Log
           </CustomButton>
-        </div>
+        </div> */}
       </div>
 
       <div>
@@ -123,8 +123,8 @@ const LeaveStatusPage = () => {
           component={Paper}
           sx={{
             borderRadius: "0px",
-            maxHeight: "76vh",
-            height: "76vh",
+            maxHeight: "78vh",
+            height: "78vh",
             overflow: "auto",
             border: "1px solid #000",
           }}
