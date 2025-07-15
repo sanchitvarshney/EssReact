@@ -10,6 +10,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../contextapi/AuthContext";
+import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
 const SignInScreen = () => {
   const { signIn } = useAuth();
   const navigation = useNavigate();
@@ -18,29 +19,21 @@ const SignInScreen = () => {
   const [employeeCode, setEmployeeCode] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState("");
-  const [login, { isLoading, error, data }] = useLoginMutation();
+  const [login, { isLoading, error, data, isError: isErrorLogin, isSuccess }] =
+    useLoginMutation();
+  useApiErrorMessage({
+    error,
+    isError: isErrorLogin,
+    isSuccess,
+    errorMessage: data?.msg,
+  });
 
   const togglePasswordVisibility = () => {
     if (password === "") {
-      return
+      return;
     }
-    setShowPassword((prev) => !prev)
+    setShowPassword((prev) => !prev);
   };
- 
-
-  useEffect(() => {
-    if (!error) return;
-
-    if (error) {
-      //@ts-ignore
-      const errData = error.data as { message?: string };
-
-      showToast(errData?.message  || "Something went wrong", "error");
-    } else {
-      //@ts-ignore
-      showToast(error.message || "An unexpected error occurred", "error");
-    }
-  }, [error]);
 
   useEffect(() => {
     if (!data) return;
@@ -80,7 +73,7 @@ const SignInScreen = () => {
       className="h-screen w-full bg-cover bg-center flex items-center  justify-start relative p-4 sm:pl-8 md:pl-10 lg:pl-25 xl:pl-30"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
-      <div className="absolute inset-0 bg-black/40 z-0 "  />
+      <div className="absolute inset-0 bg-black/40 z-0 " />
       <div className="relative z-10 w-full max-w-md  ">
         <div className="bg-white shadow-2xl border border-gray-100 rounded-3xl px-8 py-10 w-full space-y-7 flex flex-col items-center">
           <div className="flex flex-col items-center gap-2">

@@ -47,7 +47,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         imgUrl: storedUser.photo,
         id: storedUser.userID,
         role: storedUser.designation,
-        dept: storedUser.department
+        dept: storedUser.department,
       };
 
       setUser(userData);

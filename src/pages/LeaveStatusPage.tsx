@@ -12,19 +12,24 @@ import {
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 // import { CustomButton } from "../components/ui/CustomButton";
 // import DescriptionIcon from "@mui/icons-material/Description";
-import DeleteIcon from "@mui/icons-material/Delete";
+import UndoIcon from '@mui/icons-material/Undo';
 import PendingIcon from "@mui/icons-material/Pending";
 
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import { useGetLeaveStatusMutation } from "../services/Leave";
+import {
+  useGetLeaveStatusMutation,
+  useRejectLeaveMutation,
+} from "../services/Leave";
 import { useAuth } from "../contextapi/AuthContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useToast } from "../hooks/useToast";
 import LeaveStatusPageSkeleton from "../skeleton/LeaveStatusPageSkeleton";
+import ConfirmationModal from "../components/reuseable/ConfirmationModal";
 
+import DotLoading from "../components/reuseable/DotLoading";
 
 // Styled components for better visual appeal
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -52,26 +57,36 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const LeaveStatusPage = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
+  const [trackId, setTrackId] = useState<string>("");
 
-  const [getLeaveStatus, { data, isLoading, error }] =
-    useGetLeaveStatusMutation();
+  const [
+    getLeaveStatus,
+    { data, isLoading: leaveStatusLoading, error: leaveStatusError },
+  ] = useGetLeaveStatusMutation();
+  const [rejectLeave, { isLoading: rejectLeaveLoading, isSuccess }] =
+    useRejectLeaveMutation();
+
+  const [isConfirm, setIsConfirm] = useState<boolean>(false);
 
   useEffect(() => {
     if (user) {
       //@ts-ignore
       getLeaveStatus({ empcode: user?.id }).unwrap();
     }
-  }, [user]);
+  }, [user, isSuccess]);
 
   useEffect(() => {
-    if (error) {
+    if (leaveStatusError) {
       showToast(
         //@ts-ignore
-        error?.message || error?.data?.message || "Something went wrong",
+        leaveStatusError?.message ||
+          //@ts-ignore
+          leaveStatusError?.data?.message ||
+          "Something went wrong",
         "error"
       );
     }
-  }, [error]);
+  }, [leaveStatusError]);
 
   const getStatus = (status: any) => {
     switch (status) {
@@ -100,7 +115,33 @@ const LeaveStatusPage = () => {
     }
   };
 
-  if (isLoading) {
+  const handleDelete = () => {
+    setIsConfirm(false);
+    const payload = {
+      trackid: trackId,
+      status: "PEN",
+      type: "CAN",
+    };
+
+    rejectLeave(payload)
+      .then((res) => {
+        console.log(res);
+        if (res?.data?.status === "success") {
+          showToast(res?.data?.message, "success");
+        }
+        if (res?.data?.status === "error") {
+          showToast(res?.data?.message?.msg, "error");
+        }
+      })
+      .catch((err) => {
+        showToast(
+          err?.data?.message?.msg || err?.message || "Something went wrong",
+          "error"
+        );
+      });
+  };
+
+  if (leaveStatusLoading) {
     return <LeaveStatusPageSkeleton />;
   }
 
@@ -120,13 +161,15 @@ const LeaveStatusPage = () => {
 
       <div>
         <TableContainer
+          elevation={0}
           component={Paper}
           sx={{
             borderRadius: "0px",
             maxHeight: "78vh",
             height: "78vh",
             overflow: "auto",
-            border: "1px solid #000",
+            boxShadow: 6,
+            // border: "1px solid #000",
           }}
         >
           <Table
@@ -318,12 +361,30 @@ const LeaveStatusPage = () => {
                       </Typography>
                     </TableCell>
                     <TableCell sx={{ py: 1 }}>
-                      <IconButton
-                        sx={{ color: "gray", "&:hover": { color: "red" } }}
-                        disabled={row?.status === "APR"}
-                      >
-                        <DeleteIcon sx={{ fontSize: 26, color: "red" }} />
-                      </IconButton>
+                      {rejectLeaveLoading && trackId === row?.trackid ? (
+                        <DotLoading />
+                      ) : (
+                        <IconButton
+                          sx={{ color: "gray", "&:hover": { color: "red" } }}
+                          disabled={
+                            row?.status === "APR" || row?.status === "RTN"
+                          }
+                          onClick={() => {
+                            setTrackId(row?.trackid);
+                            setIsConfirm(true);
+                          }}
+                        >
+                          <UndoIcon
+                            sx={{
+                              fontSize: 26,
+                              color:
+                                row?.status === "APR" || row?.status === "RTN"
+                                  ? "gray"
+                                  : "red",
+                            }}
+                          />
+                        </IconButton>
+                      )}
                     </TableCell>
                   </StyledTableRow>
                 ))
@@ -332,6 +393,13 @@ const LeaveStatusPage = () => {
           </Table>
         </TableContainer>
       </div>
+      <ConfirmationModal
+        open={isConfirm}
+        close={() => setIsConfirm(false)}
+        aggree={handleDelete}
+        title="Cancel Leave Request"
+        description="Do you want to cancel your submitted leave application?"
+      />
     </Box>
   );
 };

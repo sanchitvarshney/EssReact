@@ -33,9 +33,9 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
           field.onChange(nativeDate);
         }}
         label={label}
-        slots={{
-          toolbar: () => null,
-        }}
+        // slots={{
+        //   toolbar: () => null,
+        // }}
         slotProps={{
           layout: {
             sx: {

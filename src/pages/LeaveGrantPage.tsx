@@ -1,33 +1,210 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DocView from "../components/reuseable/DocView";
 import LeaveGrantCard from "../components/reuseable/LeaveGrantCard";
-import { Divider, Typography } from "@mui/material";
+import { Divider, IconButton, Typography } from "@mui/material";
+import {
+  useGetleaveGrantDetailsMutation,
+  useGetLeaveListMutation,
+} from "../services/Leave";
+import { useToast } from "../hooks/useToast";
+import EmptyData from "../components/reuseable/EmptyData";
+import LeaveGrantPageSkeleton from "../skeleton/LeaveGrantPageSkeleton";
+import DotLoading from "../components/reuseable/DotLoading";
+import CloseIcon from "@mui/icons-material/Close";
+import SessionTable from "../components/reuseable/SessionTable";
+
+import { CustomButton } from "../components/ui/CustomButton";
+import { Textarea } from "../components/ui/textarea";
 
 const LeaveGrantPage = () => {
   const [view, setView] = useState(false);
+  const { showToast } = useToast();
+    const [reason, setReason] = useState<string>("");
+  const [getLeaveList, { data: leaveGrantData, isLoading: leaveGrantLoading }] =
+    useGetLeaveListMutation();
+  const [
+    getleaveGrantDetails,
+    { data: leaveGrantDetailsData, isLoading: leaveGrantDetailsLoading },
+  ] = useGetleaveGrantDetailsMutation();
+
+  useEffect(() => {
+    getLeaveList()
+      .then((res: any) => {
+        if (res?.data?.status === "error") {
+          showToast(res?.data?.message?.msg, "error");
+        }
+      })
+      .catch((err) => {
+        showToast(
+          err?.data?.message?.msg || err?.message || "Something went wrong",
+          "error"
+        );
+      });
+  }, []);
+
+  //fetch grant details
+  const fetchGrantDetails = (data: any) => {
+    const payload = {
+      empcode: data?.empcode,
+      leavetype: data?.leavetype,
+      status: data?.status,
+      trackid: data?.trackid,
+    };
+    getleaveGrantDetails(payload)
+      .then((res: any) => {
+        if (res?.data?.status === "error") {
+          showToast(res?.data?.message?.msg, "error");
+        }
+      })
+      .catch((err) => {
+        showToast(
+          err?.data?.message?.msg || err?.message || "Something went wrong",
+          "error"
+        );
+      });
+  };
+
+  if (leaveGrantLoading) {
+    return <LeaveGrantPageSkeleton />;
+  }
+
   return (
     <div className="w-full p-4 flex flex-col h-[calc(100vh-100px)]">
-      <LeaveGrantCard open={() => setView(true)} maxWidth={600} isView={false} />
+      <Typography
+        variant="subtitle1"
+        fontWeight={600}
+      >{`Total Request (${leaveGrantData?.totalrequest})`}</Typography>
+      {leaveGrantData?.data?.length === 0 ||
+      leaveGrantData?.status === "error" ? (
+        <div className="w-full h-full flex items-center justify-center">
+          <EmptyData />
+        </div>
+      ) : (
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2  mx-auto  py-3 overflow-hidden ">
+          {leaveGrantData?.data?.map((item: any) => (
+            <LeaveGrantCard
+              key={item?.trackid}
+              data={item}
+              maxWidth={"100%"}
+              isView={false}
+              open={() => {
+                setView(true);
+                fetchGrantDetails(item);
+              }}
+            />
+          ))}
+        </div>
+      )}
+
       <DocView
         open={view}
         close={() => setView(false)}
-       
         vertical={"bottom"}
         horizontal={"center"}
         transformOrigin={"bottom"}
       >
-        <LeaveGrantCard maxWidth={"100%"}  isView={true} />
-        <Divider />
-         <Typography
-                variant="subtitle2"
+        {leaveGrantDetailsLoading ? (
+          <div className="w-full h-[100%] flex items-center justify-center">
+            <DotLoading />
+          </div>
+        ) : (
+          <div className="w-full p-4 ">
+            <div className="w-full flex items-center justify-between ">
+              <Typography
+                variant="subtitle1"
+                fontWeight={600}
+                sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}
+              >
+                Leave Grant Details
+              </Typography>
+              <IconButton
+                aria-label="close"
+                onClick={() => setView(false)}
                 sx={{
-                    textAlign:"center",
-                  fontSize: { xs: "1rem", sm: "1.1rem" },
-            fontWeight:600
+                  color: (theme) => theme.palette.grey[800],
                 }}
               >
-                Reason: <span className="font-[300]">Important Work</span>
+                <CloseIcon />
+              </IconButton>
+            </div>
+            <Divider sx={{ mt: 1 }} />
+
+            <div className="h-[66vh] sm:h-[68vh] overflow-y-auto">
+              <LeaveGrantCard
+                maxWidth={"100%"}
+                isView={true}
+                data={leaveGrantDetailsData?.data}
+              />
+              <Divider />
+              <Typography
+                variant="subtitle1"
+                fontWeight={600}
+                fontSize={15}
+                textAlign={"center"}
+                my={1}
+              >
+                Leave Balance : {leaveGrantDetailsData?.data?.leavebalance}
               </Typography>
+              <div className="flex justify-between items-center my-1">
+                <div className="flex items-center  gap-2 ">
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight={600}
+                    fontSize={15}
+                  >
+                    From Date :
+                  </Typography>
+
+                  <span className="text-[14px]">{`${leaveGrantDetailsData?.data?.fromdt}`}</span>
+                </div>
+                <div className="flex items-center gap-2 ">
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight={600}
+                    fontSize={15}
+                  >
+                    To Date :
+                  </Typography>
+
+                  <span className="text-[14px]">{`${leaveGrantDetailsData?.data?.todt}`}</span>
+                </div>
+              </div>
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.1rem" },
+                  fontWeight: 600,
+                }}
+              >
+                Reason:{" "}
+                <span className="font-[400] text-[16px]">
+                  {leaveGrantDetailsData?.data?.reason}
+                </span>
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <SessionTable rows={leaveGrantDetailsData?.data?.breakup} />
+            </div>
+            <div className="flex justify-center  flex-wrap items-center mt-4 gap-2">
+              <div className="w-full">
+                <Textarea
+                  className="border border-gray-500 text-md rounded-sm focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all max-h-[30px]"
+                  placeholder="Enter Reason"
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  rows={4}
+                />
+              </div>
+              <div className="flex gap-2">
+                <CustomButton className="bg-green-700 text-white  hover:bg-green-600  transition-transform duration-300 ease-in-out hover:scale-105  cursor-pointer">
+                  Approve
+                </CustomButton>
+                <CustomButton className="bg-red-700 text-white hover:bg-red-600    transition-transform duration-300 ease-in-out hover:scale-105 cursor-pointer">
+                  Rejected
+                </CustomButton>
+              </div>
+            </div>
+          </div>
+        )}
       </DocView>
     </div>
   );

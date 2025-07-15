@@ -21,7 +21,8 @@ import DotLoading from "../components/reuseable/DotLoading";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PaySlipPageSkeleton from "../skeleton/PaySlipPageSkeleton";
 
-import { useToast } from "../hooks/useToast";
+
+import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
 
 const schema = z.object({
   toDate: z.date({ required_error: "Month is required" }),
@@ -30,12 +31,19 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 const PaySlipPage = () => {
-const { showToast } = useToast();
   const [showPayslip, setShowPayslip] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
   const [netSalary, setNetSalary] = useState(0);
   const star = "******";
-  const [getPaySlip, { isLoading, data, error }] = useGetPaySlipMutation();
+  const [getPaySlip, { isLoading, data, error, isError, isSuccess }] =
+    useGetPaySlipMutation();
+  useApiErrorMessage({
+    error,
+    errorMessage: data,
+    isError: isError,
+    isSuccess: isSuccess,
+  });
+
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -44,7 +52,7 @@ const { showToast } = useToast();
     },
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     const period = moment(data.toDate).format("YYYY-MM");
 
     getPaySlip({ period: period });
@@ -63,24 +71,30 @@ const { showToast } = useToast();
     }, 1200);
   }, [showPayslip]);
 
-  useEffect(() => {
-      if (!error) return;
-  
-      if (error) {
-        //@ts-ignore
-        const errData = error.data as { message?: string };
-  
-        showToast(errData?.message || "Something went wrong", "error");
-      } else {
-        //@ts-ignore
-        showToast(error.message || "An unexpected error occurred", "error");
-      }
-    }, [error]);
-  
+  // useEffect(() => {
+  //   if (!error) return;
 
-  if (isLoading ) {
+  //   if (error) {
+
+  //     //@ts-ignore
+  //     const errData = error.data as { message?: string };
+
+  //     showToast(errData?.message || "Something went wrong", "error");
+  //   } else {
+  //     //@ts-ignore
+  //     showToast(error.message || "An unexpected error occurred", "error");
+  //   }
+  // }, [error]);
+
+  // useEffect(() => {
+  //   if (data?.msg) {
+
+  //     showToast(data?.msg, "error");
+  //   }
+  // }, [data?.msg]);
+
+  if (isLoading) {
     return <PaySlipPageSkeleton />;
-    
   }
 
   return (
@@ -113,10 +127,7 @@ const { showToast } = useToast();
                   </FormItem>
                 )}
               />
-              <CustomButton
-                className={btnstyle}
-                type="submit"
-              >
+              <CustomButton className={btnstyle} type="submit">
                 Generate
               </CustomButton>
             </form>
@@ -128,7 +139,7 @@ const { showToast } = useToast();
             <DotLoading />{" "}
           </div>
         ) : (
-          <div className="w-full h-[53vh] overflow-y-auto">
+          <div className="w-full h-[40vh] sm:h-[40vh] md:h-[52vh] overflow-y-auto">
             {data?.earing && (
               <>
                 <div className=" mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 ">
@@ -197,7 +208,7 @@ const { showToast } = useToast();
                   <div className="text-lg font-semibold text-gray-700">
                     Net Salary
                   </div>
-                  <div className="text-3xl font-bold text-green-600 mb-4">
+                  <div className="text-[1.2rem] font-bold text-green-600 mb-4">
                     ₹ {showPayslip ? netSalary : star}
                   </div>
                 </>
@@ -205,7 +216,7 @@ const { showToast } = useToast();
             </>
           )}
         </div>
-        <div className="space-x-4">
+        <div className="space-x-4 space-y-4">
           {data?.earing && (
             <CustomButton
               className={btnstyle}
@@ -214,7 +225,7 @@ const { showToast } = useToast();
                 setShowPayslip(!showPayslip);
               }}
             >
-              <VisibilityIcon sx={{ color: "#ffffff", fontSize: 20,mr:1 }} />
+              <VisibilityIcon sx={{ color: "#ffffff", fontSize: 20, mr: 1 }} />
               {showPayslip ? "Hide Payslip" : "Show Payslip"}
             </CustomButton>
           )}
@@ -222,7 +233,7 @@ const { showToast } = useToast();
             className={btnstyle}
             disabled={data?.earing ? false : true}
           >
-            <FileDownloadIcon sx={{ color: "#ffffff", fontSize: 20,mr:1 }} />
+            <FileDownloadIcon sx={{ color: "#ffffff", fontSize: 20, mr: 1 }} />
             <span className="text-white">Download</span>
           </CustomButton>
         </div>

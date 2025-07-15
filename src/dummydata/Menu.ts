@@ -95,12 +95,12 @@ export const menu: MenuItem[] = [
       },
     ],
   },
-   {
-    id: "policies",
-    title: "Policies",
-    icon: "policyicon",
-    path: "/hr-policy",
-  },
+  //  {
+  //   id: "policies",
+  //   title: "Policies",
+  //   icon: "policyicon",
+  //   path: "/hr-policy",
+  // },
   {
     id: "documents",
     title: "Documents",

@@ -1,5 +1,3 @@
-// src/services/auth/authApi.ts
-
 import { baseApiInstance } from "./baseApiInstance";
 
 const extendedAuthApi = baseApiInstance.injectEndpoints({
@@ -10,6 +8,7 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
+      transformResponse: (response: any) => response,
     }),
     getEarnLeave: builder.mutation({
       query: (credentials) => ({
@@ -58,15 +57,68 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => response.data,
     }),
-    applyLeave: builder.mutation({
+    applySLLeave: builder.mutation({
       query: (credentials) => ({
-        url: "/leave/getEmpLeaveList",
+        url: `/leave/${credentials.url}`,
+        method: "POST",
+        body: credentials.body,
+      }),
+      transformResponse: (response: any) => response,
+    }),
+
+    rejectLeave: builder.mutation({
+      query: (credentials) => ({
+        url: "/leave/LeaveEmpReject",
         method: "POST",
         body: credentials,
       }),
-      transformResponse: (response: any) => response.data,
+    }),
+    fetchEmployee: builder.mutation({
+      query: (credentials) => ({
+        url: "leave/fetchEMP",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+    getLeaveBalance: builder.mutation({
+      query: (credentials) => ({
+        url: "/leave/getBalance",
+        method: "POST",
+        body: credentials,
+      }),
+      transformResponse: (response: any) => {
+        if (response.status === "error") {
+          return response.message;
+        } else {
+          return response.data;
+        }
+      },
+    }),
+    getLeaveCalculate: builder.mutation({
+      query: (credentials) => ({
+        url: "/leave/calculate",
+        method: "POST",
+        body: credentials,
+      }),
+      transformResponse: (response: any) => response,
+    }),
+    getLeaveList: builder.mutation<any, void>({
+      query: () => ({
+        url: "/leave/getLeaveList",
+        method: "POST",
+      }),
+      transformResponse: (response: any) => response,
+    }),
+    getleaveGrantDetails: builder.mutation({
+      query: (credentials) => ({
+        url: "/leave/getLeaveDetail",
+        method: "POST",
+        body: credentials,
+      }),
+      transformResponse: (response: any) => response,
     }),
   }),
+
   overrideExisting: false,
 });
 
@@ -76,5 +128,12 @@ export const {
   useGetSickLeaveMutation,
   useGetWorkFromHomeMutation,
   useGetHolidaysListMutation,
-  useGetPendingRequestMutation
+  useGetPendingRequestMutation,
+  useApplySLLeaveMutation,
+  useRejectLeaveMutation,
+  useFetchEmployeeMutation,
+  useGetLeaveBalanceMutation,
+  useGetLeaveCalculateMutation,
+  useGetLeaveListMutation,
+  useGetleaveGrantDetailsMutation,
 } = extendedAuthApi;

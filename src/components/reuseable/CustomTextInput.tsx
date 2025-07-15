@@ -16,6 +16,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   select = false,
   options,
 }) => {
+  
   return (
     <TextField
       fullWidth
@@ -23,6 +24,9 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
       label={label}
       variant="outlined"
       {...field}
+       onChange={(e) => {
+       
+        field.onChange(e.target.value)}}
       size="small"
       type={type}
       select={select}
@@ -55,7 +59,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
     >
       {select && (
          options?.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
+        <MenuItem key={option.value} value={option.value} >
           {option.label}
         </MenuItem>
       ))

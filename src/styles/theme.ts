@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
+
 export const theme = createTheme({
   typography: {
     fontFamily: "MsCorpres EmberFont, sans-serif",
@@ -10,6 +11,7 @@ export const theme = createTheme({
         root: {
           "& .MuiInputLabel-root": {
             color: "gray", // Default label color
+           
           },
           "& .MuiOutlinedInput-root": {
             "&:focus-within": {
@@ -30,7 +32,7 @@ export const theme = createTheme({
         root: {
           "& .MuiOutlinedInput-root": {
             "&:focus-within": {
-              backgroundColor: "#fffbeb", // Background color on focus
+              backgroundColor: "#fff", // Background color on focus
             },
           },
         },
@@ -60,10 +62,10 @@ export const theme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
-          fontSize: "13px",
+          fontSize: "16px",
           "&.Mui-disabled": {
             cursor: "not-allowed !important",
-            backgroundColor: "#f0f0f0",
+            backgroundColor: "#fff",
           },
         },
       },
@@ -71,21 +73,22 @@ export const theme = createTheme({
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          fontSize: "13px", // Set your global font size here
+          fontSize: "16px", // Set your global font size here
         },
       },
     },
     MuiOutlinedInput: {
       styleOverrides: {
         notchedOutline: {
-          borderWidth: "2px", // Global border width
+          borderWidth: "1px", // Global border width
         },
         root: {
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#a8a29e", // Change border color on hover
+            borderColor: "gray", // Change border color on hover
           },
           "&.Mui-focused": {
-            backgroundColor: "#fffbeb", // Background color on focus
+            backgroundColor: "#fff", // Background color on focus
+           
           },
         },
       },

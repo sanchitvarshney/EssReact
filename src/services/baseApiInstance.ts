@@ -1,16 +1,12 @@
 // src/services/baseApi.ts
 
-
 import {
   createApi,
   fetchBaseQuery,
   type BaseQueryFn,
 } from "@reduxjs/toolkit/query/react";
 
-
-
 const baseUrl = import.meta.env.VITE_BASE_URL;
-
 
 // Custom base query with 401 handling
 const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
@@ -30,14 +26,10 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
 
   const result = await baseQuery(args, api, extraOptions);
 
-
-  // Check for 401 Unauthorized response
   if (result.error && result.error.status === 401) {
-    // Clear all auth data
     localStorage.removeItem("user");
     sessionStorage.removeItem("user");
 
-    // Redirect to login page
     window.location.href = "/sign-in";
   }
 

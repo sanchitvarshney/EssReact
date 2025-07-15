@@ -9,12 +9,14 @@ type CalenderViewPropsType = {
   startDate: any;
   endDate: any;
   paid: any;
+  type?: any;
 };
 
 const CalenderView: FC<CalenderViewPropsType> = ({
   startDate,
   endDate,
   paid,
+  type,
 }) => {
   const [unpaid, setUnpaid] = useState<number>(0);
 
@@ -70,9 +72,16 @@ const CalenderView: FC<CalenderViewPropsType> = ({
         }}
       />
       <div className="border-t-1 mt-3 flex justify-center gap-x-4">
-        {/* //@ts-ignore */}
+       {
+        type==="OD" ? (
+          <span>OD time : {paid}</span>
+        ):(
+          <>
+           {/* //@ts-ignore */}
         <span className="mt-1">Paid Off: {paid - unpaid}</span>
-        <span className="mt-1">Unpaid: {unpaid}</span>
+        <span className="mt-1">Unpaid: {unpaid}</span></>
+        )
+       }
       </div>
     </div>
   );

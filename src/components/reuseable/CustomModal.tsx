@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 interface CustomModalProps {
   open: boolean;
-  onClose: (value: boolean) => void;
+  onClose?:  any;
   title?: string;
   children?: React.ReactNode;
 }

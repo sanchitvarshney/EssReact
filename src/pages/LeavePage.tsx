@@ -203,7 +203,7 @@ const LeavePage = () => {
             onClose={() => setIsOpenModal(false)}
             title={"Apply For Leave"}
           >
-            <ApplyLeavePage />
+            <ApplyLeavePage   onClose={() => setIsOpenModal(false)} />
           </CustomModal>
           <Modal
             open={open}
