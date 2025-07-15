@@ -39,6 +39,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signIn = useCallback(() => {
     const storedUserStr = localStorage.getItem("user");
+    
     if (storedUserStr) {
       const storedUser = JSON.parse(storedUserStr);
       dispatch(setCredentials({ token: storedUser?.token }));

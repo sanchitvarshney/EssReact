@@ -117,6 +117,17 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => response,
     }),
+    approvalGrantLeave: builder.mutation({
+      query: (credentials) => ({
+        url: `/leave/${credentials.url}`,
+        method: "POST",
+        body: credentials.body,
+      }),
+      transformResponse: (response: any) => response,
+    }),
+    // LeaveReject
+    // LeaveApprove
+   
   }),
 
   overrideExisting: false,
@@ -135,5 +146,7 @@ export const {
   useGetLeaveBalanceMutation,
   useGetLeaveCalculateMutation,
   useGetLeaveListMutation,
-  useGetleaveGrantDetailsMutation,
+  useApprovalGrantLeaveMutation,useGetleaveGrantDetailsMutation
+ 
+ 
 } = extendedAuthApi;

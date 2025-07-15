@@ -35,17 +35,21 @@ const SignInScreen = () => {
     setShowPassword((prev) => !prev);
   };
 
+  
   useEffect(() => {
-    if (!data) return;
+    // if (!data?.data) {
+    //   showToast("User Not Found Please try agian after somethime!", "error");
+    //   return;
+    // }
+    if (data?.data) {
+      localStorage.setItem("user", JSON.stringify(data.data));
 
-    localStorage.setItem("user", JSON.stringify(data.data));
+      sessionStorage.setItem("user", JSON.stringify(data.data));
 
-    sessionStorage.setItem("user", JSON.stringify(data.data));
+      signIn();
 
-    showToast("Login successful!", "success");
-    signIn();
-
-    navigation("/");
+      navigation("/");
+    }
   }, [data]);
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +69,21 @@ const SignInScreen = () => {
       username: employeeCode,
       password: password,
     };
-    await login(payload);
+    login(payload)
+      .then((res) => {
+        
+        
+        if (res?.data?.data?.success ===  false) {
+          showToast(res?.data?.data?.message, "error");
+        }
+         showToast(res?.data?.message, "success");
+      })
+      .catch((err) => {
+        showToast(
+          err?.data?.message?.msg || err?.message || "Something went wrong",
+          "error"
+        );
+      });
   };
 
   return (

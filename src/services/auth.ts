@@ -10,13 +10,7 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
-      // transformResponse: (response: any) => {
-      //   if (response.status === "error") {
-      //     return response.message;
-      //   } else {
-      //     return response;
-      //   }
-      // },
+      transformResponse: (response: any) => response,
     }),
 
     getuserdata: builder.mutation({

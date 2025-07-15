@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import DocView from "../components/reuseable/DocView";
 import LeaveGrantCard from "../components/reuseable/LeaveGrantCard";
-import { Divider, IconButton, Typography } from "@mui/material";
 import {
+  CircularProgress,
+  Divider,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import {
+  useApprovalGrantLeaveMutation,
   useGetleaveGrantDetailsMutation,
   useGetLeaveListMutation,
 } from "../services/Leave";
@@ -18,29 +24,25 @@ import { Textarea } from "../components/ui/textarea";
 
 const LeaveGrantPage = () => {
   const [view, setView] = useState(false);
+  
   const { showToast } = useToast();
-    const [reason, setReason] = useState<string>("");
+  const [reason, setReason] = useState<string>("");
   const [getLeaveList, { data: leaveGrantData, isLoading: leaveGrantLoading }] =
     useGetLeaveListMutation();
   const [
     getleaveGrantDetails,
     { data: leaveGrantDetailsData, isLoading: leaveGrantDetailsLoading },
   ] = useGetleaveGrantDetailsMutation();
+  const [
+    approvalGrantLeave,
+    { isLoading: rejectGrantLeaveLoading, isSuccess },
+  ] = useApprovalGrantLeaveMutation();
+
+  //
 
   useEffect(() => {
-    getLeaveList()
-      .then((res: any) => {
-        if (res?.data?.status === "error") {
-          showToast(res?.data?.message?.msg, "error");
-        }
-      })
-      .catch((err) => {
-        showToast(
-          err?.data?.message?.msg || err?.message || "Something went wrong",
-          "error"
-        );
-      });
-  }, []);
+    getLeaveList();
+  }, [isSuccess]);
 
   //fetch grant details
   const fetchGrantDetails = (data: any) => {
@@ -50,11 +52,33 @@ const LeaveGrantPage = () => {
       status: data?.status,
       trackid: data?.trackid,
     };
-    getleaveGrantDetails(payload)
+    getleaveGrantDetails(payload);
+  };
+
+  //handle reject leave
+  const handleReject = (data: any, type: string) => {
+    const payload = {
+      empcode: data?.empcode,
+      trackid: data?.trackid,
+      status: data?.status,
+      reason: reason,
+    };
+    let url;
+    if (type === "approve") {
+      url = "LeaveApprove";
+    } else {
+      url = "LeaveReject";
+    }
+
+    approvalGrantLeave({ url: url, body: payload })
       .then((res: any) => {
-        if (res?.data?.status === "error") {
-          showToast(res?.data?.message?.msg, "error");
+        if (res?.status === "error") {
+          showToast(res?.data?.message, "error");
+          return;
         }
+        showToast(res?.data?.message, "success");
+        setReason("");
+        setView(false);
       })
       .catch((err) => {
         showToast(
@@ -69,18 +93,17 @@ const LeaveGrantPage = () => {
   }
 
   return (
-    <div className="w-full p-4 flex flex-col h-[calc(100vh-100px)]">
-      <Typography
-        variant="subtitle1"
-        fontWeight={600}
-      >{`Total Request (${leaveGrantData?.totalrequest})`}</Typography>
+    <div className="w-full p-4 h-[calc(100vh-90px)]  overflow-hidden flex flex-col ">
+      <Typography variant="subtitle1" fontWeight={600}>{`Total Request (${
+        leaveGrantData?.totalrequest ? leaveGrantData?.totalrequest : 0
+      })`}</Typography>
       {leaveGrantData?.data?.length === 0 ||
       leaveGrantData?.status === "error" ? (
         <div className="w-full h-full flex items-center justify-center">
           <EmptyData />
         </div>
       ) : (
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2  mx-auto  py-3 overflow-hidden ">
+        <div className="w-full grid  grid-cols-1  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2 overflow-y-auto mt-2  mx-auto  py-2  ">
           {leaveGrantData?.data?.map((item: any) => (
             <LeaveGrantCard
               key={item?.trackid}
@@ -194,14 +217,29 @@ const LeaveGrantPage = () => {
                   rows={4}
                 />
               </div>
-              <div className="flex gap-2">
-                <CustomButton className="bg-green-700 text-white  hover:bg-green-600  transition-transform duration-300 ease-in-out hover:scale-105  cursor-pointer">
-                  Approve
-                </CustomButton>
-                <CustomButton className="bg-red-700 text-white hover:bg-red-600    transition-transform duration-300 ease-in-out hover:scale-105 cursor-pointer">
-                  Rejected
-                </CustomButton>
-              </div>
+
+              {rejectGrantLeaveLoading ? (
+                <CircularProgress sx={{ color: "#ffffff" }} size={"35px"} />
+              ) : (
+                <div className="flex gap-2">
+                  <CustomButton
+                    onClick={() =>
+                      handleReject(leaveGrantDetailsData?.data, "approve")
+                    }
+                    className="bg-green-700 text-white  hover:bg-green-600  transition-transform duration-300 ease-in-out hover:scale-105  cursor-pointer"
+                  >
+                    Approved
+                  </CustomButton>
+                  <CustomButton
+                    onClick={() =>
+                      handleReject(leaveGrantDetailsData?.data, "reject")
+                    }
+                    className="bg-red-700 text-white hover:bg-red-600    transition-transform duration-300 ease-in-out hover:scale-105 cursor-pointer"
+                  >
+                    Rejected
+                  </CustomButton>
+                </div>
+              )}
             </div>
           </div>
         )}

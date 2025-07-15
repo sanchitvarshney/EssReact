@@ -23,7 +23,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({
   isView,
   data,
 }) => {
-  console.log(data);
+ 
   return (
     <Card
       elevation={isView ? 0 : 1}
@@ -32,6 +32,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({
         borderRadius: 2,
         boxShadow: isView ? 0 : 2,
         p: 2,
+  
       }}
     >
       {/* <CardContent> */}
@@ -41,6 +42,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({
           flexWrap="wrap"
           gap={2}
           py={1}
+         
         >
           <div className="w-full flex justify-between items-center">
             <div className="flex gap-2 items-center">
