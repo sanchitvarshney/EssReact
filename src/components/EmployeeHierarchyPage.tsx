@@ -207,7 +207,7 @@ const EmployeeHierarchyPage = () => {
             </div>
           }
         >
-          {(nodeData[0].children ?? []).map((child: any) =>
+          {(nodeData[0]?.children ?? []).map((child: any) =>
             renderTree(child, userId, visibleIds)
           )}
         </Tree>
