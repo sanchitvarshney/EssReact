@@ -2,10 +2,9 @@ import { Tree, TreeNode } from "react-organizational-chart";
 import { Avatar, Card, CardContent, CircularProgress } from "@mui/material";
 import { Chip } from "@mui/material";
 
-import {  type JSX } from "react";
+import { type JSX } from "react";
 
 import { useAuth } from "../contextapi/AuthContext";
-
 
 const findPathToId = (root: any, id: string, path: any): any => {
   if (!root?.empcode) {
@@ -73,6 +72,8 @@ const NodeCard = ({
           height: 48,
           border: "2px solid #444",
           backgroundColor: "#2eacb3",
+                     pointerEvents: "none",
+                      userSelect: "none",
         }}
       />
       <div style={{ flex: 1 }}>
@@ -130,14 +131,13 @@ const renderTree = (
 };
 
 const EmployeeHierarchyPage = () => {
-  const { hierarchyData, user,hierarchyLoading } = useAuth();
+  const { hierarchyData, user, hierarchyLoading } = useAuth();
   //@ts-ignore
   const userId: any = user?.id;
 
   const path = findPathToId(hierarchyData, userId, hierarchyData) ?? [];
- 
+
   const visibleIds: any = new Set(path?.map((node: any) => node.empcode));
- 
 
   const findChildren = (node: any, ids: Set<string>) => {
     ids.add(node.empcode);
@@ -151,13 +151,12 @@ const EmployeeHierarchyPage = () => {
   if (selectedNode) {
     findChildren(selectedNode, visibleIds);
   }
-  if (hierarchyLoading ) {
+  if (hierarchyLoading) {
     return (
       <div className="w-full flex h-[40vh]  justify-center items-center">
-       <CircularProgress sx={{ color: "green" }} size={"50px"} />
+        <CircularProgress sx={{ color: "green" }} size={"50px"} />
       </div>
     );
-    
   }
 
   return (
@@ -200,6 +199,8 @@ const EmployeeHierarchyPage = () => {
                       height: 48,
                       border: "2px solid #444",
                       backgroundColor: "#2eacb3",
+                      pointerEvents: "none",
+                      userSelect: "none",
                     }}
                   />
                   <div style={{ flex: 1 }}>

@@ -58,7 +58,8 @@ const MilestonesAndEventsCard: React.FC<MilestonesAndEventsCardProps> = ({
                 <Box display="flex" alignItems="center" mt={3}>
                   <Avatar
                     src={milestone.photo}
-                    sx={{ width: 45, height: 45, backgroundColor: "#2eacb3" }}
+                    sx={{ width: 45, height: 45, backgroundColor: "#2eacb3",           pointerEvents: "none",
+                      userSelect: "none", }}
                   />
                   <Box ml={1} width={"100%"}>
                     <Typography variant="body2" fontWeight={500}>

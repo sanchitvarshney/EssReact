@@ -7,7 +7,8 @@ const SupportPage = () => {
       <div className=" sm:w-200 flex flex-col justify-center items-center h-[70vh] overflow-y-auto gap-y-5 ">
         <Avatar
           src={help}
-          sx={{ width: { xs: 150, md: 250 }, height: { xs: 150, md: 250 } }}
+          sx={{ width: { xs: 150, md: 250 }, height: { xs: 150, md: 250 },           pointerEvents: "none",
+                      userSelect: "none", }}
         />
         <Typography variant="h3">Welcome to the Support Center</Typography>
         <Typography variant="subtitle2" className="text-justify">

@@ -77,7 +77,8 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({
             <Avatar
               src={data.photo}
               alt={data.empname}
-              sx={{ width: isView ? 60 : 40, height: isView ? 60 : 40 }}
+              sx={{ width: isView ? 60 : 40, height: isView ? 60 : 40,           pointerEvents: "none",
+                      userSelect: "none", }}
             />
             <div className="ml-3">
               {" "}

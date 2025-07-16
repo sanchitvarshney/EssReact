@@ -61,7 +61,8 @@ const EmployeeProfilePage = () => {
                   src={user?.imgUrl}
                   //@ts-ignore
                   alt={user?.name}
-                  sx={{ width: 140, height: 140, backgroundColor: "#2eacb3" }}
+                  sx={{ width: 140, height: 140, backgroundColor: "#2eacb3",           pointerEvents: "none",
+                      userSelect: "none", }}
                 />
               </div>
 
@@ -77,7 +78,7 @@ const EmployeeProfilePage = () => {
               </div>
             </div>
           </div>
-          <Divider sx={{ marginTop: 2 }} />
+          <Divider sx={{ marginTop: 1 }} />
           <Box
             sx={{
               width: "100%",

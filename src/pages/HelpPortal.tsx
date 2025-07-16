@@ -12,7 +12,8 @@ const HelpPortal = () => {
         <Avatar
           variant="square"
           src={help}
-          sx={{ width: { xs: 150, md: 250 }, height: { xs: 150, md: 250 } }}
+          sx={{ width: { xs: 150, md: 250 }, height: { xs: 150, md: 250 },           pointerEvents: "none",
+                      userSelect: "none", }}
         />
         <Typography variant="subtitle1" fontSize={24}>Welcome to the Support Center</Typography>
         <Typography variant="subtitle2" className="text-justify">

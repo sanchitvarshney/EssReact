@@ -64,6 +64,8 @@ const PostAnnouncementCard = ({
                 backgroundColor: "#2eacb3",
                 width: 48,
                 height: 48,
+                           pointerEvents: "none",
+                      userSelect: "none",
               }}
             >
               {authorName.charAt(0)}

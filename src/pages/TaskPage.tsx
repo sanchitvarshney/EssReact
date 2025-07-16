@@ -366,7 +366,8 @@ const TaskPage = () => {
                         sx={{ display: "flex", alignItems: "center", gap: 2 }}
                       >
                         <Avatar
-                          sx={{ bgcolor: "#2eacb3", width: 40, height: 40 }}
+                          sx={{ bgcolor: "#2eacb3", width: 40, height: 40,           pointerEvents: "none",
+                      userSelect: "none", }}
                         >
                           <PersonIcon />
                         </Avatar>
@@ -469,7 +470,8 @@ const TaskPage = () => {
             {selectedTask && (
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="col-span-12 flex items-center gap-4">
-                  <Avatar sx={{ bgcolor: "#2eacb3", width: 40, height: 40 }}>
+                  <Avatar sx={{ bgcolor: "#2eacb3", width: 40, height: 40,           pointerEvents: "none",
+                      userSelect: "none", }}>
                     <PersonIcon />
                   </Avatar>
 

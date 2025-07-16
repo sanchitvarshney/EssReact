@@ -109,6 +109,8 @@ const PostAnniversaryCard = ({
                 height: 140,
                 fontSize: "5rem",
                 backgroundColor: "#2eacb3",
+                           pointerEvents: "none",
+                      userSelect: "none",
               }}
             >
               {authorName.charAt(0).toUpperCase()}

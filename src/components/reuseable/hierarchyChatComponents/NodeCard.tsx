@@ -60,6 +60,8 @@ export const NodeCard = ({
           height: 90,
           border: "2px solid #444",
           backgroundColor: "#2eacb3",
+                     pointerEvents: "none",
+                      userSelect: "none",
         }}
       />
       <div style={{ flex: 1 }}>

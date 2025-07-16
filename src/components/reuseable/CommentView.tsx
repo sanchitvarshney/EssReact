@@ -13,7 +13,8 @@ const CommentView: React.FC<CommentViewProps> = ({ data }) => {
             <Box display="flex" alignItems="center">
               <Avatar
                 src={item.photo}
-                sx={{ width: 45, height: 45, backgroundColor: "#2eacb3" }}
+                sx={{ width: 45, height: 45, backgroundColor: "#2eacb3",         pointerEvents: "none",
+                      userSelect: "none", }}
               />
               <Box ml={1}>
                 <div className="flex gap-x-5">

@@ -56,6 +56,8 @@ const ReimbursementGrantCard: FC<ReimbursementGrantCardProps> = ({
                 width: isView ? 60 : 40,
                 height: isView ? 60 : 40,
                 bgcolor: "#2eacb3",
+                           pointerEvents: "none",
+                      userSelect: "none",
               }}
             />
             <div className="ml-3">

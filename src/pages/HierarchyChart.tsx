@@ -129,6 +129,8 @@ const HierarchyChart = () => {
               height: 48,
               border: "2px solid #444",
               backgroundColor: "#2eacb3",
+                         pointerEvents: "none",
+                      userSelect: "none",
             }}
           />
           <div style={{ flex: 1 }}>

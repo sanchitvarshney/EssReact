@@ -52,7 +52,8 @@ const RecruitmentsPage = () => {
   return (
     <div className="h-[calc(100vh-100px)] flex flex-col items-center py-8 px-4 overflow-y-auto">
       <div className="flex flex-col items-center mb-8">
-        <Avatar src={recruitmentIcon} sx={{ width: 80, height: 80, mb: 2 }} />
+        <Avatar src={recruitmentIcon} sx={{ width: 80, height: 80, mb: 2,           pointerEvents: "none",
+                      userSelect: "none", }} />
         <Typography variant="h4" className="font-bold text-gray-800 mb-2">
           Recruitments
         </Typography>

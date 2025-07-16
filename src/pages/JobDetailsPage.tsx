@@ -123,6 +123,8 @@ function JobDetailsPage({onClose}:{onClose:()=>void}) {
                     height: 60,
                     bgcolor: "#2eacb3",
                     mr: 2,
+                               pointerEvents: "none",
+                      userSelect: "none",
                   }}
                 >
                   <BusinessIcon sx={{ fontSize: 30 }} />

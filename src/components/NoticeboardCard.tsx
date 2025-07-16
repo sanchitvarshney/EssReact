@@ -81,7 +81,8 @@ const NoticeboardCard: React.FC = () => {
         </Typography>
 
         <Box display="flex" alignItems="center" mt={3}>
-          <Avatar src={dummyData[current].avatarUrl} sx={{ width: 32, height: 32,backgroundColor:"#2eacb3" }} />
+          <Avatar src={dummyData[current].avatarUrl} sx={{ width: 32, height: 32,backgroundColor:"#2eacb3",           pointerEvents: "none",
+                      userSelect: "none", }} />
           <Box ml={1}>
             <Typography variant="body2" fontWeight={500}>
               {dummyData[current].author}

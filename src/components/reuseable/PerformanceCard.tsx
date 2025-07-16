@@ -50,6 +50,8 @@ const PerformanceCard = ({
                 height: 60,
                 padding: 1,
                 borderRadius: 1,
+                           pointerEvents: "none",
+                      userSelect: "none",
               }}
             >
               <img
