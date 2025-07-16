@@ -29,7 +29,7 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
         value={value}
         onChange={(date) => {
           const nativeDate = date?.toDate?.();
-
+console.log(nativeDate)
           field.onChange(nativeDate);
         }}
         label={label}

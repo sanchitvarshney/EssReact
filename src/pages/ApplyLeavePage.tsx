@@ -131,6 +131,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
+      mode: "onTouched",
   });
 
   const toDate = form.watch("toDate");
@@ -263,15 +264,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
       });
   };
 
-  // console.log("apply leave response", applySLLeaveData);
-
-  // useEffect(() => {
-  //   if (applySLLeaveData?.status === "success") {
-  //     form.reset();
-  //     setRecipient([]);
-  //     showToast(applySLLeaveData?.message, "success");
-  //   }
-  // }, [applySLLeaveData]);
+  
 
   return (
     <div className=" flex flex-col items-center   ">

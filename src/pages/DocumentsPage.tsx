@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import CustomSearch from "../components/reuseable/CustomSearch";
 import DocumentsPageSkeleton from "../skeleton/DocumentsPageSkeleton";
 import { useToast } from "../hooks/useToast";
+import EmptyData from "../components/reuseable/EmptyData";
 
 const DocumentsPage = () => {
   // const [searchQuary, setSearchQuary] = useState<string>("");
@@ -114,7 +115,7 @@ const DocumentsPage = () => {
                 alignItems="center"
                 height={200}
               >
-                <Typography variant="body2">No Documents Found.</Typography>
+               <EmptyData />
               </Box>
             ) : (
               (filteredData || []).map((row: any) => (

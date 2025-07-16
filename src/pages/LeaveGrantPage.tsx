@@ -97,7 +97,7 @@ const LeaveGrantPage = () => {
       <Typography variant="subtitle1" fontWeight={600}>{`Total Request (${
         leaveGrantData?.totalrequest ? leaveGrantData?.totalrequest : 0
       })`}</Typography>
-      {leaveGrantData?.data?.length === 0 ||
+      { leaveGrantData?.data?.length === 0 ||
       leaveGrantData?.status === "error" ? (
         <div className="w-full h-full flex items-center justify-center">
           <EmptyData />

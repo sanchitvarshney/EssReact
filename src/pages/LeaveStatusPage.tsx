@@ -38,7 +38,7 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {},
-  fontSize: 16,
+  fontSize: 15,
   fontWeight: 600,
   color: "#374151",
   letterSpacing: 2,
@@ -54,6 +54,33 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+
+  export const getStatus = (status: any) => {
+    switch (status) {
+      case "APR":
+        return (
+          <span className="text-[16px] text-green-700 flex items-center text-center">
+            <CheckBoxIcon sx={{ fontSize: 24 }} className=" mr-1" />
+            Approved
+          </span>
+        );
+      case "PEN":
+        return (
+          <span className="text-[16px] text-yellow-700">
+            <PendingIcon sx={{ fontSize: 24 }} className="mr-1" />
+            Pending
+          </span>
+        );
+
+      default:
+        return (
+          <span className="text-[16px] text-red-700 ">
+            <ThumbDownIcon sx={{ fontSize: 24 }} className="mr-1" />
+            Return
+          </span>
+        );
+    }
+  };
 const LeaveStatusPage = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -88,32 +115,7 @@ const LeaveStatusPage = () => {
     }
   }, [leaveStatusError]);
 
-  const getStatus = (status: any) => {
-    switch (status) {
-      case "APR":
-        return (
-          <span className="text-[16px] text-green-700 flex items-center text-center">
-            <CheckBoxIcon sx={{ fontSize: 24 }} className=" mr-1" />
-            Approved
-          </span>
-        );
-      case "PEN":
-        return (
-          <span className="text-[16px] text-yellow-700">
-            <PendingIcon sx={{ fontSize: 24 }} className="mr-1" />
-            Pending
-          </span>
-        );
 
-      default:
-        return (
-          <span className="text-[16px] text-red-700 ">
-            <ThumbDownIcon sx={{ fontSize: 24 }} className="mr-1" />
-            Rejected
-          </span>
-        );
-    }
-  };
 
   const handleDelete = () => {
     setIsConfirm(false);

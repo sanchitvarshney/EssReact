@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import CustomTag from "./CustomTag";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 import blockicon from "../../assets/blockimage/policiesb&w.png";
+import imgPerfor from "../../assets/blockimage/bg-performance.png";
+import imghelp from "../../assets/blockimage/helpbw.png";
 
 type ImageCardProps = {
   title: string;
@@ -34,7 +36,11 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
         transition: "transform 0.3s ease-in-out",
         "&:hover": {
           transform:
-            title.toLowerCase() === "hr policies" ? "none" : "scale(1.05)",
+            title.toLowerCase() === "hr policies" ||
+            title.toLowerCase() === "performance" ||
+                title.toLowerCase() === "helpdesk"
+              ? "none"
+              : "scale(1.05)",
         },
         overflow: "visible",
       }}
@@ -48,22 +54,26 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
 
           <div
             className={`flex  h-30 w-40 p-10 sm:p-3 sm:w-30 sm:h-30 md:w-35 md:h-35 lg:w-40 lg:h-40 xl:w-45 xl:h-45 items-center justify-center rounded-2xl ${
-              title.toLowerCase() === "hr policies"
+              title.toLowerCase() === "hr policies" ||
+              title.toLowerCase() === "performance" ||
+              title.toLowerCase() === "helpdesk"
                 ? "bg-gray-500/20"
                 : "bg-gray-500/10"
             }  `}
           >
             <img
-              src={title.toLowerCase() === "hr policies" ? blockicon : image}
+              src={
+                title.toLowerCase() === "hr policies"
+                  ? blockicon
+                  : title.toLowerCase() === "performance"
+                  ? imgPerfor
+                  : title.toLowerCase() === "helpdesk"
+                  ? imghelp
+                  : image
+              }
               alt={title}
               className="h-[120px]  w-full object-contain "
             />
-            {/* {title.toLowerCase() === "hr policies" && (
-              <div
-                className={`absolute inset-0 z-0 rounded-0 bg-gray-900/100 opacity-30`}
-                style={{ filter: "blur(10px)" }}
-              />
-            )} */}
           </div>
 
           {/* transition-transform duration-500 hover:rotate-360 */}

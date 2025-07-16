@@ -11,18 +11,18 @@ import {
   FormMessage,
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 
-// import { Textarea } from '../components/ui/textarea';
 import { CustomButton } from "../components/ui/CustomButton";
 import {
   FiPlus,
   FiTrash2,
   FiUpload,
-  FiDollarSign,
   FiCalendar,
   FiFileText,
 } from "react-icons/fi";
 import {
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -33,7 +33,11 @@ import {
 } from "@mui/material";
 import CustomTextInput from "../components/reuseable/CustomTextInput";
 import CustomModalDatePicker from "../components/reuseable/CustomModalDatePicker";
+import moment from "moment";
+import { useCliamReimbursementMutation } from "../services/reimbursement";
 
+import { useToast } from "../hooks/useToast";
+import { useState } from "react";
 
 const categories = [
   { value: "r", label: "--" },
@@ -44,7 +48,7 @@ const categories = [
 ];
 
 const reimbursementSchema = z.object({
-  expenseDate: z.string().min(1, "Expense date is required"),
+  expenseDate: z.date({ required_error: "Expense Date is required" }),
   purpose: z.string().min(1, "Purpose is required"),
   items: z
     .array(
@@ -69,16 +73,14 @@ const reimbursementSchema = z.object({
 type ReimbursementFormType = z.infer<typeof reimbursementSchema>;
 
 const ReimbursementClaim = () => {
+  const [cliamReimbursement, { isLoading }] = useCliamReimbursementMutation();
+  const { showToast } = useToast();
   const form = useForm<ReimbursementFormType>({
     resolver: zodResolver(reimbursementSchema),
-    defaultValues: {
-      expenseDate: "",
-      purpose: "",
-      items: [{ category: "", description: "", amount: "" }],
-      receipt: undefined,
-    },
+
     mode: "onTouched",
   });
+  const [emptyKey,setEmptyKey] = useState<number>(0)
 
   const { control, handleSubmit, setValue } = form;
   const { fields, append, remove } = useFieldArray({
@@ -86,9 +88,46 @@ const ReimbursementClaim = () => {
     name: "items",
   });
 
+  const files = form.watch("receipt");
+
   const onSubmit = (data: ReimbursementFormType) => {
-    console.log(data);
-    alert("Form submitted!");
+    const formData = new FormData();
+
+    data.receipt.forEach((file: any) => {
+      formData.append("receipt[]", file);
+    });
+
+    formData.append(
+      "expenseDate",
+      moment(data?.expenseDate).format("YYYY-MM-DD")
+    );
+    formData.append("purpose", data?.purpose);
+    
+      formData.append("expenses", JSON.stringify(data?.items));
+   
+
+    formData.append(
+      "finalAmount",
+      String(data?.items.reduce((acc, item) => acc + Number(item.amount), 0))
+    );
+
+    cliamReimbursement(formData)
+      .then((res) => {
+        
+        if (res?.data?.status === "error") {
+          showToast(res?.data?.message, "error");
+          return
+        }
+        showToast(res?.data?.message, "success");
+        form.reset();
+        setEmptyKey( (prev:any) => prev + 1)
+      })
+      .catch((err) => {
+        showToast(
+          err?.data?.message || err?.message || "Something went wrong",
+          "error"
+        );
+      });
   };
 
   return (
@@ -99,7 +138,7 @@ const ReimbursementClaim = () => {
             {/* Header Section */}
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] rounded-full mb-4 shadow-lg">
-                <FiDollarSign className="w-8 h-8 text-white" />
+                <CurrencyRupeeIcon sx={{ fontSize: "3rem", color: "white" }} />
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] bg-clip-text text-transparent">
                 Reimbursement Claim
@@ -146,6 +185,7 @@ const ReimbursementClaim = () => {
                       <FormControl>
                         <div className="relative">
                           <CustomTextInput
+                          key={emptyKey}
                             field={field}
                             label="Purpose of expense"
                           />
@@ -196,10 +236,8 @@ const ReimbursementClaim = () => {
                     size="small"
                     aria-label="expense items table"
                   >
-                    <TableHead >
-                      <TableRow
-                       
-                      >
+                    <TableHead>
+                      <TableRow>
                         <TableCell className="text-[#fff] font-semibold border-none tracking-wide">
                           Category
                         </TableCell>
@@ -327,30 +365,41 @@ const ReimbursementClaim = () => {
                         <span className="text-gray-600 text-lg font-medium mb-2">
                           Choose files or drag & drop
                         </span>
-                        <span className="text-gray-500 text-sm">
-                          Supports: JPG, PNG, PDF (Max 10MB)
-                        </span>
+                        {files && (
+                          <span className="text-gray-400 text-sm">
+                            {files[0].name}
+                          </span>
+                        )}
                         <Input
                           type="file"
                           accept="image/*,application/pdf"
-                          onChange={(e) => setValue("receipt", e.target.files)}
+                          onChange={(e) => {
+                            const files = e.target.files;
+                            if (!files || files.length === 0) return;
+
+                            // Convert FileList to array
+                            setValue("receipt", Array.from(files));
+                          }}
                           className="hidden"
                         />
                       </label>
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-[red] mt-2" />
                   </FormItem>
                 )}
               />
             </div>
 
-            {/* Submit Button */}
             <div className="flex justify-center pt-6 pb-4">
               <CustomButton
                 type="submit"
                 className="px-12 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-105 transition-all duration-200 text-white"
               >
-                Submit Request
+                {isLoading ? (
+                  <CircularProgress sx={{ color: "#ffffff" }} size={"25px"} />
+                ) : (
+                  "Submit Request"
+                )}
               </CustomButton>
             </div>
           </form>

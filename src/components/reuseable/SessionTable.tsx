@@ -7,6 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 const SessionTable = ({ rows }: { rows: any}) => {
+  console.log(rows)
   return (
     <TableContainer component={Paper} elevation={0}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
