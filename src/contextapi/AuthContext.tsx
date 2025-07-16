@@ -9,6 +9,7 @@ import type { ReactNode } from "react";
 import { setCredentials } from "../slices/authSlices";
 import { useAppDispatch } from "../hooks/useReduxHook";
 import { useGetHierarchyChatQuery } from "../services/hierarchy";
+import { useToast } from "../hooks/useToast";
 
 interface AuthContextType {
   user: string | null;
@@ -35,6 +36,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { data: hierarchyData, error: hierarchyError, isLoading: hierarchyLoading } = useGetHierarchyChatQuery();
+   const { showToast } = useToast();
   const dispatch = useAppDispatch();
   const [user, setUser] = useState<any | null>({
     name: "",
@@ -42,6 +44,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     id: "",
   });
    
+
+   useEffect(() => {
+      if (!hierarchyError) return;
+  
+      if (hierarchyError) {
+        //@ts-ignore
+        const errData = hierarchyError.data as { message?: string };
+  
+        showToast(errData?.message || "Something went wrong", "error");
+      } else {
+        //@ts-ignore
+        showToast(error.message || "An unexpected error occurred", "error");
+      }
+    }, [hierarchyError]);
 
   const signIn = useCallback(() => {
     const storedUserStr = localStorage.getItem("user");

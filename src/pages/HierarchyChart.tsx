@@ -23,7 +23,7 @@ import { DepartmentCard } from "../components/reuseable/hierarchyChatComponents/
 
 import { RootEmployeeTree } from "../components/reuseable/hierarchyChatComponents/RootEmployeeTree";
 import { EmployeeTree } from "../components/reuseable/hierarchyChatComponents/EmployeeTree";
-import { useToast } from "../hooks/useToast";
+
 import HierarchyChartSkeleton from "../skeleton/HierarchyChartSkeleton";
 import { useAuth } from "../contextapi/AuthContext";
 
@@ -37,8 +37,8 @@ export const tagColors: Record<string, string> = {
 };
 
 const HierarchyChart = () => {
-  const { showToast } = useToast();
-  const  {hierarchyData,hierarchyLoading,hierarchyError} = useAuth();
+
+  const  {hierarchyData,hierarchyLoading} = useAuth();
   
   const [zoom, setZoom] = useState(0.7);
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>(
@@ -69,19 +69,7 @@ const HierarchyChart = () => {
     }
   }, [hierarchyData]);
 
-  useEffect(() => {
-    if (!hierarchyError) return;
-
-    if (hierarchyError) {
-      //@ts-ignore
-      const errData = hierarchyError.data as { message?: string };
-
-      showToast(errData?.message || "Something went wrong", "error");
-    } else {
-      //@ts-ignore
-      showToast(error.message || "An unexpected error occurred", "error");
-    }
-  }, [hierarchyError]);
+ 
 
   const renderDepartmentTree = (node: DepartmentNode): JSX.Element => {
     const hasChildren = Boolean(node.children && node.children.length > 0);

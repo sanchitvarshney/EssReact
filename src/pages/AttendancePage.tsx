@@ -200,7 +200,7 @@ const AttendancePage = () => {
                     shifts?.total_misspunch ? shifts?.total_misspunch : "--"
                   }
                 />
-                <CardForAttendance title={"Short"} icon={clock} value={"N/A"} />
+                <CardForAttendance title={"Short"} icon={clock} value={  shifts?.srtCount ? shifts?.srtCount : "--"} />
               </div>
             </div>
             {tabvalue === "calendar" ? (

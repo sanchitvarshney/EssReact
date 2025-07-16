@@ -2,18 +2,15 @@ import { Tree, TreeNode } from "react-organizational-chart";
 import { Avatar, Card, CardContent } from "@mui/material";
 import { Chip } from "@mui/material";
 
-import type { JSX } from "react";
+import { useEffect, useState, type JSX } from "react";
 
-import { orgData, type OrgNode } from "../dummydata/HierarchyData";
-const findPathToId = (
-  root: OrgNode,
-  id: string,
-  path: OrgNode[] = []
-): OrgNode[] | null => {
-  if (root.id === id) return [...path, root];
+import { useAuth } from "../contextapi/AuthContext";
+const findPathToId = (root: any, id: string, path: any): any => {
+  if (root?.empcode === id) return [...path, root];
 
-  for (const child of root.children ?? []) {
+  for (const child of root?.children ?? []) {
     const result = findPathToId(child, id, [...path, root]);
+
     if (result) return result;
   }
 
@@ -45,15 +42,15 @@ const NodeCard = ({
 }: NodeCardProps) => (
   <Card
     sx={{
+      width: "100%",
       background: highlighted ? "#16a34a" : "#23272f",
       color: "#fff",
       borderRadius: 3,
-      minWidth: 260,
-      maxWidth: 280,
+      minWidth: 300,
+      maxWidth: 300,
       boxShadow: 6,
-      px: 2,
-      py: 1.5,
-      border: "1px solid #333",
+
+      // border: "1px solid #333",
       position: "relative",
     }}
   >
@@ -63,7 +60,12 @@ const NodeCard = ({
       <Avatar
         alt={name}
         src={imageUrl}
-        sx={{ width: 48, height: 48, border: "2px solid #444",backgroundColor:"#2eacb3" }}
+        sx={{
+          width: 48,
+          height: 48,
+          border: "2px solid #444",
+          backgroundColor: "#2eacb3",
+        }}
       />
       <div style={{ flex: 1 }}>
         <div style={{ fontWeight: 600, fontSize: 18 }}>{name}</div>
@@ -93,11 +95,11 @@ const NodeCard = ({
 );
 
 const renderTree = (
-  node: OrgNode,
+  node: any,
   selectedId: string,
   visibleIds: Set<string>
 ): JSX.Element | null => {
-  if (!visibleIds.has(node.id)) return null;
+  if (!visibleIds.has(node.empcode)) return null;
 
   return (
     <TreeNode
@@ -107,41 +109,52 @@ const renderTree = (
           title={node.title}
           imageUrl={node.imageUrl}
           tags={node.tags}
-          highlighted={node.id === selectedId}
+          highlighted={node.empcode === selectedId}
         />
       }
       key={node.id}
     >
-      {(node.children ?? []).map((child) =>
+      {(node.children ?? []).map((child: any) =>
         renderTree(child, selectedId, visibleIds)
       )}
     </TreeNode>
   );
 };
 
-const EmployeeHierarchyPage = ({ selectedId = "hr" }) => {
-  const path = findPathToId(orgData, selectedId) ?? [];
-  const visibleIds = new Set(path.map((node) => node.id));
-  const findChildren = (node: OrgNode, ids: Set<string>) => {
-    ids.add(node.id);
+const EmployeeHierarchyPage = () => {
+  const { hierarchyData, user } = useAuth();
+  //@ts-ignore
+  const userId: any = user?.id;
+
+  const [nodeData, setNodeData] = useState<any>([]);
+
+  useEffect(() => {
+    if (hierarchyData) {
+      // console.log(hierarchyData, "hierarchyData");
+      setNodeData(hierarchyData[0]?.children);
+    }
+  }, [hierarchyData]);
+
+  const path = findPathToId(nodeData[0], userId, nodeData) ?? [];
+
+  const visibleIds: any = new Set(path.map((node: any) => node.empcode));
+
+  const findChildren = (node: any, ids: Set<string>) => {
+    ids.add(node.empcode);
     for (const child of node.children ?? []) {
       findChildren(child, ids);
     }
   };
 
-   
   const selectedNode = path[path.length - 1];
+
   if (selectedNode) {
     findChildren(selectedNode, visibleIds);
   }
 
   return (
-    <div className="   w-full flex">
-      <div
-        style={{
-          justifySelf: "center",
-        }}
-      >
+    <div className="w-full flex justify-center items-center">
+      <div className="flex">
         <Tree
           lineWidth={"3px"}
           lineColor={"#444"}
@@ -154,8 +167,8 @@ const EmployeeHierarchyPage = ({ selectedId = "hr" }) => {
                   background: "#23272f",
                   color: "#fff",
                   borderRadius: 3,
-                  minWidth: 260,
-                  maxWidth: 280,
+                  minWidth: 300,
+                  maxWidth: 300,
                   boxShadow: 6,
 
                   border: "1px solid #333",
@@ -172,48 +185,31 @@ const EmployeeHierarchyPage = ({ selectedId = "hr" }) => {
                   }}
                 >
                   <Avatar
-                    alt={orgData.name}
-                    src={orgData.imageUrl}
-                    sx={{ width: 48, height: 48, border: "2px solid #444",backgroundColor:"#2eacb3" }}
+                    alt={nodeData[0]?.name}
+                    src={nodeData[0]?.imageUrl}
+                    sx={{
+                      width: 48,
+                      height: 48,
+                      border: "2px solid #444",
+                      backgroundColor: "#2eacb3",
+                    }}
                   />
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: 18 }}>
-                      {orgData.name}
+                      {nodeData[0]?.name}
                     </div>
                     <div style={{ fontSize: 14, color: "#cbd5e1" }}>
-                      {orgData.title}
-                    </div>
-                    <div
-                      style={{
-                        marginTop: 6,
-                        display: "flex",
-                        gap: 6,
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {orgData.tags?.map((tag: string) => (
-                        <Chip
-                          key={tag}
-                          label={tag}
-                          size="small"
-                          sx={{
-                            background: tagColors[tag] || "#64748b",
-                            color: "#23272f",
-                            fontWeight: 600,
-                            fontSize: 12,
-                            px: 1,
-                            height: 22,
-                          }}
-                        />
-                      ))}
+                      {nodeData[0]?.title}
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
-          } // Invisible wrapper
+          }
         >
-           {(orgData.children ?? []).map((child) => renderTree(child, selectedId, visibleIds))}
+          {(nodeData[0].children ?? []).map((child: any) =>
+            renderTree(child, userId, visibleIds)
+          )}
         </Tree>
       </div>
     </div>
