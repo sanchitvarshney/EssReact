@@ -20,11 +20,12 @@ import {
 import { customColor } from "../constants/themeConstant";
 import { DepartmentCard } from "../components/reuseable/hierarchyChatComponents/DepartmentCard";
 
-import { useGetHierarchyChatQuery } from "../services/hierarchy";
+
 import { RootEmployeeTree } from "../components/reuseable/hierarchyChatComponents/RootEmployeeTree";
 import { EmployeeTree } from "../components/reuseable/hierarchyChatComponents/EmployeeTree";
 import { useToast } from "../hooks/useToast";
 import HierarchyChartSkeleton from "../skeleton/HierarchyChartSkeleton";
+import { useAuth } from "../contextapi/AuthContext";
 
 export const tagColors: Record<string, string> = {
   Leadership: "#60a5fa",
@@ -37,7 +38,8 @@ export const tagColors: Record<string, string> = {
 
 const HierarchyChart = () => {
   const { showToast } = useToast();
-  const { data, error, isLoading } = useGetHierarchyChatQuery();
+  const  {hierarchyData,hierarchyLoading,hierarchyError} = useAuth();
+  
   const [zoom, setZoom] = useState(0.7);
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>(
     {}
@@ -52,9 +54,9 @@ const HierarchyChart = () => {
     }));
   };
   useEffect(() => {
-    if (data) {
+    if (hierarchyData) {
       {
-        data[0].children.map((item:any) => {
+        hierarchyData[0].children.map((item:any) => {
            setExpandedNodes((prev) => ({
         ...prev,
         [item.id]: false,
@@ -63,23 +65,23 @@ const HierarchyChart = () => {
         })
       }
     
-      setNodeData(data);
+      setNodeData(hierarchyData);
     }
-  }, [data]);
+  }, [hierarchyData]);
 
   useEffect(() => {
-    if (!error) return;
+    if (!hierarchyError) return;
 
-    if (error) {
+    if (hierarchyError) {
       //@ts-ignore
-      const errData = error.data as { message?: string };
+      const errData = hierarchyError.data as { message?: string };
 
       showToast(errData?.message || "Something went wrong", "error");
     } else {
       //@ts-ignore
       showToast(error.message || "An unexpected error occurred", "error");
     }
-  }, [error]);
+  }, [hierarchyError]);
 
   const renderDepartmentTree = (node: DepartmentNode): JSX.Element => {
     const hasChildren = Boolean(node.children && node.children.length > 0);
@@ -226,7 +228,7 @@ const HierarchyChart = () => {
 
   const rootNodeId = rootNode?.id || "root";
 
-  if (isLoading) {
+  if (hierarchyLoading) {
     return <HierarchyChartSkeleton />;
   }
 

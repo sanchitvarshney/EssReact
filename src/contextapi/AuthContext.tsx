@@ -8,11 +8,15 @@ import React, {
 import type { ReactNode } from "react";
 import { setCredentials } from "../slices/authSlices";
 import { useAppDispatch } from "../hooks/useReduxHook";
+import { useGetHierarchyChatQuery } from "../services/hierarchy";
 
 interface AuthContextType {
   user: string | null;
   signIn: any;
   signOut: any;
+  hierarchyData: any;
+  hierarchyError: any;
+  hierarchyLoading: any;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,12 +34,14 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const { data: hierarchyData, error: hierarchyError, isLoading: hierarchyLoading } = useGetHierarchyChatQuery();
   const dispatch = useAppDispatch();
   const [user, setUser] = useState<any | null>({
     name: "",
     imgUrl: "",
     id: "",
   });
+   
 
   const signIn = useCallback(() => {
     const storedUserStr = localStorage.getItem("user");
@@ -68,7 +74,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, hierarchyData,hierarchyError,hierarchyLoading,signIn, signOut, }}>
       {children}
     </AuthContext.Provider>
   );
