@@ -23,14 +23,16 @@ const Information = ({
 }) => {
   return (
     <div className="flex flex-col gap-2">
-      {/* <span className="text-lg font-semibold">{label}</span> */}
       {editMode ? (
         // <Input value={value} name={name} onChange={onChange} />
         <CustomTextInput field={{ value: value }} label={label} />
       ) : (
-        <span className="text-base">
-          {value === null || value === "" ? "N/A" : value}
-        </span>
+        <div className="flex flex-col">
+          <span className="text-lg font-semibold">{`${label}`}</span>
+          <span className="text-base my-1">
+            {value === null || value === "" ? "N/A" : value}
+          </span>
+        </div>
       )}
     </div>
   );
@@ -223,7 +225,10 @@ const EmployeeInformationPage = ({
             )}
             <IconButton
               onClick={() =>
-                setEditSection((prev) => ({ ...prev, emergency: !prev.emergency }))
+                setEditSection((prev) => ({
+                  ...prev,
+                  emergency: !prev.emergency,
+                }))
               }
             >
               {editSection.emergency ? (

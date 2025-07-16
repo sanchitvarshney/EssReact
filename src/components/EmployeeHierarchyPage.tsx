@@ -151,7 +151,7 @@ const EmployeeHierarchyPage = () => {
   if (selectedNode) {
     findChildren(selectedNode, visibleIds);
   }
-  if (hierarchyLoading ||true) {
+  if (hierarchyLoading ) {
     return (
       <div className="w-full flex h-[40vh]  justify-center items-center">
        <CircularProgress sx={{ color: "green" }} size={"50px"} />
