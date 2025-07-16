@@ -1,11 +1,19 @@
 import { Tree, TreeNode } from "react-organizational-chart";
-import { Avatar, Card, CardContent } from "@mui/material";
+import { Avatar, Card, CardContent, CircularProgress } from "@mui/material";
 import { Chip } from "@mui/material";
 
-import { useEffect, useState, type JSX } from "react";
+import {  type JSX } from "react";
 
 import { useAuth } from "../contextapi/AuthContext";
+
+
 const findPathToId = (root: any, id: string, path: any): any => {
+  if (!root?.empcode) {
+    root = {
+      ...root?.[0],
+      empcode: "bod",
+    };
+  }
   if (root?.empcode === id) return [...path, root];
 
   for (const child of root?.children ?? []) {
@@ -122,22 +130,14 @@ const renderTree = (
 };
 
 const EmployeeHierarchyPage = () => {
-  const { hierarchyData, user } = useAuth();
+  const { hierarchyData, user,hierarchyLoading } = useAuth();
   //@ts-ignore
   const userId: any = user?.id;
 
-  const [nodeData, setNodeData] = useState<any>([]);
-
-  useEffect(() => {
-    if (hierarchyData) {
-      // console.log(hierarchyData, "hierarchyData");
-      setNodeData(hierarchyData[0]?.children);
-    }
-  }, [hierarchyData]);
-
-  const path = findPathToId(nodeData[0], userId, nodeData) ?? [];
-
-  const visibleIds: any = new Set(path.map((node: any) => node.empcode));
+  const path = findPathToId(hierarchyData, userId, hierarchyData) ?? [];
+ 
+  const visibleIds: any = new Set(path?.map((node: any) => node.empcode));
+ 
 
   const findChildren = (node: any, ids: Set<string>) => {
     ids.add(node.empcode);
@@ -150,6 +150,14 @@ const EmployeeHierarchyPage = () => {
 
   if (selectedNode) {
     findChildren(selectedNode, visibleIds);
+  }
+  if (hierarchyLoading ||true) {
+    return (
+      <div className="w-full flex h-[40vh]  justify-center items-center">
+       <CircularProgress sx={{ color: "green" }} size={"50px"} />
+      </div>
+    );
+    
   }
 
   return (
@@ -185,8 +193,8 @@ const EmployeeHierarchyPage = () => {
                   }}
                 >
                   <Avatar
-                    alt={nodeData[0]?.name}
-                    src={nodeData[0]?.imageUrl}
+                    alt={hierarchyData?.[0]?.name}
+                    src={hierarchyData?.[0]?.imageUrl}
                     sx={{
                       width: 48,
                       height: 48,
@@ -196,10 +204,10 @@ const EmployeeHierarchyPage = () => {
                   />
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: 18 }}>
-                      {nodeData[0]?.name}
+                      {hierarchyData?.[0]?.name}
                     </div>
                     <div style={{ fontSize: 14, color: "#cbd5e1" }}>
-                      {nodeData[0]?.title}
+                      {hierarchyData?.[0]?.title}
                     </div>
                   </div>
                 </CardContent>
@@ -207,7 +215,7 @@ const EmployeeHierarchyPage = () => {
             </div>
           }
         >
-          {(nodeData[0]?.children ?? []).map((child: any) =>
+          {(hierarchyData?.[0]?.children ?? []).map((child: any) =>
             renderTree(child, userId, visibleIds)
           )}
         </Tree>
