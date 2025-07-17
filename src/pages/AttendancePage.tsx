@@ -6,8 +6,7 @@ import warning from "../assets/warning.png";
 import AttendancePageTable from "../components/AttendancePageTable";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ButtonGroup, IconButton, Typography } from "@mui/material";
-// import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-// import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import TimelineIcon from "@mui/icons-material/Timeline";
 import moment from "moment";
 import CalendarListView from "./ListViewOfCalender";
 import ListIcon from "@mui/icons-material/List";
@@ -22,6 +21,8 @@ import {
 } from "../services/shift";
 import { useToast } from "../hooks/useToast";
 import AttendencePageSkeleton from "../skeleton/AttendencePageSkeleton";
+import ChartofAttendenece from "./ChartofAttendenece";
+import { useAttendanceStatisticsQuery } from "../services/Leave";
 
 export const Button_OPTIONS = [
   { id: "back", label: "Back" },
@@ -46,6 +47,8 @@ const AttendancePage = () => {
     getShifts,
     { data: shifts, isLoading: shiftsLoading, error: shiftsError },
   ] = useGetShiftsMutation();
+
+  const { data, isLoading } = useAttendanceStatisticsQuery();
 
   const onTodayClick = useCallback(() => {
     setDate(moment().toDate());
@@ -115,12 +118,12 @@ const AttendancePage = () => {
   }, [shifts?.data]);
 
   return (
-    <div className="w-full px-4 py-2  " >
-      {shiftDetailsLoading || shiftsLoading ? (
+    <div className="w-full px-4 py-2 ">
+      {shiftDetailsLoading || shiftsLoading || isLoading ? (
         <AttendencePageSkeleton />
       ) : (
-        <>
-          <AttendancePageTable value={shiftDetails} date={date}/>
+        <div>
+          <AttendancePageTable value={shiftDetails} date={date} />
           <div className="w-full flex justify-between flex-wrap gap-y-5 gap-x-1 py-3 px-4">
             <div className="flex gap-x-8 gap-y-4 flex-wrap">
               {dotColor.map((item, index) => (
@@ -142,78 +145,91 @@ const AttendancePage = () => {
                   <ListIcon sx={{ fontSize: 32, color: "#000" }} />
                 </IconButton>
               </CustomToolTip>
+              <CustomToolTip title={"Graph View"} placement={"bottom"}>
+                <IconButton onClick={() => setTabvalue("graph")}>
+                  <TimelineIcon sx={{ fontSize: 32, color: "#000" }} />
+                </IconButton>
+              </CustomToolTip>
             </ButtonGroup>
           </div>
           <div className="w-full ">
-            <div className="flex flex-wrap justify-between items-center p-2    ">
-              {/* Button Group */}
-              <div className="flex flex-wrap">
-                <ButtonGroup
-                  size="small"
-                  variant="contained"
-                  disableElevation
-                  sx={{
-                    "& .MuiButtonGroup-grouped": {
-                      borderColor: "#fff",
-                      margin: 0,
-                    },
-                  }}
-                >
-                  {Button_OPTIONS.map(({ id, label }) => (
-                    <Button
-                      key={id}
-                      onClick={() => handleCalender(id)}
-                      sx={{
-                        backgroundColor: "#2a2929",
-                        color: "white",
-                        "&:hover": {
-                          backgroundColor: "grey.800",
+            {!(tabvalue === "graph") && (
+              <div className="flex flex-wrap justify-between items-center p-2    ">
+                {/* Button Group */}
+                <div className="flex flex-wrap">
+                  <ButtonGroup
+                    size="small"
+                    variant="contained"
+                    disableElevation
+                    sx={{
+                      "& .MuiButtonGroup-grouped": {
+                        borderColor: "#fff",
+                        margin: 0,
+                      },
+                    }}
+                  >
+                    {Button_OPTIONS.map(({ id, label }) => (
+                      <Button
+                        key={id}
+                        onClick={() => handleCalender(id)}
+                        sx={{
+                          backgroundColor: "#2a2929",
                           color: "white",
-                        },
-                        borderRadius: 0,
-                        textTransform: "none",
-                      }}
-                    >
-                      {label}
-                    </Button>
-                  ))}
-                </ButtonGroup>
-              </div>
+                          "&:hover": {
+                            backgroundColor: "grey.800",
+                            color: "white",
+                          },
+                          borderRadius: 0,
+                          textTransform: "none",
+                        }}
+                      >
+                        {label}
+                      </Button>
+                    ))}
+                  </ButtonGroup>
+                </div>
 
-              <div className="">
-                <Typography fontSize={"1.5rem"} fontWeight="bold">
-                  {dateText}
-                </Typography>
-              </div>
+                <div className="">
+                  <Typography fontSize={"1.5rem"} fontWeight="bold">
+                    {dateText}
+                  </Typography>
+                </div>
 
-              <div className="flex items-center flex-wrap gap-x-2">
-                <CardForAttendance
-                  title={"Present"}
-                  icon={accept}
-                  value={shifts?.total_present ? shifts?.total_present : "--"}
-                />
-            
-                <CardForAttendance
-                  title={"Mispunch"}
-                  icon={warning}
-                  value={
-                    shifts?.total_misspunch ? shifts?.total_misspunch : "--"
-                  }
-                />
-                <CardForAttendance title={"Short"} icon={clock} value={  shifts?.srtCount ? shifts?.srtCount : "--"} />
+                <div className="flex items-center flex-wrap gap-x-2">
+                  <CardForAttendance
+                    title={"Present"}
+                    icon={accept}
+                    value={shifts?.total_present ? shifts?.total_present : "--"}
+                  />
+
+                  <CardForAttendance
+                    title={"Mispunch"}
+                    icon={warning}
+                    value={
+                      shifts?.total_misspunch ? shifts?.total_misspunch : "--"
+                    }
+                  />
+                  <CardForAttendance
+                    title={"Short"}
+                    icon={clock}
+                    value={shifts?.srtCount ? shifts?.srtCount : "--"}
+                  />
+                </div>
               </div>
-            </div>
+            )}
             {tabvalue === "calendar" ? (
               <CustomCalender
                 data={formattedEvents}
                 setDate={setDate}
                 date={date}
               />
-            ) : (
+            ) : tabvalue === "listview" ? (
               <CalendarListView currentMonth={date} data={formattedEvents} />
+            ) : (
+              <ChartofAttendenece data={data} />
             )}
           </div>
-        </>
+        </div>
       )}
     </div>
   );

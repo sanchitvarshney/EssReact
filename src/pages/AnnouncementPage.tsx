@@ -14,6 +14,7 @@ import {
 import AnnouncementPageSkeleton from "../skeleton/AnnouncementPageSkeleton";
 import { useToast } from "../hooks/useToast";
 import PostAnniversaryCard from "../components/reuseable/PostAnniversaryCard";
+import { useLeaveListMutation } from "../services/Leave";
 
 const AnnouncementPage = () => {
   const { showToast } = useToast();
@@ -26,6 +27,8 @@ const AnnouncementPage = () => {
 
   const [getWAList, { data: waList, isLoading: waLoading, error: waError }] =
     useGetWAListMutation();
+  const [leaveList, { data: leaveData, isLoading: leaveLoading }] =
+    useLeaveListMutation();
   const {
     data: hireData,
     isLoading: hireLoading,
@@ -34,6 +37,18 @@ const AnnouncementPage = () => {
   useEffect(() => {
     getDOBList({ type: "DOB" });
     getWAList({ type: "WA" });
+    leaveList()
+      .then((res) => {
+        if (res?.data?.data?.success === false) {
+          showToast(res?.data?.data?.message || res.data?.message.msg, "error");
+        }
+      })
+      .catch((err) => {
+        showToast(
+          err?.data?.message?.msg || err?.message || "Something went wrong",
+          "error"
+        );
+      });
   }, []);
 
   const views = Array.from({ length: 2 }, () =>
@@ -63,7 +78,7 @@ const AnnouncementPage = () => {
 
   return (
     <>
-      {dobLoading || waLoading || hireLoading ? (
+      {dobLoading || waLoading || hireLoading || leaveLoading ? (
         <AnnouncementPageSkeleton />
       ) : (
         <Box className=" h-[calc(100vh-90px)] overflow-auto p-4 gap-4 grid  sm:grid-cols-[2fr_1fr] grid-cols-1  md:grid-cols-[2fr_1fr] lg:grid-cols-[3fr_1fr] ">
@@ -134,14 +149,12 @@ const AnnouncementPage = () => {
                   )
                 }
               />
-                   <MilestonesAndEventsCard
+              <MilestonesAndEventsCard
                 title="Today's On Office Absence"
-                data={hireData}
-                expanded={expandedPanel === "newhires"}
+                data={leaveData}
+                expanded={expandedPanel === "absence"}
                 onChange={() =>
-                  setExpandedPanel(
-                    expandedPanel === "newhires" ? "" : "newhires"
-                  )
+                  setExpandedPanel(expandedPanel === "absence" ? "" : "absence")
                 }
               />
             </div>

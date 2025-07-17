@@ -76,6 +76,7 @@ const ReimbursementStatusPage = () => {
         }
       })
       .catch((err) => {
+        console.log(err.message);
         showToast(
           err?.data?.message || err?.message || "Something went wrong",
           "error"
