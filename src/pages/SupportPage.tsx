@@ -4,7 +4,7 @@ import help from "../assets/help.png";
 const SupportPage = () => {
   return (
     <div className="w-full p-4 flex flex-col justify-center items-center">
-      <div className=" sm:w-200 flex flex-col justify-center items-center h-[70vh] overflow-y-auto gap-y-5 ">
+      <div className=" sm:w-200 flex flex-col justify-center items-center h-[70vh] overflow-y-auto gap-y-5 will-change-transform">
         <Avatar
           src={help}
           sx={{ width: { xs: 150, md: 250 }, height: { xs: 150, md: 250 },           pointerEvents: "none",

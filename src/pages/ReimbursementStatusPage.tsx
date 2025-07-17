@@ -114,7 +114,7 @@ const ReimbursementStatusPage = () => {
     return <ReimbursementStatusPageSkeleton />;
   }
   return (
-    <div className="w-full h-[calc(100vh-90px)] bg-gradient-to-br from-[#f0f7fa] to-[#e0f2f1] p-4 overflow-y-auto">
+    <div className="w-full h-[calc(100vh-90px)] bg-gradient-to-br from-[#f0f7fa] to-[#e0f2f1] p-4 will-change-transform overflow-y-auto">
       <div className="  mx-auto">
         <div className="flex justify-between items-center mb-4">
           <div className="flex  items-center ">

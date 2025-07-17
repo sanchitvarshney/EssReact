@@ -53,7 +53,7 @@ export default function CustomDrawer() {
       <Divider className="w-[90%] self-center flex-shrink-0" />
 
       {/* Scrollable menu section */}
-      <div className="flex-1 custom-scrollbar-for-menu p-1 overflow-y-auto my-2 min-h-0">
+      <div className="flex-1 custom-scrollbar-for-menu p-1 overflow-y-auto will-change-transform my-2 min-h-0">
         {renderMenu(
           menu,
           true,

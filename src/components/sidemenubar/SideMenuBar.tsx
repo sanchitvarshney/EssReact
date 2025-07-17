@@ -235,7 +235,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
           )}
           {/* Scrollable menu section */}
 
-          <div className="flex-1  custom-scrollbar-for-menu p-1 overflow-y-auto  my-2 transition-all duration-400 ease-in-out">
+          <div className="flex-1  custom-scrollbar-for-menu p-1 overflow-y-auto   will-change-transform my-2 transition-all duration-400 ease-in-out">
             {renderMenu(
               menu,
               true,
@@ -265,7 +265,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
         </div>
       </Box>
       {/* Main content area */}
-      <div className="flex-1 overflow-y-auto w-full ">
+      <div className="flex-1 overflow-y-auto  will-change-transform w-full ">
         <Outlet />
       </div>
       <CustomDrawer />

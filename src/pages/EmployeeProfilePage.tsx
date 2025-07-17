@@ -47,7 +47,7 @@ const EmployeeProfilePage = () => {
     }
   }, [error]);
   return (
-    <div className="w-full h-[calc(100vh-90px)]  overflow-y-auto p-4">
+    <div className="w-full h-[calc(100vh-90px)]  overflow-y-auto p-4 will-change-transform ">
       {isLoading ? (
         <EmployeeProfilePageSkeleton />
       ) : (

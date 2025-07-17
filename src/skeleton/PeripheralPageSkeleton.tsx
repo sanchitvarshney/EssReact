@@ -3,7 +3,7 @@ import { Skeleton } from '@mui/material';
 
 const PeripheralPageSkeleton = () => {
   return (
-     <div className='bg-gray-100 flex min-h-[calc(100vh-90px)] overflow-y-auto p-2 w-full'>
+     <div className='bg-gray-100 flex min-h-[calc(100vh-90px)] p-2 w-full'>
       <div className="w-full gap-6 grid grid-cols-1 lg:grid-cols-2">
         {/* Carousel Section */}
         <div className="flex flex-col justify-evenly items-center w-full p-6">

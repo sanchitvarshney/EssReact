@@ -8,7 +8,7 @@ const HelpPortal = () => {
 
   return (
     <div className="w-full p-4 flex flex-col justify-center items-center">
-      <div className="  flex flex-col justify-center items-center h-[80vh] overflow-y-auto gap-y-5 ">
+      <div className="  flex flex-col justify-center items-center h-[80vh] overflow-y-auto gap-y-5 will-change-transform">
         <Avatar
           variant="square"
           src={help}

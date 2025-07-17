@@ -103,7 +103,7 @@ const LeaveGrantPage = () => {
           <EmptyData />
         </div>
       ) : (
-        <div className="w-full grid  grid-cols-1  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2 overflow-y-auto mt-2  mx-auto  py-2  ">
+        <div className="w-full grid  grid-cols-1  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2 overflow-y-auto mt-2  mx-auto will-change-transform py-2  ">
           {leaveGrantData?.data?.map((item: any) => (
             <LeaveGrantCard
               key={item?.trackid}
@@ -152,7 +152,7 @@ const LeaveGrantPage = () => {
             </div>
             <Divider sx={{ mt: 1 }} />
 
-            <div className="h-[66vh] sm:h-[68vh] overflow-y-auto">
+            <div className="h-[66vh] sm:h-[68vh] overflow-y-auto will-change-transform">
               <LeaveGrantCard
                 maxWidth={"100%"}
                 isView={true}

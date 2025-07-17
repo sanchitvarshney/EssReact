@@ -84,7 +84,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
       <div
         tabIndex={0}
         onMouseEnter={(e) => e.currentTarget.focus()}
-        className="bg-white  shadow-0 h-60  overflow-y-auto custom-scrollbar-for-menu focus:outline-none focus:ring-0"
+        className="bg-white  shadow-0 h-60  overflow-y-auto custom-scrollbar-for-menu will-change-transform focus:outline-none focus:ring-0"
       >
         <List sx={{ padding: 0 }} className="p-0">
           {filteredData.length === 0 || isLoading ? (

@@ -34,7 +34,7 @@ const Dashboard = () => {
         <h2 className="mb-4 text-lg font-semibold  ">
           Today's On Office Absence
         </h2>
-        <div className="h-100 overflow-y-auto">
+        <div className="h-100 overflow-y-auto will-change-transform">
           <OfficeAbsenceComponent />
         </div>
       </div>

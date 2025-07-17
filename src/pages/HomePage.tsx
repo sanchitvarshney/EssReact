@@ -5,7 +5,7 @@ import type { homeMenuTypes } from "../types/home-data-types/homepagetypes";
 
 const HomePage = () => {
   return (
-    <div className="w-full  h-[calc(100vh-90px)] flex justify-center overflow-y-auto">
+    <div className="w-full  h-[calc(100vh-90px)] flex justify-center overflow-y-auto will-change-transform">
       <div className="w-[85%] flex justify-start items-start flex-col">
         <div className="flex justify-between items-center w-full mb-2 ">
           <Typography sx={{ padding: 3, fontSize: 20, fontWeight: 600 }}>

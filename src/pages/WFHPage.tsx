@@ -50,7 +50,7 @@ const WFHPage = () => {
 
   return (
     <div className="h-[calc(100vh-65px)]  flex justify-center items-center">roy
-  <div className="p-4 max-h-[600px] ring ring-black/20 shadow-lg overflow-y-auto">
+  <div className="p-4 max-h-[600px] ring ring-black/20 shadow-lg will-change-transform  overflow-y-auto">
         <h1 className="text-xl text-center my-1 font-semibold">
           Update Work from home
         </h1>

@@ -118,7 +118,7 @@ const PeripheralPage: React.FC = () => {
   if (isLoading) return <PeripheralPageSkeleton />;
   if (!peripherals.length) {
     return (
-      <div className="bg-gray-100 flex min-h-[calc(100vh-90px)] overflow-y-auto p-2 w-full">
+      <div className="bg-gray-100 flex min-h-[calc(100vh-90px)] overflow-y-auto p-2 w-full will-change-transform">
         <div className="w-full flex justify-center items-center h-full">
           <p className="text-gray-500 text-lg">No peripherals found.</p>
         </div>
@@ -127,7 +127,7 @@ const PeripheralPage: React.FC = () => {
   }
 
   return (
-    <div className=" flex min-h-[calc(100vh-90px)] overflow-y-auto p-2 w-full">
+    <div className=" flex min-h-[calc(100vh-90px)] overflow-y-auto p-2 w-full will-change-transform">
       <div className="w-full gap-6 grid grid-cols-1 lg:grid-cols-2">
         {/* Carousel Section */}
         <div className="flex flex-col justify-evenly mx-auto items-center w-xl">
@@ -221,7 +221,7 @@ const PeripheralPage: React.FC = () => {
           </div>
         </div>
         {/* Details Section */}
-        <div className="w-full max-w-2xl m-auto overflow-y-auto h-[60vh] sm:h-[70vh] rounded-2xl shadow-2xl border border-gray-200 bg-white flex flex-col">
+        <div className="w-full max-w-2xl m-auto overflow-y-auto will-change-transform h-[60vh] sm:h-[70vh] rounded-2xl shadow-2xl border border-gray-200 bg-white flex flex-col">
           <div className="h-2 w-full bg-[#2eacb3] rounded-t-2xl mb-2" />
           <AnimatePresence mode="wait">
             <motion.div

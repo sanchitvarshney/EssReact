@@ -139,7 +139,7 @@ const PaySlipPage = () => {
             <DotLoading />{" "}
           </div>
         ) : (
-          <div className="w-full h-[40vh] sm:h-[40vh] md:h-[52vh] overflow-y-auto">
+          <div className="w-full h-[40vh] sm:h-[40vh] md:h-[52vh] will-change-transform overflow-y-auto">
             {data?.earing && (
               <>
                 <div className=" mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 ">

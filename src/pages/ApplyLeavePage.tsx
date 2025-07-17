@@ -268,7 +268,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div className=" flex flex-col items-center   ">
-      <div className="w-full bg-white rounded-2xl relative h-[65vh] overflow-y-auto p-6 md:p-6 flex flex-col gap-4">
+      <div className="w-full bg-white rounded-2xl relative h-[65vh] overflow-y-auto p-6 will-change-transform md:p-6 flex flex-col gap-4">
         <div className="flex  justify-between items-center mb-2 ">
           <Typography>
             {`Available Balance :   ${

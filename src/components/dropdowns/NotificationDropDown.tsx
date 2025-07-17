@@ -6,7 +6,7 @@ import NotificationContent from "../NotificationContent";
 const NotificationDropDown = () => {
   return (
 
-      <div className="h-90 bg-white rounded-lg overflow-y-auto w-full p-3  custom-scrollbar-for-menu space-y-2 ">
+      <div className="h-90 bg-white rounded-lg overflow-y-auto w-full p-3  will-change-transform custom-scrollbar-for-menu space-y-2 ">
         <Typography sx={{ fontSize: 19, fontWeight: 600 , mb:1}}>
           Notifications
         </Typography>

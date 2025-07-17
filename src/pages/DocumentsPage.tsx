@@ -107,7 +107,7 @@ const DocumentsPage = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 w-full lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2  mx-auto h-[calc(100vh-170px)] py-3 overflow-y-auto ">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 w-full lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2  mx-auto h-[calc(100vh-170px)] py-3 overflow-y-auto  will-change-transform">
             {data?.data?.length === 0 || filteredData?.length === 0 ? (
               <Box
                 display="flex"
