@@ -34,9 +34,10 @@ useEffect(() => {
     </Wrapper>
   );
 }
+
 const Wrapper = styled.div` 
   .btn {
-    overflow: hidden;
+     overflow: hidden;
     position: relative;
 
     span {

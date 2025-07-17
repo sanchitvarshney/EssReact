@@ -118,12 +118,15 @@ const AttendancePage = () => {
   }, [shifts?.data]);
 
   return (
-    <div className="w-full px-4 py-2 ">
+    <div className="w-full px-2 py-2 ">
       {shiftDetailsLoading || shiftsLoading || isLoading ? (
         <AttendencePageSkeleton />
       ) : (
-        <div>
-          <AttendancePageTable value={shiftDetails} date={date} />
+        <>
+          <div className="sticky top-0 z-10 bg-white">
+             <AttendancePageTable value={shiftDetails} date={date} />
+            </div>
+         
           <div className="w-full flex justify-between flex-wrap gap-y-5 gap-x-1 py-3 px-4">
             <div className="flex gap-x-8 gap-y-4 flex-wrap">
               {dotColor.map((item, index) => (
@@ -229,7 +232,7 @@ const AttendancePage = () => {
               <ChartofAttendenece data={data} />
             )}
           </div>
-        </div>
+        </>
       )}
     </div>
   );
