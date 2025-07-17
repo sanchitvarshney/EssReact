@@ -1,4 +1,4 @@
-import { Popover, Typography } from "@mui/material";
+import { Popover,  } from "@mui/material";
 import SearchBarComponentContent from "../SearchBarComponentContent";
 
 interface Props {
@@ -51,11 +51,10 @@ const SearchBarComponent: React.FC<Props> = ({
         },
       }}
     >
-      <>
-        <Typography sx={{ fontSize: 14 }}>Discover</Typography>
+     
 
         <SearchBarComponentContent inputText={searchQuary} onSelect={onSelect} />
-      </>
+     
     </Popover>
   );
 };

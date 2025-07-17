@@ -19,8 +19,7 @@ const CustomTag: FC<CustomTagProps> = ({ label, color, textColor }) => {
   return (
     <Bounce key={animKey} duration={1000} triggerOnce={true}>
       <svg
-        // width="200"
-        // height="50"
+       
         viewBox="0 0 200 90"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

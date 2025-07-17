@@ -18,6 +18,7 @@ import PostAnniversaryCard from "../components/reuseable/PostAnniversaryCard";
 const AnnouncementPage = () => {
   const { showToast } = useToast();
   const [postFilter, setPostFilter] = useState<string>("announcement");
+  const [expandedPanel, setExpandedPanel] = useState("birthdays");
   const [
     getDOBList,
     { data: dobData, isLoading: dobLoading, error: dobError },
@@ -101,21 +102,47 @@ const AnnouncementPage = () => {
           </div>
           {
             <div className="flex flex-col items-center  sm:gap-4  hidden sm:flex">
-              {/* <NoticeboardCard /> */}
               <MilestonesAndEventsCard
-                title={" Current Month's Birthdays"}
+                title="Current Month's Birthdays"
                 data={dobData}
-                titleModal={" Current Month's List of Birthday's"}
+                expanded={expandedPanel === "birthdays"}
+                onChange={() =>
+                  setExpandedPanel(
+                    expandedPanel === "birthdays" ? "" : "birthdays"
+                  )
+                }
               />
+
               <MilestonesAndEventsCard
-                title={"Anniversary"}
+                title="Anniversary"
                 data={waList}
-                titleModal={"List of Anniversary's"}
+                expanded={expandedPanel === "anniversary"}
+                onChange={() =>
+                  setExpandedPanel(
+                    expandedPanel === "anniversary" ? "" : "anniversary"
+                  )
+                }
               />
+
               <MilestonesAndEventsCard
-                title={"New Hire's"}
+                title="New Hire's"
                 data={hireData}
-                titleModal={"List of hire's"}
+                expanded={expandedPanel === "newhires"}
+                onChange={() =>
+                  setExpandedPanel(
+                    expandedPanel === "newhires" ? "" : "newhires"
+                  )
+                }
+              />
+                   <MilestonesAndEventsCard
+                title="Today's On Office Absence"
+                data={hireData}
+                expanded={expandedPanel === "newhires"}
+                onChange={() =>
+                  setExpandedPanel(
+                    expandedPanel === "newhires" ? "" : "newhires"
+                  )
+                }
               />
             </div>
           }{" "}

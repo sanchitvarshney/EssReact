@@ -72,11 +72,14 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
     <Box
       sx={{
         p: 2,
-        border: "1px solid #ffffff",
-        borderRadius: 2,
-        backgroundColor: "#ffffff",
+       
+        borderRadius: 1,
+    
         mb: 1,
+        boxShadow: 0,
+        
       }}
+      className=" bg-gradient-to-br from-[#f8fbfc] to-[#f8fbfc]"
     >
       <div className="flex items-center justify-between">
         <Typography variant="h6" fontWeight={600}>

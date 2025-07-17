@@ -6,6 +6,8 @@ import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 import blockicon from "../../assets/blockimage/policiesb&w.png";
 import imgPerfor from "../../assets/blockimage/bg-performance.png";
 import imghelp from "../../assets/blockimage/helpbw.png";
+import imgtaskbox from "../../assets/blockimage/bw-taskbox.png";
+import imgrecruitment from "../../assets/blockimage/recurt.png";
 
 type ImageCardProps = {
   title: string;
@@ -38,7 +40,9 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
           transform:
             title.toLowerCase() === "hr policies" ||
             title.toLowerCase() === "performance" ||
-                title.toLowerCase() === "helpdesk"
+            title.toLowerCase() === "helpdesk" ||
+            title.toLowerCase() === "task box" ||
+            title.toLowerCase() === "recruitment"
               ? "none"
               : "scale(1.05)",
         },
@@ -56,7 +60,9 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
             className={`flex  h-30 w-40 p-10 sm:p-3 sm:w-30 sm:h-30 md:w-35 md:h-35 lg:w-40 lg:h-40 xl:w-45 xl:h-45 items-center justify-center rounded-2xl ${
               title.toLowerCase() === "hr policies" ||
               title.toLowerCase() === "performance" ||
-              title.toLowerCase() === "helpdesk"
+              title.toLowerCase() === "helpdesk" ||
+              title.toLowerCase() === "task box" ||
+              title.toLowerCase() === "recruitment"
                 ? "bg-gray-500/20"
                 : "bg-gray-500/10"
             }  `}
@@ -69,6 +75,10 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
                   ? imgPerfor
                   : title.toLowerCase() === "helpdesk"
                   ? imghelp
+                  : title.toLowerCase() === "task box"
+                  ? imgtaskbox
+                  : title.toLowerCase() === "recruitment"
+                  ? imgrecruitment
                   : image
               }
               alt={title}
@@ -88,9 +98,13 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
           >
             {title}
           </Typography>
-          {title.toLowerCase() === "leave" && (
+          {(title.toLowerCase() === "hr policies" ||
+            title.toLowerCase() === "performance" ||
+            title.toLowerCase() === "helpdesk" ||
+            title.toLowerCase() === "task box" ||
+            title.toLowerCase() === "recruitment") && (
             <div className=" absolute top-[-20px]  right-0 z-999 overflow-visible">
-              <CustomTag label="Api" />
+              <CustomTag label="Progress" />
             </div>
           )}
         </div>

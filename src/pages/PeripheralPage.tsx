@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import mouse from "../assets/mouse.png";
-import laptop from "../assets/laptop.png";
-import monitor from "../assets/computer.png";
-import adaptor from "../assets/phone-charger.png";
-import defaultImage from "../assets/photo.png";
+
 import { useGetPeripheralMutation } from "../services/doc";
 import { useAuth } from "../contextapi/AuthContext";
 
 import PeripheralPageSkeleton from "../skeleton/PeripheralPageSkeleton";
 import { useToast } from "../hooks/useToast";
+import dummyImg from "../assets/gallery.png";
 
 interface Peripheral {
   id: string;
@@ -24,39 +21,60 @@ interface Peripheral {
   ageofdevice?: string;
 }
 
-const getImageUrl = (value: string): string => {
-  const lowervalue = value.toLowerCase();
+// function getExtensionFromUrl(url) {
+//   const match = url?.match(/\.([a-zA-Z0-9]+)(\?.*)?$/);
+//   return match ? match[1].toLowerCase() : null;
+// }
+function getFileTypeFromUrl(url: any) {
+  const extension = url?.split(".").pop().toLowerCase();
 
-  switch (lowervalue) {
-    case "mouse":
-      return mouse;
-    case "adaptor":
-      return adaptor;
-    case "monitor":
-      return monitor;
-    case "laptop":
-      return laptop;
-    default:
-      return defaultImage;
+  if (extension === "jpeg" || extension === "jpg") {
+    return "JPEG";
+  } else if (extension === "pdf") {
+    return "PDF";
+  } else {
+    return "Unknown or unsupported type";
   }
-};
+}
 
 const PeripheralPage: React.FC = () => {
+  const [loaded, setLoaded] = useState(false);
   const { user } = useAuth();
   const { showToast } = useToast();
   const [peripherals, setPeripherals] = useState<Peripheral[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [getPeripheral, { data, isLoading, error }] =
-    useGetPeripheralMutation();
+  const [direction, setDirection] = useState(0); // 1 for next, -1 for prev
+  const [getPeripheral, { data, isLoading }] = useGetPeripheralMutation();
 
   const handleNext = () => {
+    setDirection(1);
     setCurrentIndex((prevIndex) => (prevIndex + 1) % peripherals.length);
   };
 
   const handlePrev = () => {
+    setDirection(-1);
     setCurrentIndex(
       (prevIndex) => (prevIndex - 1 + peripherals.length) % peripherals.length
     );
+  };
+
+  const variants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 300 : -300,
+      opacity: 0,
+      scale: 0.7,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      zIndex: 10,
+    },
+    exit: (dir: number) => ({
+      x: dir < 0 ? 300 : -300,
+      opacity: 0,
+      scale: 0.7,
+    }),
   };
 
   const selectedPeripheral = peripherals[currentIndex];
@@ -64,22 +82,20 @@ const PeripheralPage: React.FC = () => {
   useEffect(() => {
     if (user) {
       //@ts-ignore
-      getPeripheral({ empcode: user?.id });
+      getPeripheral({ empcode: user?.id })
+        .then((res) => {
+          if (res?.data?.data?.success === false) {
+            showToast(res?.data?.data?.message, "error");
+          }
+        })
+        .catch((err) => {
+          showToast(
+            err?.data?.message?.msg || err?.message || "Something went wrong",
+            "error"
+          );
+        });
     }
   }, [user]);
-
-  useEffect(() => {
-    //@ts-ignore
-    if (error) {
-     
-      showToast(
-         //@ts-ignore
-        error?.message || error?.data?.message || error?.error || "Something went wrong",
-        "error"
-      );
-    }
-  
-  }, [error]);
 
   useEffect(() => {
     if (data) {
@@ -91,7 +107,7 @@ const PeripheralPage: React.FC = () => {
         serialNo: item.serial,
         description: item.description,
         allotedon: item.alloted_dt,
-        image: getImageUrl(item.category || item.catergory),
+        image: item.images[0],
         ageofdevice: item.ageofdevice, // map if available
       }));
 
@@ -114,12 +130,21 @@ const PeripheralPage: React.FC = () => {
     <div className=" flex min-h-[calc(100vh-90px)] overflow-y-auto p-2 w-full">
       <div className="w-full gap-6 grid grid-cols-1 lg:grid-cols-2">
         {/* Carousel Section */}
-        <div className="flex flex-col justify-evenly items-center w-full">
+        <div className="flex flex-col justify-evenly mx-auto items-center w-xl">
           <div className="w-full flex justify-center">
             <img
-              src={`${selectedPeripheral?.image}`}
+              onLoad={() => setLoaded(true)}
+              src={`${
+                getFileTypeFromUrl(selectedPeripheral?.image) === "PDF" ||
+                !selectedPeripheral?.image
+                  ? dummyImg
+                  : selectedPeripheral?.image
+              }`}
               alt={selectedPeripheral?.name}
-              className="w-40 h-40 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 p-2 object-contain mx-auto mb-2 rounded-lg  bg-[rgba(259,259,259,0.0)]"
+              className={`w-40 h-40 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 p-2 object-contain mx-auto mb-2 rounded-lg bg-[rgba(259,259,259,0.0)] 
+          transition-opacity duration-700 ease-in-out ${
+            loaded ? "opacity-100" : "opacity-50"
+          }`}
             />
           </div>
 
@@ -133,117 +158,38 @@ const PeripheralPage: React.FC = () => {
                 <FiChevronLeft size={24} className="text-white" />
               </button>
             </div>
-            <div
-              className="w-full flex justify-center items-center relative min-h-[180px] sm:min-h-[200px] md:min-h-[220px]"
-              style={{ perspective: "1000px" }}
-            >
-              <AnimatePresence>
-                {peripherals.length <= 2
-                  ? peripherals.map((item, i) => {
-                      const isCenter = i === currentIndex;
-                      return (
-                        <motion.div
-                          key={item.id}
-                          className="absolute w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-35 lg:h-35 cursor-pointer flex justify-center items-center"
-                          style={{
-                            top: "50%",
-                            left: "50%",
-                            x: "-50%",
-                            y: "-50%",
-                          }}
-                          initial={{
-                            scale: 0,
-                            opacity: 0,
-                            rotateY: i > currentIndex ? -90 : 90,
-                            x: "-50%",
-                          }}
-                          animate={{
-                            scale: isCenter ? 1 : 0.7,
-                            opacity: isCenter ? 1 : 0.4,
-                            zIndex: isCenter ? 10 : 1,
-                            x: `calc(-50% + ${(i - currentIndex) * 80}px)`,
-                            rotateY: 0,
-                          }}
-                          exit={{
-                            scale: 0,
-                            opacity: 0,
-                            rotateY: i > currentIndex ? 90 : -90,
-                            x: "-50%",
-                          }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 300,
-                            damping: 30,
-                          }}
-                          onClick={() => setCurrentIndex(i)}
-                        >
-                          <img
-                            src={item?.image}
-                            alt={item?.name}
-                            className={`w-full h-full object-cover rounded-xl p-1 shadow-lg transition-all duration-300 ${
-                              isCenter
-                                ? "ring-4 ring-[#2eacb3]"
-                                : "ring-2 ring-transparent"
-                            }`}
-                          />
-                        </motion.div>
-                      );
-                    })
-                  : [-2, -1, 0, 1, 2].map((offset: any) => {
-                      const index =
-                        (currentIndex + offset + peripherals.length) %
-                        peripherals.length;
-                      const item = peripherals[index];
-                      const isCenter = offset === 0;
-
-                      return (
-                        <motion.div
-                          key={item?.id}
-                          className="absolute w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-35 lg:h-35 cursor-pointer flex justify-center items-center"
-                          style={{
-                            top: "50%",
-                            left: "50%",
-                            x: "-50%",
-                            y: "-50%",
-                          }}
-                          initial={{
-                            scale: 0,
-                            opacity: 0,
-                            rotateY: offset > 0 ? -90 : 90,
-                            x: "-50%",
-                          }}
-                          animate={{
-                            scale: isCenter ? 1 : 0.7,
-                            opacity: isCenter ? 1 : 0.4,
-                            zIndex: isCenter ? 10 : 1,
-                            x: `calc(-50% + ${offset * 80}px)`,
-                            rotateY: 0,
-                          }}
-                          exit={{
-                            scale: 0,
-                            opacity: 0,
-                            rotateY: offset > 0 ? 90 : -90,
-                            x: "-50%",
-                          }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 300,
-                            damping: 30,
-                          }}
-                          onClick={() => setCurrentIndex(index)}
-                        >
-                          <img
-                            src={item?.image}
-                            alt={item?.name}
-                            className={`w-full h-full object-cover rounded-xl p-1 shadow-lg transition-all duration-300 ${
-                              isCenter
-                                ? "ring-4 ring-[#2eacb3]"
-                                : "ring-2 ring-transparent"
-                            }`}
-                          />
-                        </motion.div>
-                      );
-                    })}
+            <div className="w-full flex justify-center items-center relative min-h-[180px] sm:min-h-[200px] md:min-h-[220px]">
+              <AnimatePresence custom={direction} initial={false} mode="wait">
+                <motion.div
+                  key={selectedPeripheral?.id}
+                  className="absolute top-1/2 left-1/2 w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-35 lg:h-35 cursor-pointer flex justify-center items-center"
+                  style={{
+                    translateX: "-50%",
+                    translateY: "-50%",
+                  }}
+                  custom={direction}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30,
+                  }}
+                  onClick={() => {}}
+                >
+                  <img
+                    src={`${
+                      getFileTypeFromUrl(selectedPeripheral?.image) === "PDF" ||
+                      !selectedPeripheral?.image
+                        ? dummyImg
+                        : selectedPeripheral?.image
+                    }`}
+                    alt={selectedPeripheral?.name}
+                    className={`w-full h-full object-cover rounded-xl p-1 shadow-lg transition-all duration-300 ring-4 ring-[#2eacb3]`}
+                  />
+                </motion.div>
               </AnimatePresence>
             </div>
             <div className="hidden sm:block mt-0">
@@ -294,7 +240,6 @@ const PeripheralPage: React.FC = () => {
               </h2>
 
               <div className="space-y-4 sm:space-y-6">
-               
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                   <p className="w-32 sm:w-40 min-w-[100px] sm:min-w-[120px] font-semibold text-gray-500 text-base">
                     Serial ID:
@@ -303,7 +248,7 @@ const PeripheralPage: React.FC = () => {
                     {selectedPeripheral?.serialNo}
                   </p>
                 </div>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                   <p className="w-32 sm:w-40 min-w-[100px] sm:min-w-[120px] font-semibold text-gray-500 text-base">
                     Model:
                   </p>
@@ -329,8 +274,6 @@ const PeripheralPage: React.FC = () => {
                     {selectedPeripheral?.allotedon}
                   </p>
                 </div>
-
-                
               </div>
             </motion.div>
           </AnimatePresence>
