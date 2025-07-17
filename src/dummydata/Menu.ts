@@ -107,10 +107,10 @@ export const menu: MenuItem[] = [
     icon: "folder",
     path: "/hr-documents",
   },
-  {
-    id: "support",
-    title: "Support Portal",
-    icon: "support",
-    path: "/support-portal",
-  },
+  // {
+  //   id: "support",
+  //   title: "Support Portal",
+  //   icon: "support",
+  //   path: "/support-portal",
+  // },
 ];

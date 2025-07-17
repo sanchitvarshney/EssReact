@@ -28,8 +28,17 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => response,
     }),
+        changePassword: builder.mutation<any, any>({
+      query: (credentials) => ({
+        url: "/profile/changepassword",
+        method: "POST",
+        body: credentials,
+     
+      }),
+      transformResponse: (response: any) => response,
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useLoginMutation, useGetuserdataMutation,useChangePasswordInfoMutation } = extendedAuthApi;
+export const { useLoginMutation, useGetuserdataMutation,useChangePasswordInfoMutation,useChangePasswordMutation } = extendedAuthApi;

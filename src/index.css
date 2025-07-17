@@ -4,7 +4,7 @@
 
 @layer base {
   * {
-   
+   margin: 0;padding: 0;
     font-family: "MsCorpres EmberFont", "sans-serif";
     box-sizing: border-box
   }
@@ -64,25 +64,17 @@
 }
 
 
-/* Custom scrollbar */
+
 .custom-scrollbar-for-menu {
-  /* Set scrollbar width */
-  scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: rgb(33, 34, 34) transparent; /* For Firefox: thumb color and track color */
-  /*  */
-  /* Webkit browsers */
+ 
+  scrollbar-width: thin; 
+  scrollbar-color: rgb(33, 34, 34) transparent; 
+  
   -webkit-scrollbar {
     width: 4px;
   }
 
-  /* -webkit-scrollbar-track {
-    background-color: #a02020;
-  }
 
-  -webkit-scrollbar-thumb {
-    background-color: #74828e;
-    border-radius: 4px;
-  } */
 }
 
  .clip-cone {

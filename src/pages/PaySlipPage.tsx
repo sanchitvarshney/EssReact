@@ -218,6 +218,7 @@ const PaySlipPage = () => {
         </div>
         <div className="space-x-4 space-y-4">
           {data?.earing && (
+            <>
             <CustomButton
               className={btnstyle}
               onClick={() => {
@@ -228,14 +229,16 @@ const PaySlipPage = () => {
               <VisibilityIcon sx={{ color: "#ffffff", fontSize: 20, mr: 1 }} />
               {showPayslip ? "Hide Payslip" : "Show Payslip"}
             </CustomButton>
-          )}
+       
           <CustomButton
             className={btnstyle}
-            disabled={data?.earing ? false : true}
+         
           >
             <FileDownloadIcon sx={{ color: "#ffffff", fontSize: 20, mr: 1 }} />
             <span className="text-white">Download</span>
           </CustomButton>
+          </>
+             )}
         </div>
       </div>
     </div>

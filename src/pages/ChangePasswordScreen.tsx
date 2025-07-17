@@ -6,6 +6,7 @@ import LockResetIcon from "@mui/icons-material/LockReset";
 import LockIcon from "@mui/icons-material/Lock";
 import {
   Box,
+  CircularProgress,
   LinearProgress,
   List,
   ListItem,
@@ -15,7 +16,10 @@ import {
 } from "@mui/material";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useChangePasswordInfoMutation } from "../services/auth";
+import {
+  useChangePasswordInfoMutation,
+  useChangePasswordMutation,
+} from "../services/auth";
 
 import { useToast } from "../hooks/useToast";
 import DotLoading from "../components/reuseable/DotLoading";
@@ -39,23 +43,74 @@ const ChangePasswordScreen = () => {
     changePasswordInfo,
     { isLoading: isChangePasswordInfoLoading, data: changePasswordInfoData },
   ] = useChangePasswordInfoMutation();
+  const [changePassword, { isLoading: isChangePasswordLoading, isSuccess }] =
+    useChangePasswordMutation();
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [emptyError, setEmptyError] = useState<string>("");
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  useEffect(() => {
+    if (currentPassword || newPassword || confirmPassword) {
+      setEmptyError("");
+      return;
+    }
+  }, [currentPassword, newPassword, confirmPassword]);
+
   const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (newPassword !== confirmPassword) {
-      alert("New passwords do not match.");
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setEmptyError("Fields are required.");
       return;
     }
 
-    console.log({ currentPassword, newPassword, confirmPassword });
+    if (newPassword !== confirmPassword) {
+      showToast("Passwords do not match", "error");
+      return;
+    }
+
+    changePassword({
+      oldpassword: currentPassword,
+      newpassword: newPassword,
+    })
+      .then((res) => {
+        const responseData = res?.data;
+
+        // Check if there's an error in the response
+        if (responseData?.status === "error") {
+          // Handle message from different possible formats
+          const errorMessage =
+            responseData?.message?.msg ||
+            responseData?.message ||
+            "Something went wrong";
+
+          showToast(errorMessage, "error");
+          return;
+        }
+
+        // Success
+        showToast(
+          responseData?.message || "Password changed successfully",
+          "success"
+        );
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      })
+      .catch((err) => {
+        // Handle unexpected errors
+        const fallbackError =
+          err?.data?.message?.msg ||
+          err?.data?.message ||
+          err?.message ||
+          "Something went wrong";
+
+        showToast(fallbackError, "error");
+      });
   };
 
   const getStrengthColor = (value: number) => {
@@ -111,13 +166,13 @@ const ChangePasswordScreen = () => {
       .catch((err) => {
         showToast(err || err?.message || "Something went wrong", "error");
       });
-  }, []);
+  }, [isSuccess]);
 
   return (
     <div className=" w-full  flex-col  items-center justify-center  ">
       <div className="w-full flex justify-center  items-center space-x-2">
         {isChangePasswordInfoLoading ? (
-          <Box sx={{ width: "100%" }}>
+          <Box sx={{ width: "100%", backgroundColor: "transparent" }}>
             <DotLoading />
           </Box>
         ) : (
@@ -135,7 +190,7 @@ const ChangePasswordScreen = () => {
       <div className="w-full  space-x-30 flex flex-row justify-center px-4 mt-2  items-center">
         <form
           onSubmit={handleChangePassword}
-          className="w-full flex flex-col justify-center  space-y-4"
+          className="w-full flex flex-col justify-center  space-y-2"
         >
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-1">
@@ -156,10 +211,12 @@ const ChangePasswordScreen = () => {
                 type="button"
                 onClick={() => setShowCurrent(!showCurrent)}
                 className="absolute right-3 top-2.5 text-gray-500"
+                disabled={!currentPassword}
               >
                 {showCurrent ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
+            <span className="text-[12px] text-[red] ">{emptyError}</span>
           </div>
 
           {/* New Password */}
@@ -182,10 +239,12 @@ const ChangePasswordScreen = () => {
                 type="button"
                 onClick={() => setShowNew(!showNew)}
                 className="absolute right-3 top-2.5 text-gray-500"
+                disabled={!newPassword}
               >
                 {showNew ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
+            <span className="text-[12px] text-[red] ">{emptyError}</span>
           </div>
 
           <div>
@@ -207,17 +266,26 @@ const ChangePasswordScreen = () => {
                 type="button"
                 onClick={() => setShowConfirm(!showConfirm)}
                 className="absolute right-3 top-2.5 text-gray-500"
+                disabled={!confirmPassword}
               >
                 {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
+            <span className="text-[12px] text-[red] ">{emptyError}</span>
           </div>
 
           <button
+            disabled={!currentPassword || !newPassword || !confirmPassword}
             type="submit"
-            className=" cursor-pointer py-2 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-101 transition-all duration-200 text-white"
+            className=" cursor-pointer py-2 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-md transform hover:scale-101 transition-all duration-200 text-white"
           >
-            Change Password
+            {isChangePasswordLoading ? (
+              <div className="flex items-center justify-center">
+                <CircularProgress color="success" size={"25px"} />
+              </div>
+            ) : (
+              "Change Password"
+            )}
           </button>
         </form>
 

@@ -72,7 +72,14 @@ const ReimbursementStatusPage = () => {
     statusReimbursement()
       .then((res) => {
         if (res?.data?.status === "error") {
-          showToast(res?.data?.message, "error");
+          const len = res?.data?.message.length 
+          let msg
+       if (len>20) {
+        msg = "Data Not Found"
+       } else {
+        msg = res?.data?.message
+       }
+          showToast(msg, "error");
         }
       })
       .catch((err) => {
@@ -112,7 +119,7 @@ const ReimbursementStatusPage = () => {
         <div className="flex justify-between items-center mb-4">
           <div className="flex  items-center ">
             <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
-              {`Reimbursement Status (${data?.totalrequest})`}
+              {`Reimbursement Status (${ !(data?.totalrequest) ? 0 : data?.totalrequest})`}
             </Typography>
           </div>
 

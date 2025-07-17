@@ -118,7 +118,7 @@ const AttendancePage = () => {
   }, [shifts?.data]);
 
   return (
-    <div className="w-full px-2 py-2 ">
+    <div className="w-full p-2 h-full overflow-y-scroll bg-gray-100 ">
       {shiftDetailsLoading || shiftsLoading || isLoading ? (
         <AttendencePageSkeleton />
       ) : (
