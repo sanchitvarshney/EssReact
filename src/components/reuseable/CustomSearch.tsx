@@ -10,11 +10,24 @@ type CustomSearchPropsType = {
   bgColor?: string;
   bgOpacity?: number;
   borderRadius?: number;
-  textColor?:string
+  textColor?: string;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const CustomSearch = forwardRef<HTMLInputElement, CustomSearchPropsType>(
-  ({ width, placeholder, onChange, bgColor, bgOpacity = 0.15, borderRadius = 10,textColor }, ref) => {
+  (
+    {
+      width,
+      placeholder,
+      onChange,
+      bgColor,
+      bgOpacity = 0.15,
+      borderRadius = 10,
+      textColor,
+      onKeyDown,
+    },
+    ref
+  ) => {
     return (
       <SearchContainer bgColor={bgColor} bgOpacity={bgOpacity} borderRadius={borderRadius}>
         <SearchIconWrapper>
@@ -23,8 +36,9 @@ const CustomSearch = forwardRef<HTMLInputElement, CustomSearchPropsType>(
         <StyledInputBase
           placeholder={placeholder}
           inputProps={{ "aria-label": "search" }}
-          sx={{ width:width }}
+          sx={{ width: width }}
           onChange={onChange}
+          onKeyDown={onKeyDown}
           inputRef={ref}
           textColor={textColor}
         />

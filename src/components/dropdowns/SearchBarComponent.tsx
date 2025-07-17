@@ -1,4 +1,4 @@
-import { Popover,  } from "@mui/material";
+import { Popover } from "@mui/material";
 import SearchBarComponentContent from "../SearchBarComponentContent";
 
 interface Props {
@@ -8,7 +8,8 @@ interface Props {
   searchQuary: string;
   width: string;
   onSelect?: (user: any) => void;
-  
+  selectedIndex: number;
+  setSelectedIndex: (index: number) => void;
 }
 
 const SearchBarComponent: React.FC<Props> = ({
@@ -18,10 +19,11 @@ const SearchBarComponent: React.FC<Props> = ({
   searchQuary,
   width,
   onSelect,
+  selectedIndex,
+  setSelectedIndex,
 }) => {
   return (
     <Popover
-    
       open={open}
       anchorEl={anchorRef?.current || null}
       onClose={close}
@@ -39,9 +41,7 @@ const SearchBarComponent: React.FC<Props> = ({
         sx: {
           mt: "2px",
           width: width,
-          // maxHeight: 600,
-          zIndex:999,
-          
+          zIndex: 999,
           p: 2,
           transformOrigin: "top",
           borderRadius: 0,
@@ -51,10 +51,12 @@ const SearchBarComponent: React.FC<Props> = ({
         },
       }}
     >
-     
-
-        <SearchBarComponentContent inputText={searchQuary} onSelect={onSelect} />
-     
+      <SearchBarComponentContent
+        inputText={searchQuary}
+        onSelect={onSelect}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
     </Popover>
   );
 };

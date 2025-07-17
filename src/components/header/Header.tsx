@@ -30,7 +30,7 @@ const pages = ["Products", "Pricing", "Blog"];
 
 function Header() {
   const path = window.location.pathname;
-  const { user, } = useAuth();
+  const { user } = useAuth();
 
   const navigate = useNavigate();
   const inputRef = React.useRef(null);
@@ -38,6 +38,7 @@ function Header() {
   const profileRef = React.useRef(null);
   const [searchText, setSearchText] = React.useState("");
   const [openSearch, setOpenSearch] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
   const { toggleDrawerOpen } = useDrawerContext();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -134,6 +135,20 @@ function Header() {
 
                 setSearchText(value);
                 setOpenSearch(value.trim().length > 0);
+                setSelectedIndex(-1); // Reset selection on new search
+              }}
+              onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                if (!openSearch) return;
+                if (e.key === "ArrowDown") {
+                  setSelectedIndex((prev) => prev + 1);
+                  e.preventDefault();
+                } else if (e.key === "ArrowUp") {
+                  setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
+                  e.preventDefault();
+                } else if (e.key === "Enter") {
+                  // We'll handle selection in SearchBarComponent
+                  e.preventDefault();
+                }
               }}
             />
             {searchText && (
@@ -143,6 +158,9 @@ function Header() {
                 searchQuary={searchText}
                 anchorRef={inputRef}
                 width={`${isSmallScreen ? "180px" : "533px"}`}
+                selectedIndex={selectedIndex}
+                setSelectedIndex={setSelectedIndex}
+                onSelect={() => setOpenSearch(false)}
               />
             )}
           </Box>

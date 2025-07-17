@@ -333,6 +333,8 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                 close={() => setOpenSearch(false)}
                 searchQuary={searchText}
                 anchorRef={inputRef}
+                selectedIndex={-1}
+                setSelectedIndex={() => {}}
                 width="300px"
                 onSelect={handleSetRecipient}
               />

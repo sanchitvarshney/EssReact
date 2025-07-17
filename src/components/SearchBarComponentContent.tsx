@@ -12,15 +12,20 @@ import { useToast } from "../hooks/useToast";
 type SearchBarComponentContentType = {
   inputText: string;
   onSelect?: (user: any) => void;
+  selectedIndex: number;
+  setSelectedIndex: (index: number) => void;
 };
 const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
   inputText,
   onSelect,
+  selectedIndex,
+  setSelectedIndex,
 }) => {
   const { showToast } = useToast();
   const [fetchEmployee, { data, isLoading, error }] =
     useFetchEmployeeMutation();
   const [filteredData, setFilteredData] = useState([]);
+  const itemRefs = React.useRef<any[]>([]);
 
   useEffect(() => {
     if (inputText.length > 2) {
@@ -48,6 +53,32 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
     }
   }, [error]);
 
+  // Scroll selected item into view
+  useEffect(() => {
+    if (
+      selectedIndex >= 0 &&
+      itemRefs.current[selectedIndex] &&
+      itemRefs.current[selectedIndex].scrollIntoView
+    ) {
+      itemRefs.current[selectedIndex].scrollIntoView({ block: "nearest" });
+    }
+  }, [selectedIndex]);
+
+  // Handle Enter key selection
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === "Enter" &&
+        selectedIndex >= 0 &&
+        filteredData[selectedIndex]
+      ) {
+        onSelect && onSelect(filteredData[selectedIndex]);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedIndex, filteredData, onSelect]);
+
   return (
     <div className="w-full ">
       <div
@@ -72,12 +103,15 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
             </div>
           ) : (
             <>
-              {" "}
-              {filteredData.map((result: any) => (
+              {filteredData.map((result: any, idx: number) => (
                 <React.Fragment key={result.id}>
                   <ListItem
-                    className="hover:bg-gray-50 transition-colors cursor-pointer"
+                    // ref={(el) => (itemRefs.current[idx] = el)}
+                    className={`hover:bg-gray-50 transition-colors cursor-pointer ${
+                      selectedIndex === idx ? "bg-gray-200" : ""
+                    }`}
                     onClick={() => onSelect && onSelect(result)}
+                    onMouseEnter={() => setSelectedIndex(idx)}
                   >
                     <ListItemText
                       primary={
@@ -89,10 +123,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
                         </Typography>
                       }
                       secondary={
-                         <Typography
-                          variant="body2"
-                          className=" text-gray-800"
-                        >
+                        <Typography variant="body2" className=" text-gray-800">
                           ({result?.id})
                         </Typography>
                       }
