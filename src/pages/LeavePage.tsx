@@ -69,7 +69,7 @@ const LeavePage = () => {
     if (pendingError) {
       const error = eranLeaveError as any;
       showToast(
-        error?.message || error?.data?.message || "Something went wrong",
+        error?.message || error?.data?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
         "error"
       );
     }
@@ -91,7 +91,7 @@ const LeavePage = () => {
           wfhError?.message ||
           //@ts-ignore
           wfhError?.data?.message ||
-          "Something went wrong",
+          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
         "error"
       );
     }

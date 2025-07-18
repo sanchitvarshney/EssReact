@@ -19,6 +19,9 @@ import CustomSearch from "../components/reuseable/CustomSearch";
 import DocumentsPageSkeleton from "../skeleton/DocumentsPageSkeleton";
 import { useToast } from "../hooks/useToast";
 import EmptyData from "../components/reuseable/EmptyData";
+import pdf from "../assets/pdf.png";
+import img from "../assets/img.png";
+import otherType from "../assets/othertype.png";
 
 const DocumentsPage = () => {
   // const [searchQuary, setSearchQuary] = useState<string>("");
@@ -65,7 +68,11 @@ const DocumentsPage = () => {
       //@ts-ignore
       const errData = error.data as { message?: string };
 
-      showToast(errData?.message || "Something went wrong", "error");
+      showToast(
+        errData?.message ||
+          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+        "error"
+      );
     } else {
       //@ts-ignore
       showToast(error.message || "An unexpected error occurred", "error");
@@ -86,6 +93,8 @@ const DocumentsPage = () => {
 
     setFilteredData(filtered || []);
   };
+
+  
 
   return (
     <div className="w-full p-4 h-[calc(90vh-80px)]">
@@ -108,18 +117,18 @@ const DocumentsPage = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 w-full lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2  mx-auto h-[calc(100vh-170px)] py-3 overflow-y-auto  will-change-transform">
-            {data?.data?.length === 0 || filteredData?.length === 0 ? (
+            {data?.data?.length === 0 ? (
               <Box
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
                 height={200}
               >
-               <EmptyData />
+                <EmptyData />
               </Box>
             ) : (
-              (filteredData || []).map((row: any) => (
-                <div key={row?.key} className="min-w-[350px]">
+              (filteredData ?? []).map((row: any) => (
+                <div key={row?.key || row?.id} className="min-w-[350px]">
                   <Card
                     sx={{
                       borderRadius: 3,
@@ -131,51 +140,56 @@ const DocumentsPage = () => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <CardContent>
-                      <CustomToolTip title={row.name} placement={"bottom"}>
-                        <Typography
-                          variant="h6"
-                          sx={{
-                            fontWeight: 700,
-                            color: "#1f2937",
-                            mb: 1,
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            maxWidth: 300,
-                            // display: "inline-block",
-                            userSelect: "none",
-                          }}
-                          color="text.secondary"
-                          gutterBottom
+                    <CardContent sx={{display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between", alignItems: "center"}}>
+                      <div>
+                        <CustomToolTip title={row.name} placement={"bottom"}>
+                          <Typography
+                            variant="h6"
+                            sx={{
+                              fontWeight: 700,
+                              color: "#1f2937",
+                              mb: 1,
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              maxWidth: 250,
+
+                              userSelect: "none",
+                            }}
+                            color="text.secondary"
+                            gutterBottom
+                          >
+                            {row.name}
+                          </Typography>
+                        </CustomToolTip>
+                        <CustomToolTip
+                          title={row.description}
+                          placement={"bottom"}
                         >
-                          {row.name}
-                        </Typography>
-                      </CustomToolTip>
-                      <CustomToolTip
-                        title={row.description}
-                        placement={"bottom"}
-                      >
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              maxWidth: 250,
+                              display: "inline-block",
+                              userSelect: "none",
+                            }}
+                          >
+                            {row.description === "" ? "N/A" : row.description}
+                          </Typography>
+                        </CustomToolTip>
                         <Typography
                           variant="body2"
-                          sx={{
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            maxWidth: 300,
-                            display: "inline-block",
-                            userSelect: "none",
-                          }}
+                          sx={{ color: "#374151", mb: 0.5 }}
                         >
-                          {row.description === "" ? "N/A" : row.description}
+                          <b>Date:</b> {row.datetime}
                         </Typography>
-                      </CustomToolTip>
-                      <Typography
-                        variant="body2"
-                        sx={{ color: "#374151", mb: 0.5 }}
-                      >
-                        <b>Date:</b> {row.datetime}
-                      </Typography>
+                      </div>
+                      <div>
+                        <img src={row?.file_type === "pdf" ? pdf : row?.file_type === "img" ? img : otherType} alt="pdf icon" className="w-14 h-14" />
+                      </div>
                     </CardContent>
                     <CardActions
                       sx={{
@@ -193,12 +207,12 @@ const DocumentsPage = () => {
                         >
                           <b>Size:</b> {row.file_size}
                         </Typography>
-                        <Typography
+                        {/* <Typography
                           variant="body2"
                           sx={{ color: "#374151", ml: 1 }}
                         >
                           <b>Type:</b> {row.file_type}
-                        </Typography>
+                        </Typography> */}
                       </div>
                       <ButtonGroup
                         variant="outlined"

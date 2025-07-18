@@ -82,7 +82,7 @@ const LeaveGrantPage = () => {
       })
       .catch((err) => {
         showToast(
-          err?.data?.message?.msg || err?.message || "Something went wrong",
+          err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
           "error"
         );
       });

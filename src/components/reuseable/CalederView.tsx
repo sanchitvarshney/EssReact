@@ -1,9 +1,10 @@
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css"; // must come first
 import "../../css/ViewCalenderCss.css";
-import { isBefore, isAfter, parseISO } from "date-fns";
+import { isBefore, isAfter, parseISO, isSameDay } from "date-fns";
 import { useEffect, useState, type FC } from "react";
 import dayjs from "dayjs";
+
 
 type CalenderViewPropsType = {
   startDate: any;
@@ -22,8 +23,18 @@ const CalenderView: FC<CalenderViewPropsType> = ({
 
   const fromDate = parseISO(dayjs(startDate).format("YYYY-MM-DD"));
   const toDate = parseISO(dayjs(endDate).format("YYYY-MM-DD"));
-  const isOutsideRange = (date: Date) =>
-    isBefore(date, fromDate) || isAfter(date, toDate);
+  const today = parseISO(dayjs().format("YYYY-MM-DD"));
+
+  
+  const isOutsideRange = (date: Date) => {
+  const isBeforeRange = isBefore(date, fromDate);
+  const isAfterRange = isAfter(date, toDate);
+  const isToday = isSameDay(date, today);
+
+  return (isBeforeRange || isAfterRange || isToday );
+};
+
+
 
   function countSundays() {
     let count = 0;
@@ -47,6 +58,7 @@ const CalenderView: FC<CalenderViewPropsType> = ({
   return (
     <div className=" p-3 border rounded shadow flex flex-col justify-center items-center bg-white flex relative ">
       <DayPicker
+      onSelect={() => {}} 
         mode="range"
         navLayout="around"
         selected={{ from: fromDate, to: toDate }}

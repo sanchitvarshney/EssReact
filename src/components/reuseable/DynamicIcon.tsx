@@ -26,7 +26,7 @@ const DynamicIcon: React.FC<IconProps> = ({
   return (
     <IconComponent
       fontSize={size}
-      className={`hover:no-underline hover:text-white-700`}
+      className={`hover:no-underline hover:text-white-700 text-[#000]`}
     />
   );
 };

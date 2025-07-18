@@ -55,7 +55,7 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({
     }
     if (error) {
       //@ts-ignore
-      showToast(error?.data.message || "Something went wrong", "error");
+      showToast(error?.data.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.", "error");
     }
   }, [data?.buffer, error]);
 

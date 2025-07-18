@@ -26,6 +26,7 @@ interface Peripheral {
 //   return match ? match[1].toLowerCase() : null;
 // }
 function getFileTypeFromUrl(url: any) {
+  
   const extension = url?.split(".").pop().toLowerCase();
 
   if (extension === "jpeg" || extension === "jpg") {
@@ -90,7 +91,7 @@ const PeripheralPage: React.FC = () => {
         })
         .catch((err) => {
           showToast(
-            err?.data?.message?.msg || err?.message || "Something went wrong",
+            err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
             "error"
           );
         });
@@ -126,6 +127,9 @@ const PeripheralPage: React.FC = () => {
     );
   }
 
+
+  const getImgType = getFileTypeFromUrl(selectedPeripheral?.image)
+
   return (
     <div className=" flex min-h-[calc(100vh-90px)] overflow-y-auto p-2 w-full will-change-transform">
       <div className="w-full gap-6 grid grid-cols-1 lg:grid-cols-2">
@@ -135,10 +139,10 @@ const PeripheralPage: React.FC = () => {
             <img
               onLoad={() => setLoaded(true)}
               src={`${
-                getFileTypeFromUrl(selectedPeripheral?.image) === "PDF" ||
+                getImgType=== "PDF" ||
                 !selectedPeripheral?.image
                   ? dummyImg
-                  : selectedPeripheral?.image
+                  :  selectedPeripheral?.image
               }`}
               alt={selectedPeripheral?.name}
               className={`w-40 h-40 sm:w-60 sm:h-60 md:w-72 md:h-72 lg:w-80 lg:h-80 p-2 object-contain mx-auto mb-2 rounded-lg bg-[rgba(259,259,259,0.0)] 
@@ -181,7 +185,7 @@ const PeripheralPage: React.FC = () => {
                 >
                   <img
                     src={`${
-                      getFileTypeFromUrl(selectedPeripheral?.image) === "PDF" ||
+                      getImgType === "PDF" ||
                       !selectedPeripheral?.image
                         ? dummyImg
                         : selectedPeripheral?.image

@@ -20,15 +20,15 @@ export function useApiErrorMessage({
     const errData = error.data as { message?: string };
 
     showToast(
-      errData?.message || error.message || "Something went wrong",
+      errData?.message || error.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
       "error"
     );
   }, [error]);
 
   useEffect(() => {
     if (!isSuccess) return;
-    if (errorMessage?.msg || "Something went wrong") {
-      showToast(errorMessage?.msg || "Something went wrong", "error");
+    if (errorMessage?.msg || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.") {
+      showToast(errorMessage?.msg || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.", "error");
     }
   }, [errorMessage?.msg]);
 }

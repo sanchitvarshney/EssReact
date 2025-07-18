@@ -14,7 +14,7 @@ interface ToastShowProps {
 
 // Slide direction function
 function SlideTransition(props: SlideProps) {
-  return <Slide {...props} direction="down" />;
+  return <Slide {...props} direction="up" />;
 }
 
 const ToastShow: React.FC<ToastShowProps> = ({
@@ -26,16 +26,17 @@ const ToastShow: React.FC<ToastShowProps> = ({
   return (
     <Box sx={{ width: 500 }}>
       <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={isOpen}
         autoHideDuration={5000}
         onClose={onClose}
         TransitionComponent={SlideTransition}
-        key={"top" + "center"}
+        key={"bottom" + "center"}
       >
         <Alert onClose={onClose} severity={type} sx={{ width: "100%" }}>
           {msg}
         </Alert>
+        {/* <Typography>{msg}</Typography> */}
       </Snackbar>
     </Box>
   );

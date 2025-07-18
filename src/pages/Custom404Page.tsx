@@ -42,7 +42,7 @@ const Custom404Page = () => {
           className="mb-8"
         >
           <h2 className="text-xl font-bold text-gray-900 mb-3">
-            Oops! Something went wrong
+            Oops! We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.
           </h2>
           <p className="text-[17px] text-gray-600 leading-relaxed max-w-md mx-auto">
             The page you're looking for seems to have wandered off into the

@@ -11,11 +11,11 @@ export const menu: MenuItem[] = [
         title: "Announcement",
         path: "/vibe",
       },
-      {
-        id: "dashboard",
-        title: "Dashboard",
-        path: "/",
-      },
+      // {
+      //   id: "dashboard",
+      //   title: "Dashboard",
+      //   path: "/",
+      // },
       {
         id: "hierarchy",
         title: "Hierarchy",

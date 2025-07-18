@@ -8,6 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useFetchEmployeeMutation } from "../services/Leave";
 import DotLoading from "./reuseable/DotLoading";
 import { useToast } from "../hooks/useToast";
+import { useAuth } from "../contextapi/AuthContext";
 
 type SearchBarComponentContentType = {
   inputText: string;
@@ -22,6 +23,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
   setSelectedIndex,
 }) => {
   const { showToast } = useToast();
+ const { setSearchValueLength } = useAuth();
   const [fetchEmployee, { data, isLoading, error }] =
     useFetchEmployeeMutation();
   const [filteredData, setFilteredData] = useState([]);
@@ -40,13 +42,17 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
   }, [data]);
 
   useEffect(() => {
+    setSearchValueLength(filteredData.length);
+  }, [filteredData]);
+
+  useEffect(() => {
     if (!error) return;
 
     if (error) {
       //@ts-ignore
       const errData = error.data as { message?: string };
 
-      showToast(errData?.message || "Something went wrong", "error");
+      showToast(errData?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.", "error");
     } else {
       //@ts-ignore
       showToast(error.message || "An unexpected error occurred", "error");

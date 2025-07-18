@@ -86,7 +86,7 @@ const ChangePasswordScreen = () => {
           const errorMessage =
             responseData?.message?.msg ||
             responseData?.message ||
-            "Something went wrong";
+            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.";
 
           showToast(errorMessage, "error");
           return;
@@ -107,7 +107,7 @@ const ChangePasswordScreen = () => {
           err?.data?.message?.msg ||
           err?.data?.message ||
           err?.message ||
-          "Something went wrong";
+          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.";
 
         showToast(fallbackError, "error");
       });
@@ -164,7 +164,7 @@ const ChangePasswordScreen = () => {
         }
       })
       .catch((err) => {
-        showToast(err || err?.message || "Something went wrong", "error");
+        showToast(err || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.", "error");
       });
   }, [isSuccess]);
 

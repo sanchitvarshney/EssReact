@@ -6,18 +6,20 @@ import {
   AccordionTrigger,
 } from "../ui/CustomAccordion";
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import {  Outlet, useNavigate } from "react-router-dom";
 
 import CustomToolTip from "../reuseable/CustomToolTip";
 
 import type { MenuItem } from "../../types/dummytypes";
 import { menu } from "../../dummydata/Menu";
-import { Avatar, Box, Divider } from "@mui/material";
+import { Avatar, Box, Divider, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CustomDrawer from "../CustomDrawer";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 import { useAuth } from "../../contextapi/AuthContext";
+
+
 
 const getTextSize = (level: number) => {
   switch (level) {
@@ -39,6 +41,7 @@ export const renderMenu = (
 
   accordionValues: any,
   setAccordionValues: (value: { [key: string]: string }) => void,
+  navigate?: any,
   level: number = 0,
   path: string = ""
 ) => {
@@ -51,7 +54,6 @@ export const renderMenu = (
       onValueChange={(val) =>
         setAccordionValues({ ...accordionValues, [path]: val })
       }
-      
     >
       <ul className="flex flex-col gap-[10px]">
         {menu?.map((item: any, index: number) => {
@@ -61,14 +63,14 @@ export const renderMenu = (
               {item?.children ? (
                 <AccordionItem
                   value={currentPath}
-                  className="border-0  w-full transition-all duration-100"
+                  className={`border-0  w-full transition-all duration-100`}
                 >
-                  <div className="flex flex-col px-4">
+                  <div className={`flex flex-col px-4 `}>
                     {!isExpended ? (
                       <>
                         <CustomToolTip title={item?.title} placement="right">
-                          <div
-                            className="px-1 rounded-md cursor-pointer transition-all duration-600 ease-in-out "
+                          <IconButton
+                            className=" px-1 my-1.5 rounded-md cursor-pointer transition-all duration-600 ease-in-out hover:bg-gray-500"
                             onClick={() => {
                               if (!isExpended) {
                                 setIsExpended(true);
@@ -84,13 +86,13 @@ export const renderMenu = (
                               size="medium"
                               // isExpended={isExpanded}
                             />
-                          </div>
+                          </IconButton>
                         </CustomToolTip>
                       </>
                     ) : (
                       <>
                         <AccordionTrigger
-                          className="w-[100%] py-2  m-0 leading-none hover:no-underline cursor-pointer rounded-md hover:bg-[#ffffff]"
+                          className="w-[100%] py-2  m-0 leading-none hover:no-underline cursor-pointer rounded-md hover:bg-[#cccccc] hover:rounded-[20px]"
                           onClick={() => {
                             setAccordionValues({
                               ...accordionValues,
@@ -120,7 +122,9 @@ export const renderMenu = (
 
                               accordionValues,
                               setAccordionValues,
+                              navigate,
                               level + 1,
+                              
                               currentPath
                             )}
                           </AccordionContent>
@@ -137,14 +141,38 @@ export const renderMenu = (
                     title={isExpended ? "" : item?.title}
                     placement={"right"}
                   >
-                    <Link
-                      to={item?.path}
+                    {isExpended ? (
+                      <div
+
+                      // to={item?.path}
+                      className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] pl-1 ${
+                        isExpended && "hover:bg-[#cccccc] hover:rounded-[20px]"
+                      } 
+                      `}
+                      onClick={() => {
+                        navigate(item?.path);
+                        setAccordionValues({});
+                        toggleDrawerClose();
+                      }}
+                    >
+                      {isNew && <DynamicIcon name={item.icon} size="medium" />}
+
+                      {isExpended && (
+                        <span className={`${getTextSize(level)} font-[500] ml-2`}>
+                          {item.title}
+                        </span>
+                      )}
+                    </div>
+                    ) : (
+                      <IconButton
+
+                      // to={item?.path}
                       className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] pl-1 ${
                         isExpended && "hover:bg-white"
                       } 
                       `}
                       onClick={() => {
-                        // setIsExpended(false);
+                        navigate(item?.path);
                         setAccordionValues({});
                         toggleDrawerClose();
                       }}
@@ -156,7 +184,10 @@ export const renderMenu = (
                           {item.title}
                         </span>
                       )}
-                    </Link>
+                    </IconButton>
+                    )}
+                    
+                    
                   </CustomToolTip>
                 </div>
               )}
@@ -177,7 +208,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
   const { user } = useAuth();
   const { isExpended, setIsExpended, accordionValues, setAccordionValues } =
     useDrawerContext();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className="w-full h-[calc(100vh-90px)] flex flex-row ">
@@ -185,7 +216,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
         {/* Sidebar container */}
         <div
           className={`${
-            isExpended ? "w-[40vh]" : "w-[10vh]"
+            isExpended ? "w-[40vh] " : "w-[10vh] "
           } flex flex-col  transition-all shadow-xl  z-999 shadow-[#2eacb3]  duration-500 ease-in-out`}
         >
           {/* Profile section */}
@@ -209,8 +240,13 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
                     alt={user?.name}
                     //@ts-ignore
                     src={user?.imgUrl}
-                    sx={{ width: 80, height: 80, backgroundColor: "#2eacb3" ,           pointerEvents: "none",
-                      userSelect: "none",}}
+                    sx={{
+                      width: 80,
+                      height: 80,
+                      backgroundColor: "#2eacb3",
+                      pointerEvents: "none",
+                      userSelect: "none",
+                    }}
                   />
                   <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">
                     {/*@ts-ignore */}
@@ -235,14 +271,15 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
           )}
           {/* Scrollable menu section */}
 
-          <div className="flex-1  custom-scrollbar-for-menu p-1 overflow-y-auto   will-change-transform my-2 transition-all duration-400 ease-in-out">
+          <div className={`flex-1 ${!isExpended &&"flex items-center"} custom-scrollbar-for-menu  overflow-y-auto   will-change-transform my-2 transition-all duration-400 ease-in-out`}>
             {renderMenu(
               menu,
               true,
               isExpended,
               setIsExpended,
               accordionValues,
-              setAccordionValues
+              setAccordionValues,
+              navigate
             )}
           </div>
 

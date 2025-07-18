@@ -30,7 +30,7 @@ const pages = ["Products", "Pricing", "Blog"];
 
 function Header() {
   const path = window.location.pathname;
-  const { user } = useAuth();
+  const { user,searchValueLength } = useAuth();
 
   const navigate = useNavigate();
   const inputRef = React.useRef(null);
@@ -140,13 +140,14 @@ function Header() {
               onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                 if (!openSearch) return;
                 if (e.key === "ArrowDown") {
-                  setSelectedIndex((prev) => prev + 1);
+                  setSelectedIndex((prev) => (prev < searchValueLength - 1 ? prev+1 : 0));
                   e.preventDefault();
                 } else if (e.key === "ArrowUp") {
                   setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
                   e.preventDefault();
                 } else if (e.key === "Enter") {
                   // We'll handle selection in SearchBarComponent
+                  console.log(e,"enter")
                   e.preventDefault();
                 }
               }}

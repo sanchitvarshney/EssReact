@@ -42,7 +42,7 @@ const EmployeeProfilePage = () => {
       const errorMsg =
       //@ts-ignore
         error?.data?.message ||
-        "Something went wrong while fetching user data.";
+        "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency. while fetching user data.";
       showToast(errorMsg, "error");
     }
   }, [error]);

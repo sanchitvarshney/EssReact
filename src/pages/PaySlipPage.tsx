@@ -79,7 +79,7 @@ const PaySlipPage = () => {
   //     //@ts-ignore
   //     const errData = error.data as { message?: string };
 
-  //     showToast(errData?.message || "Something went wrong", "error");
+  //     showToast(errData?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.", "error");
   //   } else {
   //     //@ts-ignore
   //     showToast(error.message || "An unexpected error occurred", "error");

@@ -18,6 +18,8 @@ interface AuthContextType {
   hierarchyData: any;
   hierarchyError: any;
   hierarchyLoading: any;
+  searchValueLength: any;
+  setSearchValueLength: any;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -43,6 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     imgUrl: "",
     id: "",
   });
+  const [searchValueLength, setSearchValueLength] = useState<any | null>(0);
    
 
    useEffect(() => {
@@ -52,7 +55,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         //@ts-ignore
         const errData = hierarchyError.data as { message?: string };
   
-        showToast(errData?.message || "Something went wrong", "error");
+        showToast(errData?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.", "error");
       } else {
         //@ts-ignore
         showToast(error.message || "An unexpected error occurred", "error");
@@ -90,7 +93,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, hierarchyData,hierarchyError,hierarchyLoading,signIn, signOut, }}>
+    <AuthContext.Provider value={{ user,searchValueLength, hierarchyData,hierarchyError,hierarchyLoading,signIn, signOut,setSearchValueLength }}>
       {children}
     </AuthContext.Provider>
   );

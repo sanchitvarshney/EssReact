@@ -20,7 +20,13 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
   const { setIsExpended } = useDrawerContext();
 
   const handleNavigate = (path: string, title: string) => {
-    if (title.toLowerCase() === "hr policies") {
+    if (
+      title.toLowerCase() === "hr policies" ||
+      title.toLowerCase() === "performance" ||
+      title.toLowerCase() === "helpdesk" ||
+      title.toLowerCase() === "task box" ||
+      title.toLowerCase() === "recruitment"
+    ) {
       return;
     }
     setIsExpended(false);
@@ -103,8 +109,8 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
             title.toLowerCase() === "helpdesk" ||
             title.toLowerCase() === "task box" ||
             title.toLowerCase() === "recruitment") && (
-            <div className=" absolute top-[-20px]  right-0 z-999 overflow-visible">
-              <CustomTag label="Progress" />
+            <div className=" absolute top-[-18px]  right-0 z-999 overflow-visible">
+              <CustomTag label="Coming Soon" />
             </div>
           )}
         </div>

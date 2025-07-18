@@ -26,10 +26,11 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
         {...field}
         openTo={openTo}
         views={view}
+        format="DD/MM/YYYY"
         value={value}
         onChange={(date) => {
           const nativeDate = date?.toDate?.();
-console.log(nativeDate)
+
           field.onChange(nativeDate);
         }}
         label={label}

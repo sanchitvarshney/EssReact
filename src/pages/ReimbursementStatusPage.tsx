@@ -64,7 +64,7 @@ const ReimbursementStatusPage = () => {
         showToast(res?.data?.message, "success");
       })
       .catch((err) => {
-        showToast(err || err?.message || "Something went wrong", "error");
+        showToast(err || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.", "error");
       });
   };
 
@@ -85,7 +85,7 @@ const ReimbursementStatusPage = () => {
       .catch((err) => {
         console.log(err.message);
         showToast(
-          err?.data?.message || err?.message || "Something went wrong",
+          err?.data?.message || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
           "error"
         );
       });

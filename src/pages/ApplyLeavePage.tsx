@@ -179,7 +179,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
         })
         .catch((err) => {
           showToast(
-            err?.data?.message?.msg || err?.message || "Something went wrong",
+            err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
             "error"
           );
         });
@@ -187,8 +187,19 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
   }, [type]);
 
   const handleSetRecipient = (value: any) => {
-    setRecipient((prev: any) => [...prev, value]);
-    setSearchText("");
+    const MAX_RECIPIENTS = 3;
+     const alreadyExists = recipient.some((r: any) => r.id === value.id); // adjust `id` if needed
+  if (alreadyExists){
+    showToast("Recipient already exists", "error");
+    return;
+  };
+    if (recipient.length >= MAX_RECIPIENTS) {
+      showToast("You can only add up to 3 recipients", "error");
+return;
+    } 
+
+  setRecipient((prev: any) => [...prev, value]);
+  setSearchText("");
   };
 
   useEffect(() => {
@@ -208,7 +219,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
         })
         .catch((err) => {
           showToast(
-            err?.data?.message?.msg || err?.message || "Something went wrong",
+            err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
             "error"
           );
         });
@@ -258,7 +269,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
       })
       .catch((err) => {
         showToast(
-          err?.data?.message?.msg || err?.message || "Something went wrong",
+          err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
           "error"
         );
       });

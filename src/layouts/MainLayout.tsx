@@ -4,6 +4,7 @@ import Header from "../components/header/Header";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
+import CustomFooter from "../components/CustomFooter";
 
 // props: { children: React.ReactNode }
 function MainLayout() {
@@ -23,7 +24,7 @@ useEffect(() => {
   };
 }, []);
   return (
-    <Wrapper className="">
+    <Wrapper className="relative">
       {!isOnline && <div className="absolute top-10 text-white  bg-[red] w-full z-99"><Typography textAlign={"center"}>No Internet Connection</Typography></div>}
       <div className="sticky top-0 z-50">
         <Header />
@@ -31,6 +32,9 @@ useEffect(() => {
 
       <main className=" relative  bg-gradient-to-br from-[#f8fbfc] to-[#eaf7f5]
  h-full  custom-scrollbar-for-menu "><Outlet /></main>
+ <div className="absolute bottom-0 right-10 z-99">
+<CustomFooter />
+ </div>
     </Wrapper>
   );
 }
