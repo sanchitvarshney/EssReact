@@ -160,7 +160,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
       case "ACL":
         setUrlKey("sendACLLeaveRequest");
         break;
-      case "ACL":
+      case "LWP":
         setUrlKey("sendLWPRequest");
         break;
       default:

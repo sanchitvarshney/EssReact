@@ -23,6 +23,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
       id="outlined-basic"
       label={label}
       variant="outlined"
+   
       {...field}
        onChange={(e) => {
        
