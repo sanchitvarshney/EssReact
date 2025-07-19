@@ -20,7 +20,6 @@ import {
 import { customColor } from "../constants/themeConstant";
 import { DepartmentCard } from "../components/reuseable/hierarchyChatComponents/DepartmentCard";
 
-
 import { RootEmployeeTree } from "../components/reuseable/hierarchyChatComponents/RootEmployeeTree";
 import { EmployeeTree } from "../components/reuseable/hierarchyChatComponents/EmployeeTree";
 
@@ -37,16 +36,16 @@ export const tagColors: Record<string, string> = {
 };
 
 const HierarchyChart = () => {
+  const { hierarchyData, hierarchyLoading } = useAuth();
+  console.log(hierarchyData);
 
-  const  {hierarchyData,hierarchyLoading} = useAuth();
-  console.log(hierarchyData)
-  
   const [zoom, setZoom] = useState(0.7);
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>(
     {}
   );
   const [viewMode] = useState<"employee" | "department">("employee");
   const [nodeData, setNodeData] = useState<any>([]);
+  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
 
   const toggleNode = (id: string) => {
     setExpandedNodes((prev) => ({
@@ -70,10 +69,9 @@ const HierarchyChart = () => {
     if (hierarchyData && hierarchyData.length > 0) {
       const allIds = getAllNodeIds(hierarchyData);
       const initialExpanded: Record<string, boolean> = {};
-      
+
       initialExpanded[hierarchyData[0].id] = true;
 
-     
       allIds.forEach((id) => {
         if (!(id in initialExpanded)) {
           initialExpanded[id] = false;
@@ -83,9 +81,6 @@ const HierarchyChart = () => {
       setNodeData(hierarchyData);
     }
   }, [hierarchyData]);
- 
-
- 
 
   const renderDepartmentTree = (node: DepartmentNode): JSX.Element => {
     const hasChildren = Boolean(node.children && node.children.length > 0);
@@ -145,8 +140,8 @@ const HierarchyChart = () => {
               height: 48,
               border: "2px solid #444",
               backgroundColor: "#2eacb3",
-                         pointerEvents: "none",
-                      userSelect: "none",
+              pointerEvents: "none",
+              userSelect: "none",
             }}
           />
           <div style={{ flex: 1 }}>
@@ -238,6 +233,49 @@ const HierarchyChart = () => {
     return <HierarchyChartSkeleton />;
   }
 
+ 
+
+  const renderEmployeeTree = (
+    node: any,
+    parentId: string | null,
+    siblings: any[],
+   
+  ): JSX.Element => {
+    const hasChildren = Boolean(node.children && node.children.length > 0);
+    const isExpanded = expandedNodes[node.id] ?? true;
+
+    // Determine highlightType based on hoveredNodeId
+    let highlightType: "self" | "child" | "colleague" | "ancestor" | undefined = undefined;
+    if (hoveredNodeId) {
+      if (node.id === hoveredNodeId) highlightType = "self";
+      else if (parentId && parentId === hoveredNodeId) highlightType = "child";
+      else if (siblings.some((s: any) => s.id === hoveredNodeId)) highlightType = "colleague";
+      else if (node.children?.some((c: any) => c.id === hoveredNodeId)) highlightType = "ancestor";
+    }
+
+    return (
+      <EmployeeTree
+        key={node.id}
+        toggleNode={toggleNode}
+        expandedNodes={expandedNodes}
+        node={node}
+        highlightType={highlightType}
+        onHover={() => setHoveredNodeId(node.id)}
+        onUnhover={() => setHoveredNodeId(null)}
+      >
+        {isExpanded && hasChildren &&
+          node.children.map((child: any) =>
+            renderEmployeeTree(
+              child,
+              node.id,
+              node.children.filter((n: any) => n.id !== child.id)
+            )
+          )
+        }
+      </EmployeeTree>
+    );
+  };
+
   return (
     <>
       <div
@@ -252,6 +290,22 @@ const HierarchyChart = () => {
         }}
       >
         <div className="flex gap-2">
+            <div key={""} className="flex items-center space-x-2 mb-1">
+                  <div className={`w-3 h-3 rounded-full bg-[#a78bfa]`} />
+                  <span className=" select-none ">Mentor</span>
+                </div>
+                  <div key={""} className="flex items-center space-x-2 mb-1">
+                  <div className={`w-3 h-3 rounded-full bg-[#4ade80]`} />
+                  <span className=" select-none ">Associate</span>
+                </div>
+                  <div key={""} className="flex items-center space-x-2 mb-1">
+                  <div className={`w-3 h-3 rounded-full bg-[#38bdf8]`} />
+                  <span className=" select-none ">Colleague</span>
+                </div>
+                  <div key={""} className="flex items-center space-x-2 mb-1">
+                  <div className={`w-3 h-3 rounded-full bg-[#facc15]`} />
+                  <span className=" select-none ">Self</span>
+                </div>
           {/* <CustomToolTip title={"Employee Hierarchy"} placement={"bottom"}>
             <IconButton
               onClick={() => setViewMode("employee")}
@@ -350,21 +404,22 @@ const HierarchyChart = () => {
                       toggleNode={toggleNode}
                       expandedNodes={expandedNodes}
                       node={rootNode}
+                      highlightType={hoveredNodeId === rootNode.id ? "self" : undefined}
+                      onHover={() => setHoveredNodeId(rootNode.id)}
+                      onUnhover={() => setHoveredNodeId(null)}
                     />
                   )
                 : renderDepartmentRoot()
             }
           >
-            {viewMode === "employee"
-              ? (expandedNodes[rootNodeId] ?? true) &&
-                rootNode?.children?.map((item: any) => (
-                  <EmployeeTree
-                    key={item.id}
-                    toggleNode={toggleNode}
-                    expandedNodes={expandedNodes}
-                    node={item}
-                  />
-                ))
+            {viewMode === "employee" && rootNode && (expandedNodes[rootNodeId] ?? true)
+              ? rootNode.children?.map((child: any) =>
+                  renderEmployeeTree(
+                    child,
+                    rootNode.id,
+                    rootNode.children.filter((n: any) => n.id !== child.id)
+                  )
+                )
               : (expandedNodes[departmentData.id] ?? true) &&
                 (departmentData.children ?? []).map(renderDepartmentTree)}
           </Tree>

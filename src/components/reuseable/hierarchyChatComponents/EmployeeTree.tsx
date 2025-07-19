@@ -1,4 +1,4 @@
-import type { FC, JSX } from "react";
+import type { FC, JSX, ReactNode } from "react";
 
 import { TreeNode } from "react-organizational-chart";
 import { NodeCard } from "./NodeCard";
@@ -7,11 +7,19 @@ type EmployeeTreeProps = {
   toggleNode: any;
   expandedNodes: any;
   node: any;
+  highlightType?: "self" | "colleague" | "child" | "ancestor";
+  onHover?: () => void;
+  onUnhover?: () => void;
+  children?: ReactNode;
 };
 export const EmployeeTree: FC<EmployeeTreeProps> = ({
   toggleNode,
   expandedNodes,
   node,
+  highlightType,
+  onHover,
+  onUnhover,
+  children,
 }): JSX.Element => {
   const hasChildren = Boolean(node.children && node.children.length > 0);
   const isExpanded = expandedNodes[node.id] ?? true;
@@ -28,20 +36,14 @@ export const EmployeeTree: FC<EmployeeTreeProps> = ({
           hasChildren={hasChildren}
           isExpanded={isExpanded}
           onToggle={() => toggleNode(node.id)}
+          highlightType={highlightType}
+          onMouseEnter={onHover}
+          onMouseLeave={onUnhover}
         />
       }
       key={node.id}
     >
-      {isExpanded &&
-        hasChildren &&
-        (node.children ?? []).map((childNode: any) => (
-          <EmployeeTree
-            key={childNode.id}
-            toggleNode={toggleNode}
-            expandedNodes={expandedNodes}
-            node={childNode}
-          />
-        ))}
+      {children}
     </TreeNode>
   );
 };

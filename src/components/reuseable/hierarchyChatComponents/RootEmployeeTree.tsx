@@ -9,27 +9,41 @@ type RootEmployeeTreeProps = {
   toggleNode: any;
   expandedNodes: any;
   node: any;
-  
+  highlightType?: "self" | "colleague" | "child" | "ancestor";
+  onHover?: () => void;
+  onUnhover?: () => void;
 };
 export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
   toggleNode,
   expandedNodes,
   node,
+  highlightType,
+  onHover,
+  onUnhover,
 }) => {
+  let highlightColor = undefined;
+  if (highlightType === "self") highlightColor = "#facc15"; // yellow
+  else if (highlightType === "colleague") highlightColor = "#38bdf8"; // blue
+  else if (highlightType === "child") highlightColor = "#4ade80"; // green
+  else if (highlightType === "ancestor") highlightColor = "#a78bfa"; // purple
+
   return (
     <div className="flex justify-center">
       <Card
         elevation={2}
         sx={{
-          background: customColor.bgColor,
+          background: highlightColor || customColor.bgColor,
           color: "#fff",
           borderRadius: 3,
           minWidth: 300,
           maxWidth: 300,
           boxShadow: 8,
-          border: "1px solid #333",
+          border: highlightColor ? `2.5px solid ${highlightColor}` : "1px solid #333",
           position: "relative",
+          transition: "background 0.2s, border 0.2s",
         }}
+        onMouseEnter={onHover}
+        onMouseLeave={onUnhover}
       >
         <CardContent
           sx={{
@@ -47,8 +61,8 @@ export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
               height: 90,
               border: "2px solid #444",
               backgroundColor: "#2eacb3",
-                         pointerEvents: "none",
-                      userSelect: "none",
+              pointerEvents: "none",
+              userSelect: "none",
             }}
           />
           <div style={{ flex: 1 }}>

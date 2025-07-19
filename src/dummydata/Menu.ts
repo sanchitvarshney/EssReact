@@ -5,24 +5,30 @@ export const menu: MenuItem[] = [
     id: "home",
     title: "Home",
     icon: "home",
-    children: [
-      {
+    path:"/"
+    // children: [
+    //   
+    //   // {
+    //   //   id: "dashboard",
+    //   //   title: "Dashboard",
+    //   //   path: "/",
+    //   // },
+    //   {
+ 
+    // ],
+  },
+  {
         id: "announcement",
-        title: "Announcement",
+        title: "Vibe",
+        icon:"vibeicon",
         path: "/vibe",
       },
-      // {
-      //   id: "dashboard",
-      //   title: "Dashboard",
-      //   path: "/",
-      // },
       {
-        id: "hierarchy",
+             id: "hierarchy",
         title: "Hierarchy",
         path: "/home/hierarchy",
+        icon: "orgchart",
       },
-    ],
-  },
   {
     id: "event",
     title: "Holidays / Events",

@@ -12,114 +12,110 @@ type NodeCardProps = {
   hasChildren: boolean;
   isExpanded: boolean;
   onToggle: () => void;
+  highlightType?: "self" | "colleague" | "child" | "ancestor";
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 };
 export const NodeCard = ({
   name,
   title,
   imageUrl,
-
   hasChildren,
   isExpanded,
   onToggle,
-}: NodeCardProps) => (
-  <Card
-  elevation={2}
-    sx={{
-      background: customColor.bgColor,
-      color: "#fff",
-      borderRadius: 3,
-      minWidth: 300,
-      maxWidth: 300,
-      boxShadow: 8,
-      // px: 2,
-      // py: 1.5,
-      border: "1px solid #333",
-      position: "relative",
-      display: "flex",
-      flexDirection: "column",
-      mx: "auto",
-      // alignItems: "flex-end"
-    }}
-  >
-    <CardContent
+  highlightType,
+  onMouseEnter,
+  onMouseLeave,
+}: NodeCardProps) => {
+  let highlightColor = undefined;
+  if (highlightType === "self") highlightColor = "#facc15"; // yellow
+  else if (highlightType === "colleague") highlightColor = "#38bdf8"; // blue
+  else if (highlightType === "child") highlightColor = "#4ade80"; // green
+  else if (highlightType === "ancestor") highlightColor = "#a78bfa"; // purple
+
+  return (
+    <Card
+      elevation={2}
       sx={{
+        background: highlightColor || customColor.bgColor,
+        color: highlightType ? "#000" : "#fff",
+        borderRadius: 3,
+        minWidth: 300,
+        maxWidth: 300,
+        boxShadow: 8,
+        border: highlightColor ? `2.5px solid ${highlightColor}` : "1px solid #333",
+        position: "relative",
         display: "flex",
-        alignItems: "center",
-        // gap: 2,
-        // pb: 1,
-        // pt: 1,
-        width: "100%",
-        mb: 1,
+        flexDirection: "column",
+        mx: "auto",
+        transition: "background 0.2s, border 0.2s, color 0.2s",
       }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
-      <Avatar
-        alt={name}
-        src={imageUrl}
+      <CardContent
         sx={{
-          width: 90,
-          height: 90,
-          border: "2px solid #444",
-          backgroundColor: "#2eacb3",
-                     pointerEvents: "none",
-                      userSelect: "none",
-        }}
-      />
-      <div style={{ flex: 1 }}>
-        <div style={{ fontWeight: 600, fontSize: 18 }}>{name}</div>
-        <div style={{ fontSize: 14, color: "#cbd5e1" }}>{title}</div>
-        <div
-          style={{
-            marginTop: 6,
-            display: "flex",
-            gap: 6,
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}
-        >
-          {/* {tags?.map((tag: string) => (
-            <Chip
-              key={tag}
-              label={tag}
-              size="small"
-              sx={{
-                background: tagColors[tag] || "#64748b",
-                color: "#23272f",
-                fontWeight: 600,
-                fontSize: 12,
-                px: 1,
-                height: 22,
-              }}
-            />
-          ))} */}
-        </div>
-      </div>
-    </CardContent>
-    {hasChildren && (
-      <IconButton
-        size="small"
-        onClick={onToggle}
-        sx={{
-          position: "absolute",
-          left: "50%",
-          bottom: 8,
-          transform: "translate(-50%, 50%)",
-          background: "#1f2937",
-          color: "#fff",
-          "&:hover": { background: "#374151" },
-          zIndex: 1,
-          width: 32,
-          height: 32,
-          fontSize: 20,
-          fontWeight: "bold",
-          mt: 1,
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+          mb: 1,
         }}
       >
-        {isExpanded ? (
-          <KeyboardArrowUpIcon sx={{ fontSize: 45 }} />
-        ) : (
-          <KeyboardArrowDownIcon sx={{ fontSize: 45 }} />
-        )}
-      </IconButton>
-    )}
-  </Card>
-);
+        <Avatar
+          alt={name}
+          src={imageUrl}
+          sx={{
+            width: 90,
+            height: 90,
+            border: "2px solid #444",
+            backgroundColor: "#2eacb3",
+            pointerEvents: "none",
+            userSelect: "none",
+          }}
+        />
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: 600, fontSize: 18 }}>{name}</div>
+          <div style={{ fontSize: 14, color: highlightType ? "#000" : "#cbd5e1" }}>{title}</div>
+          <div
+            style={{
+              marginTop: 6,
+              display: "flex",
+              gap: 6,
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            {/* tags */}
+          </div>
+        </div>
+      </CardContent>
+      {hasChildren && (
+        <IconButton
+          size="small"
+          onClick={onToggle}
+          sx={{
+            position: "absolute",
+            left: "50%",
+            bottom: 8,
+            transform: "translate(-50%, 50%)",
+            background: "#1f2937",
+            color: "#fff",
+            "&:hover": { background: "#374151" },
+            zIndex: 1,
+            width: 32,
+            height: 32,
+            fontSize: 20,
+            fontWeight: "bold",
+            mt: 1,
+          }}
+        >
+          {isExpanded ? (
+            <KeyboardArrowUpIcon sx={{ fontSize: 45 }} />
+          ) : (
+            <KeyboardArrowDownIcon sx={{ fontSize: 45 }} />
+          )}
+        </IconButton>
+      )}
+    </Card>
+  );
+};

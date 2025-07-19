@@ -111,7 +111,7 @@ export const renderMenu = (
                         </AccordionTrigger>
 
                         {item.children && (
-                          <AccordionContent className=" mx-4  border-l-2 border-black">
+                          <AccordionContent className=" mx-4   border-l-2 border-black">
                             {renderMenu(
                               item.children,
                               false,
@@ -159,7 +159,7 @@ export const renderMenu = (
 
                         {isExpended && (
                           <span
-                            className={`${getTextSize(level)} font-[500] ml-2`}
+                            className={`${getTextSize(level)} font-[500] ml-2 `}
                           >
                             {item.title}
                           </span>
@@ -169,7 +169,7 @@ export const renderMenu = (
                   ) : (
                     <Link
                       to={item?.path}
-                      className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] pl-1 ${
+                      className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px]  ${
                         isExpended && " hover:bg-[#cccccc] hover:rounded-[20px]"
                       } 
                       `}
@@ -181,7 +181,7 @@ export const renderMenu = (
                       {isNew && <DynamicIcon name={item.icon} size="medium" />}
 
                       {isExpended && (
-                        <span className={`${getTextSize(level)} font-[500]`}>
+                        <span className={`${getTextSize(level)} font-[500]  `}>
                           {item.title}
                         </span>
                       )}
@@ -215,7 +215,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
         <div
           className={`${
             isExpended ? "w-[40vh] " : "w-[10vh] "
-          } flex flex-col  transition-all shadow-xl  z-999 shadow-[#2eacb3]  duration-500 ease-in-out`}
+          } flex flex-col  transition-all shadow-md  z-999 shadow-[#2eacb3]  duration-500 ease-in-out`}
         >
           {/* Profile section */}
           {isExpended && (

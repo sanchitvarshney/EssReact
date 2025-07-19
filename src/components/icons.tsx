@@ -14,6 +14,8 @@ import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
  import LockOutlineIcon from '@mui/icons-material/LockOutline';
  import LogoutIcon from '@mui/icons-material/Logout';
  import PolicyIcon from '@mui/icons-material/Policy';
+ import AccountTreeIcon from '@mui/icons-material/AccountTree';
+ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 export const Icons = {
   home: HomeIcon,
@@ -31,5 +33,7 @@ export const Icons = {
  setting:SettingsIcon,
  password: LockOutlineIcon,
  logout: LogoutIcon,
- policyicon:PolicyIcon
+ policyicon:PolicyIcon,
+ orgchart:AccountTreeIcon,
+ vibeicon:AutoAwesomeIcon
 };
