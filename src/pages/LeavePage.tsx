@@ -12,10 +12,18 @@ import {
   useGetPendingRequestMutation,
   useGetSickLeaveMutation,
   useGetWorkFromHomeMutation,
+  useUpdateElLeaveMutation,
+  useUpdateSlLeaveMutation,
+  useUpdateWfhLeaveMutation,
 } from "../services/Leave";
 import { useAuth } from "../contextapi/AuthContext";
 import LeavePageSkeleton from "../skeleton/LeavePageSkeleton";
 import { useToast } from "../hooks/useToast";
+import elimg from "../assets/elpng.png";
+import slimg from "../assets/slimg.png";
+import wfmimg from "../assets/wfhpng.png";
+import climg from "../assets/climg.png";
+import CustomToolTip from "../components/reuseable/CustomToolTip";
 
 const style = {
   position: "absolute",
@@ -58,18 +66,32 @@ const LeavePage = () => {
     { data: pendingReqData, isLoading: pendingReqLoading, error: pendingError },
   ] = useGetPendingRequestMutation();
 
+  const [
+    updateElLeave,
+    { isLoading: updateElLeaveLoading, isSuccess: updateElLeaveSuccess },
+  ] = useUpdateElLeaveMutation();
+  const [
+    updateSlLeave,
+    { isLoading: updateSlLeaveLoading, isSuccess: updateSlLeaveSuccess },
+  ] = useUpdateSlLeaveMutation();
+  const [
+    updateWfhLeave,
+    { isLoading: updateWfhLeaveLoading, isSuccess: updateWfhLeaveSuccess },
+  ] = useUpdateWfhLeaveMutation();
+
   useEffect(() => {
-    if (user) {
-      //@ts-ignore
-      getPendingRequest({ empcode: user?.id }).unwrap();
-    }
-  }, [user]);
+    if (!user) return;
+    //@ts-ignore
+    getPendingRequest({ empcode: user?.id }).unwrap();
+  }, [user, updateElLeaveSuccess, updateSlLeaveSuccess, updateWfhLeaveSuccess]);
 
   useEffect(() => {
     if (pendingError) {
       const error = eranLeaveError as any;
       showToast(
-        error?.message || error?.data?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+        error?.message ||
+          error?.data?.message ||
+          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
         "error"
       );
     }
@@ -99,24 +121,29 @@ const LeavePage = () => {
 
   useEffect(() => {
     //@ts-ignore
-    if (user?.id) {
-      const currentDate = new Date().toISOString().split("T")[0];
+    if (!user?.id) return;
+    const currentDate = new Date().toISOString().split("T")[0];
 
-      //@ts-ignore
-      getEranLeave({ type: "EL", currentDate, empcode: user?.id });
-      //@ts-ignore
-      getSickLeave({ type: "SL", currentDate, empcode: user?.id });
-      //@ts-ignore
-      getWorkFromHome({ type: "WFH", currentDate, empcode: user?.id });
-    }
     //@ts-ignore
-  }, [user?.id]);
+    getEranLeave({ type: "EL", currentDate, empcode: user?.id });
+    //@ts-ignore
+    getSickLeave({ type: "SL", currentDate, empcode: user?.id });
+    //@ts-ignore
+    getWorkFromHome({ type: "WFH", currentDate, empcode: user?.id });
+  }, [
+    //@ts-ignore
+    user?.id,
+    updateElLeaveSuccess,
+    updateSlLeaveSuccess,
+    updateWfhLeaveSuccess,
+  ]);
 
   useEffect(() => {
     if (eranLeaveData && sickLeaveData && wfhData) {
       const result = [
         {
           type: "Earned Leave",
+          img: elimg,
           currentlyAvailable: eranLeaveData?.data?.l_cl_bal,
 
           creditedFromLastMonth: eranLeaveData?.data?.l_op_bal,
@@ -124,18 +151,21 @@ const LeavePage = () => {
         },
         {
           type: "Sick Leave",
+          img: slimg,
           currentlyAvailable: sickLeaveData?.l_cl_bal,
           creditedFromLastMonth: sickLeaveData?.l_op_bal,
           annualAllotment: sickLeaveData?.total_yr_bal,
         },
         {
           type: "Work From Home",
+          img: wfmimg,
           currentlyAvailable: wfhData?.l_cl_bal,
           creditedFromLastMonth: wfhData?.l_op_bal,
           annualAllotment: wfhData?.total_yr_bal,
         },
         {
           type: "Compensatory Leave",
+          img: climg,
           currentlyAvailable:
             eranLeaveData?.compBal === null ? 0 : eranLeaveData?.compBal,
           creditedFromLastMonth: 0,
@@ -146,6 +176,19 @@ const LeavePage = () => {
       setLeaveData(result);
     }
   }, [eranLeaveData, sickLeaveData, wfhData]);
+
+  const refetch = async () => {
+    try {
+      await Promise.all([
+        updateElLeave().unwrap(),
+        updateSlLeave().unwrap(),
+        updateWfhLeave().unwrap(),
+      ]);
+      showToast("Leave updated successfully", "success");
+    } catch (err) {
+      showToast("Error updating leave", "error");
+    }
+  };
 
   useEffect(() => {
     if (pendingReqData) {
@@ -161,7 +204,10 @@ const LeavePage = () => {
       {eranLeaveLoading ||
       sickLeaveLoading ||
       wfhLoading ||
-      pendingReqLoading ? (
+      pendingReqLoading ||
+      updateElLeaveLoading ||
+      updateSlLeaveLoading ||
+      updateWfhLeaveLoading ? (
         <LeavePageSkeleton />
       ) : (
         <>
@@ -175,16 +221,29 @@ const LeavePage = () => {
             <div className="flex gap-[20px] flex-wrap">
               <CustomButton
                 onClick={() => setOpen(true)}
-                className="bg-[#fff] text-[#000] border-[#000] border-1 rounded-[2px] cursor-pointer"
+                className="bg-[#fff] text-[#000] border-[#000] border-1 rounded-[2px] cursor-pointer hover:bg-[#e0e0e0]"
               >
                 LIST OF HOLYDAYS
               </CustomButton>
               <CustomButton
                 onClick={() => setIsOpenModal(true)}
-                className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer"
+                className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer hover:bg-[#4a4949]"
               >
                 APPLY LEAVE
               </CustomButton>
+              <CustomToolTip
+                title={
+                  "You can update your leave starting on the 1st of each month."
+                }
+                placement={"bottom"}
+              >
+                <CustomButton
+                  onClick={() => refetch()}
+                  className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer hover:bg-[#4a4949]"
+                >
+                  Refresh Leave
+                </CustomButton>
+              </CustomToolTip>
             </div>
           </div>
           <div className="  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4  gap-4  ">
@@ -192,6 +251,7 @@ const LeavePage = () => {
               <LeaveCard
                 key={leave.type}
                 title={leave.type}
+                img={leave.img}
                 currentValue={`${leave.currentlyAvailable} days`}
                 credited={`${leave.creditedFromLastMonth} days`}
                 annualAllotment={`${leave.annualAllotment} days`}
@@ -203,7 +263,7 @@ const LeavePage = () => {
             onClose={() => setIsOpenModal(false)}
             title={"Apply For Leave"}
           >
-            <ApplyLeavePage   onClose={() => setIsOpenModal(false)} />
+            <ApplyLeavePage onClose={() => setIsOpenModal(false)} />
           </CustomModal>
           <Modal
             open={open}

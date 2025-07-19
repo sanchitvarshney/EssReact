@@ -136,11 +136,31 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
         url: "/dashboard/attendance-statistics",
         method: "GET",
       }),
-          transformResponse: (response: any) => response,
+      transformResponse: (response: any) => response,
+    }),
+    updateElLeave: builder.mutation<any, void>({
+      query: () => ({
+        url: "dashboard/updateLeave/EL",
+        method: "POST",
+        body:{}
+      }),
+    }),
+    updateSlLeave: builder.mutation<any, void>({
+      query: () => ({
+        url: "dashboard/updateLeave/SL",
+        method: "POST",
+        body:{}
+      }),
+    }),
+    updateWfhLeave: builder.mutation<any, void>({
+      query: () => ({
+        url: "dashboard/updateLeave/WFH",
+        method: "POST",
+        body:{}
+      }),
     }),
   }),
 
- 
   overrideExisting: false,
 });
 
@@ -160,5 +180,8 @@ export const {
   useApprovalGrantLeaveMutation,
   useGetleaveGrantDetailsMutation,
   useLeaveListMutation,
-  useAttendanceStatisticsQuery
+  useAttendanceStatisticsQuery,
+  useUpdateElLeaveMutation,
+  useUpdateSlLeaveMutation,
+  useUpdateWfhLeaveMutation,
 } = extendedAuthApi;

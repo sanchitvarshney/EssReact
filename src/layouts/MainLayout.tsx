@@ -8,40 +8,47 @@ import CustomFooter from "../components/CustomFooter";
 
 // props: { children: React.ReactNode }
 function MainLayout() {
-
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-useEffect(() => {
-  const handleOnline = () => setIsOnline(true);
-  const handleOffline = () => setIsOnline(false);
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
 
-  window.addEventListener("online", handleOnline);
-  window.addEventListener("offline", handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
-  return () => {
-    window.removeEventListener("online", handleOnline);
-    window.removeEventListener("offline", handleOffline);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
   return (
     <Wrapper className="relative">
-      {!isOnline && <div className="absolute top-10 text-white  bg-[red] w-full z-99"><Typography textAlign={"center"}>No Internet Connection</Typography></div>}
+      {!isOnline && (
+        <div className="absolute top-10 text-white  bg-[red] w-full z-99">
+          <Typography textAlign={"center"}>No Internet Connection</Typography>
+        </div>
+      )}
       <div className="sticky top-0 z-50">
         <Header />
       </div>
 
-      <main className=" relative  bg-gradient-to-br from-[#f8fbfc] to-[#eaf7f5]
- h-full  custom-scrollbar-for-menu "><Outlet /></main>
- <div className="absolute bottom-0 right-10 z-99">
-<CustomFooter />
- </div>
+      <main
+        className=" relative  bg-gradient-to-br from-[#f8fbfc] to-[#eaf7f5]
+ h-full  custom-scrollbar-for-menu "
+      >
+        <Outlet />
+      </main>
+      <div className="absolute bottom-0 right-4 sm:right-10 z-99">
+        <CustomFooter />
+      </div>
     </Wrapper>
   );
 }
 
-const Wrapper = styled.div` 
+const Wrapper = styled.div`
   .btn {
-     overflow: hidden;
+    overflow: hidden;
     position: relative;
 
     span {
@@ -52,7 +59,6 @@ const Wrapper = styled.div`
       rotate: 30deg;
       left: -20px;
       transition: all 1.3s;
-      
     }
     &:hover {
       span {
