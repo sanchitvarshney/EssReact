@@ -2,35 +2,36 @@ import { useState } from "react";
 import DocView from "../components/reuseable/DocView";
 import { Divider, Typography } from "@mui/material";
 import ReimbursementGrantCard from "../components/reuseable/ReimbursementGrantCard";
+import EmptyData from "../components/reuseable/EmptyData";
 
 // Mock data for demonstration
-const reimbursements = [
-  {
-    id: "RB-001",
-    name: "John Doe",
-    designation: "Sales Manager",
-    department: "Sales",
-    date: "2024-06-01",
-    purpose: "Client Meeting Travel",
-    amount: 120.5,
-    status: "Pending",
-    details: "Taxi fare for client meeting at downtown.",
-    receipt: "/src/assets/coin.png",
-    comment: "Urgent client visit."
-  },
-  {
-    id: "RB-002",
-    name: "Jane Smith",
-    designation: "Accountant",
-    department: "Finance",
-    date: "2024-05-28",
-    purpose: "Office Supplies",
-    amount: 45.0,
-    status: "Pending",
-    details: "Purchased printer ink and paper.",
-    receipt: "/src/assets/dollar.png",
-    comment: "Needed for monthly reports."
-  },
+const reimbursements:any = [
+  // {
+  //   id: "RB-001",
+  //   name: "John Doe",
+  //   designation: "Sales Manager",
+  //   department: "Sales",
+  //   date: "2024-06-01",
+  //   purpose: "Client Meeting Travel",
+  //   amount: 120.5,
+  //   status: "Pending",
+  //   details: "Taxi fare for client meeting at downtown.",
+  //   receipt: "/src/assets/coin.png",
+  //   comment: "Urgent client visit."
+  // },
+  // {
+  //   id: "RB-002",
+  //   name: "Jane Smith",
+  //   designation: "Accountant",
+  //   department: "Finance",
+  //   date: "2024-05-28",
+  //   purpose: "Office Supplies",
+  //   amount: 45.0,
+  //   status: "Pending",
+  //   details: "Purchased printer ink and paper.",
+  //   receipt: "/src/assets/dollar.png",
+  //   comment: "Needed for monthly reports."
+  // },
 ];
 
 const ReimbursementGrantPage = () => {
@@ -47,8 +48,9 @@ const ReimbursementGrantPage = () => {
       <Typography variant="h4" className="font-bold text-center mb-6 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] bg-clip-text text-transparent">
         Reimbursement Grant
       </Typography>
-      <div className=" grid grid-cols-1 sm:grid-cols-1  lg:grid-cols-2 w-full  h-[76vh] will-change-transform will-change-transform  overflow-y-auto p-2   ">
-        {reimbursements.map((item) => (
+   {reimbursements.length === 0 ? (<EmptyData />): (
+       <div className=" grid grid-cols-1 sm:grid-cols-1  lg:grid-cols-2 w-full  h-[76vh] will-change-transform will-change-transform  overflow-y-auto p-2   ">
+         {reimbursements.map((item:any) => (
           <ReimbursementGrantCard
             key={item.id}
             data={item}
@@ -58,6 +60,7 @@ const ReimbursementGrantPage = () => {
           />
         ))}
       </div>
+   )}
       <DocView
         open={view}
         close={() => setView(false)}

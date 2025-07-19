@@ -25,9 +25,10 @@ function MainLayout() {
   return (
     <Wrapper className="relative">
       {!isOnline && (
-        <div className="absolute top-10 text-white  bg-[red] w-full z-99">
-          <Typography textAlign={"center"}>No Internet Connection</Typography>
-        </div>
+        <div className="absolute top-0  w-full h-screen  bg-gray-400/40 w-full z-1200  " > 
+        <Typography variant="subtitle2" sx={{fontSize:18, fontWeight:500, py:1, bgcolor:"red"}}>No Internet connectivity</Typography>
+         </div>
+     
       )}
       <div className="sticky top-0 z-50">
         <Header />

@@ -30,7 +30,7 @@ const pages = ["Products", "Pricing", "Blog"];
 
 function Header() {
   const path = window.location.pathname;
-  const { user,searchValueLength } = useAuth();
+  const { user, searchValueLength } = useAuth();
 
   const navigate = useNavigate();
   const inputRef = React.useRef(null);
@@ -128,26 +128,26 @@ function Header() {
               placeholder={`${
                 isSmallScreen
                   ? "Search"
-                  : "Search by Employee Name, Designation or Department"
+                  : "Search by Employee name or Employee code"
               }`}
               onChange={(e) => {
                 const value = e.target.value;
 
                 setSearchText(value);
                 setOpenSearch(value.trim().length > 0);
-                setSelectedIndex(-1); 
+                setSelectedIndex(-1);
               }}
               onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                 if (!openSearch) return;
                 if (e.key === "ArrowDown") {
-                  setSelectedIndex((prev) => (prev < searchValueLength - 1 ? prev+1 : 0));
+                  setSelectedIndex((prev) =>
+                    prev < searchValueLength - 1 ? prev + 1 : 0
+                  );
                   e.preventDefault();
                 } else if (e.key === "ArrowUp") {
                   setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
                   e.preventDefault();
                 } else if (e.key === "Enter") {
-                 
-            
                   e.preventDefault();
                 }
               }}
