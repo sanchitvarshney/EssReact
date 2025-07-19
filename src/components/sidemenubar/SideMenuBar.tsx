@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "../ui/CustomAccordion";
 import React from "react";
-import {  Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import CustomToolTip from "../reuseable/CustomToolTip";
 
@@ -18,8 +18,6 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CustomDrawer from "../CustomDrawer";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 import { useAuth } from "../../contextapi/AuthContext";
-
-
 
 const getTextSize = (level: number) => {
   switch (level) {
@@ -124,7 +122,7 @@ export const renderMenu = (
                               setAccordionValues,
                               navigate,
                               level + 1,
-                              
+
                               currentPath
                             )}
                           </AccordionContent>
@@ -137,42 +135,45 @@ export const renderMenu = (
                 <div
                   className={` flex items-center justify-between w-full px-4 rounded-md `}
                 >
-                  <CustomToolTip
-                    title={isExpended ? "" : item?.title}
-                    placement={"right"}
-                  >
-                    {isExpended ? (
-                      <Link
+                  {!isExpended ? (
+                    <CustomToolTip
+                      title={isExpended ? "" : item?.title}
+                      placement={"right"}
+                    >
+                      <IconButton
+                        // to={item?.path}
+                        className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] pl-1 
+                        
+                          hover:bg-[#cccccc] hover:rounded-[20px]
+                        
+                      `}
+                        onClick={() => {
+                          navigate(item?.path);
+                          setAccordionValues({});
+                          toggleDrawerClose();
+                        }}
+                      >
+                        {isNew && (
+                          <DynamicIcon name={item.icon} size="medium" />
+                        )}
 
+                        {isExpended && (
+                          <span
+                            className={`${getTextSize(level)} font-[500] ml-2`}
+                          >
+                            {item.title}
+                          </span>
+                        )}
+                      </IconButton>
+                    </CustomToolTip>
+                  ) : (
+                    <Link
                       to={item?.path}
                       className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] pl-1 ${
-                        isExpended && "hover:bg-[#cccccc] hover:rounded-[20px]"
+                        isExpended && " hover:bg-[#cccccc] hover:rounded-[20px]"
                       } 
                       `}
                       onClick={() => {
-                       
-                        setAccordionValues({});
-                        toggleDrawerClose();
-                      }}
-                    >
-                      {isNew && <DynamicIcon name={item.icon} size="medium" />}
-
-                      {isExpended && (
-                        <span className={`${getTextSize(level)} font-[500] ml-2`}>
-                          {item.title}
-                        </span>
-                      )}
-                    </Link>
-                    ) : (
-                      <IconButton
-
-                      // to={item?.path}
-                      className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] pl-1 ${
-                        isExpended && "hover:bg-white"
-                      } 
-                      `}
-                      onClick={() => {
-                        navigate(item?.path);
                         setAccordionValues({});
                         toggleDrawerClose();
                       }}
@@ -184,11 +185,8 @@ export const renderMenu = (
                           {item.title}
                         </span>
                       )}
-                    </IconButton>
-                    )}
-                    
-                    
-                  </CustomToolTip>
+                    </Link>
+                  )}
                 </div>
               )}
             </li>
@@ -271,7 +269,11 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
           )}
           {/* Scrollable menu section */}
 
-          <div className={`flex-1 ${!isExpended &&"flex items-center"} custom-scrollbar-for-menu  overflow-y-auto   will-change-transform my-2 transition-all duration-400 ease-in-out`}>
+          <div
+            className={`flex-1 ${
+              !isExpended && "flex items-center"
+            } custom-scrollbar-for-menu  overflow-y-auto   will-change-transform my-2 transition-all duration-400 ease-in-out`}
+          >
             {renderMenu(
               menu,
               true,

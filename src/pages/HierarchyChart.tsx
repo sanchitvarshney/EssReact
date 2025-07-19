@@ -68,6 +68,7 @@ const HierarchyChart = () => {
       setNodeData(hierarchyData);
     }
   }, [hierarchyData]);
+  console.log(expandedNodes)
 
  
 

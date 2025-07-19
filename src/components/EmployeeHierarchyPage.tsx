@@ -56,6 +56,9 @@ const NodeCard = ({
       minWidth: 300,
       maxWidth: 300,
       boxShadow: 6,
+      display:"flex",
+      flexDirection:"column",
+     mx: "auto",
 
       // border: "1px solid #333",
       position: "relative",
