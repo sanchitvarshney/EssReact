@@ -37,8 +37,17 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => response,
     }),
+         resetPassword: builder.mutation<any, any>({
+      query: (credentials) => ({
+        url: "/login/reset",
+        method: "POST",
+        body: credentials,
+     
+      }),
+      transformResponse: (response: any) => response,
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useLoginMutation, useGetuserdataMutation,useChangePasswordInfoMutation,useChangePasswordMutation } = extendedAuthApi;
+export const { useLoginMutation, useGetuserdataMutation,useChangePasswordInfoMutation,useChangePasswordMutation,useResetPasswordMutation } = extendedAuthApi;

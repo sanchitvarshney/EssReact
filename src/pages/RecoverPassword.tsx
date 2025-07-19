@@ -4,19 +4,38 @@ import logoImg from "../assets/img/hrms_mscorpres_logo.png";
 
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
-
+import { useResetPasswordMutation } from "../services/auth";
+import { useToast } from "../hooks/useToast";
+import { CircularProgress } from "@mui/material";
 
 const RecoverPassword = () => {
-  const navigation = useNavigate()
+  const { showToast } = useToast();
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
+  const navigation = useNavigate();
 
   const [employeeCode, setEmployeeCode] = useState("");
 
-
-
-
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ employeeCode });
+    if (!employeeCode) {
+      showToast("Employee code is required", "error");
+      return;
+    }
+    resetPassword( { username:employeeCode})
+      .then((res) => {
+        if (res?.data?.status === "error") {
+          showToast(res?.data?.message, "error");
+          return;
+        }
+        showToast(
+          res?.data?.message || "Insructions sent to your email",
+          "success"
+        );
+        setEmployeeCode("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -57,26 +76,35 @@ const RecoverPassword = () => {
               </div>
             </div>
 
-
             <div className="flex justify-end">
-                <p>If you have password?</p>
+              <p>If you have password?</p>
               <button
                 type="button"
                 className="text-[#2eacb3] hover:underline text-sm font-medium focus:outline-none focus:underline transition-all px-1 py-0.5 rounded"
                 tabIndex={0}
-                onClick={()=>navigation("/sign-in")}
+                onClick={() => navigation("/sign-in")}
               >
                 SignIn
               </button>
             </div>
 
             {/* Submit Button */}
-            <button
+         
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <CircularProgress color="success" size={"40px"} />
+              </div>
+            ) : (
+              <button
+              disabled={employeeCode === ""}
               type="submit"
-              className="w-full bg-[#2eacb3] text-white font-semibold py-2.5 rounded-lg shadow-md hover:bg-[#279aa0] active:bg-[#238b91] transition-colors duration-200 text-lg focus:outline-none focus:ring-2 focus:ring-[#2eacb3]/60"
+              className={`${
+                employeeCode === "" ? "opacity-50 cursor-not-allowed " : ""
+              }  w-full bg-[#2eacb3] text-white font-semibold py-2.5 rounded-lg shadow-md hover:bg-[#279aa0] active:bg-[#238b91] transition-colors duration-200 text-lg focus:outline-none focus:ring-2 focus:ring-[#2eacb3]/60`}
             >
               Send Instruction
             </button>
+            )}
           </form>
         </div>
       </div>
