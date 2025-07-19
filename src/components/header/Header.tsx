@@ -160,7 +160,7 @@ function Header() {
                 close={() => setOpenSearch(false)}
                 searchQuary={searchText}
                 anchorRef={inputRef}
-                width={`${isSmallScreen ? "180px" : "533px"}`}
+                width={`${isSmallScreen ? "150px" : "450px"}`}
                 selectedIndex={selectedIndex}
                 setSelectedIndex={setSelectedIndex}
                 onSelect={() => setOpenSearch(false)}
