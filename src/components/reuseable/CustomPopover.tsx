@@ -24,6 +24,8 @@ const CustomPopover: React.FC<Props> = ({
   coneColor,
 }) => {
   const [arrowLeft, setArrowLeft] = useState<number>(0);
+  //  const theme = useTheme();
+  //   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (anchorEl?.current) {
@@ -73,6 +75,7 @@ const CustomPopover: React.FC<Props> = ({
         >
           {isCone && (
             <div
+            className="hidden sm:block"
               style={{
                 position: "absolute",
                 top: "-11px",
@@ -83,6 +86,7 @@ const CustomPopover: React.FC<Props> = ({
                 borderRight: "12px solid transparent",
                 borderBottom: `12px solid ${coneColor ? coneColor : "#fff"} `,
                 zIndex: 5,
+                
               }}
             />
           )}

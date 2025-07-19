@@ -171,7 +171,7 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             {/* {!isSmallScreen && ( */}
             <>
-              <IconButton onClick={() => setIsOpenNotification(true)} sx={{mr: 4}}>
+              <IconButton onClick={() => setIsOpenNotification(true)} sx={{mr: 2}}>
                 {/* <Badge badgeContent={0} color="error" sx={{ p: 0, mr: 2 }}> */}
                   <NotificationsIcon
                     ref={notificationRef}
