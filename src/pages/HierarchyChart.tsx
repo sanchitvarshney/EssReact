@@ -39,6 +39,7 @@ export const tagColors: Record<string, string> = {
 const HierarchyChart = () => {
 
   const  {hierarchyData,hierarchyLoading} = useAuth();
+  console.log(hierarchyData)
   
   const [zoom, setZoom] = useState(0.7);
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>(
@@ -53,22 +54,36 @@ const HierarchyChart = () => {
       [id]: !prev[id],
     }));
   };
-  useEffect(() => {
-    if (hierarchyData) {
-      {
-        hierarchyData[0].children.map((item:any) => {
-           setExpandedNodes((prev) => ({
-        ...prev,
-        [item.id]: false,
-        [item.id]: false,
-      }))
-        })
+
+  const getAllNodeIds = (nodes: any[]): string[] => {
+    let ids: string[] = [];
+    nodes.forEach((node) => {
+      ids.push(node.id);
+      if (node.children && node.children.length > 0) {
+        ids = ids.concat(getAllNodeIds(node.children));
       }
-    
+    });
+    return ids;
+  };
+
+  useEffect(() => {
+    if (hierarchyData && hierarchyData.length > 0) {
+      const allIds = getAllNodeIds(hierarchyData);
+      const initialExpanded: Record<string, boolean> = {};
+      
+      initialExpanded[hierarchyData[0].id] = true;
+
+     
+      allIds.forEach((id) => {
+        if (!(id in initialExpanded)) {
+          initialExpanded[id] = false;
+        }
+      });
+      setExpandedNodes(initialExpanded);
       setNodeData(hierarchyData);
     }
   }, [hierarchyData]);
-  console.log(expandedNodes)
+ 
 
  
 
