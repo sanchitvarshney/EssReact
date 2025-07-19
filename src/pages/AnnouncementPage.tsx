@@ -13,9 +13,10 @@ import {
 } from "../services/events";
 import AnnouncementPageSkeleton from "../skeleton/AnnouncementPageSkeleton";
 import { useToast } from "../hooks/useToast";
-import PostAnniversaryCard from "../components/reuseable/PostAnniversaryCard";
+// import PostAnniversaryCard from "../components/reuseable/PostAnniversaryCard";
 import { useLeaveListMutation } from "../services/Leave";
 import AbsenceListPage from "../components/AbsenceListPage";
+import underprogress from "../assets/under-maintenance.png"
 
 const AnnouncementPage = () => {
   const { showToast } = useToast();
@@ -106,18 +107,18 @@ const AnnouncementPage = () => {
                 >
                   <PostAnnouncementCard
                     postDate={new Date("2025-03-10T16:14:00")}
-                    authorName="John Doe"
-                    authorRole="Full Stack Developer"
-                    description="We are excited to announce the launch of our new product..."
+                    authorName="MsCorpres Development Team"
+                    authorRole="Engineer"
+                    description="Our brain has fridge, we are working on this and coming soon..."
                     images={[
-                      "https://images.unsplash.com/photo-1518773553398-650c184e0bb3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                      underprogress
                     ]}
-                    timeAgo="2 hours ago"
+                    timeAgo="0 hours ago"
                   />
                 </motion.div>
               );
             })}
-            <PostAnniversaryCard authorName={"test"} />
+            {/* <PostAnniversaryCard authorName={"test"} /> */}
           </div>
           {
             <div className="flex flex-col items-center  sm:gap-4  hidden sm:flex">

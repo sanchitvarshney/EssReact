@@ -5,6 +5,7 @@ import PasswordIcon from "@mui/icons-material/Password";
 import LockResetIcon from "@mui/icons-material/LockReset";
 import LockIcon from "@mui/icons-material/Lock";
 import {
+  Alert,
   Box,
   CircularProgress,
   LinearProgress,
@@ -24,18 +25,7 @@ import {
 import { useToast } from "../hooks/useToast";
 import DotLoading from "../components/reuseable/DotLoading";
 
-const getIcons = (status: string) => {
-  const key = status?.toLowerCase();
-  switch (key) {
-    case "warning":
-      return <LockResetIcon />;
-    case "critical":
-      return <LockIcon />;
 
-    default:
-      return <LockResetIcon />;
-  }
-};
 
 const ChangePasswordScreen = () => {
   const { showToast } = useToast();
@@ -170,20 +160,21 @@ const ChangePasswordScreen = () => {
 
   return (
     <div className=" w-full  flex-col  items-center justify-center  ">
-      <div className="w-full flex justify-center  items-center space-x-2">
+      <div className="flex   items-center space-x-2 ">
         {isChangePasswordInfoLoading ? (
-          <Box sx={{ width: "100%", backgroundColor: "transparent" }}>
+          <Box sx={{width: 150 , backgroundColor: "transparent" }}>
             <DotLoading />
           </Box>
         ) : (
-          <>
-            <h3 className="text-lg font-semibold text-gray-700">
-              {getIcons(changePasswordInfoData?.data?.status)}
-            </h3>
-            <p className="text-sm text-red-800">
-              {changePasswordInfoData?.data?.message}
-            </p>
-          </>
+          // <>
+          //   <h3 className="text-lg font-semibold text-gray-700">
+          //     {getIcons(changePasswordInfoData?.data?.status)}
+          //   </h3>
+          //   <p className="text-sm text-red-800">
+              
+          //   </p>
+          // </>
+          <Alert severity="warning" sx={{backgroundColor:"#ffeaa3ff"}}>{changePasswordInfoData?.data?.message}</Alert>
         )}
       </div>
 
@@ -277,7 +268,7 @@ const ChangePasswordScreen = () => {
           <button
             disabled={!currentPassword || !newPassword || !confirmPassword}
             type="submit"
-            className=" cursor-pointer py-2 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-md transform hover:scale-101 transition-all duration-200 text-white"
+            className= {`cursor-pointer py-2 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-md transform hover:scale-101 transition-all duration-200 text-white ${!currentPassword || !newPassword || !confirmPassword ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             {isChangePasswordLoading ? (
               <div className="flex items-center justify-center">

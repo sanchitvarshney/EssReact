@@ -10,7 +10,7 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuItem from "@mui/material/MenuItem";
-import Badge from "@mui/material/Badge";
+// import Badge from "@mui/material/Badge";
 import CustomSearch from "../reuseable/CustomSearch";
 
 import { useMediaQuery } from "@mui/material";
@@ -151,6 +151,8 @@ function Header() {
                   e.preventDefault();
                 }
               }}
+              bgColor="#8c8c8c80"
+              textColor="#8e8b8bff"
             />
             {searchText && (
               <SearchBarComponent
@@ -169,13 +171,13 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             {/* {!isSmallScreen && ( */}
             <>
-              <IconButton onClick={() => setIsOpenNotification(true)}>
-                <Badge badgeContent={0} color="error" sx={{ p: 0, mr: 2 }}>
+              <IconButton onClick={() => setIsOpenNotification(true)} sx={{mr: 4}}>
+                {/* <Badge badgeContent={0} color="error" sx={{ p: 0, mr: 2 }}> */}
                   <NotificationsIcon
                     ref={notificationRef}
-                    sx={{ fontSize: 30, color: "#fff" }}
+                    sx={{ fontSize: 30, color: "#4a4a4aff" }}
                   />
-                </Badge>
+                {/* </Badge> */}
               </IconButton>
 
               {isOpenNotification && (
@@ -187,6 +189,7 @@ function Header() {
                   width={400}
                   // height={360}
                   isCone={true}
+                  coneColor="#1e8a8f"
                 >
                   <NotificationDropDown />
                 </CustomPopover>
@@ -216,6 +219,7 @@ function Header() {
                 anchorEl={profileRef}
                 width={240}
                 isCone={true}
+                coneColor="#1e8a8f"
               >
                 <ProfileDropDown close={() => setAnchorElUser(false)} />
               </CustomPopover>

@@ -31,7 +31,7 @@ const CustomSearch = forwardRef<HTMLInputElement, CustomSearchPropsType>(
     return (
       <SearchContainer bgColor={bgColor} bgOpacity={bgOpacity} borderRadius={borderRadius}>
         <SearchIconWrapper>
-          <SearchIcon />
+          <SearchIcon  sx={{color:"#4a4a4aff"}}/>
         </SearchIconWrapper>
         <StyledInputBase
           placeholder={placeholder}

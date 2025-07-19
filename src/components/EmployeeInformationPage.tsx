@@ -215,6 +215,7 @@ const EmployeeInformationPage = ({
               onClick={() =>
                 setEditSection((prev) => ({ ...prev, basic: !prev.basic }))
               }
+              disabled
             >
               {editSection.basic ? (
                 <CancelIcon sx={{ color: "red" }} />
@@ -313,6 +314,7 @@ const EmployeeInformationPage = ({
               onClick={() =>
                 setEditSection((prev) => ({ ...prev, contact: !prev.contact }))
               }
+              disabled
             >
               {editSection.contact ? (
                 <CancelIcon sx={{ color: "red" }} />
@@ -422,6 +424,7 @@ const EmployeeInformationPage = ({
                   emergency: !prev.emergency,
                 }))
               }
+              disabled
             >
               {editSection.emergency ? (
                 <CancelIcon sx={{ color: "red" }} />

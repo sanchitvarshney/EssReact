@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  
   Typography,
 } from "@mui/material";
 import { useState, type FC } from "react";
@@ -72,14 +71,13 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
     <Box
       sx={{
         p: 2,
-       
+
         borderRadius: 1,
-    
+
         mb: 1,
         boxShadow: 0,
-        
       }}
-      className=" bg-gradient-to-br from-[#f8fbfc] to-[#f8fbfc]"
+      className=" bg-gradient-to-br from-[#d7f1f3] to-[#d7f1f3]"
     >
       <div className="flex items-center justify-between">
         <Typography variant="h6" fontWeight={600}>
@@ -102,8 +100,16 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
         marginTop={2}
       >
         <div className="w-40 sm:w-60 flex flex-col justify-start items-start gap-1 ">
-         
-          <CustomTextInput field={{value:postFilter, onChange: (e: any) => setFilter(e.target.value)}} label={"Select Filter"} select={true} options={postOption}/>
+          <CustomTextInput
+          isDisabled={true}
+            field={{
+              value: postFilter,
+              onChange: (e: any) => setFilter(e.target.value),
+            }}
+            label={"Select Filter"}
+            select={true}
+            options={postOption}
+          />
         </div>
 
         <ButtonGroup
@@ -112,22 +118,22 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
           sx={{ display: "flex", alignItems: "center" }}
         >
           <CustomToolTip title={"Annoucement"} placement={"bottom"}>
-            <IconButton onClick={() => handleNewPost("Announcement")}>
+            <IconButton onClick={() => handleNewPost("Announcement")} disabled>
               <CampaignIcon sx={{ fontSize: 26, color: "#000" }} />
             </IconButton>
           </CustomToolTip>
           <CustomToolTip title={"BirthDay"} placement={"bottom"}>
-            <IconButton onClick={() => handleNewPost("BirthDay")}>
+            <IconButton onClick={() => handleNewPost("BirthDay")} disabled>
               <CakeIcon sx={{ fontSize: 26, color: "#000" }} />
             </IconButton>
           </CustomToolTip>
           <CustomToolTip title={"Anniversary"} placement={"bottom"}>
-            <IconButton onClick={() => handleNewPost("Anniversary")}>
+            <IconButton onClick={() => handleNewPost("Anniversary")} disabled>
               <CelebrationIcon sx={{ fontSize: 26, color: "#000" }} />
             </IconButton>
           </CustomToolTip>
           <CustomToolTip title={"New Hire"} placement={"bottom"}>
-            <IconButton onClick={() => handleNewPost("New Hire")}>
+            <IconButton onClick={() => handleNewPost("New Hire")} disabled>
               <PersonAddIcon sx={{ fontSize: 26, color: "#000" }} />
             </IconButton>
           </CustomToolTip>

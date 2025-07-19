@@ -79,28 +79,28 @@ export const menu: MenuItem[] = [
     icon: "MonetizationOnIcon",
     path: "/peripheral",
   },
-  {
-    id: "reimbursement",
-    title: "Reimbursement",
-    icon: "reimbursement",
-    children: [
-      {
-        id: "claim",
-        title: "Claim",
-        path: "/reimbursement/claim",
-      },
-      {
-        id: "status",
-        title: "Status",
-        path: "/reimbursement/status",
-      },
-      {
-        id: "grant",
-        title: "Grant",
-        path: "/reimbursement/grant",
-      },
-    ],
-  },
+  // {
+  //   id: "reimbursement",
+  //   title: "Reimbursement",
+  //   icon: "reimbursement",
+  //   children: [
+  //     {
+  //       id: "claim",
+  //       title: "Claim",
+  //       path: "/reimbursement/claim",
+  //     },
+  //     {
+  //       id: "status",
+  //       title: "Status",
+  //       path: "/reimbursement/status",
+  //     },
+  //     {
+  //       id: "grant",
+  //       title: "Grant",
+  //       path: "/reimbursement/grant",
+  //     },
+  //   ],
+  // },
   //  {
   //   id: "policies",
   //   title: "Policies",

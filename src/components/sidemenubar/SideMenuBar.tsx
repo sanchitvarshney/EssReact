@@ -68,7 +68,7 @@ export const renderMenu = (
                       <>
                         <CustomToolTip title={item?.title} placement="right">
                           <IconButton
-                            className=" px-1 my-1.5 rounded-md cursor-pointer transition-all duration-600 ease-in-out hover:bg-gray-500"
+                            className=" px-1 my-1.5 rounded-md cursor-pointer transition-all duration-600 ease-in-out hover:bg-gray-500/20"
                             onClick={() => {
                               if (!isExpended) {
                                 setIsExpended(true);
@@ -90,7 +90,7 @@ export const renderMenu = (
                     ) : (
                       <>
                         <AccordionTrigger
-                          className="w-[100%] py-2  m-0 leading-none hover:no-underline cursor-pointer rounded-md hover:bg-[#cccccc] hover:rounded-[20px]"
+                          className="w-[100%] py-2  m-0 leading-none hover:no-underline cursor-pointer rounded-md hover:bg-gray-500/20 hover:rounded-[20px]"
                           onClick={() => {
                             setAccordionValues({
                               ...accordionValues,
@@ -144,7 +144,7 @@ export const renderMenu = (
                         // to={item?.path}
                         className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] pl-1 
                         
-                          hover:bg-[#cccccc] hover:rounded-[20px]
+                          hover:bg-gray-500/20 hover:rounded-[20px]
                         
                       `}
                         onClick={() => {
@@ -170,7 +170,7 @@ export const renderMenu = (
                     <Link
                       to={item?.path}
                       className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px]  ${
-                        isExpended && " hover:bg-[#cccccc] hover:rounded-[20px]"
+                        isExpended && " hover:bg-gray-500/20 hover:rounded-[20px]"
                       } 
                       `}
                       onClick={() => {
@@ -222,14 +222,14 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
             <>
               {" "}
               <div className="flex flex-col justify-center items-center px-2 py-1 transition-all duration-500 ease-in-out">
-                <div className="flex ml-auto">
-                  <CustomToolTip title="Expand" placement="right">
-                    <div
+                <div className="flex ml-auto mt-1">
+                  <CustomToolTip title="Collapse" placement="right">
+                    <IconButton
                       className="cursor-pointer rounded-md transition-all duration-300 ease-in-out hover:bg-gray-100"
                       onClick={() => setIsExpended(false)}
                     >
                       <ArrowBackIcon />
-                    </div>
+                    </IconButton>
                   </CustomToolTip>
                 </div>
                 <div className="flex flex-col items-center text-center py-1 gap-y-1 w-full ">
@@ -286,7 +286,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
           </div>
 
           {!isExpended && (
-            <div className="flex self-center mb-4">
+            <div className=" flex self-center mb-4">
               <div>
                 <CustomToolTip title="Expend" placement="right">
                   <IconButton

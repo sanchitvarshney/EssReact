@@ -1,5 +1,6 @@
 import { MenuItem, TextField } from "@mui/material";
 
+
 import React from "react";
 
 interface CustomTextInputProps {
@@ -8,6 +9,7 @@ interface CustomTextInputProps {
   type?: string | number;
   select?: boolean;
   options?:any[] 
+  isDisabled?:boolean
 }
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
   field,
@@ -15,10 +17,12 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   type = "text",
   select = false,
   options,
+  isDisabled
 }) => {
   
   return (
     <TextField
+    disabled={isDisabled ? true : false}
       fullWidth
       id="outlined-basic"
       label={label}

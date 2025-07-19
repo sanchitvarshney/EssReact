@@ -4,7 +4,7 @@ import Header from "../components/header/Header";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
-import CustomFooter from "../components/CustomFooter";
+// import CustomFooter from "../components/CustomFooter";
 
 // props: { children: React.ReactNode }
 function MainLayout() {
@@ -23,7 +23,7 @@ function MainLayout() {
     };
   }, []);
   return (
-    <Wrapper className="relative">
+    <Wrapper className="">
       {!isOnline && (
         <div className="absolute top-0  w-full h-screen  bg-gray-400/40 w-full z-1200  " > 
         <Typography variant="subtitle2" sx={{fontSize:18, fontWeight:500, py:1, bgcolor:"red"}}>No Internet connectivity</Typography>
@@ -40,9 +40,9 @@ function MainLayout() {
       >
         <Outlet />
       </main>
-      <div className="absolute bottom-0 right-4 sm:right-10 z-99">
+      {/* <div className="absolute bottom-0 right-4 sm:right-10 z-99">
         <CustomFooter />
-      </div>
+      </div> */}
     </Wrapper>
   );
 }

@@ -411,6 +411,7 @@ const HierarchyChart = () => {
                   )
                 : renderDepartmentRoot()
             }
+          
           >
             {viewMode === "employee" && rootNode && (expandedNodes[rootNodeId] ?? true)
               ? rootNode.children?.map((child: any) =>

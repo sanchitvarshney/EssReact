@@ -13,12 +13,12 @@ import {
   IconButton,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ComponentIconWithtitle from "./ComponentIconWithtitle";
-import { Input } from "../ui/input";
+// import ComponentIconWithtitle from "./ComponentIconWithtitle";
+// import { Input } from "../ui/input";
 
-import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
-import SendIcon from "@mui/icons-material/Send";
-import { postCardData } from "../../staticData/postdata";
+// import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
+// import SendIcon from "@mui/icons-material/Send";
+// import { postCardData } from "../../staticData/postdata";
 import DocView from "./DocView";
 
 import { useState } from "react";
@@ -43,9 +43,9 @@ const PostAnnouncementCard = ({
 }: PostAnnouncementCardProps) => {
   const [isCommentView, setIsCommentView] = useState(false);
 
-  const handleView = (id: string) => {
-    if (id.toLowerCase() === "comments") setIsCommentView(true);
-  };
+  // const handleView = (id: string) => {
+  //   if (id.toLowerCase() === "comments") setIsCommentView(true);
+  // };
   return (
     <Card
       elevation={0}
@@ -156,14 +156,14 @@ const PostAnnouncementCard = ({
                       style={{
                         width: "100%",
                         height: images.length === 1 ? "300px" : "120px",
-                        objectFit: "cover",
+                        objectFit: "fill",
                       }}
                     />
                   </Paper>
                 </Box>
               ))}
             </Box>
-            <div className="flex   px-5 mt-3">
+            {/* <div className="flex   px-5 mt-3">
               {postCardData.map((item) => (
                 <ComponentIconWithtitle
                   key={item.title}
@@ -173,8 +173,8 @@ const PostAnnouncementCard = ({
                 />
               ))}
             </div>
-            <Divider sx={{ my: 2 }} />
-            <div className="mt-3 flex justify-between">
+            <Divider sx={{ my: 2 }} /> */}
+            {/* <div className="mt-3 flex justify-between">
               <div className="flex-[0.8] ">
                 <Input
                   placeholder="Write your comment"
@@ -189,7 +189,7 @@ const PostAnnouncementCard = ({
                   <SendIcon />
                 </IconButton>
               </div>
-            </div>
+            </div> */}
           </Box>
         )}
       </CardContent>

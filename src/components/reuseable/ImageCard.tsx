@@ -8,6 +8,8 @@ import imgPerfor from "../../assets/blockimage/bg-performance.png";
 import imghelp from "../../assets/blockimage/helpbw.png";
 import imgtaskbox from "../../assets/blockimage/bw-taskbox.png";
 import imgrecruitment from "../../assets/blockimage/recurt.png";
+import DocView from "./DocView";
+import { CustomButton } from "../ui/CustomButton";
 
 type ImageCardProps = {
   title: string;
@@ -70,7 +72,7 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
               title.toLowerCase() === "task box" ||
               title.toLowerCase() === "recruitment"
                 ? "bg-gray-500/20"
-                : "bg-gray-500/10"
+                : "bg-white border-1 border-[#2eacb3]"
             }  `}
           >
             <img
@@ -114,6 +116,42 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
             </div>
           )}
         </div>
+        <DocView
+          open={false}
+          close={() => {}}
+          vertical={"bottom"}
+          horizontal={"center"}
+          transformOrigin={"bottom"}
+          width={600}
+        >
+          <div className="w-full  relative">
+            <div className="w-full sticky top-0 ">
+              <div className=" px-6 py-4">
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 700,
+                    color: "#1f2937",
+                    fontSize: "1.125rem",
+                    letterSpacing: "-0.025em",
+                  }}
+                >
+                  Comments
+              
+                </Typography>
+                <div className="w-10 h-10" />
+              </div>
+            </div>
+
+            <div className="w-full absolute4 bottom-0 bg-white/95  border-b border-gray-200 ">
+              <div className="flex items-center justify-between px-6 py-4">
+                <div className="w-10 h-10" />
+                <CustomButton></CustomButton>
+                <CustomButton></CustomButton>
+              </div>
+            </div>
+          </div>
+        </DocView>
       </CardContent>
     </Card>
   );

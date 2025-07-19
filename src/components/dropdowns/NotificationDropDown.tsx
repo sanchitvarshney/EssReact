@@ -10,7 +10,7 @@ const NotificationDropDown = () => {
   const unreadCount = notifications.filter((n: any) => !n.read).length;
 
   return (
-    <div className="w-full  bg-white rounded-[8px] shadow-2xl border border-gray-100 overflow-hidden">
+    <div className="w-full  bg-white rounded-[6px] shadow-2xl  overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] p-4 text-white">
         <div className="flex items-center justify-between">
@@ -30,7 +30,7 @@ const NotificationDropDown = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button
+            {/* <Button
               size="small"
               sx={{
                 color: "#ffffff",
@@ -39,7 +39,7 @@ const NotificationDropDown = () => {
               }}
             >
               Mark all as read
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
@@ -66,7 +66,7 @@ const NotificationDropDown = () => {
         ) : (
           /* Empty State */
           <div className="p-8 flex items-center justify-center">
-            <EmptyData width="w-30 " height="h-30" />
+            <EmptyData width="w-30 " height="h-80" />
           </div>
         )}
       </div>

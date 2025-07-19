@@ -10,6 +10,7 @@ interface Props {
   height?: string | number;
   children: React.ReactNode;
   isCone?: boolean;
+  coneColor?: string;
 }
 
 const CustomPopover: React.FC<Props> = ({
@@ -20,6 +21,7 @@ const CustomPopover: React.FC<Props> = ({
   height,
   children,
   isCone,
+  coneColor,
 }) => {
   const [arrowLeft, setArrowLeft] = useState<number>(0);
 
@@ -79,7 +81,7 @@ const CustomPopover: React.FC<Props> = ({
                 height: 0,
                 borderLeft: "12px solid transparent",
                 borderRight: "12px solid transparent",
-                borderBottom: "12px solid rgb(255, 255, 255)",
+                borderBottom: `12px solid ${coneColor ? coneColor : "#fff"} `,
                 zIndex: 5,
               }}
             />

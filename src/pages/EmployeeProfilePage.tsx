@@ -14,7 +14,7 @@ import EmployeeProfilePageSkeleton from "../skeleton/EmployeeProfilePageSkeleton
 const EmployeeProfilePage = () => {
   // const navigate= useNavigate()
   const { showToast } = useToast();
-  const [value, setValue] = useState("info");
+  const [value, setValue] = useState("password");
   const [editMode, setEditMode] = useState(false);
   const { user } = useAuth();
   const [getuserdata, { isLoading, data, error }] = useGetuserdataMutation();
