@@ -105,10 +105,12 @@ const NoticeboardCard: React.FC = () => {
               <li>🔹 We'd love to hear your feedback and suggestions.</li>
               <li>
                 🔹 Prefer the old version? You can still access it{" "}
-                <a href="#" className="text-blue-600 underline">
+                <a href="https://ess-old.mscorpres.com" className="text-blue-600 underline">
                   here
+                </a> OR <a href="https://ess-old.mscorpres.com" className="text-blue-600 underline">
+                  https://ess-old.mscorpres.com 
                 </a>
-                . Thank you for being a valued part of our team!
+                . <br/><br/>Thank you for being a valued part of our team!
               </li>
             </ul>
 
