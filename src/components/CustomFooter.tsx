@@ -14,7 +14,7 @@ const CustomFooter = () => {
         alignItems: "center",
       }}
     >
-      <Typography variant="body2" color="#000" sx={{fontSize: {xs: "0.8rem", sm: "0.9rem"}, fontWeight: 600}}>
+      <Typography variant="body2" color="#000" sx={{fontSize: "0.6rem", fontWeight: 600}}>
         © {new Date().getFullYear()} MsCorpres Automation | All rights reserved.
       </Typography>
     </Box>

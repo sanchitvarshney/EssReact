@@ -15,6 +15,7 @@ import AnnouncementPageSkeleton from "../skeleton/AnnouncementPageSkeleton";
 import { useToast } from "../hooks/useToast";
 import PostAnniversaryCard from "../components/reuseable/PostAnniversaryCard";
 import { useLeaveListMutation } from "../services/Leave";
+import AbsenceListPage from "../components/AbsenceListPage";
 
 const AnnouncementPage = () => {
   const { showToast } = useToast();
@@ -29,6 +30,7 @@ const AnnouncementPage = () => {
     useGetWAListMutation();
   const [leaveList, { data: leaveData, isLoading: leaveLoading }] =
     useLeaveListMutation();
+ 
   const {
     data: hireData,
     isLoading: hireLoading,
@@ -45,7 +47,9 @@ const AnnouncementPage = () => {
       })
       .catch((err) => {
         showToast(
-          err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+          err?.data?.message?.msg ||
+            err?.message ||
+            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
           "error"
         );
       });
@@ -149,14 +153,15 @@ const AnnouncementPage = () => {
                   )
                 }
               />
-              <MilestonesAndEventsCard
+              <AbsenceListPage
                 title="Today's On Office Absence"
-                data={leaveData}
+                data={leaveData?.data}
                 expanded={expandedPanel === "absence"}
                 onChange={() =>
                   setExpandedPanel(expandedPanel === "absence" ? "" : "absence")
                 }
               />
+           
             </div>
           }{" "}
         </Box>

@@ -135,7 +135,7 @@ function Header() {
 
                 setSearchText(value);
                 setOpenSearch(value.trim().length > 0);
-                setSelectedIndex(-1); // Reset selection on new search
+                setSelectedIndex(-1); 
               }}
               onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                 if (!openSearch) return;
@@ -146,8 +146,8 @@ function Header() {
                   setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
                   e.preventDefault();
                 } else if (e.key === "Enter") {
-                  // We'll handle selection in SearchBarComponent
-                  console.log(e,"enter")
+                 
+            
                   e.preventDefault();
                 }
               }}
@@ -170,7 +170,7 @@ function Header() {
             {/* {!isSmallScreen && ( */}
             <>
               <IconButton onClick={() => setIsOpenNotification(true)}>
-                <Badge badgeContent={4} color="error" sx={{ p: 0, mr: 2 }}>
+                <Badge badgeContent={0} color="error" sx={{ p: 0, mr: 2 }}>
                   <NotificationsIcon
                     ref={notificationRef}
                     sx={{ fontSize: 30, color: "#fff" }}
@@ -185,7 +185,7 @@ function Header() {
                   //@ts-ignore
                   anchorEl={notificationRef}
                   width={400}
-                  height={360}
+                  // height={360}
                   isCone={true}
                 >
                   <NotificationDropDown />

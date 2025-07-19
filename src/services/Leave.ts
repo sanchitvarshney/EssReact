@@ -127,7 +127,7 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
     }),
     leaveList: builder.mutation<any, void>({
       query: () => ({
-        url: "/leave/leavelist",
+        url: "/dashboard/leave/leavelist",
         method: "POST",
       }),
     }),

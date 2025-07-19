@@ -20,8 +20,10 @@ import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import SendIcon from "@mui/icons-material/Send";
 import { postCardData } from "../../staticData/postdata";
 import DocView from "./DocView";
-// import CommentView from "./CommentView";
+
 import { useState } from "react";
+
+import VirtualizedCommentList from "./VirtualizedCommentList";
 
 interface PostAnnouncementCardProps {
   postDate: Date;
@@ -64,8 +66,8 @@ const PostAnnouncementCard = ({
                 backgroundColor: "#2eacb3",
                 width: 48,
                 height: 48,
-                           pointerEvents: "none",
-                      userSelect: "none",
+                pointerEvents: "none",
+                userSelect: "none",
               }}
             >
               {authorName.charAt(0)}
@@ -180,7 +182,6 @@ const PostAnnouncementCard = ({
                 />
               </div>
               <div className="flex items-center gap-2">
-      
                 <IconButton>
                   <EmojiEmotionsIcon />
                 </IconButton>
@@ -199,27 +200,46 @@ const PostAnnouncementCard = ({
         vertical={"bottom"}
         horizontal={"center"}
         transformOrigin={"bottom"}
+        width={600}
       >
-        <div className="p-4">
-          <IconButton
-            onClick={() => setIsCommentView(false)}
-            sx={{
-              bgcolor: "rgba(255,255,255,0.1)",
-              backdropFilter: "blur(10px)",
-              "&:hover": { bgcolor: "rgba(255,255,255,0.2)" },
-            }}
-          >
-            <ArrowBackIcon sx={{ color: "black" }} />
-          </IconButton>
-          <Typography
-            variant="subtitle1"
-            fontSize={18}
-            fontWeight={"600"}
-            sx={{ py: 1 }}
-          >
-            Comments (5)
-          </Typography>
-          {/* <CommentView /> */}
+        <div className="w-full  relative">
+          <div className="w-full sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
+            <div className="flex items-center justify-between px-6 py-4">
+              <IconButton
+                onClick={() => setIsCommentView(false)}
+                sx={{
+                  bgcolor: "rgba(46, 172, 179, 0.1)",
+                  color: "#2eacb3",
+                  width: 40,
+                  height: 40,
+                  transition: "all 0.2s ease-in-out",
+                  "&:hover": {
+                    bgcolor: "rgba(46, 172, 179, 0.2)",
+                    transform: "scale(1.05)",
+                  },
+                }}
+              >
+                <ArrowBackIcon sx={{ fontSize: 20 }} />
+              </IconButton>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 700,
+                  color: "#1f2937",
+                  fontSize: "1.125rem",
+                  letterSpacing: "-0.025em",
+                }}
+              >
+                Comments
+                <span className="ml-2 text-sm font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                  0
+                </span>
+              </Typography>
+              <div className="w-10 h-10" />
+            </div>
+          </div>
+
+          <VirtualizedCommentList data={[]} />
         </div>
       </DocView>
     </Card>

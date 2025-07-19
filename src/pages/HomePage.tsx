@@ -13,23 +13,28 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { keyframes, useTheme } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const HomePage = () => {
-  const scroll = keyframes`
+// Create dynamic keyframes based on screen size
+const getScrollKeyframes = (fromX: string, toX: string) => keyframes`
   0% {
-    transform: translateX(200%);
+    transform: translateX(${fromX});
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(${toX});
   }
 `;
+const HomePage = () => {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediamDevice = useMediaQuery(theme.breakpoints.down("md"));
+  const fromX = isSmallDevice ? "20%" : isMediamDevice ? "40%" : "100%";
+  const toX = isSmallDevice ? "-20%" : isMediamDevice ? "-40%" : "-100%";
+  const scroll = getScrollKeyframes(fromX, toX);
+
   return (
     <div className="w-full  h-[calc(100vh-90px)] flex justify-center overflow-y-auto will-change-transform">
       <div className=" flex justify-start items-start flex-col">
-        <div className="w-[95%]  bg-[#fffecdff] flex  items-center mx-4 my-4 mb-6 border border-[#fec300ff] mx-auto ">
-          <div className="w-30 p-1 bg-[#fec300ff] relative">
+        <div className="w-[98%]  max-w-[380px] sm:max-w-[500px] bg-[#fffecdff] md:max-w-[800px] lg:max-w-[1200px] xl:max-w-[1500px] flex  items-center mx-4 my-4 mb-6 border border-[#fec300ff] mx-auto ">
+          <div className="w-40 sm:w-30 p-1  bg-[#fec300ff] relative">
             <div
               style={{
                 position: "absolute",
@@ -51,19 +56,25 @@ const HomePage = () => {
             sx={{
               overflow: "hidden",
               whiteSpace: "nowrap",
-              width: "100%",
+                
             }}
           >
             <Box
               component="span"
               sx={{
                 display: "inline-block",
-                animation: `${scroll} 20s linear infinite`,
-                fontSize: "1.2rem",
+                animation: `${scroll} ${
+                  isSmallDevice ? "15s" : isMediamDevice ? "25s" : "35s"
+                }  linear infinite`,
+                fontSize: "1rem",
                 fontWeight: 500,
+              
               }}
             >
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              We’re excited to introduce you to the enhanced version of ESS
+              (Employee Self-Service) - redesigned with a fresh look, improved
+              performance, and user-friendly features to make your experience
+              smoother and more efficient than ever before.
             </Box>
           </Box>
         </div>

@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "../ui/CustomAccordion";
 import React from "react";
-import {  Outlet, useNavigate } from "react-router-dom";
+import {  Link, Outlet, useNavigate } from "react-router-dom";
 
 import CustomToolTip from "../reuseable/CustomToolTip";
 
@@ -142,15 +142,15 @@ export const renderMenu = (
                     placement={"right"}
                   >
                     {isExpended ? (
-                      <div
+                      <Link
 
-                      // to={item?.path}
+                      to={item?.path}
                       className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] pl-1 ${
                         isExpended && "hover:bg-[#cccccc] hover:rounded-[20px]"
                       } 
                       `}
                       onClick={() => {
-                        navigate(item?.path);
+                       
                         setAccordionValues({});
                         toggleDrawerClose();
                       }}
@@ -162,7 +162,7 @@ export const renderMenu = (
                           {item.title}
                         </span>
                       )}
-                    </div>
+                    </Link>
                     ) : (
                       <IconButton
 
@@ -287,14 +287,14 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
             <div className="flex self-center mb-4">
               <div>
                 <CustomToolTip title="Expend" placement="right">
-                  <div
+                  <IconButton
                     onClick={() => {
                       setIsExpended(!isExpended);
                     }}
                     className={` cursor-pointer rounded-md transition-all duration-500 ease-in-out `}
                   >
-                    <ArrowForwardIcon />
-                  </div>
+                    <ArrowForwardIcon sx={{ color: "#000" }} />
+                  </IconButton>
                 </CustomToolTip>
               </div>
             </div>

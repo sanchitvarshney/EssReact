@@ -12,18 +12,20 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import EmptyData from "./reuseable/EmptyData";
 
-interface MilestonesAndEventsCardProps {
+interface AbsenceListPageProps {
   title: string;
   data: any;
   expanded: boolean;
   onChange: () => void;
 }
-const MilestonesAndEventsCard: React.FC<MilestonesAndEventsCardProps> = ({
+const AbsenceListPage: React.FC<AbsenceListPageProps> = ({
   title,
   data,
   expanded,
   onChange,
 }) => {
+  console.log(data);
+
   return (
     <div className="w-full shadow-sm  ">
       <Accordion
@@ -48,17 +50,17 @@ const MilestonesAndEventsCard: React.FC<MilestonesAndEventsCardProps> = ({
             {data?.length === 0 || !data ? (
               <div className="w-full h-[30vh] flex  items-center justify-center">
                 <EmptyData width="w-[160px]" />
-              
+                
               </div>
             ) : (
-              data?.map((milestone: any) => (
-                <div key={milestone.time}>
-                  <Box display="flex" alignItems="center" mb={3}>
+              data?.map((employee: any, index: number) => (
+                <div key={index}>
+                  <Box display="flex" mb={3}>
                     <Avatar
                       src={
-                        milestone.photo &&
-                        !milestone.photo.includes("undefined")
-                          ? milestone.photo
+                        employee.emp_photo &&
+                        !employee.emp_photo.includes("undefined")
+                          ? employee.emp_photo
                           : null
                       }
                       sx={{
@@ -69,20 +71,30 @@ const MilestonesAndEventsCard: React.FC<MilestonesAndEventsCardProps> = ({
                         userSelect: "none",
                       }}
                     >
-                      {milestone?.name?.charAt(0)}
+                      {" "}
+                      {employee?.emp_name?.charAt(0)}
                     </Avatar>
                     <Box ml={1} width={"100%"}>
                       <Typography variant="body2" fontWeight={500}>
-                        {milestone.name}
+                        {employee.emp_name}
                       </Typography>
+
                       <div className="w-full flex justify-between items-center">
                         <Typography variant="caption" color="text.secondary">
-                          {`${milestone.department}`}
+                          {employee.leave_type}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {`${milestone.date}`}
+                          {employee.date_from}
                         </Typography>
                       </div>
+
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ display: "block" }}
+                      >
+                        {employee.will_return}
+                      </Typography>
                     </Box>
                   </Box>
                 </div>
@@ -95,4 +107,4 @@ const MilestonesAndEventsCard: React.FC<MilestonesAndEventsCardProps> = ({
   );
 };
 
-export default MilestonesAndEventsCard;
+export default AbsenceListPage;

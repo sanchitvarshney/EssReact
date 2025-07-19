@@ -1,8 +1,8 @@
 import emptyimg from "../../assets/img/empty.svg";
 
-const EmptyData = () => {
+const EmptyData = ({width,height}:{width?:string,height?:string}) => {
   return (
-    <div className="w-full h-[70vh] flex items-center justify-center ">
+    <div className={`${width ? width : "w-full"} ${height ? height : "h-[70vh]"}  flex items-center justify-center `}>
       <img
         src={emptyimg}
         alt="empty"
