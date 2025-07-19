@@ -87,7 +87,7 @@ function Header() {
                 onClick={toggleDrawerOpen}
                 color="inherit"
               >
-                <MenuIcon />
+                <MenuIcon    sx={{  color: "#4a4a4aff" }}/>
               </IconButton>
               <Menu
                 id="menu-appbar"
