@@ -14,9 +14,9 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Stop } from "@mui/icons-material";
-import EmptyData from "./reuseable/EmptyData";
+
 // import StopIcon from '@mui/icons-material/Stop';
-const dummyData:any = [
+const dummyData: any = [
   // {
   //   title: "Tomorrow is a Holiday!",
   //   message:
@@ -86,91 +86,106 @@ const NoticeboardCard: React.FC = () => {
             textAlign={"center"}
             sx={{ borderBottom: "2px solid #0d918b", py: 1 }}
           >
-            Announcement's & Notice
+            📢 Announcement's & Notice
           </Typography>
           {/* <Divider sx={{ my: 1, background }} /> */}
         </>
       )}
 
-    
-     {dummyData.length === 0 ? (
-      <div className="h-[45vh] flex justify-center items-center ">
-        <EmptyData width="w-[150px] " />
-        </div>
-      
-     ) : (
-        <CardContent sx={{ px: 0 }}>
-         <div className="h-[38vh] overflow-y-auto will-change-transform ">
-          <Typography variant="subtitle1" fontWeight={600}>
-            {dummyData[current]?.title}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            mt={1}
-            textAlign={"justify"}
-          >
-            {dummyData[current].message}
-          </Typography>
+      {dummyData.length === 0 ? (
+        <div className="h-[45vh] flex justify-center items-center px-4">
+          <div className="max-w-xl text-sm text-gray-700">
+            {/* <h2 className="text-lg font-semibold mb-2"> HR Notice Board</h2> */}
+            <p className="mb-3">
+              We're excited to introduce a refreshed look and improved
+              experience on the ESS portal. We hope it helps you navigate more
+              easily and get things done faster.
+            </p>
+            <ul className="list-none list-inside space-y-1 text-sm text-gray-700">
+              <li>🔹 We'd love to hear your feedback and suggestions.</li>
+              <li>
+                🔹 Prefer the old version? You can still access it{" "}
+                <a href="#" className="text-blue-600 underline">
+                  here
+                </a>
+                . Thank you for being a valued part of our team!
+              </li>
+            </ul>
 
-          <Box display="flex" alignItems="center" mt={3}>
-            <Avatar
-              src={dummyData[current].avatarUrl}
-              sx={{
-                width: 32,
-                height: 32,
-                backgroundColor: "#2eacb3",
-                pointerEvents: "none",
-                userSelect: "none",
-              }}
-            />
-            <Box ml={1}>
-              <Typography variant="body2" fontWeight={500}>
-                {dummyData[current].author}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {dummyData[current].date} • {dummyData[current].time}
-              </Typography>
-            </Box>
-          </Box>
+            <p className="mt-4 font-medium">— HR Team</p>
+          </div>
         </div>
-            </CardContent>
-     )}
-  
-     {dummyData.length === 0 ? (
-       null
-     ):(
-       <CardActions sx={{ justifyContent: "center" }}>
-        <Box sx={{ display: "flex", gap: 3, alignItems: "flex-end" }}>
-          <IconButton
-            onClick={prevNotice}
-            sx={{ color: "#0d918b", "&:hover": { bgcolor: "#e8e6e6ff" } }}
-          >
-            <ArrowBackIosNewIcon fontSize="medium" />
-          </IconButton>
-          <IconButton
-            onClick={() => setIsPaused(!isPaused)}
-            sx={{
-              color: isPaused ? "red" : "#f0a800",
-              "&:hover": { bgcolor: "#e8e6e6ff" },
-            }}
-          >
-            {isPaused ? (
-              <Stop fontSize="medium" />
-            ) : (
-              <PlayArrowIcon fontSize="medium" />
-            )}
-          </IconButton>
-          {/* sx={{ color: "gray", "&:hover": { color: "red" } }} */}
-          <IconButton
-            onClick={nextNotice}
-            sx={{ color: "#0d918b", "&:hover": { bgcolor: "#e8e6e6ff" } }}
-          >
-            <ArrowForwardIosIcon fontSize="medium" />
-          </IconButton>
-        </Box>
-      </CardActions>
-     )}
+      ) : (
+        <CardContent sx={{ px: 0 }}>
+          <div className="h-[38vh] overflow-y-auto will-change-transform ">
+            <Typography variant="subtitle1" fontWeight={600}>
+              {dummyData[current]?.title}
+            </Typography>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              mt={1}
+              textAlign={"justify"}
+            >
+              {dummyData[current].message}
+            </Typography>
+
+            <Box display="flex" alignItems="center" mt={3}>
+              <Avatar
+                src={dummyData[current].avatarUrl}
+                sx={{
+                  width: 32,
+                  height: 32,
+                  backgroundColor: "#2eacb3",
+                  pointerEvents: "none",
+                  userSelect: "none",
+                }}
+              />
+              <Box ml={1}>
+                <Typography variant="body2" fontWeight={500}>
+                  {dummyData[current].author}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {dummyData[current].date} • {dummyData[current].time}
+                </Typography>
+              </Box>
+            </Box>
+          </div>
+        </CardContent>
+      )}
+
+      {dummyData.length === 0 ? null : (
+        <CardActions sx={{ justifyContent: "center" }}>
+          <Box sx={{ display: "flex", gap: 3, alignItems: "flex-end" }}>
+            <IconButton
+              onClick={prevNotice}
+              sx={{ color: "#0d918b", "&:hover": { bgcolor: "#e8e6e6ff" } }}
+            >
+              <ArrowBackIosNewIcon fontSize="medium" />
+            </IconButton>
+            <IconButton
+              onClick={() => setIsPaused(!isPaused)}
+              sx={{
+                color: isPaused ? "red" : "#f0a800",
+                "&:hover": { bgcolor: "#e8e6e6ff" },
+              }}
+            >
+              {isPaused ? (
+                <Stop fontSize="medium" />
+              ) : (
+                <PlayArrowIcon fontSize="medium" />
+              )}
+            </IconButton>
+            {/* sx={{ color: "gray", "&:hover": { color: "red" } }} */}
+            <IconButton
+              onClick={nextNotice}
+              sx={{ color: "#0d918b", "&:hover": { bgcolor: "#e8e6e6ff" } }}
+            >
+              <ArrowForwardIosIcon fontSize="medium" />
+            </IconButton>
+          </Box>
+        </CardActions>
+      )}
     </Card>
   );
 };

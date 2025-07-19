@@ -67,5 +67,5 @@ export const homeData: homeMenuTypes[] = [
   // },
 
   { id: "org", title: "Org View", icon: org, path: "/home/hierarchy" },
-    { id: "help", title: "Helpdesk", icon: help, path: "/support-portal" },
+    { id: "help", title: "Helpdesk", icon: help, path: "" },
 ];
