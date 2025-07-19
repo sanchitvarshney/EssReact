@@ -14,35 +14,36 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Stop } from "@mui/icons-material";
+import EmptyData from "./reuseable/EmptyData";
 // import StopIcon from '@mui/icons-material/Stop';
-const dummyData = [
-  {
-    title: "Tomorrow is a Holiday!",
-    message:
-      "Let us make a promise that we would not let the hard sacrifices of our brave freedom fighters go in vain. We would word hard to make our country the best in the world. Happy Republic Day 2021!",
-    author: "HR Team",
-    date: "Jan 14th, 2021",
-    time: "10:30 AM",
-    avatarUrl: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    title: "Tomorrow is a Holiday!",
-    message:
-      "Let us make a promise that we would not let the hard sacrifices of our brave freedom fighters go in vain. We would word hard to make our country the best in the world. Happy Republic Day 2021!",
-    author: "Manager",
-    date: "Jan 11th, 2021",
-    time: "10:30 AM",
-    avatarUrl: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    title: "Tomorrow is a Holiday!",
-    message:
-      "Let us make a promise that we would not let the hard sacrifices of our brave freedom fighters go in vain. We would word hard to make our country the best in the world. Happy Republic Day 2021!",
-    author: "Developer Team",
-    date: "Jan 13th, 2021",
-    time: "10:30 AM",
-    avatarUrl: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
+const dummyData:any = [
+  // {
+  //   title: "Tomorrow is a Holiday!",
+  //   message:
+  //     "Let us make a promise that we would not let the hard sacrifices of our brave freedom fighters go in vain. We would word hard to make our country the best in the world. Happy Republic Day 2021!",
+  //   author: "HR Team",
+  //   date: "Jan 14th, 2021",
+  //   time: "10:30 AM",
+  //   avatarUrl: "https://randomuser.me/api/portraits/women/44.jpg",
+  // },
+  // {
+  //   title: "Tomorrow is a Holiday!",
+  //   message:
+  //     "Let us make a promise that we would not let the hard sacrifices of our brave freedom fighters go in vain. We would word hard to make our country the best in the world. Happy Republic Day 2021!",
+  //   author: "Manager",
+  //   date: "Jan 11th, 2021",
+  //   time: "10:30 AM",
+  //   avatarUrl: "https://randomuser.me/api/portraits/women/44.jpg",
+  // },
+  // {
+  //   title: "Tomorrow is a Holiday!",
+  //   message:
+  //     "Let us make a promise that we would not let the hard sacrifices of our brave freedom fighters go in vain. We would word hard to make our country the best in the world. Happy Republic Day 2021!",
+  //   author: "Developer Team",
+  //   date: "Jan 13th, 2021",
+  //   time: "10:30 AM",
+  //   avatarUrl: "https://randomuser.me/api/portraits/women/44.jpg",
+  // },
 ];
 const NoticeboardCard: React.FC = () => {
   const [current, setCurrent] = useState<number>(0);
@@ -91,10 +92,17 @@ const NoticeboardCard: React.FC = () => {
         </>
       )}
 
-      <CardContent sx={{ px: 0 }}>
-        <div className="h-[38vh] overflow-y-auto will-change-transform ">
+    
+     {dummyData.length === 0 ? (
+      <div className="h-[45vh] flex justify-center items-center ">
+        <EmptyData width="w-[150px] " />
+        </div>
+      
+     ) : (
+        <CardContent sx={{ px: 0 }}>
+         <div className="h-[38vh] overflow-y-auto will-change-transform ">
           <Typography variant="subtitle1" fontWeight={600}>
-            {dummyData[current].title}
+            {dummyData[current]?.title}
           </Typography>
           <Typography
             variant="body2"
@@ -126,8 +134,13 @@ const NoticeboardCard: React.FC = () => {
             </Box>
           </Box>
         </div>
-      </CardContent>
-      <CardActions sx={{ justifyContent: "center" }}>
+            </CardContent>
+     )}
+  
+     {dummyData.length === 0 ? (
+       null
+     ):(
+       <CardActions sx={{ justifyContent: "center" }}>
         <Box sx={{ display: "flex", gap: 3, alignItems: "flex-end" }}>
           <IconButton
             onClick={prevNotice}
@@ -157,6 +170,7 @@ const NoticeboardCard: React.FC = () => {
           </IconButton>
         </Box>
       </CardActions>
+     )}
     </Card>
   );
 };

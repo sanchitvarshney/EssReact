@@ -77,10 +77,18 @@ const ReimbursementClaim = () => {
   const { showToast } = useToast();
   const form = useForm<ReimbursementFormType>({
     resolver: zodResolver(reimbursementSchema),
-
+    defaultValues: {
+      items: [
+        {
+          category: "",
+          description: "",
+          amount: "",
+        },
+      ],
+    },
     mode: "onTouched",
   });
-  const [emptyKey,setEmptyKey] = useState<number>(0)
+  const [emptyKey, setEmptyKey] = useState<number>(0);
 
   const { control, handleSubmit, setValue } = form;
   const { fields, append, remove } = useFieldArray({
@@ -102,9 +110,8 @@ const ReimbursementClaim = () => {
       moment(data?.expenseDate).format("YYYY-MM-DD")
     );
     formData.append("purpose", data?.purpose);
-    
-      formData.append("expenses", JSON.stringify(data?.items));
-   
+
+    formData.append("expenses", JSON.stringify(data?.items));
 
     formData.append(
       "finalAmount",
@@ -113,18 +120,19 @@ const ReimbursementClaim = () => {
 
     cliamReimbursement(formData)
       .then((res) => {
-        
         if (res?.data?.status === "error") {
           showToast(res?.data?.message, "error");
-          return
+          return;
         }
         showToast(res?.data?.message, "success");
         form.reset();
-        setEmptyKey( (prev:any) => prev + 1)
+        setEmptyKey((prev: any) => prev + 1);
       })
       .catch((err) => {
         showToast(
-          err?.data?.message || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+          err?.data?.message ||
+            err?.message ||
+            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
           "error"
         );
       });
@@ -132,13 +140,13 @@ const ReimbursementClaim = () => {
 
   return (
     <div className="w-full h-screen  ">
-      <div className="p-6 max-w-6xl mx-auto ">
+      <div className="p-4 max-w-6xl mx-auto ">
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Header Section */}
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] rounded-full mb-4 shadow-lg">
-                <CurrencyRupeeIcon sx={{ fontSize: "3rem", color: "white" }} />
+            <div className="text-center mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] rounded-full mb-2 shadow-lg">
+                <CurrencyRupeeIcon sx={{ fontSize: "2rem", color: "white" }} />
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] bg-clip-text text-transparent">
                 Reimbursement Claim
@@ -185,7 +193,7 @@ const ReimbursementClaim = () => {
                       <FormControl>
                         <div className="relative">
                           <CustomTextInput
-                          key={emptyKey}
+                            key={emptyKey}
                             field={field}
                             label="Purpose of expense"
                           />
@@ -209,17 +217,6 @@ const ReimbursementClaim = () => {
                     Expense Items
                   </h3>
                 </div>
-                <CustomButton
-                  type="button"
-                  variant="secondary"
-                  size="sm"
-                  onClick={() =>
-                    append({ category: "", description: "", amount: "" })
-                  }
-                  className="flex items-center gap-2 text-white bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-xl px-6 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
-                >
-                  <FiPlus className="w-4 h-4" /> Add Item
-                </CustomButton>
               </div>
 
               <div className="overflow-hidden rounded-xl border border-gray-200">
@@ -335,6 +332,19 @@ const ReimbursementClaim = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
+              </div>
+              <div className="mt-4 flex justify-end">
+                <CustomButton
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={() =>
+                    append({ category: "", description: "", amount: "" })
+                  }
+                  className="flex items-center gap-2 text-white bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-xl px-6 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                >
+                  <FiPlus className="w-4 h-4" /> Add Item
+                </CustomButton>
               </div>
             </div>
 

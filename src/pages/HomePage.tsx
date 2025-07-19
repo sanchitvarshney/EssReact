@@ -39,7 +39,7 @@ const HomePage = () => {
               style={{
                 position: "absolute",
                 top: "8px",
-                right: `-12px`,
+                right: `-10px`,
                 width: 0,
                 height: 0,
                 borderTop: "10px solid transparent",
@@ -54,8 +54,10 @@ const HomePage = () => {
           </div>
           <Box
             sx={{
+              width: "100%",
               overflow: "hidden",
               whiteSpace: "nowrap",
+           
                 
             }}
           >
