@@ -21,11 +21,11 @@ const RecoverPassword = () => {
 
   return (
     <div
-      className="h-screen w-full bg-cover bg-center flex items-center justify-center relative"
+      className="h-screen w-full bg-cover bg-center flex items-center justify-start relative p-4 sm:pl-8 md:pl-10 lg:pl-25 xl:pl-30"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
       <div className="absolute inset-0 bg-black/40 z-0" />
-      <div className="relative z-10 w-full max-w-md mx-auto">
+      <div className="relative z-10 w-full max-w-md ">
         <div className="bg-white shadow-2xl border border-gray-100 rounded-3xl px-8 py-10 w-full space-y-7 flex flex-col items-center">
           <div className="flex flex-col items-center gap-2">
             <img src={logoImg} alt="mscorpres" className="h-16 w-auto mb-2 " />
