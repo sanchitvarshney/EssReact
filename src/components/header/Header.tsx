@@ -120,6 +120,7 @@ function Header() {
               display: { xs: "flex", md: "flex" },
               justifyContent: "center",
               alignItems: "center",
+              mr: 2,
             }}
           >
             <CustomSearch
@@ -160,7 +161,7 @@ function Header() {
                 close={() => setOpenSearch(false)}
                 searchQuary={searchText}
                 anchorRef={inputRef}
-                width={`${isSmallScreen ? "150px" : "450px"}`}
+                width={`${isSmallScreen ? "180px" : "400px"}`}
                 selectedIndex={selectedIndex}
                 setSelectedIndex={setSelectedIndex}
                 onSelect={() => setOpenSearch(false)}

@@ -127,7 +127,7 @@ const HomePage = () => {
             <NoticeboardCard />
           </div>
         </div>
-        <div className="w-full h-[200px] bg-[#444445] px-[200px] flex items justify-between py-[20px] border-t-1 border-gray-300 text-white">
+        <div className="w-full  flex-wrap bg-[#444445] px-[50px] sm:px-[200px] flex items justify-between gap-[50px] py-[20px] border-t-1 border-gray-300 text-white">
           <div className="flex flex-col gap-[10px] w-[500px] items-start text-left justify-end">
             <img src="./ms.png" alt="" className="w-[250px]" />
             <div>
