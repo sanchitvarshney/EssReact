@@ -4,7 +4,7 @@ export const flexProperty = "flex  justify-center items-center"
 
 
 export const customColor = {
-    bgColor:"#fff",
+    bgColor:"#232324",
     textColor:"#ffffff"
 }
 

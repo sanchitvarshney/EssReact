@@ -61,7 +61,7 @@ function Header() {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: customColor.bgColor,
+        backgroundColor: "#ffffff",
         paddingTop: 1.5,
         paddingBottom: 1.5,
       }}
