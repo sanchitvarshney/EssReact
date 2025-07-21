@@ -12,6 +12,7 @@ type CustomSearchPropsType = {
   borderRadius?: number;
   textColor?: string;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  itemRefs?: any;
 };
 
 const CustomSearch = forwardRef<HTMLInputElement, CustomSearchPropsType>(

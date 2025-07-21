@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type FC } from "react";
+import React, { useEffect, useRef, useState, type FC } from "react";
 import Typography from "@mui/material/Typography";
 
 import List from "@mui/material/List";
@@ -23,11 +23,11 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
   setSelectedIndex,
 }) => {
   const { showToast } = useToast();
- const { setSearchValueLength } = useAuth();
+  const { setSearchValueLength } = useAuth();
   const [fetchEmployee, { data, isLoading, error }] =
     useFetchEmployeeMutation();
   const [filteredData, setFilteredData] = useState([]);
-  const itemRefs = React.useRef<any[]>([]);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     if (inputText.length > 2) {
@@ -52,7 +52,11 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
       //@ts-ignore
       const errData = error.data as { message?: string };
 
-      showToast(errData?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.", "error");
+      showToast(
+        errData?.message ||
+          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+        "error"
+      );
     } else {
       //@ts-ignore
       showToast(error.message || "An unexpected error occurred", "error");
@@ -61,12 +65,11 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
 
   // Scroll selected item into view
   useEffect(() => {
-    if (
-      selectedIndex >= 0 &&
-      itemRefs.current[selectedIndex] &&
-      itemRefs.current[selectedIndex].scrollIntoView
-    ) {
-      itemRefs.current[selectedIndex].scrollIntoView({ block: "nearest" });
+    if (selectedIndex >= 0 && itemRefs.current[selectedIndex]) {
+      itemRefs.current[selectedIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
     }
   }, [selectedIndex]);
 
@@ -110,9 +113,13 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
           ) : (
             <>
               {filteredData.map((result: any, idx: number) => (
-                <React.Fragment key={result.id}>
+                <div
+                  key={result.id}
+                  ref={(el) => {
+                    itemRefs.current[idx] = el;
+                  }}
+                >
                   <ListItem
-                    // ref={(el) => (itemRefs.current[idx] = el)}
                     className={`hover:bg-gray-50 transition-colors cursor-pointer ${
                       selectedIndex === idx ? "bg-gray-200" : ""
                     }`}
@@ -135,7 +142,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
                       }
                     />
                   </ListItem>
-                </React.Fragment>
+                </div>
               ))}
             </>
           )}

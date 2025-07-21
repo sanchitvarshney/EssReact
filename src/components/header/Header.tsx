@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import logoImg from "../../assets/img/hrms_mscorpres_logo.png";
 import { useAuth } from "../../contextapi/AuthContext";
 
+
 const pages = ["Products", "Pricing", "Blog"];
 
 function Header() {
@@ -33,6 +34,7 @@ function Header() {
 
   const navigate = useNavigate();
   const inputRef = React.useRef(null);
+
   const notificationRef = React.useRef(null);
   const profileRef = React.useRef(null);
   const [searchText, setSearchText] = React.useState("");
@@ -55,6 +57,9 @@ function Header() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+
+  
 
   return (
     <AppBar
@@ -124,6 +129,7 @@ function Header() {
           >
             <CustomSearch
               ref={inputRef}
+            
               width={isSmallScreen ? "20ch" : "60ch"}
               placeholder={`${
                 isSmallScreen
@@ -156,6 +162,7 @@ function Header() {
             />
             {searchText && (
               <SearchBarComponent
+         
                 open={openSearch}
                 close={() => setOpenSearch(false)}
                 searchQuary={searchText}
