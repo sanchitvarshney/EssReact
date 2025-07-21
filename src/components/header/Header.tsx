@@ -17,7 +17,6 @@ import { useMediaQuery } from "@mui/material";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 import SearchBarComponent from "../dropdowns/SearchBarComponent";
 
-import { customColor } from "../../constants/themeConstant";
 
 import CustomPopover from "../reuseable/CustomPopover";
 import NotificationDropDown from "../dropdowns/NotificationDropDown";
