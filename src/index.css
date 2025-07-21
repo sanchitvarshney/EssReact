@@ -90,5 +90,6 @@
   --rdp-accent-color: yellow; /* Use yellow as the accent color in dark mode. */
 }
 
-
-
+.no-connector > .oc-children::before {
+  display: none !important;
+}

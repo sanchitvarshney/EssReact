@@ -98,7 +98,7 @@ export const renderMenu = (
                             });
                           }}
                         >
-                          <div className="w-full px-1 flex items-center cursor-pointer  rounded-md gap-2">
+                          <div className="w-full px-2 flex items-center cursor-pointer  rounded-md gap-2">
                             {isNew && (
                               <DynamicIcon name={item.icon} size="medium" />
                             )}

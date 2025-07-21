@@ -65,7 +65,7 @@ export const route = createBrowserRouter([
             element: <HelpPortal />,
           },
           {
-            path: "self-service/attendance",
+            path: "attendance",
             element: <AttendancePage />,
           },
           {
@@ -85,7 +85,7 @@ export const route = createBrowserRouter([
             element: <WFHPage />,
           },
           {
-            path: "self-service/payslip",
+            path: "compensation",
             element: <PaySlipPage />,
           },
           {

@@ -5,39 +5,33 @@ export const menu: MenuItem[] = [
     id: "home",
     title: "Home",
     icon: "home",
-    path:"/"
+    path: "/",
     // children: [
-    //   
+    //
     //   // {
     //   //   id: "dashboard",
     //   //   title: "Dashboard",
     //   //   path: "/",
     //   // },
     //   {
- 
+
     // ],
   },
   {
-        id: "announcement",
-        title: "Vibe",
-        icon:"vibeicon",
-        path: "/vibe",
-      },
-      {
-             id: "hierarchy",
-        title: "Hierarchy",
-        path: "/home/hierarchy",
-        icon: "orgchart",
-      },
+    id: "announcement",
+    title: "Vibe",
+    icon: "vibeicon",
+    path: "/vibe",
+  },
   {
-    id: "event",
-    title: "Holidays / Events",
-    icon: "AccessTimeIcon",
-    path: "/calendar",
+    id: "hierarchy",
+    title: "Hierarchy",
+    path: "/home/hierarchy",
+    icon: "orgchart",
   },
   {
     id: "self",
-    title: "Self Service",
+    title: "Leave",
     icon: "flows",
     children: [
       {
@@ -60,18 +54,27 @@ export const menu: MenuItem[] = [
       //   title: "WHF Update",
       //   path: "/self-service/wfh",
       // },
-      {
-        id: "attendance",
-        title: "Attendance",
-        path: "/self-service/attendance",
-      },
-      {
-        id: "payslip",
-        title: "PaySlip",
-        path: "/self-service/payslip",
-      },
     ],
   },
+  {
+    id: "attendance",
+    title: "Attendance",
+    icon: "attendance",
+    path: "/attendance",
+  },
+  {
+    id: "compensation",
+    title: "Compensation",
+    path: "/compensation",
+    icon: "compensation",
+  },
+  {
+    id: "event",
+    title: "Holidays / Events",
+    icon: "AccessTimeIcon",
+    path: "/calendar",
+  },
+  
 
   {
     id: "peripheral",

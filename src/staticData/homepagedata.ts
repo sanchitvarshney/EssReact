@@ -23,13 +23,13 @@ export const homeData: homeMenuTypes[] = [
     id: "compensation",
     title: "Compensation",
     icon: compensation,
-    path: "/self-service/payslip",
+    path: "/compensation",
   },
   {
     id: "attendance",
     title: "Attendance",
     icon: attendance,
-    path: "/self-service/attendance",
+    path: "/attendance",
   },
   {
     id: "leave",

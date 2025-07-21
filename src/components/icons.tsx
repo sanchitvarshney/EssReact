@@ -1,5 +1,5 @@
 import HomeIcon from '@mui/icons-material/Home';
-import SyncIcon from '@mui/icons-material/Sync';
+// import SyncIcon from '@mui/icons-material/Sync';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -16,13 +16,16 @@ import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
  import PolicyIcon from '@mui/icons-material/Policy';
  import AccountTreeIcon from '@mui/icons-material/AccountTree';
  import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+ import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+ import WorkOffIcon from '@mui/icons-material/WorkOff';
 
 export const Icons = {
   home: HomeIcon,
-  flows:SyncIcon,
+  flows:WorkOffIcon,
   peripheral:EmojiPeopleIcon,
   EventBusyIcon:BeachAccessIcon,
-  AccessTimeIcon:CalendarMonthIcon,
+  AccessTimeIcon:EventAvailableIcon ,
   BarChartIcon:AssessmentIcon,
   PeopleIcon: GroupsIcon,
   MonetizationOnIcon:WorkOutlineIcon,
@@ -35,5 +38,8 @@ export const Icons = {
  logout: LogoutIcon,
  policyicon:PolicyIcon,
  orgchart:AccountTreeIcon,
- vibeicon:AutoAwesomeIcon
+ vibeicon:AutoAwesomeIcon,
+ compensation:CurrencyRupeeIcon,
+ attendance:CalendarMonthIcon,
+
 };
