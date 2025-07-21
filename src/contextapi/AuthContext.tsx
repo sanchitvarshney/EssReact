@@ -70,11 +70,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [signIn]);
 
   const signOut = useCallback(() => {
-    setUser(null);
+   
     localStorage.removeItem("user");
     sessionStorage.removeItem("user");
 
     window.location.href = "/sign-in";
+     setUser(null);
   }, []);
 
   return (
