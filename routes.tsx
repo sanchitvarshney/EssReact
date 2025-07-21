@@ -28,7 +28,7 @@ import RecoverPassword from "./src/pages/RecoverPassword";
 import Protected from "./src/routes/Protected";
 import SignInScreen from "./src/pages/SignInScreen";
 import TaskPage from "./src/pages/TaskPage";
-
+import { HierarchyProvider } from "./src/contextapi/hierarchyProvider";
 
 export const route = createBrowserRouter([
   {
@@ -53,9 +53,14 @@ export const route = createBrowserRouter([
           },
           {
             path: "manage-account",
-            element: <EmployeeProfilePage />,
+            element: (
+              <HierarchyProvider>
+                {" "}
+                <EmployeeProfilePage />
+              </HierarchyProvider>
+            ),
           },
-      
+
           {
             path: "hr-policy",
             element: <PolicyPage />,
@@ -94,7 +99,11 @@ export const route = createBrowserRouter([
           },
           {
             path: "home/hierarchy",
-            element: <HierarchyChart />,
+            element: (
+              <HierarchyProvider>
+                <HierarchyChart />
+              </HierarchyProvider>
+            ),
           },
           {
             path: "hr-documents",
@@ -159,7 +168,7 @@ export const route = createBrowserRouter([
   {
     path: "*",
     element: (
-      <Protected >
+      <Protected>
         <Custom404Page />
       </Protected>
     ),

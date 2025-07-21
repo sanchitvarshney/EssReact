@@ -5,6 +5,7 @@ import { Chip } from "@mui/material";
 import { type JSX } from "react";
 
 import { useAuth } from "../contextapi/AuthContext";
+import { useHierarchy } from "../contextapi/hierarchyProvider";
 
 const findPathToId = (root: any, id: string, path: any): any => {
   if (!root?.empcode) {
@@ -134,7 +135,8 @@ const renderTree = (
 };
 
 const EmployeeHierarchyPage = () => {
-  const { hierarchyData, user, hierarchyLoading } = useAuth();
+  const { hierarchyData,  hierarchyLoading } = useHierarchy();
+ const { user } = useAuth()
   //@ts-ignore
   const userId: any = user?.id;
 

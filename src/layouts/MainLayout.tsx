@@ -3,8 +3,8 @@ import styled from "styled-components";
 import Header from "../components/header/Header";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Typography } from "@mui/material";
-// import CustomFooter from "../components/CustomFooter";
+import { Avatar, Typography } from "@mui/material";
+import nointernet from "../assets/no-wifi.png";
 
 // props: { children: React.ReactNode }
 function MainLayout() {
@@ -25,18 +25,27 @@ function MainLayout() {
   return (
     <Wrapper className="">
       {!isOnline && (
-        <div className="absolute top-0  w-full h-screen  bg-gray-400/40 w-full z-1200  " > 
-        <Typography variant="subtitle2" sx={{fontSize:18, fontWeight:500, py:1, bgcolor:"red"}}>No Internet connectivity</Typography>
-         </div>
-     
+        <div className="absolute top-0  w-full h-screen  flex flex-col justify-center items-center bg-gray-400/20 w-full z-1200  ">
+          <Avatar
+            src={nointernet}
+            alt="no-internet"
+            sx={{ width: 100, height: 100, mb: 1 }}
+          />
+          <Typography
+            variant="subtitle2"
+            sx={{ fontSize: 22, fontWeight: 500, color: "#000" }}
+          >
+            No internet connection. Check your network.
+          </Typography>
+        </div>
       )}
       <div className="sticky top-0 z-50">
         <Header />
       </div>
 
       <main
-        className=" relative  bg-gradient-to-br from-[#f8fbfc] to-[#eaf7f5]
- h-full  custom-scrollbar-for-menu "
+        className={`relative  bg-gradient-to-br from-[#f8fbfc] to-[#eaf7f5]
+ h-full  custom-scrollbar-for-menu  ${!isOnline && "blur-sm"} `}
       >
         <Outlet />
       </main>

@@ -24,7 +24,8 @@ import { RootEmployeeTree } from "../components/reuseable/hierarchyChatComponent
 import { EmployeeTree } from "../components/reuseable/hierarchyChatComponents/EmployeeTree";
 
 import HierarchyChartSkeleton from "../skeleton/HierarchyChartSkeleton";
-import { useAuth } from "../contextapi/AuthContext";
+
+import { useHierarchy } from "../contextapi/hierarchyProvider";
 
 export const tagColors: Record<string, string> = {
   Leadership: "#60a5fa",
@@ -36,8 +37,8 @@ export const tagColors: Record<string, string> = {
 };
 
 const HierarchyChart = () => {
-  const { hierarchyData, hierarchyLoading } = useAuth();
-  console.log(hierarchyData);
+  const { hierarchyData, hierarchyLoading } = useHierarchy();
+ 
 
   const [zoom, setZoom] = useState(0.7);
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>(
