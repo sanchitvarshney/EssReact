@@ -144,7 +144,7 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
                 onClick={onConfirm}
                 className="bg-[#2eacb3] text-white px-6 py-2.5 rounded-lg hover:bg-[#279aa0] transition-colors font-semibold text-lg flex items-center space-x-2 group"
               >
-                <span>I Read</span>
+                <span onClick={onConfirm}>I Read</span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>

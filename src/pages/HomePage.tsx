@@ -35,12 +35,13 @@ const HomePage = () => {
   const toX = isSmallDevice ? "-20%" : isMediamDevice ? "-40%" : "-100%";
   const scroll = getScrollKeyframes(fromX, toX);
 
-  const [showCyberAlert, setShowCyberAlert] = useState(true);
+  const [showCyberAlert, setShowCyberAlert] = useState(false);
   useEffect(() => {
-    setShowCyberAlert(true);
+    setShowCyberAlert(localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true);
   }, []);
   const handleCyberAlertConfirm = () => {
     setShowCyberAlert(false);
+    localStorage.setItem("cyberAlertAcknowledged", "true");
   };
 
   return (
@@ -167,7 +168,7 @@ const HomePage = () => {
         </div>
       </div>
       <CyberAlertDialog
-        open={showCyberAlert}
+        open={showCyberAlert }
         onOpenChange={(open) => {
           // Only allow closing if user clicks I Read
           if (!open) return; // block closing from outside click/escape
@@ -176,6 +177,7 @@ const HomePage = () => {
         onConfirm={() => {
           setShowCyberAlert(false);
           handleCyberAlertConfirm();
+
         }}
       />
     </div>

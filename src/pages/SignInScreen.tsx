@@ -20,7 +20,6 @@ const SignInScreen = () => {
   const [employeeCode, setEmployeeCode] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState("");
-  const [showCyberAlert, setShowCyberAlert] = useState(false);
   const [login, { isLoading, error, data, isError: isErrorLogin, isSuccess }] =
     useLoginMutation();
   useApiErrorMessage({
@@ -73,7 +72,7 @@ const SignInScreen = () => {
         return;
       }
       showToast(response?.message, "success");
-      setShowCyberAlert(true);
+      localStorage.setItem("cyberAlertAcknowledged", "false");
     } catch (err: any) {
       showToast(
         err?.data?.message?.msg ||
@@ -81,15 +80,6 @@ const SignInScreen = () => {
           "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
         "error"
       );
-    }
-  };
-
-  const handleCyberAlertConfirm = () => {
-    if (data?.data) {
-      localStorage.setItem("user", JSON.stringify(data.data));
-      sessionStorage.setItem("user", JSON.stringify(data.data));
-      signIn();
-      navigation("/");
     }
   };
 
