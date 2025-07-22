@@ -14,15 +14,18 @@ import {
 
 import CustomModalDatePicker from "../components/reuseable/CustomModalDatePicker";
 import { btnstyle } from "../constants/themeConstant";
-import { useGetPaySlipMutation } from "../services/payslip";
+import {
+  useDownloadPaySlipMutation,
+  useGetPaySlipMutation,
+} from "../services/payslip";
 import moment from "moment";
 
 import DotLoading from "../components/reuseable/DotLoading";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PaySlipPageSkeleton from "../skeleton/PaySlipPageSkeleton";
 
-
 import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
+import { CircularProgress } from "@mui/material";
 
 const schema = z.object({
   toDate: z.date({ required_error: "Month is required" }),
@@ -37,6 +40,13 @@ const PaySlipPage = () => {
   const star = "******";
   const [getPaySlip, { isLoading, data, error, isError, isSuccess }] =
     useGetPaySlipMutation();
+  const [
+    downloadPaySlip,
+    {
+      isLoading: isDownloadLoading,
+    },
+  ] = useDownloadPaySlipMutation();
+
   useApiErrorMessage({
     error,
     errorMessage: data,
@@ -71,27 +81,30 @@ const PaySlipPage = () => {
     }, 1200);
   }, [showPayslip]);
 
-  // useEffect(() => {
-  //   if (!error) return;
+  const downloadPDF = (bufferData: any, filename: string = "document.pdf") => {
+    const byteArray = new Uint8Array(bufferData);
 
-  //   if (error) {
+    const file = new Blob([byteArray], { type: "application/pdf" });
 
-  //     //@ts-ignore
-  //     const errData = error.data as { message?: string };
+    const url = URL.createObjectURL(file);
 
-  //     showToast(errData?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.", "error");
-  //   } else {
-  //     //@ts-ignore
-  //     showToast(error.message || "An unexpected error occurred", "error");
-  //   }
-  // }, [error]);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
-  // useEffect(() => {
-  //   if (data?.msg) {
-
-  //     showToast(data?.msg, "error");
-  //   }
-  // }, [data?.msg]);
+  const downloadPayslip = () => {
+    const period = moment(data.toDate).format("YYYY-MM");
+    downloadPaySlip({ month: period }).then((res) => {
+      if (res?.data?.code==200) {
+        downloadPDF(res?.data?.data?.buffer, res?.data?.data?.filename);
+      }
+    });
+  };
 
   if (isLoading) {
     return <PaySlipPageSkeleton />;
@@ -219,26 +232,31 @@ const PaySlipPage = () => {
         <div className="space-x-4 space-y-4">
           {data?.earing && (
             <>
-            <CustomButton
-              className={btnstyle}
-              onClick={() => {
-                setShowLoader(true);
-                setShowPayslip(!showPayslip);
-              }}
-            >
-              <VisibilityIcon sx={{ color: "#ffffff", fontSize: 20, mr: 1 }} />
-              {showPayslip ? "Hide Payslip" : "Show Payslip"}
-            </CustomButton>
-       
-          <CustomButton
-            className={btnstyle}
-         
-          >
-            <FileDownloadIcon sx={{ color: "#ffffff", fontSize: 20, mr: 1 }} />
-            <span className="text-white">Download</span>
-          </CustomButton>
-          </>
-             )}
+              <CustomButton
+                className={btnstyle}
+                onClick={() => {
+                  setShowLoader(true);
+                  setShowPayslip(!showPayslip);
+                }}
+              >
+                <VisibilityIcon
+                  sx={{ color: "#ffffff", fontSize: 20, mr: 1 }}
+                />
+                {showPayslip ? "Hide Payslip" : "Show Payslip"}
+              </CustomButton>
+
+              <CustomButton
+                className={btnstyle}
+                onClick={downloadPayslip}
+                disabled={isDownloadLoading}
+              >
+               {isDownloadLoading ? <CircularProgress color="inherit"  size={20} sx={{mr:1}}  /> : <FileDownloadIcon
+                  sx={{ color: "#ffffff", fontSize: 20, mr: 1 }}
+                />}
+                <span className="text-white">Download</span>
+              </CustomButton>
+            </>
+          )}
         </div>
       </div>
     </div>

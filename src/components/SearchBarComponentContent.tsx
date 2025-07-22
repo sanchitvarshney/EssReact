@@ -94,7 +94,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
     const handleSelectSearchResult = (e: any) => {
       const idx = e.detail.selectedIndex;
       if (filteredData.length > 0) {
-        const item = filteredData[idx >= 0 ? idx : 0];
+        const item = filteredData[idx >= 0 ? idx : 0] as any;
         if (item) {
           dispatch(setEmplyeeCode({ empCode: item?.id }));
           onSelect && onSelect(item);

@@ -11,6 +11,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../contextapi/AuthContext";
 import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
+import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
+
 const SignInScreen = () => {
   const { signIn } = useAuth();
   const navigation = useNavigate();
@@ -19,6 +21,7 @@ const SignInScreen = () => {
   const [employeeCode, setEmployeeCode] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState("");
+  const [showCyberAlert, setShowCyberAlert] = useState(false);
   const [login, { isLoading, error, data, isError: isErrorLogin, isSuccess }] =
     useLoginMutation();
   useApiErrorMessage({
@@ -35,22 +38,15 @@ const SignInScreen = () => {
     setShowPassword((prev) => !prev);
   };
 
-  
   useEffect(() => {
-    // if (!data?.data) {
-    //   showToast("User Not Found Please try agian after somethime!", "error");
-    //   return;
-    // }
     if (data?.data) {
       localStorage.setItem("user", JSON.stringify(data.data));
-
       sessionStorage.setItem("user", JSON.stringify(data.data));
-
       signIn();
-
       navigation("/");
     }
   }, [data]);
+
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsError("");
@@ -65,30 +61,42 @@ const SignInScreen = () => {
       setIsError("Password is required");
       return;
     }
+
     const payload = {
       username: employeeCode,
       password: password,
     };
-    login(payload)
-      .then((res) => {
-        
-        
-        if (res?.data?.data?.success ===  false) {
-          showToast(res?.data?.data?.message, "error");
-        }
-         showToast(res?.data?.message, "success");
-      })
-      .catch((err) => {
-        showToast(
-          err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
-          "error"
-        );
-      });
+
+    try {
+      const response = await login(payload).unwrap();
+      if (response?.data?.success === false) {
+        showToast(response?.data?.message, "error");
+        return;
+      }
+      showToast(response?.message, "success");
+      setShowCyberAlert(true);
+    } catch (err: any) {
+      showToast(
+        err?.data?.message?.msg ||
+          err?.message ||
+          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+        "error"
+      );
+    }
+  };
+
+  const handleCyberAlertConfirm = () => {
+    if (data?.data) {
+      localStorage.setItem("user", JSON.stringify(data.data));
+      sessionStorage.setItem("user", JSON.stringify(data.data));
+      signIn();
+      navigation("/");
+    }
   };
 
   return (
     <div
-      className="h-screen w-full bg-cover bg-center flex items-center  justify-start relative p-4 sm:pl-8 md:pl-10 lg:pl-25 xl:pl-30"
+      className="h-screen w-full bg-cover bg-center flex items-center justify-start relative p-4 sm:pl-8 md:pl-10 lg:pl-25 xl:pl-30"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
       <div className="absolute inset-0 bg-black/40 z-0 " />
@@ -179,6 +187,19 @@ const SignInScreen = () => {
           </form>
         </div>
       </div>
+
+      <CyberAlertDialog
+        open={showCyberAlert}
+        onOpenChange={(open) => {
+          // Only allow closing if user clicks I Read
+          if (!open) return; // block closing from outside click/escape
+          setShowCyberAlert(open);
+        }}
+        onConfirm={() => {
+          setShowCyberAlert(false);
+          handleCyberAlertConfirm();
+        }}
+      />
     </div>
   );
 };

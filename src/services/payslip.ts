@@ -18,8 +18,15 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
         }
       },
     }),
+    downloadPaySlip: builder.mutation<any, any>({
+      query: (payload) => ({
+        url: "empPayslip/print",
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetPaySlipMutation } = extendedAuthApi;
+export const { useGetPaySlipMutation, useDownloadPaySlipMutation } = extendedAuthApi;

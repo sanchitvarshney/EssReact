@@ -74,7 +74,7 @@ const EmployeeDetails = () => {
   }, [data]);
 
   return (
-    <div className="w-full h-[calc(100vh-90px)]  overflow-y-auto p-4 will-change-transform ">
+    <div className="w-full h-[calc(100vh-90px)]  overflow-y-auto p-4 will-change-transform bg-white">
       {isLoading ? (
         <EmployeeProfilePageSkeleton />
       ) : (

@@ -7,43 +7,76 @@ import CustomChart from "../components/CustomChart";
 import OfficeAbsenceComponent from "../components/OfficeAbsenceComponent";
 import HolidayCard from "../components/reuseable/HolidayCard";
 import { Typography } from "@mui/material";
-const Dashboard = () => {
-  return (
-    <div className=" w-full p-4 custom-scrollbar-for-menu gap-20 ">
-      <div className="py-1 mb-4">
-        <Typography sx={{ fontSize: 24, fontWeight: "bold" }}>
-          Dashboard
-        </Typography>
-        <p className="text-[14px] text-gray-500">
-          Welcome to the Employee Self-Service (ESS) Dashboard
-        </p>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 ">
-        <HolidayCard title="Sick Leave" image={sickicon} value={8} />
-        <HolidayCard title="Earned Leave" image={earnicon} value={8} />
-        <HolidayCard title="Compensatory Leave" image={accespticon} value={8} />
-        <HolidayCard title="Work From Home" image={homeicon} value={8} />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:place-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 mt-8">
-        <SlideShowCard />
-        <SlideShowCard title="Birthday Bash"/>
-        <SlideShowCard title="Anniversary"/>
-      </div>
+import { useEffect, useState } from "react";
+import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
 
-      <div className="w-full  bg-white shadow-md p-3 mt-8  rounded-0 ring-2 ring-gray-300/50">
-        <h2 className="mb-4 text-lg font-semibold  ">
-          Today's On Office Absence
-        </h2>
-        <div className="h-100 overflow-y-auto will-change-transform">
-          <OfficeAbsenceComponent />
+const Dashboard = () => {
+  const [showCyberAlert, setShowCyberAlert] = useState(false);
+
+  useEffect(() => {
+    // Only show the alert if not acknowledged in this session
+    const acknowledged = localStorage.getItem("cyberAlertAcknowledged");
+    if (!acknowledged) {
+      setShowCyberAlert(true);
+    }
+  }, []);
+
+  const handleCyberAlertConfirm = () => {
+    localStorage.setItem("cyberAlertAcknowledged", "true");
+    setShowCyberAlert(false);
+  };
+
+  return (
+    <>
+      <CyberAlertDialog
+        open={showCyberAlert}
+        onOpenChange={(open) => {
+          // Only allow closing if user clicks I Read
+          if (!open) return;
+          setShowCyberAlert(open);
+        }}
+        onConfirm={handleCyberAlertConfirm}
+      />
+      <div className=" w-full p-4 custom-scrollbar-for-menu gap-20 ">
+        <div className="py-1 mb-4">
+          <Typography sx={{ fontSize: 24, fontWeight: "bold" }}>
+            Dashboard
+          </Typography>
+          <p className="text-[14px] text-gray-500">
+            Welcome to the Employee Self-Service (ESS) Dashboard
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 ">
+          <HolidayCard title="Sick Leave" image={sickicon} value={8} />
+          <HolidayCard title="Earned Leave" image={earnicon} value={8} />
+          <HolidayCard
+            title="Compensatory Leave"
+            image={accespticon}
+            value={8}
+          />
+          <HolidayCard title="Work From Home" image={homeicon} value={8} />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:place-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 mt-8">
+          <SlideShowCard />
+          <SlideShowCard title="Birthday Bash" />
+          <SlideShowCard title="Anniversary" />
+        </div>
+
+        <div className="w-full  bg-white shadow-md p-3 mt-8  rounded-0 ring-2 ring-gray-300/50">
+          <h2 className="mb-4 text-lg font-semibold  ">
+            Today's On Office Absence
+          </h2>
+          <div className="h-100 overflow-y-auto will-change-transform">
+            <OfficeAbsenceComponent />
+          </div>
+        </div>
+
+        <div className="w-full   m-auto rounded-0 ring-2 ring-gray-300/50 my-6 p-3">
+          <span className="text-lg font-semibold">Attendance Trend</span>
+          <CustomChart />
         </div>
       </div>
-
-      <div className="w-full   m-auto rounded-0 ring-2 ring-gray-300/50 my-6 p-3">
-        <span className="text-lg font-semibold">Attendance Trend</span>
-        <CustomChart />
-      </div>
-    </div>
+    </>
   );
 };
 
