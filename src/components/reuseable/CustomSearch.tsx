@@ -13,6 +13,7 @@ type CustomSearchPropsType = {
   textColor?: string;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   itemRefs?: any;
+  value?: string;
 };
 
 const CustomSearch = forwardRef<HTMLInputElement, CustomSearchPropsType>(
@@ -26,13 +27,18 @@ const CustomSearch = forwardRef<HTMLInputElement, CustomSearchPropsType>(
       borderRadius = 10,
       textColor,
       onKeyDown,
+      value,
     },
     ref
   ) => {
     return (
-      <SearchContainer bgColor={bgColor} bgOpacity={bgOpacity} borderRadius={borderRadius}>
+      <SearchContainer
+        bgColor={bgColor}
+        bgOpacity={bgOpacity}
+        borderRadius={borderRadius}
+      >
         <SearchIconWrapper>
-          <SearchIcon  sx={{color:"#4a4a4aff"}}/>
+          <SearchIcon sx={{ color: "#4a4a4aff" }} />
         </SearchIconWrapper>
         <StyledInputBase
           placeholder={placeholder}
@@ -42,6 +48,7 @@ const CustomSearch = forwardRef<HTMLInputElement, CustomSearchPropsType>(
           onKeyDown={onKeyDown}
           inputRef={ref}
           textColor={textColor}
+          value={value}
         />
       </SearchContainer>
     );
@@ -54,11 +61,12 @@ interface SearchStyleProps {
   bgColor?: string;
   bgOpacity?: number;
   borderRadius?: number;
-  textColor?:string
+  textColor?: string;
 }
 
 const SearchContainer = styled("div", {
-  shouldForwardProp: (prop:any) => !["bgColor", "bgOpacity", "borderRadius"].includes(prop),
+  shouldForwardProp: (prop: any) =>
+    !["bgColor", "bgOpacity", "borderRadius"].includes(prop),
 })<SearchStyleProps>(({ theme, bgColor, bgOpacity, borderRadius }) => ({
   position: "relative",
   borderRadius: borderRadius ?? 10,
@@ -91,8 +99,9 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase, {
-  shouldForwardProp: (prop:any) => !["bgColor", "bgOpacity", "borderRadius"].includes(prop),
-})<SearchStyleProps>(({ theme, textColor}) => ({
+  shouldForwardProp: (prop: any) =>
+    !["bgColor", "bgOpacity", "borderRadius"].includes(prop),
+})<SearchStyleProps>(({ theme, textColor }) => ({
   color: "inherit",
   width: "100%",
   "& .MuiInputBase-input": {

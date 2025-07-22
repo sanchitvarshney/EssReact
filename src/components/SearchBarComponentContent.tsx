@@ -11,6 +11,7 @@ import { useToast } from "../hooks/useToast";
 import { useAuth } from "../contextapi/AuthContext";
 import { useDispatch } from "react-redux";
 import { setEmplyeeCode } from "../slices/authSlices";
+import noResultsImg from "../assets/no-results.png";
 
 type SearchBarComponentContentType = {
   inputText: string;
@@ -34,28 +35,25 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
 
   useEffect(() => {
     if (inputText.length > 2) {
-      fetchEmployee({ emp_code: inputText, emp_name: inputText }).then((res) => {
-    
-        if (res?.data?.status === "error") {
-          showToast(res?.data?.message, "error");
-       
-         return
-      
-        }
-      }).catch((err) => {
-        showToast(err?.data?.message, "error");
-      });
+      fetchEmployee({ emp_code: inputText, emp_name: inputText })
+        .then((res) => {
+          if (res?.data?.status === "error") {
+            showToast(res?.data?.message, "error");
+
+            return;
+          }
+        })
+        .catch((err) => {
+          showToast(err?.data?.message, "error");
+        });
     }
   }, [inputText]);
 
   useEffect(() => {
     if (data?.data.length > 0) {
-    
       setFilteredData(data?.data);
-    }
-    else {
+    } else {
       setFilteredData([]);
-          onSelect && onSelect(false) 
     }
   }, [data?.data]);
 
@@ -93,19 +91,23 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
 
   // Handle Enter key selection
   React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (
-        e.key === "Enter" &&
-        selectedIndex >= 0 &&
-        filteredData[selectedIndex]
-      ) {
-        onSelect && onSelect(filteredData[selectedIndex]);
+    const handleSelectSearchResult = (e: any) => {
+      const idx = e.detail.selectedIndex;
+      if (filteredData.length > 0) {
+        const item = filteredData[idx >= 0 ? idx : 0];
+        if (item) {
+          dispatch(setEmplyeeCode({ empCode: item?.id }));
+          onSelect && onSelect(item);
+        }
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedIndex, filteredData, onSelect]);
- 
+    window.addEventListener("selectSearchResult", handleSelectSearchResult);
+    return () =>
+      window.removeEventListener(
+        "selectSearchResult",
+        handleSelectSearchResult
+      );
+  }, [filteredData, selectedIndex, onSelect, dispatch]);
 
   return (
     <div className="w-full ">
@@ -117,7 +119,6 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
         <List sx={{ padding: 0 }} className="p-0">
           {isLoading ? (
             <div className="flex flex-col justify-center items-center h-50">
-         
               <Typography
                 variant="subtitle1"
                 className={`font-medium ${
@@ -129,6 +130,23 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
                   : "Please wait"}
               </Typography>
               <DotLoading />
+            </div>
+          ) : filteredData.length === 0 && inputText.length >= 3 ? (
+            <div className="flex flex-col justify-center items-center h-50 p-4">
+              <img
+                src={noResultsImg}
+                alt="No data found"
+                style={{ width: 100, opacity: 0.7 }}
+              />
+              <Typography
+                variant="subtitle1"
+                className="font-medium text-gray-500 mt-2"
+              >
+                No employees found
+              </Typography>
+              <Typography variant="body2" className="text-gray-400">
+                Try adjusting your search or check for typos.
+              </Typography>
             </div>
           ) : (
             <>
@@ -144,29 +162,23 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
                       selectedIndex === idx ? "bg-gray-200" : ""
                     }`}
                     onClick={() => {
-                      dispatch(setEmplyeeCode({empCode: result?.id}));
-                       onSelect && onSelect(result) 
-                      
-                      }}
+                      dispatch(setEmplyeeCode({ empCode: result?.id }));
+                      onSelect && onSelect(result);
+                    }}
                     onMouseEnter={() => setSelectedIndex(idx)}
                   >
                     <ListItemText
                       primary={
-                    
-
-                       
                         <Typography
                           variant="subtitle1"
                           className="font-medium text-gray-800"
                         >
                           {`${result?.text} (${result?.id})`}
                         </Typography>
-                        
-                        
                       }
                       secondary={
                         <Typography variant="body2" className=" text-gray-800">
-                            {`${result?.designation} (${result?.department})`}
+                          {`${result?.designation} (${result?.department})`}
                         </Typography>
                       }
                     />

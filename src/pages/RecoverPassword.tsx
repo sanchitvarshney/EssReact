@@ -80,7 +80,7 @@ const RecoverPassword = () => {
               <p>If you have password?</p>
               <button
                 type="button"
-                className="text-[#2eacb3] hover:underline text-sm font-medium focus:outline-none focus:underline transition-all px-1 py-0.5 rounded"
+                className="text-[#2eacb3] hover:underline text-sm font-medium focus:outline-none focus:underline transition-all px-1 py-0.5 rounded cursor-pointer pl-4"
                 tabIndex={0}
                 onClick={() => navigation("/sign-in")}
               >

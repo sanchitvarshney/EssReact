@@ -156,7 +156,7 @@ const SignInScreen = () => {
             <div className="flex justify-end">
               <button
                 type="button"
-                className="text-[#2eacb3] hover:underline text-sm font-medium focus:outline-none focus:underline transition-all px-1 py-0.5 rounded"
+                className="text-[#2eacb3] hover:underline text-sm font-medium focus:outline-none focus:underline transition-all px-1 py-0.5 rounded cursor-pointer"
                 tabIndex={0}
                 onClick={() => navigation("/recover-password")}
               >
@@ -171,7 +171,7 @@ const SignInScreen = () => {
             ) : (
               <button
                 type="submit"
-                className="w-full bg-[#2eacb3] text-white font-semibold py-2.5 rounded-lg shadow-md hover:bg-[#279aa0] active:bg-[#238b91] transition-colors duration-200 text-lg focus:outline-none focus:ring-2 focus:ring-[#2eacb3]/60"
+                className="w-full bg-[#2eacb3] text-white font-semibold py-2.5 rounded-lg shadow-md hover:bg-[#279aa0] active:bg-[#238b91] transition-colors duration-200 text-lg focus:outline-none focus:ring-2 focus:ring-[#2eacb3]/60 cursor-pointer"
               >
                 Sign In
               </button>

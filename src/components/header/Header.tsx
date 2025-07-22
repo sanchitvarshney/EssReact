@@ -17,7 +17,6 @@ import { useMediaQuery } from "@mui/material";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 import SearchBarComponent from "../dropdowns/SearchBarComponent";
 
-
 import CustomPopover from "../reuseable/CustomPopover";
 import NotificationDropDown from "../dropdowns/NotificationDropDown";
 import ProfileDropDown from "../dropdowns/ProfileDropDown";
@@ -25,7 +24,6 @@ import { useNavigate } from "react-router-dom";
 import logoImg from "../../assets/img/hrms_mscorpres_logo.png";
 import { useAuth } from "../../contextapi/AuthContext";
 import { useSelector } from "react-redux";
-
 
 const pages = ["Products", "Pricing", "Blog"];
 
@@ -50,8 +48,8 @@ function Header() {
   const [isOpenNotification, setIsOpenNotification] = React.useState(false);
 
   const isSmallScreen = useMediaQuery("(max-width:450px)");
-  const {empCode} =useSelector((state:any)=>state?.auth)
- 
+  const { empCode } = useSelector((state: any) => state?.auth);
+
   const handleOpenUserMenu = () => {
     setAnchorElUser(true);
   };
@@ -60,13 +58,12 @@ function Header() {
     setAnchorElNav(null);
   };
 
-
   React.useEffect(() => {
     if (empCode) {
       navigate(`/employee/details/${empCode}`);
-    } 
+      setSearchText("");
+    }
   }, [empCode]);
-  
 
   return (
     <AppBar
@@ -98,7 +95,7 @@ function Header() {
                 onClick={toggleDrawerOpen}
                 color="inherit"
               >
-                <MenuIcon    sx={{  color: "#4a4a4aff" }}/>
+                <MenuIcon sx={{ color: "#4a4a4aff" }} />
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -136,7 +133,6 @@ function Header() {
           >
             <CustomSearch
               ref={inputRef}
-            
               width={isSmallScreen ? "20ch" : "60ch"}
               placeholder={`${
                 isSmallScreen
@@ -145,9 +141,8 @@ function Header() {
               }`}
               onChange={(e) => {
                 const value = e.target.value;
-
                 setSearchText(value);
-                setOpenSearch(value.trim().length > 0);
+                setOpenSearch(value.trim().length >= 3);
                 setSelectedIndex(-1);
               }}
               onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -161,7 +156,14 @@ function Header() {
                   setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
                   e.preventDefault();
                 } else if (e.key === "Enter") {
-                  console.log("enter");
+                  // On Enter, select the highlighted item or the first item if none is highlighted
+                  if (searchValueLength > 0) {
+                    const event = new CustomEvent("selectSearchResult", {
+                      detail: { selectedIndex },
+                    });
+                    window.dispatchEvent(event);
+                    setOpenSearch(false);
+                  }
                   e.preventDefault();
                 }
               }}
@@ -170,7 +172,6 @@ function Header() {
             />
             {searchText && (
               <SearchBarComponent
-         
                 open={openSearch}
                 close={() => setOpenSearch(false)}
                 searchQuary={searchText}
@@ -186,12 +187,15 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             {/* {!isSmallScreen && ( */}
             <>
-              <IconButton onClick={() => setIsOpenNotification(true)} sx={{mr: 2}}>
+              <IconButton
+                onClick={() => setIsOpenNotification(true)}
+                sx={{ mr: 2 }}
+              >
                 {/* <Badge badgeContent={0} color="error" sx={{ p: 0, mr: 2 }}> */}
-                  <NotificationsIcon
-                    ref={notificationRef}
-                    sx={{ fontSize: 30, color: "#4a4a4aff" }}
-                  />
+                <NotificationsIcon
+                  ref={notificationRef}
+                  sx={{ fontSize: 30, color: "#4a4a4aff" }}
+                />
                 {/* </Badge> */}
               </IconButton>
 
