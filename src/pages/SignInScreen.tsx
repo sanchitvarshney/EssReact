@@ -11,7 +11,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../contextapi/AuthContext";
 import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
-import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
 
 const SignInScreen = () => {
   const { signIn } = useAuth();
@@ -187,19 +186,6 @@ const SignInScreen = () => {
           </form>
         </div>
       </div>
-
-      <CyberAlertDialog
-        open={showCyberAlert}
-        onOpenChange={(open) => {
-          // Only allow closing if user clicks I Read
-          if (!open) return; // block closing from outside click/escape
-          setShowCyberAlert(open);
-        }}
-        onConfirm={() => {
-          setShowCyberAlert(false);
-          handleCyberAlertConfirm();
-        }}
-      />
     </div>
   );
 };

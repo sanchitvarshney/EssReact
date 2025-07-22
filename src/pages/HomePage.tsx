@@ -15,6 +15,8 @@ import { keyframes, useTheme } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 // import SendIcon from "@mui/icons-material/Send";
 import nextgenimg from "../assets/lightlogov2.svg";
+import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
+import { useEffect, useState } from "react";
 
 // Create dynamic keyframes based on screen size
 const getScrollKeyframes = (fromX: string, toX: string) => keyframes`
@@ -32,6 +34,14 @@ const HomePage = () => {
   const fromX = isSmallDevice ? "20%" : isMediamDevice ? "40%" : "100%";
   const toX = isSmallDevice ? "-20%" : isMediamDevice ? "-40%" : "-100%";
   const scroll = getScrollKeyframes(fromX, toX);
+
+  const [showCyberAlert, setShowCyberAlert] = useState(true);
+  useEffect(() => {
+    setShowCyberAlert(true);
+  }, []);
+  const handleCyberAlertConfirm = () => {
+    setShowCyberAlert(false);
+  };
 
   return (
     <div className="w-full  h-[calc(100vh-90px)] flex justify-center overflow-y-auto will-change-transform">
@@ -156,6 +166,18 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+      <CyberAlertDialog
+        open={showCyberAlert}
+        onOpenChange={(open) => {
+          // Only allow closing if user clicks I Read
+          if (!open) return; // block closing from outside click/escape
+          setShowCyberAlert(open);
+        }}
+        onConfirm={() => {
+          setShowCyberAlert(false);
+          handleCyberAlertConfirm();
+        }}
+      />
     </div>
   );
 };
