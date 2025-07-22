@@ -20,10 +20,10 @@ export const homeData: homeMenuTypes[] = [
 
   { id: "vibe", title: "Vibe", icon: vibe, path: "/vibe" },
   {
-    id: "compensation",
-    title: "Compensation",
+    id: "payroll",
+    title: "Payroll",
     icon: compensation,
-    path: "/compensation",
+    path: "/payroll",
   },
   {
     id: "attendance",

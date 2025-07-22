@@ -29,6 +29,7 @@ import Protected from "./src/routes/Protected";
 import SignInScreen from "./src/pages/SignInScreen";
 import TaskPage from "./src/pages/TaskPage";
 import { HierarchyProvider } from "./src/contextapi/hierarchyProvider";
+import EmployeeDetails from "./src/pages/EmployeeDetails";
 
 export const route = createBrowserRouter([
   {
@@ -90,7 +91,7 @@ export const route = createBrowserRouter([
             element: <WFHPage />,
           },
           {
-            path: "compensation",
+            path: "payroll",
             element: <PaySlipPage />,
           },
           {
@@ -144,6 +145,14 @@ export const route = createBrowserRouter([
           {
             path: "reimbursement/grant",
             element: <ReimbursementGrantPage />,
+          },
+          {
+            path: "employee/details/:empCode",
+            element: (
+              <HierarchyProvider>
+                <EmployeeDetails />
+              </HierarchyProvider>
+            ),
           },
         ],
       },

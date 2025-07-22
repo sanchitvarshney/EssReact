@@ -30,7 +30,8 @@ export const EmployeeTree: FC<EmployeeTreeProps> = ({
       label={
         <NodeCard
           name={node.name}
-          title={node.title}
+            role={node.other?.designation}
+          dept={node.other?.department}
           imageUrl={node.imageUrl}
           tags={node.tags}
           hasChildren={hasChildren}

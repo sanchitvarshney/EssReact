@@ -19,7 +19,7 @@ export const DrawerContextApi: FC<DrawerContextApiPropsType> = ({
   children,
 }) => {
   const [open, setOpen] = useState(false);
-  const [isExpended, setIsExpended] = useState<boolean>(true);
+  const [isExpended, setIsExpended] = useState<boolean>(false);
   const [accordionValues, setAccordionValues] = useState<{
     [key: string]: string;
   }>({});

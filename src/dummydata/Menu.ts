@@ -63,9 +63,9 @@ export const menu: MenuItem[] = [
     path: "/attendance",
   },
   {
-    id: "compensation",
-    title: "Compensation",
-    path: "/compensation",
+    id: "payroll",
+    title: "Payroll",
+    path: "/payroll",
     icon: "compensation",
   },
   {

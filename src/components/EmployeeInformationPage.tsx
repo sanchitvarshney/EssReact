@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { CustomButton } from "./ui/CustomButton";
+// import { CustomButton } from "./ui/CustomButton";
 
 import EditIcon from "@mui/icons-material/Edit";
 import { IconButton, TextField, Typography } from "@mui/material";
@@ -72,7 +72,7 @@ const Information = ({
 };
 
 const EmployeeInformationPage = ({
-  editMode = false,
+  // editMode = false,
   data,
 }: {
   editMode?: boolean;
@@ -466,7 +466,7 @@ const EmployeeInformationPage = ({
         </div>
       </div>
 
-      {editMode && (
+      {/* {editMode && (
         <div className="w-full my-5 flex">
           <CustomButton
             className=" mx-auto px-12 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-102 transition-all duration-200 text-white"
@@ -475,7 +475,7 @@ const EmployeeInformationPage = ({
             Update information Approval
           </CustomButton>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

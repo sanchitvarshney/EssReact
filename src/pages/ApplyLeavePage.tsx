@@ -131,7 +131,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-      mode: "onTouched",
+    mode: "onTouched",
   });
 
   const toDate = form.watch("toDate");
@@ -179,7 +179,9 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
         })
         .catch((err) => {
           showToast(
-            err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+            err?.data?.message?.msg ||
+              err?.message ||
+              "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
             "error"
           );
         });
@@ -188,18 +190,18 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
 
   const handleSetRecipient = (value: any) => {
     const MAX_RECIPIENTS = 3;
-     const alreadyExists = recipient.some((r: any) => r.id === value.id); // adjust `id` if needed
-  if (alreadyExists){
-    showToast("Recipient already exists", "error");
-    return;
-  };
+    const alreadyExists = recipient.some((r: any) => r.id === value.id); // adjust `id` if needed
+    if (alreadyExists) {
+      showToast("Recipient already exists", "error");
+      return;
+    }
     if (recipient.length >= MAX_RECIPIENTS) {
       showToast("You can only add up to 3 recipients", "error");
-return;
-    } 
+      return;
+    }
 
-  setRecipient((prev: any) => [...prev, value]);
-  setSearchText("");
+    setRecipient((prev: any) => [...prev, value]);
+    setSearchText("");
   };
 
   useEffect(() => {
@@ -219,7 +221,9 @@ return;
         })
         .catch((err) => {
           showToast(
-            err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+            err?.data?.message?.msg ||
+              err?.message ||
+              "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
             "error"
           );
         });
@@ -269,13 +273,13 @@ return;
       })
       .catch((err) => {
         showToast(
-          err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+          err?.data?.message?.msg ||
+            err?.message ||
+            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
           "error"
         );
       });
   };
-
-  
 
   return (
     <div className=" flex flex-col items-center   ">
@@ -515,8 +519,12 @@ return;
         </Form>
       </div>
 
-      <div className="flex justify-center mt-8 sticky bottom-0 w-full z-10 bg-white">
-        <CustomButton onClick={handleConfirmSubmit} className={btnstyle}>
+      <div className="flex justify-center  absolute bottom-3 w-full z-10 border-t-1  border-gray-300 bg-white">
+        <CustomButton
+          onClick={handleConfirmSubmit}
+          className={btnstyle}
+          style={{ marginTop: "12px" }}
+        >
           {applySLLeaveLoading ? (
             <CircularProgress sx={{ color: "#ffffff" }} size={"25px"} />
           ) : (

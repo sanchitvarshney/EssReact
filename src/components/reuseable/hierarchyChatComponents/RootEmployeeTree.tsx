@@ -72,14 +72,7 @@ export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
             <div style={{ fontSize: 14, color: "#cbd5e1" }}>
               {node?.title || "Position"}
             </div>
-            <div
-              style={{
-                marginTop: 6,
-                display: "flex",
-                gap: 6,
-                flexWrap: "wrap",
-              }}
-            ></div>
+          
             <div className="mt-4">
               {node?.children && node.children.length > 0 && (
                 <IconButton

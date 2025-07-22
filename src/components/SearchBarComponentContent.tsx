@@ -9,6 +9,8 @@ import { useFetchEmployeeMutation } from "../services/Leave";
 import DotLoading from "./reuseable/DotLoading";
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../contextapi/AuthContext";
+import { useDispatch } from "react-redux";
+import { setEmplyeeCode } from "../slices/authSlices";
 
 type SearchBarComponentContentType = {
   inputText: string;
@@ -22,6 +24,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
   selectedIndex,
   setSelectedIndex,
 }) => {
+  const dispatch = useDispatch();
   const { showToast } = useToast();
   const { setSearchValueLength } = useAuth();
   const [fetchEmployee, { data, isLoading, error }] =
@@ -31,15 +34,30 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
 
   useEffect(() => {
     if (inputText.length > 2) {
-      fetchEmployee({ emp_code: inputText, emp_name: inputText });
+      fetchEmployee({ emp_code: inputText, emp_name: inputText }).then((res) => {
+    
+        if (res?.data?.status === "error") {
+          showToast(res?.data?.message, "error");
+       
+         return
+      
+        }
+      }).catch((err) => {
+        showToast(err?.data?.message, "error");
+      });
     }
   }, [inputText]);
 
   useEffect(() => {
-    if (data) {
-      setFilteredData(data);
+    if (data?.data.length > 0) {
+    
+      setFilteredData(data?.data);
     }
-  }, [data]);
+    else {
+      setFilteredData([]);
+          onSelect && onSelect(false) 
+    }
+  }, [data?.data]);
 
   useEffect(() => {
     setSearchValueLength(filteredData.length);
@@ -87,6 +105,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedIndex, filteredData, onSelect]);
+ 
 
   return (
     <div className="w-full ">
@@ -96,8 +115,9 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
         className="bg-white  shadow-0 h-60  overflow-y-auto custom-scrollbar-for-menu will-change-transform focus:outline-none focus:ring-0"
       >
         <List sx={{ padding: 0 }} className="p-0">
-          {filteredData.length === 0 || isLoading ? (
+          {isLoading ? (
             <div className="flex flex-col justify-center items-center h-50">
+         
               <Typography
                 variant="subtitle1"
                 className={`font-medium ${
@@ -112,7 +132,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
             </div>
           ) : (
             <>
-              {filteredData.map((result: any, idx: number) => (
+              {filteredData?.map((result: any, idx: number) => (
                 <div
                   key={result.id}
                   ref={(el) => {
@@ -123,21 +143,30 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
                     className={`hover:bg-gray-50 transition-colors cursor-pointer ${
                       selectedIndex === idx ? "bg-gray-200" : ""
                     }`}
-                    onClick={() => onSelect && onSelect(result)}
+                    onClick={() => {
+                      dispatch(setEmplyeeCode({empCode: result?.id}));
+                       onSelect && onSelect(result) 
+                      
+                      }}
                     onMouseEnter={() => setSelectedIndex(idx)}
                   >
                     <ListItemText
                       primary={
+                    
+
+                       
                         <Typography
                           variant="subtitle1"
                           className="font-medium text-gray-800"
                         >
-                          {result?.text}
+                          {`${result?.text} (${result?.id})`}
                         </Typography>
+                        
+                        
                       }
                       secondary={
                         <Typography variant="body2" className=" text-gray-800">
-                          ({result?.id})
+                            {`${result?.designation} (${result?.department})`}
                         </Typography>
                       }
                     />

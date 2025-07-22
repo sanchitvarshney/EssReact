@@ -98,9 +98,9 @@ const PaySlipPage = () => {
   }
 
   return (
-    <div className="relative h-[calc(100vh-90px)] flex flex-col items-center overflow-hidden py-4 ">
-      <div className=" w-full max-w-5xl  rounded-lg  h-full  p-4">
-        <h2 className="text-3xl font-bold mb-4 text-center text-gray-800">
+    <div className=" h-[calc(100vh-90px)] flex flex-col items-center overflow-hidden py-4 ">
+      <div className=" w-full max-w-5xl  rounded-lg  h-full  p-2">
+        <h2 className="text-3xl font-bold mb-3 text-center text-gray-800">
           Pay Slip
         </h2>
 
@@ -139,7 +139,7 @@ const PaySlipPage = () => {
             <DotLoading />{" "}
           </div>
         ) : (
-          <div className="w-full h-[40vh] sm:h-[40vh] md:h-[52vh] will-change-transform overflow-y-auto">
+          <div className="w-full relative h-[40vh] sm:h-[45vh] md:h-[55vh] will-change-transform overflow-y-auto">
             {data?.earing && (
               <>
                 <div className=" mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 ">
@@ -185,7 +185,7 @@ const PaySlipPage = () => {
                         )
                       )}
                     </div>
-                    <div className="flex justify-between mt-4 pt-4 border-t font-bold text-red-600">
+                    <div className="flex  justify-between  pt-4 border-t font-bold text-red-600">
                       <span>Total Deductions</span>
                       <span>
                         ₹ {showPayslip ? data?.total[0]?.deductions : star}
@@ -199,7 +199,7 @@ const PaySlipPage = () => {
         )}
       </div>
 
-      <div className="sticky  w-full flex flex-row items-center justify-between space-x-10 px-8 py-1">
+      <div className="absolute bottom-0  w-full flex flex-row items-center justify-between shadow-2xl border-t-1 border-gray-300 space-x-10 px-8 py-1">
         <div>
           {data?.earing && (
             <>

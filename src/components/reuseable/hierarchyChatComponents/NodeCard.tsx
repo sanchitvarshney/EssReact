@@ -6,7 +6,8 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 type NodeCardProps = {
   name: string;
-  title: string;
+  role: string;
+   dept: string;
   imageUrl: string;
   tags: string[];
   hasChildren: boolean;
@@ -18,7 +19,8 @@ type NodeCardProps = {
 };
 export const NodeCard = ({
   name,
-  title,
+  role,
+  dept,
   imageUrl,
   hasChildren,
   isExpanded,
@@ -75,18 +77,8 @@ export const NodeCard = ({
         />
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: 600, fontSize: 18 }}>{name}</div>
-          <div style={{ fontSize: 14, color: highlightType ? "#000" : "#cbd5e1" }}>{title}</div>
-          <div
-            style={{
-              marginTop: 6,
-              display: "flex",
-              gap: 6,
-              flexWrap: "wrap",
-              alignItems: "center",
-            }}
-          >
-            {/* tags */}
-          </div>
+          <div style={{ fontSize: 15, color: highlightType ? "#000" : "#cbd5e1" }}>{role}</div>
+            <div style={{ fontSize: 14, color: highlightType ? "#000" : "#cbd5e1" }}>{dept}</div>
         </div>
       </CardContent>
       {hasChildren && (

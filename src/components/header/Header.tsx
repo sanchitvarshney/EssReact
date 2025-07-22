@@ -24,6 +24,7 @@ import ProfileDropDown from "../dropdowns/ProfileDropDown";
 import { useNavigate } from "react-router-dom";
 import logoImg from "../../assets/img/hrms_mscorpres_logo.png";
 import { useAuth } from "../../contextapi/AuthContext";
+import { useSelector } from "react-redux";
 
 
 const pages = ["Products", "Pricing", "Blog"];
@@ -49,7 +50,8 @@ function Header() {
   const [isOpenNotification, setIsOpenNotification] = React.useState(false);
 
   const isSmallScreen = useMediaQuery("(max-width:450px)");
-
+  const {empCode} =useSelector((state:any)=>state?.auth)
+ 
   const handleOpenUserMenu = () => {
     setAnchorElUser(true);
   };
@@ -59,6 +61,11 @@ function Header() {
   };
 
 
+  React.useEffect(() => {
+    if (empCode) {
+      navigate(`/employee/details/${empCode}`);
+    } 
+  }, [empCode]);
   
 
   return (
@@ -154,6 +161,7 @@ function Header() {
                   setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
                   e.preventDefault();
                 } else if (e.key === "Enter") {
+                  console.log("enter");
                   e.preventDefault();
                 }
               }}

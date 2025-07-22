@@ -128,7 +128,8 @@ const EmployeeProfilePage = () => {
             ) : value === "password" ? (
               <ChangePasswordScreen />
             ) : (
-              <EmployeeHierarchyPage />
+              //@ts-ignore
+              <EmployeeHierarchyPage  userId={user?.id}/>
             )}
           </div>
         </>
