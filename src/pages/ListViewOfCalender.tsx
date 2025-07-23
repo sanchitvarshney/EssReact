@@ -16,7 +16,7 @@ import { customColor } from "../constants/themeConstant";
 
 
 const getTextColor = (key: string) => {
-  const statusLower = key.toLowerCase();
+  const statusLower = key?.toLowerCase();
   switch (statusLower) {
     case "p":
       return {

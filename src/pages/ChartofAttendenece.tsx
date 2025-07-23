@@ -7,20 +7,6 @@ import {
   Bar,
 } from "recharts";
 
-// const months = [
-//   "January", "February", "March", "April", "May", "June",
-//   "July", "August", "September", "October", "November", "December"
-// ];
-
-// const rawData = [
-//   { name: "WO", data: [3, 4, 4, 4, 4, 5, 4, 5, 4, 4, 5, 4] },
-//   { name: "P", data: [24, 16, 18, 23, 24, 17, 13, 0, 0, 0, 0, 0] },
-//   { name: "A", data: [1, 3, 4, 2, 1, 5, 12, 26, 26, 27, 25, 27] },
-//   { name: "SRT", data: [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-//   { name: "MIS", data: [1, 4, 1, 0, 1, 1, 2, 0, 0, 0, 0, 0] },
-//   { name: "HLD", data: [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0] },
-// ];
-
 const ChatofAttendenece = ({ data }: { data: any }) => {
   const chartData = data?.months?.map((month: any, index: any) => {
     const entry: any = { month };
@@ -50,9 +36,4 @@ const ChatofAttendenece = ({ data }: { data: any }) => {
     </div>
   );
 };
-
-//
-//
-//
-//
 export default ChatofAttendenece;
