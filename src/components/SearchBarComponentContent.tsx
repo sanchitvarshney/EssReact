@@ -18,12 +18,14 @@ type SearchBarComponentContentType = {
   onSelect?: (user: any) => void;
   selectedIndex: number;
   setSelectedIndex: (index: number) => void;
+  shouldNavigateOnSelect?: boolean; // new prop
 };
 const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
   inputText,
   onSelect,
   selectedIndex,
   setSelectedIndex,
+  shouldNavigateOnSelect = true, // default true
 }) => {
   const dispatch = useDispatch();
   const { showToast } = useToast();
@@ -96,7 +98,9 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
       if (filteredData.length > 0) {
         const item = filteredData[idx >= 0 ? idx : 0] as any;
         if (item) {
-          dispatch(setEmplyeeCode({ empCode: item?.id }));
+          if (shouldNavigateOnSelect) {
+            dispatch(setEmplyeeCode({ empCode: item?.id }));
+          }
           onSelect && onSelect(item);
         }
       }
@@ -107,7 +111,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
         "selectSearchResult",
         handleSelectSearchResult
       );
-  }, [filteredData, selectedIndex, onSelect, dispatch]);
+  }, [filteredData, selectedIndex, onSelect, dispatch, shouldNavigateOnSelect]);
 
   return (
     <div className="w-full ">
@@ -162,7 +166,9 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
                       selectedIndex === idx ? "bg-gray-200" : ""
                     }`}
                     onClick={() => {
-                      dispatch(setEmplyeeCode({ empCode: result?.id }));
+                      if (shouldNavigateOnSelect) {
+                        dispatch(setEmplyeeCode({ empCode: result?.id }));
+                      }
                       onSelect && onSelect(result);
                     }}
                     onMouseEnter={() => setSelectedIndex(idx)}

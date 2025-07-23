@@ -352,6 +352,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                 setSelectedIndex={() => {}}
                 width="300px"
                 onSelect={handleSetRecipient}
+                shouldNavigateOnSelect={false}
               />
             )}
           </div>

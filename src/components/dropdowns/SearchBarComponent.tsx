@@ -10,7 +10,7 @@ interface Props {
   onSelect?: (user: any) => void;
   selectedIndex: number;
   setSelectedIndex: (index: number) => void;
-
+  shouldNavigateOnSelect?: boolean; // new prop
 }
 
 const SearchBarComponent: React.FC<Props> = ({
@@ -22,7 +22,7 @@ const SearchBarComponent: React.FC<Props> = ({
   onSelect,
   selectedIndex,
   setSelectedIndex,
-
+  shouldNavigateOnSelect = true, // default true
 }) => {
   return (
     <Popover
@@ -54,11 +54,11 @@ const SearchBarComponent: React.FC<Props> = ({
       }}
     >
       <SearchBarComponentContent
-    
         inputText={searchQuary}
         onSelect={onSelect}
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
+        shouldNavigateOnSelect={shouldNavigateOnSelect}
       />
     </Popover>
   );
