@@ -13,6 +13,8 @@ interface Props {
   vertical?:any
   horizontal?:any
   transformOrigin?:any
+  
+
 }
 
 const DocView: React.FC<Props> = ({
@@ -20,11 +22,12 @@ const DocView: React.FC<Props> = ({
   close,
   anchorEl,
   width,
-
+height,
   children,
     vertical="center",
   horizontal="right",
-  transformOrigin="right"
+  transformOrigin="right",
+
 }) => {
   return (
     <AnimatePresence>
@@ -54,13 +57,14 @@ const DocView: React.FC<Props> = ({
             },
             sx: {
               width: width ? width : 800,
-              height: "95vh",
+              height: height || "95vh",
               zIndex: 1600,
               display:"flex",
               justifyContent:"center"
               
             },
           }}
+        
         >
           {children}
         </Popover>

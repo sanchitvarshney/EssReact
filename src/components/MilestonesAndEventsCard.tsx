@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import {
   // CardContent,
   Typography,
@@ -51,8 +51,8 @@ const MilestonesAndEventsCard: React.FC<MilestonesAndEventsCardProps> = ({
               
               </div>
             ) : (
-              data?.map((milestone: any) => (
-                <div key={milestone.time}>
+              data?.map((milestone: any,index:any) => (
+                <div key={milestone.time || index}>
                   <Box display="flex" alignItems="center" mb={3}>
                     <Avatar
                       src={
@@ -95,4 +95,4 @@ const MilestonesAndEventsCard: React.FC<MilestonesAndEventsCardProps> = ({
   );
 };
 
-export default MilestonesAndEventsCard;
+export default memo(MilestonesAndEventsCard) ;

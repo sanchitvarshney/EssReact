@@ -69,7 +69,7 @@ const CustomPopover: React.FC<Props> = ({
               mt: 2,
               width: width ? width : 400,
               height: height && height,
-              zIndex: 1600,
+              // zIndex: 1600,
             },
           }}
         >

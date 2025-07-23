@@ -1,6 +1,6 @@
 import {
   Box,
-  ButtonGroup,
+  // ButtonGroup,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -10,27 +10,26 @@ import {
 import { useState, type FC } from "react";
 import CustomToolTip from "../reuseable/CustomToolTip";
 import CampaignIcon from "@mui/icons-material/Campaign";
-import CelebrationIcon from "@mui/icons-material/Celebration";
-import CakeIcon from "@mui/icons-material/Cake";
+// import CelebrationIcon from "@mui/icons-material/Celebration";
+// import CakeIcon from "@mui/icons-material/Cake";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 
 import CloseIcon from "@mui/icons-material/Close";
 
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
+// import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
 import CreateNewPostPage from "../../pages/CreateNewPostPage";
-// import { Note } from "@mui/icons-material";
-// import NoticeboardCard from "../NoticeboardCard";
-// import EventNoteIcon from "@mui/icons-material/EventNote";
-// import MilestonesAndEventsCard from "../MilestonesAndEventsCard";
+
 import CustomTextInput from "../reuseable/CustomTextInput";
 
 const postOption = [
   { label: "All Post", value: "all" },
-  { label: "Anniversary Post", value: "anniversary" },
-  { label: "Birthday Post", value: "birth" },
-  { label: "New Hire Post", value: "new" },
-  { label: "Announcement Post", value: "announcement" },
+  { label: "Anniversary Post", value: "WOKANV" },
+  { label: "Birthday Post", value: "BIRTHDAY" },
+  { label: "New Hire Post", value: "NEWHIRES" },
+  { label: "Announcement Post", value: "ANNOUNCEMENT" },
+  { label: "Event", value: "EVENT" },
+  { label: "Promotion", value: "PROMOTION" },
 ];
 
 type PostHeaderProps = {
@@ -39,8 +38,7 @@ type PostHeaderProps = {
 };
 const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
   const [isNewPost, setIsNewPost] = useState<boolean>(false);
-  const [postType, setPostType] = useState("");
-  // const [isNoticeView, setIsNoticeView] = useState<boolean>(false);
+  const [postType, setPostType] = useState<any>("");
 
   const handleNewPost = (value: string) => {
     switch (value) {
@@ -101,10 +99,12 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
       >
         <div className="w-40 sm:w-60 flex flex-col justify-start items-start gap-1 ">
           <CustomTextInput
-          isDisabled={true}
+            // isDisabled={true}
             field={{
               value: postFilter,
-              onChange: (e: any) => setFilter(e.target.value),
+              onChange: (e: any) => {
+                setFilter(e);
+              },
             }}
             label={"Select Filter"}
             select={true}
@@ -112,17 +112,17 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
           />
         </div>
 
-        <ButtonGroup
+        {/* <ButtonGroup
           variant="outlined"
           aria-label="Basic button group"
           sx={{ display: "flex", alignItems: "center" }}
-        >
+        > */}
           <CustomToolTip title={"Annoucement"} placement={"bottom"}>
             <IconButton onClick={() => handleNewPost("Announcement")} disabled>
               <CampaignIcon sx={{ fontSize: 26, color: "#000" }} />
             </IconButton>
           </CustomToolTip>
-          <CustomToolTip title={"BirthDay"} placement={"bottom"}>
+          {/* <CustomToolTip title={"BirthDay"} placement={"bottom"}>
             <IconButton onClick={() => handleNewPost("BirthDay")} disabled>
               <CakeIcon sx={{ fontSize: 26, color: "#000" }} />
             </IconButton>
@@ -136,8 +136,8 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
             <IconButton onClick={() => handleNewPost("New Hire")} disabled>
               <PersonAddIcon sx={{ fontSize: 26, color: "#000" }} />
             </IconButton>
-          </CustomToolTip>
-        </ButtonGroup>
+          </CustomToolTip> */}
+        {/* </ButtonGroup> */}
       </Box>
 
       <Dialog

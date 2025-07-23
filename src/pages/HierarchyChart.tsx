@@ -384,7 +384,7 @@ const HierarchyChart = () => {
         </div>
       </div>
 
-      <div className="overflow-auto p-4 h-[calc(100vh-150px)]  flex  flex-col">
+      <div className="overflow-auto p-4 h-[calc(100vh-150px)]  flex  flex-col will-change-transform">
         <div
           style={{
             height: "100%",

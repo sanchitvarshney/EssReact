@@ -41,10 +41,11 @@ const ProfileDropDown = ({ close }: { close: any }) => {
           <ListItem
             disablePadding
             key={item.id}
-            className="hover:bg-gray-600/10 "
+            className="hover:bg-gray-600/10 cursor-pointer"
+              onClick={() => handleOptionClick(item)}
           >
             <IconButton
-              onClick={() => handleOptionClick(item)}
+            
               sx={{
                 borderRadius: 0,
                 "&:hover": {

@@ -29,7 +29,7 @@ interface VirtualizedCommentListProps {
 const VirtualizedCommentList: React.FC<VirtualizedCommentListProps> = ({
   data,
 
-  itemSize = 80,
+  itemSize = 65,
 }) => {
   const getInitials = (name: string) => {
     return name
@@ -55,21 +55,18 @@ const VirtualizedCommentList: React.FC<VirtualizedCommentListProps> = ({
     if (!item) return null;
 
     return (
-      
       <ListItem
         style={style}
         key={item.id || index}
         component="div"
         disablePadding
         sx={{
-      
-          borderBottom: "1px solid #f0f0f0",
+          // borderBottom: "1px solid #f0f0f0",
           backgroundColor: index % 2 === 0 ? "#ffffff" : "#fafafa",
           "&:hover": {
             backgroundColor: "#f0f8ff",
           },
           transition: "background-color 0.2s ease",
-          
         }}
       >
         <ListItemButton
@@ -77,7 +74,6 @@ const VirtualizedCommentList: React.FC<VirtualizedCommentListProps> = ({
             padding: "12px 16px",
             alignItems: "flex-start",
             minHeight: itemSize,
-       
           }}
         >
           <Box display="flex" gap={2} width="100%" alignItems="flex-start">
@@ -98,18 +94,33 @@ const VirtualizedCommentList: React.FC<VirtualizedCommentListProps> = ({
             </Avatar>
 
             <Box flex={1} minWidth={0}>
-              <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                <Typography
-                  variant="subtitle2"
-                  fontWeight={600}
-                  sx={{
-                    color: "#2c3e50",
-                    fontSize: "0.9rem",
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {item.author}
-                </Typography>
+              <Box display="flex" alignItems="center" gap={1}>
+                <div className="flex  justify-between w-full items-center">
+                  <Typography
+                    variant="subtitle2"
+                    fontWeight={600}
+                    sx={{
+                      color: "#2c3e50",
+                      fontSize: "0.9rem",
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {item.author}
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{
+                      display: "block",
+                      mb: 0.5,
+                      fontSize: "0.7rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {formatDate(item.timestamp)}
+                  </Typography>
+                </div>
+
                 {item.role && (
                   <Chip
                     label={item.role}
@@ -124,19 +135,6 @@ const VirtualizedCommentList: React.FC<VirtualizedCommentListProps> = ({
                   />
                 )}
               </Box>
-
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                sx={{
-                  display: "block",
-                  mb: 0.5,
-                  fontSize: "0.7rem",
-                  fontWeight: 500,
-                }}
-              >
-                {formatDate(item.timestamp)}
-              </Typography>
 
               <Typography
                 variant="body2"
@@ -187,7 +185,7 @@ const VirtualizedCommentList: React.FC<VirtualizedCommentListProps> = ({
       }}
     >
       <FixedSizeList
-        height={620}
+        height={400}
         width={"100%"}
         itemSize={itemSize}
         itemCount={data.length}

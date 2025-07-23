@@ -1,11 +1,9 @@
-import PostAnnouncementCard from "../components/reuseable/PostAnnouncementCard";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { useInView } from "react-intersection-observer";
-import { motion } from "framer-motion";
-// import NoticeboardCard from "../components/NoticeboardCard";
+
 import MilestonesAndEventsCard from "../components/MilestonesAndEventsCard";
 import PostHeader from "../components/header/PostHeader";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import {
   useGetDOBListMutation,
   useGetHireListQuery,
@@ -13,15 +11,19 @@ import {
 } from "../services/events";
 import AnnouncementPageSkeleton from "../skeleton/AnnouncementPageSkeleton";
 import { useToast } from "../hooks/useToast";
-// import PostAnniversaryCard from "../components/reuseable/PostAnniversaryCard";
+
 import { useLeaveListMutation } from "../services/Leave";
 import AbsenceListPage from "../components/AbsenceListPage";
-import underprogress from "../assets/under-maintenance.png"
+
+import { useLazyGetVibeQuery } from "../services/vibe";
+
+const AnnouncementList = lazy(() => import("../components/AnnouncementList"));
 
 const AnnouncementPage = () => {
   const { showToast } = useToast();
-  const [postFilter, setPostFilter] = useState<string>("announcement");
+  const [postFilter, setPostFilter] = useState<string>("all");
   const [expandedPanel, setExpandedPanel] = useState("birthdays");
+  const [lastId, setLastId] = useState<string | null>(null);
   const [
     getDOBList,
     { data: dobData, isLoading: dobLoading, error: dobError },
@@ -31,15 +33,33 @@ const AnnouncementPage = () => {
     useGetWAListMutation();
   const [leaveList, { data: leaveData, isLoading: leaveLoading }] =
     useLeaveListMutation();
- 
+
   const {
     data: hireData,
     isLoading: hireLoading,
     error: hireError,
   } = useGetHireListQuery();
+
+  const [getVibe, { data: vibeData, isLoading: vibeLoading }] =
+    useLazyGetVibeQuery();
+  const [posts, setPosts] = useState<any>([]);
+  const [hasMore, setHasMore] = useState(true);
+  const limit = 10;
+  const fetchInitialData = async () => {
+    try {
+      await Promise.all([
+        getDOBList({ type: "DOB" }),
+        getWAList({ type: "WA" }),
+      ]);
+    } catch (err) {
+      showToast("Failed to load data", "error");
+    }
+  };
   useEffect(() => {
-    getDOBList({ type: "DOB" });
-    getWAList({ type: "WA" });
+    fetchInitialData();
+  }, []);
+
+  useEffect(() => {
     leaveList()
       .then((res) => {
         if (res?.data?.data?.success === false) {
@@ -56,9 +76,74 @@ const AnnouncementPage = () => {
       });
   }, []);
 
-  const views = Array.from({ length: 2 }, () =>
-    useInView({ triggerOnce: true, threshold: 0.2 })
-  );
+  const { ref, inView } = useInView({
+    threshold: 0.2,
+    triggerOnce: false,
+  });
+
+  const loadMorePosts = async () => {
+    if (!hasMore) return;
+
+    try {
+      const res = await getVibe({
+        limit,
+        last_id: lastId,
+        tmln_type: postFilter,
+      }).unwrap();
+
+     
+
+      if (res?.data?.success === false) {
+        showToast(res?.data?.message || "Failed to load posts", "error");
+        return;
+      }
+
+      
+
+     
+    } catch (err) {
+      showToast(
+        //@ts-ignore
+        err?.data?.message?.msg ||
+          // @ts-ignore
+          err?.message ||
+          "We're Sorry An unexpected error has occurred.",
+        "error"
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (vibeData?.data) {
+      
+
+      const newPosts = vibeData?.data || [];
+      const scrollInfo = vibeData?.scroll || {};
+
+      setPosts((prev: any) => [...prev, ...newPosts]);
+       // Update pagination
+      setHasMore(scrollInfo?.hasMore ?? false);
+      setLastId(scrollInfo?.nextLastId || null);
+    }
+  }, [vibeData?.data]);
+
+  // Load first posts
+  useEffect(() => {
+    loadMorePosts();
+  }, []);
+
+  useEffect(() => {
+    if (inView && hasMore) {
+      loadMorePosts();
+    }
+  }, [inView, hasMore]);
+
+  const handlePanelChange = useCallback((panel: string) => {
+    setExpandedPanel((prev) => (prev === panel ? "" : panel));
+  }, []);
+  const handleSetFilter = useCallback((filter: string) => {
+    setPostFilter((prev) => (prev === filter ? "" : filter));
+  }, []);
 
   useEffect(() => {
     if (dobError || waError || hireError) {
@@ -83,86 +168,50 @@ const AnnouncementPage = () => {
 
   return (
     <>
-      {dobLoading || waLoading || hireLoading || leaveLoading ? (
+      {dobLoading || waLoading || hireLoading || leaveLoading || vibeLoading ? (
         <AnnouncementPageSkeleton />
       ) : (
         <Box className=" h-[calc(100vh-90px)] overflow-auto p-4 gap-4 grid  sm:grid-cols-[2fr_1fr] grid-cols-1  md:grid-cols-[2fr_1fr] lg:grid-cols-[3fr_1fr] ">
           {" "}
           <div className="flex flex-col gap-4">
             <div className="sticky top-[-30px] z-10 ">
-              <PostHeader setFilter={setPostFilter} postFilter={postFilter} />
+              <PostHeader setFilter={handleSetFilter} postFilter={postFilter} />
             </div>
-            {views.map(({ ref, inView }, index) => {
-              return (
-                <motion.div
-                  key={index}
-                  ref={ref}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{
-                    duration: 0.6,
-                    ease: "easeOut",
-                    delay: 0.1 * index,
-                  }}
-                >
-                  <PostAnnouncementCard
-                    postDate={new Date("2025-03-10T16:14:00")}
-                    authorName="MsCorpres Development Team"
-                    authorRole="Engineer"
-                    description="Our brain has fridge, we are working on this and coming soon..."
-                    images={[
-                      underprogress
-                    ]}
-                    timeAgo="0 hours ago"
-                  />
-                </motion.div>
-              );
-            })}
-            {/* <PostAnniversaryCard authorName={"test"} /> */}
+            <div className="space-y-6">
+              <Suspense fallback={<CircularProgress sx={{ color: "#2eacb3" }} />}>
+                <AnnouncementList posts={posts} hasMore={hasMore} ref={ref} />
+              </Suspense>
+            </div>
           </div>
+          {/* <PostAnniversaryCard authorName={"test"} /> */}
           {
             <div className="flex flex-col items-center  sm:gap-4  hidden sm:flex">
               <MilestonesAndEventsCard
                 title="Current Month's Birthdays"
                 data={dobData}
                 expanded={expandedPanel === "birthdays"}
-                onChange={() =>
-                  setExpandedPanel(
-                    expandedPanel === "birthdays" ? "" : "birthdays"
-                  )
-                }
+                onChange={() => handlePanelChange("birthdays")}
               />
 
               <MilestonesAndEventsCard
                 title="Anniversary"
                 data={waList}
                 expanded={expandedPanel === "anniversary"}
-                onChange={() =>
-                  setExpandedPanel(
-                    expandedPanel === "anniversary" ? "" : "anniversary"
-                  )
-                }
+                onChange={() => handlePanelChange("anniversary")}
               />
 
               <MilestonesAndEventsCard
                 title="New Hire's"
                 data={hireData}
                 expanded={expandedPanel === "newhires"}
-                onChange={() =>
-                  setExpandedPanel(
-                    expandedPanel === "newhires" ? "" : "newhires"
-                  )
-                }
+                onChange={() => handlePanelChange("newhires")}
               />
               <AbsenceListPage
                 title="Today's On Office Absence"
                 data={leaveData?.data}
                 expanded={expandedPanel === "absence"}
-                onChange={() =>
-                  setExpandedPanel(expandedPanel === "absence" ? "" : "absence")
-                }
+                onChange={() => handlePanelChange("absence")}
               />
-           
             </div>
           }{" "}
         </Box>

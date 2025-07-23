@@ -62,6 +62,7 @@ const EmployeeDetails = () => {
 
   useEffect(() => {
     if (error) {
+      console.log(error)
       // @ts-ignore
       showToast(error?.data?.message || "Something went wrong", "error");
     }

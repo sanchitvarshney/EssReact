@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import {
   // CardContent,
   Typography,
@@ -24,7 +24,7 @@ const AbsenceListPage: React.FC<AbsenceListPageProps> = ({
   expanded,
   onChange,
 }) => {
-  console.log(data);
+
 
   return (
     <div className="w-full shadow-sm  ">
@@ -107,4 +107,4 @@ const AbsenceListPage: React.FC<AbsenceListPageProps> = ({
   );
 };
 
-export default AbsenceListPage;
+export default memo(AbsenceListPage);
