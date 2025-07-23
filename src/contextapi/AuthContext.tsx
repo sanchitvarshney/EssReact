@@ -76,6 +76,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     window.location.href = "/sign-in";
      setUser(null);
+     localStorage.removeItem("cyberAlertAcknowledged")
   }, []);
 
   return (
