@@ -26,7 +26,15 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
         {...field}
         openTo={openTo}
         views={view}
-        format="DD/MM/YYYY"
+        format={
+          Array.isArray(view) &&
+          view.length === 2 &&
+          view.includes("month") &&
+          view.includes("year")
+            ? "MM/YYYY"
+            : "DD/MM/YYYY"
+        }
+        
         value={value}
         onChange={(date) => {
           const nativeDate = date?.toDate?.();
