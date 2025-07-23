@@ -25,7 +25,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import PaySlipPageSkeleton from "../skeleton/PaySlipPageSkeleton";
 
 import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Divider } from "@mui/material";
 
 const schema = z.object({
   toDate: z.date({ required_error: "Month is required" }),
@@ -211,8 +211,8 @@ const PaySlipPage = () => {
           </div>
         )}
       </div>
-
-      <div className="absolute bottom-0  w-full flex flex-row items-center justify-between shadow-2xl border-t-1 border-gray-300 space-x-10 px-8 py-1">
+<Divider />
+      <div className="sticky   w-full flex flex-row items-center justify-between  space-x-10 px-8 ">
         <div>
           {data?.earing && (
             <>

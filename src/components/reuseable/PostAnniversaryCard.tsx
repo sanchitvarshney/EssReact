@@ -13,12 +13,12 @@ import {
   IconButton,
 } from "@mui/material";
 
-import ComponentIconWithtitle from "./ComponentIconWithtitle";
+// import ComponentIconWithtitle from "./ComponentIconWithtitle";
 import { Input } from "../ui/input";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import SendIcon from "@mui/icons-material/Send";
-import { postCardData } from "../../staticData/postdata";
+// import { postCardData } from "../../staticData/postdata";
 import celebrateIcon from "../../assets/confetti.png";
 
 interface PostAnniversaryCardProps {
@@ -126,13 +126,13 @@ const PostAnniversaryCard = ({
         </Paper>
 
         <div className="flex justify-between flex-wrap px-5 mt-3">
-          {postCardData.map((item) => (
+          {/* {postCardData.map((item) => (
             <ComponentIconWithtitle
               key={item.title}
               icon={item.icon}
               title={item.title}
             />
-          ))}
+          ))} */}
         </div>
         <Divider sx={{ my: 2 }} />
         <div className="mt-3 flex justify-between">

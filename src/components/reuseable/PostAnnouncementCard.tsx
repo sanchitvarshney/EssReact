@@ -36,6 +36,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
   const [isCommentView, setIsCommentView] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [commentText, setCommentText] = useState("");
 
   const handleOpenCommentView = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -215,6 +216,9 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                 <Input
                   placeholder="Write your comment"
                   className="rounded-[20px]  "
+                  
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
                 />
               </div>
               <div className="flex items-center gap-2">
