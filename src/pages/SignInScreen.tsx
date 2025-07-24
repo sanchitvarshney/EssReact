@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import bgImg from "../assets/img/auth_bg.png";
 import logoImg from "../assets/img/hrms_mscorpres_logo.png";
 import { Eye, EyeOff } from "lucide-react";
@@ -14,6 +14,7 @@ import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
 
 const SignInScreen = () => {
   const { signIn } = useAuth();
+  const inputRef = useRef<HTMLInputElement>(null);
   const navigation = useNavigate();
   const { showToast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
@@ -44,6 +45,9 @@ const SignInScreen = () => {
       navigation("/");
     }
   }, [data]);
+  useEffect(() => {
+  inputRef.current?.focus();
+}, []);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,6 +112,7 @@ const SignInScreen = () => {
                   <PersonIcon fontSize="small" />
                 </span>
                 <input
+                  ref={inputRef}
                   type="text"
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2eacb3] focus:border-[#2eacb3] transition-all duration-200 bg-white/80 placeholder-gray-400"
                   placeholder="Enter your employee code"

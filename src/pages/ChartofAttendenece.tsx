@@ -28,7 +28,7 @@ const ChatofAttendenece = ({ data }: { data: any }) => {
           <Bar dataKey="A" stackId="a" fill="#b91c1c" />
           <Bar dataKey="SRT" stackId="a" fill="#6b7280" />
           <Bar dataKey="MIS" stackId="a" fill="#ca8a04" />
-          <Bar dataKey="HLD" stackId="a" fill="#0d9488" />
+          <Bar dataKey="HLD" stackId="a" fill="#577d15ff" />
           <Bar dataKey="WFH" stackId="a" fill="#4f46e5" />
           <Bar dataKey="SL" stackId="a" fill="#f97316" />
         </BarChart>

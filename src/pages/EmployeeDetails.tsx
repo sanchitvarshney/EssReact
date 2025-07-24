@@ -129,31 +129,31 @@ const EmployeeDetails = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
                 <Information
                   label={"Date of joining"}
-                  value={data?.personalInfo?.doj}
+                  value={data?.personalInfo?.doj || "--"}
                 />
                 <Information
                   label={"Date of birth"}
-                  value={data?.personalInfo?.dob}
+                  value={data?.personalInfo?.dob || "--"}
                 />
                 <Information
                   label={"Office Mobile No."}
-                  value={data?.personalInfo?.phone}
+                  value={data?.personalInfo?.phone || "--"}
                 />
                 <Information
                   label={"Email ID"}
-                  value={data?.personalInfo?.email}
+                  value={data?.personalInfo?.email || "--"}
                 />
                 <Information
                   label={"Blood Group"}
-                  value={data?.personalInfo?.bloodGroup}
+                  value={data?.personalInfo?.bloodGroup || "--"}
                 />
                 <Information
                   label={"Grade"}
-                  value={data?.personalInfo?.grade}
+                  value={data?.personalInfo?.grade || "--"}
                 />
                 <Information
                   label={"Hobbies"}
-                  value={data?.personalInfo?.hobbies}
+                  value={data?.personalInfo?.hobbies || "--"}
                 />
               </div>
               <Typography
@@ -168,7 +168,7 @@ const EmployeeDetails = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3   px-4 pl-10 ">
                 <Information
                   label={"Manager"}
-                  value={`${data?.officeInfo?.manager?.name} (${data?.officeInfo?.manager?.empCode})`}
+                  value={`${data?.officeInfo?.manager?.name || "--"} (${data?.officeInfo?.manager?.empCode || "--"})`}
                 />
               </div>
               <Divider sx={{ my: 1 }} />
@@ -187,18 +187,18 @@ const EmployeeDetails = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
                 <Information
                   label={"Company Name"}
-                  value={data?.companyInfo?.name}
+                  value={data?.companyInfo?.name || "--"}
                 />
                 <Information
                   label={"Office Location"}
-                  value={`${data?.officeInfo?.officeLocation}`}
+                  value={`${data?.officeInfo?.officeLocation || "--"}`}
                 />
                 <Information
                   label={"Branch Info"}
                   value={data?.companyInfo?.branch}
                 />
-                <Information label={"GSTIN"} value={data?.companyInfo?.GSTIN} />
-                <Information label={"CIN"} value={data?.companyInfo?.CIN} />
+                <Information label={"GSTIN"} value={data?.companyInfo?.GSTIN || "--"} />
+                <Information label={"CIN"} value={data?.companyInfo?.CIN || "--"} />
               </div>
             </div>
           </div>

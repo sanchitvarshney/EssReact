@@ -228,70 +228,70 @@ const EmployeeInformationPage = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
           <Information
             label={"Father Name"}
-            value={fields?.f_name}
+            value={fields?.f_name || "--"}
             editMode={editSection.basic}
             changeValue={handleChange}
             name="f_name"
           />
           <Information
             label={"Mother Name"}
-            value={fields?.m_name}
+            value={fields?.m_name || "--"}
             editMode={editSection.basic}
             changeValue={handleChange}
             name="m_name"
           />
           <Information
             label={"Spouse"}
-            value={fields?.spouse}
+            value={fields?.spouse || "--"}
             editMode={editSection.basic}
             changeValue={handleChange}
             name="spouse"
           />
           <Information
             label={"PAN Number"}
-            value={fields?.pan}
+            value={fields?.pan || "--"}
             editMode={editSection.basic}
             changeValue={handleChange}
             name="pan"
           />
           <Information
             label={"UAN Number"}
-            value={fields?.uan}
+            value={fields?.uan || "--"}
             editMode={editSection.basic}
             changeValue={handleChange}
             name="uan"
           />
           <Information
             label={"ESI Number"}
-            value={fields?.esi}
+            value={fields?.esi || "--"}
             editMode={editSection.basic}
             changeValue={handleChange}
             name="esi"
           />
           <Information
             label={"Date of joining"}
-            value={fields?.joining}
+            value={fields?.joining || "--"}
             editMode={editSection.basic}
             changeValue={handleChange}
             name="joining"
           />
           <Information
             label={"Date of birth"}
-            value={fields?.dob}
+            value={fields?.dob || "--"}
             editMode={editSection.basic}
             changeValue={handleChange}
             name="dob"
           />
           <Information
             label={"Office Mobile No."}
-            value={fields?.mobile}
+            value={fields?.mobile || "--"}
             editMode={editSection.basic}
             changeValue={handleChange}
             name="mobile"
           />
           <Information
             label={"Email ID"}
-            value={fields?.email}
+            value={fields?.email || "--"}
             editMode={editSection.basic}
             changeValue={handleChange}
             name="email"
@@ -330,35 +330,35 @@ const EmployeeInformationPage = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
           <Information
             label={"House No."}
-            value={`${fields?.c_house_no}`}
+            value={`${fields?.c_house_no || "--" || "--" || "--"}`}
             editMode={editSection.contact}
             changeValue={handleChange}
             name="c_house_no"
           />
           <Information
             label={"Village"}
-            value={`${fields?.c_village}`}
+            value={`${fields?.c_village || "--" || "--" || "--"}`}
             editMode={editSection.contact}
             changeValue={handleChange}
             name="c_village"
           />
           <Information
             label={"Area"}
-            value={`${fields?.c_area}`}
+            value={`${fields?.c_area || "--" || "--" || "--"}`}
             editMode={editSection.contact}
             changeValue={handleChange}
             name="c_area"
           />
           <Information
             label={"City"}
-            value={`${fields?.c_city}`}
+            value={`${fields?.c_city || "--" || "--" || "--"}`}
             editMode={editSection.contact}
             changeValue={handleChange}
             name="c_city"
           />
           <Information
             label={"State"}
-            value={`${fields?.c_state}`}
+            value={`${fields?.c_state || "--" || "--" || "--"}`}
             editMode={editSection.contact}
             changeValue={handleChange}
             name="c_state"
@@ -370,35 +370,35 @@ const EmployeeInformationPage = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
           <Information
             label={"House No."}
-            value={`${fields?.p_house_no}`}
+            value={`${fields?.p_house_no || "--" || "--"}`}
             editMode={editSection.contact}
             changeValue={handleChange}
             name="p_house_no"
           />
           <Information
             label={"Village"}
-            value={`${fields?.p_village}`}
+            value={`${fields?.p_village || "--" || "--"}`}
             editMode={editSection.contact}
             changeValue={handleChange}
             name="p_village"
           />
           <Information
             label={"Area"}
-            value={`${fields?.p_area}`}
+            value={`${fields?.p_area || "--" || "--"}`}
             editMode={editSection.contact}
             changeValue={handleChange}
             name="p_area"
           />
           <Information
             label={"City"}
-            value={`${fields?.p_city}`}
+            value={`${fields?.p_city || "--" || "--"}`}
             editMode={editSection.contact}
             changeValue={handleChange}
             name="p_city"
           />
           <Information
             label={"State"}
-            value={`${fields?.p_state}`}
+            value={`${fields?.p_state || "--"}`}
             editMode={editSection.contact}
             changeValue={handleChange}
             name="p_state"
@@ -437,28 +437,28 @@ const EmployeeInformationPage = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
           <Information
             label={"Name"}
-            value={fields?.e_name}
+            value={fields?.e_name || "--"}
             editMode={editSection.emergency}
             changeValue={handleChange}
             name="e_name"
           />
           <Information
             label={"Mobile Number"}
-            value={fields?.e_mobile}
+            value={fields?.e_mobile || "--"}
             editMode={editSection.emergency}
             changeValue={handleChange}
             name="e_mobile"
           />
           <Information
             label={"Name"}
-            value={fields?.b_name}
+            value={fields?.b_name || "--"}
             editMode={editSection.emergency}
             changeValue={handleChange}
             name="b_name"
           />
           <Information
             label={"Mobile Number"}
-            value={fields?.b_mobile}
+            value={fields?.b_mobile || "--"}
             editMode={editSection.emergency}
             changeValue={handleChange}
             name="b_mobile"
