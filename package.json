@@ -30,6 +30,7 @@
     "class-variance-authority": "^0.7.1",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
+    "emoji-picker-react": "^4.13.2",
     "framer-motion": "^12.16.0",
     "lucide-react": "^0.517.0",
     "moment": "^2.30.1",

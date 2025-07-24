@@ -12,8 +12,9 @@ import {
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 // import { CustomButton } from "../components/ui/CustomButton";
 // import DescriptionIcon from "@mui/icons-material/Description";
-import UndoIcon from '@mui/icons-material/Undo';
+import UndoIcon from "@mui/icons-material/Undo";
 import PendingIcon from "@mui/icons-material/Pending";
+import UnarchiveIcon from "@mui/icons-material/Unarchive";
 
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { styled } from "@mui/material/styles";
@@ -54,33 +55,39 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+export const getStatus = (status: any) => {
+  switch (status) {
+    case "APR":
+      return (
+        <span className="text-[16px] text-green-700 flex items-center text-center">
+          <CheckBoxIcon sx={{ fontSize: 24 }} className=" mr-1" />
+          Approved
+        </span>
+      );
+    case "PEN":
+      return (
+        <span className="text-[16px] text-yellow-700">
+          <PendingIcon sx={{ fontSize: 24 }} className="mr-1" />
+          Pending
+        </span>
+      );
+    case "REJ":
+      return (
+        <span className="text-[16px] text-red-700">
+          <ThumbDownIcon sx={{ fontSize: 24 }} className="mr-1" />
+          Rejected
+        </span>
+      );
 
-  export const getStatus = (status: any) => {
-    switch (status) {
-      case "APR":
-        return (
-          <span className="text-[16px] text-green-700 flex items-center text-center">
-            <CheckBoxIcon sx={{ fontSize: 24 }} className=" mr-1" />
-            Approved
-          </span>
-        );
-      case "PEN":
-        return (
-          <span className="text-[16px] text-yellow-700">
-            <PendingIcon sx={{ fontSize: 24 }} className="mr-1" />
-            Pending
-          </span>
-        );
-
-      default:
-        return (
-          <span className="text-[16px] text-red-700 ">
-            <ThumbDownIcon sx={{ fontSize: 24 }} className="mr-1" />
-            Return
-          </span>
-        );
-    }
-  };
+    default:
+      return (
+        <span className="text-[16px] text-blue-500 ">
+          <UnarchiveIcon sx={{ fontSize: 22 }} className="mr-1" />
+          Withdraw
+        </span>
+      );
+  }
+};
 const LeaveStatusPage = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -115,8 +122,6 @@ const LeaveStatusPage = () => {
     }
   }, [leaveStatusError]);
 
-
-
   const handleDelete = () => {
     setIsConfirm(false);
     const payload = {
@@ -137,7 +142,9 @@ const LeaveStatusPage = () => {
       })
       .catch((err) => {
         showToast(
-          err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+          err?.data?.message?.msg ||
+            err?.message ||
+            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
           "error"
         );
       });

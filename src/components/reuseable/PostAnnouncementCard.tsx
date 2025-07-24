@@ -13,12 +13,11 @@ import {
   IconButton,
   Popover,
 } from "@mui/material";
-
+import EmojiPicker, { EmojiStyle, Theme } from "emoji-picker-react";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import SendIcon from "@mui/icons-material/Send";
 
-
-import { memo, useState, type FC } from "react";
+import { memo, useEffect, useState, type FC } from "react";
 
 import VirtualizedCommentList from "./VirtualizedCommentList";
 import { Input } from "../ui/input";
@@ -26,26 +25,101 @@ import { Input } from "../ui/input";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import likeicon from "../../assets/heart.png";
+import {
+  useSendCommentMutation,
+  useSendLikeMutation,
+} from "../../services/vibe";
+import { useToast } from "../../hooks/useToast";
+import { useAuth } from "../../contextapi/AuthContext";
 
 interface PostAnnouncementCardProps {
   post: any;
 }
 
 const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
-  // console.log(post)
+  const { showToast } = useToast();
+  const { user } = useAuth();
   const [isCommentView, setIsCommentView] = useState(false);
   const [showInput, setShowInput] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorElComment, setAnchorElComment] = useState<null | HTMLElement>(
+    null
+  );
+  const [anchorElEmoji, setAnchorElEmoji] = useState<null | HTMLElement>(null);
   const [commentText, setCommentText] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const [sendComment, { data: commentData }] = useSendCommentMutation();
+  const [sendLike, { data: likeData, isSuccess }] = useSendLikeMutation();
+
+  const [isLikeView, setIsLikeView] = useState(false);
+  const [isLike, setIsLike] = useState(false);
+
+  const [anchorElLike, setAnchorElLike] = useState<null | HTMLElement>(null);
 
   const handleOpenCommentView = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorElComment(event.currentTarget);
     setIsCommentView(true);
   };
+  const handleOpenLikeView = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElLike(event.currentTarget);
+    setIsLikeView(true);
+  };
 
-  // const handleView = () => {
-  //   setIsCommentView(true);
-  // };
+  const handleComment = (key: string) => {
+    if (commentText.trim() === "") {
+      showToast("Comment cannot be empty", "error");
+      return;
+    }
+    const payload = {
+      comment: commentText,
+      post_key: key,
+    };
+
+    sendComment(payload)
+      .then((res) => {
+        if (res?.data?.status === "error") {
+          showToast(res?.data?.message, "error");
+          setCommentText("");
+        }
+        if (res?.data?.status === "success") {
+          showToast(res?.data?.message, "success");
+          setCommentText("");
+        }
+      })
+      .catch((err) => {
+        showToast(err?.data?.message, "error");
+      });
+  };
+
+  const handleLike = (key: string) => {
+    const payload = {
+      post_key: key,
+    };
+    sendLike(payload)
+      .then((res) => {
+        if (res?.data?.status === "error") {
+          showToast(res?.data?.message, "error");
+          setCommentText("");
+        }
+        if (res?.data?.status === "success") {
+          showToast(res?.data?.message, "success");
+        }
+      })
+      .catch((err) => {
+        showToast(err?.data?.message, "error");
+      });
+  };
+  //@ts-ignore
+  const userid: any = user?.id;
+  useEffect(() => {
+    const liked = post.likes?.some((item: any) => item?.userId === userid);
+
+    setIsLike(liked);
+  }, [post, userid, isSuccess]);
+
+  const handleEmojiClick = (emojiData: { emoji: string }) => {
+    setCommentText(commentText + emojiData.emoji);
+  };
 
   return (
     <Card
@@ -174,8 +248,11 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                   background: "rgba(52, 159, 195, 0.23)",
                 },
               }}
+              onClick={() => handleLike(post?.postKey)}
             >
-              <ThumbUpIcon sx={{ color: "#000", fontSize: 24 }} />
+              <ThumbUpIcon
+                sx={{ color: isLike ? "red" : "#000", fontSize: 24 }}
+              />
             </IconButton>
             <IconButton
               sx={{
@@ -189,22 +266,33 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
             </IconButton>
           </div>
           <div className="">
-            <div className="flex items-center space-x-2 ">
-              <Avatar
-                src={likeicon}
-                alt="likes"
-                variant="square"
-                sx={{ objectFit: "contain", width: 26, height: 26 }}
-              />
-              <span className="select-none text-sm  border-b-1 border-gray-500">{`${
-                post?.likes || 0
-              } Likes`}</span>
-            </div>
-            <div className=" cursor-pointer" onClick={handleOpenCommentView}>
-              <span className="select-none text-sm border-b-1 border-gray-500">{`${
-                post?.comments.length || 0
-              } Comments`}</span>
-            </div>
+            {(post?.likes.length > 0 ) && (
+              <div
+                className="flex items-center space-x-2 cursor-pointer "
+                onClick={handleOpenLikeView}
+              >
+                <Avatar
+                  src={likeicon}
+                  alt="likes"
+                  variant="square"
+                  sx={{ objectFit: "contain", width: 26, height: 26 }}
+                />
+                <span className="select-none text-sm  border-b-1 border-gray-500">{`${
+                  likeData?.data?.total_likes
+                    ? likeData?.data?.total_likes
+                    : post?.likes.length || 0
+                } Likes`}</span>
+              </div>
+            )}
+            {(post?.comments.length > 0 ) && (
+              <div className=" cursor-pointer" onClick={handleOpenCommentView}>
+                <span className="select-none text-sm border-b-1 border-gray-500">{`${
+                  commentData?.data?.total_comments
+                    ? commentData?.data?.total_comments
+                    : post?.comments.length || 0
+                } Comments`}</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -216,16 +304,20 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                 <Input
                   placeholder="Write your comment"
                   className="rounded-[20px]  "
-                  
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                 />
               </div>
               <div className="flex items-center gap-2">
-                <IconButton>
+                <IconButton
+                  onClick={(e) => {
+                    setAnchorElEmoji(e.currentTarget);
+                    setShowEmojiPicker(!showEmojiPicker);
+                  }}
+                >
                   <EmojiEmotionsIcon />
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={() => handleComment(post?.postKey)}>
                   <SendIcon />
                 </IconButton>
               </div>
@@ -237,7 +329,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
       <Popover
         elevation={2}
         open={isCommentView}
-        anchorEl={anchorEl || null}
+        anchorEl={anchorElComment || null}
         onClose={() => setIsCommentView(false)}
         anchorOrigin={{
           vertical: "top",
@@ -255,7 +347,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
             position: "relative",
             borderRadius: "6px",
             overflow: "visible",
-            boxShadow: "3px"
+            boxShadow: "3px",
           },
           sx: {
             mt: 2,
@@ -266,6 +358,60 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
         }}
       >
         <VirtualizedCommentList data={post?.comments} />
+      </Popover>
+      <Popover
+        elevation={2}
+        open={isLikeView}
+        anchorEl={anchorElLike || null}
+        onClose={() => setIsLikeView(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        disableAutoFocus
+        disableEnforceFocus
+        PaperProps={{
+          style: {
+            transformOrigin: "bottom",
+            position: "relative",
+            borderRadius: "6px",
+            overflow: "visible",
+            boxShadow: "3px",
+          },
+          sx: {
+            mt: 2,
+            width: 350,
+
+            // zIndex: 1600,
+          },
+        }}
+      >
+        <VirtualizedCommentList data={post?.likes} hight={300} />
+      </Popover>
+
+      <Popover
+        open={showEmojiPicker}
+        anchorEl={anchorElEmoji}
+        onClose={() => setShowEmojiPicker(false)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        sx={{ mt: 0 }}
+      >
+        <EmojiPicker
+          theme={Theme.DARK}
+          emojiStyle={EmojiStyle.GOOGLE}
+          onEmojiClick={handleEmojiClick}
+        />
       </Popover>
     </Card>
   );
