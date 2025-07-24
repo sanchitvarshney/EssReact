@@ -194,7 +194,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
         {/* {post?.description} */}
         {/* </Typography> */}
 
-        {post?.images.length > 0 && (
+        {post?.images?.length > 0 && (
           <Box mb={3}>
             <Box
               sx={{
@@ -204,19 +204,19 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                 // px: 2,
               }}
             >
-              {post?.images.map((image: any, index: number) => (
+              {post?.images?.map((image: any, index: number) => (
                 <Box
                   key={index}
                   sx={{
                     width:
-                      post?.images.length === 1
+                      post?.images?.length === 1
                         ? { xs: "100%", sm: "100%" }
-                        : post?.images.length === 2
+                        : post?.images?.length === 2
                         ? { xs: "100%", sm: "calc(50% - 8px)" }
-                        : post?.images.length === 3
+                        : post?.images?.length === 3
                         ? { xs: "100%", sm: "calc(33.33% - 8px)" }
                         : { xs: "calc(50% - 8px)", sm: "calc(25% - 8px)" },
-                    minWidth: post?.images.length === 1 ? "250px" : "200px",
+                    minWidth: post?.images?.length === 1 ? "250px" : "200px",
                   }}
                 >
                   <Paper
@@ -231,7 +231,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                       alt={`Attachment ${index + 1}`}
                       style={{
                         width: "100%",
-                        height: post?.images.length === 1 ? "300px" : "120px",
+                        height: post?.images?.length === 1 ? "300px" : "120px",
                         objectFit: "fill",
                       }}
                     />
@@ -267,7 +267,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
             </IconButton>
           </div>
           <div className="">
-            {(post?.likes.length > 0 ) && (
+            {(post?.likes?.length > 0 ) && (
               <div
                 className="flex items-center space-x-2 cursor-pointer "
                 onClick={handleOpenLikeView}
@@ -281,16 +281,16 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                 <span className="select-none text-sm  border-b-1 border-gray-500">{`${
                   likeData?.data?.total_likes
                     ? likeData?.data?.total_likes
-                    : post?.likes.length || 0
+                    : post?.likes?.length || 0
                 } Likes`}</span>
               </div>
             )}
-            {(post?.comments.length > 0 ) && (
+            {(post?.comments?.length > 0 ) && (
               <div className=" cursor-pointer" onClick={handleOpenCommentView}>
                 <span className="select-none text-sm border-b-1 border-gray-500">{`${
                   commentData?.data?.total_comments
                     ? commentData?.data?.total_comments
-                    : post?.comments.length || 0
+                    : post?.comments?.length || 0
                 } Comments`}</span>
               </div>
             )}
