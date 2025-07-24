@@ -112,7 +112,8 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
   //@ts-ignore
   const userid: any = user?.id;
   useEffect(() => {
-    const liked = post.likes?.some((item: any) => item?.userId === userid);
+    if(!post || !post?.likes) return;
+    const liked = post?.likes?.some((item: any) => item?.userId === userid);
 
     setIsLike(liked);
   }, [post, userid, isSuccess]);

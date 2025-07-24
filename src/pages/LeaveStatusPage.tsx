@@ -387,7 +387,7 @@ const LeaveStatusPage = () => {
                             sx={{
                               fontSize: 26,
                               color:
-                                row?.status === "APR" || row?.status === "RTN"
+                                row?.status === "APR" || row?.status === "REJ" ||row?.status === "RTN"
                                   ? "gray"
                                   : "red",
                             }}
