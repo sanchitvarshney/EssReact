@@ -35,27 +35,7 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
   const [isNewPost, setIsNewPost] = useState<boolean>(false);
 
   const handleNewPost = () => {
-    // switch (value) {
-    //   case "Anniversary":
-    //     setPostType(value);
-    //     setIsNewPost(true);
-    //     break;
-    //   case "Annoucement":
-    //     setPostType(value);
-    //     setIsNewPost(true);
-    //     break;
-    //   case "BirthDay":
-    //     setPostType(value);
-    //     setIsNewPost(true);
-    //     break;
-    //   case "New Hire":
-    //     setPostType("Hire");
-    //     setIsNewPost(true);
-    //     break;
-
-    //   default:
-    //     break;
-    // }
+   
     setIsNewPost(true);
   };
 

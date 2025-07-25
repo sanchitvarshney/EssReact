@@ -15,7 +15,7 @@ import { useToast } from "../hooks/useToast";
 import { useLeaveListMutation } from "../services/Leave";
 import AbsenceListPage from "../components/AbsenceListPage";
 
-import { useLazyGetVibeQuery } from "../services/vibe";
+import {  useEventsPostMutation, useLazyGetVibeQuery } from "../services/vibe";
 
 const AnnouncementList = lazy(() => import("../components/AnnouncementList"));
 
@@ -33,6 +33,8 @@ const AnnouncementPage = () => {
     useGetWAListMutation();
   const [leaveList, { data: leaveData, isLoading: leaveLoading }] =
     useLeaveListMutation();
+
+const [eventsPost, {   isSuccess: eventsPostSuccess }] = useEventsPostMutation();
 
   const {
     data: hireData,
@@ -87,6 +89,16 @@ const AnnouncementPage = () => {
   });
 
   useEffect(() => {
+   eventsPost().unwrap().then((res) => {
+    if (res?.data?.status === "error") {
+      showToast(res?.data?.message || res.data?.message.msg, "error");
+      return;
+    }
+   });
+  }, [])
+  
+
+  useEffect(() => {
     setPosts([]);
     setLastId(null);
     setHasMore(true);
@@ -139,7 +151,7 @@ const AnnouncementPage = () => {
   // Initial load
   useEffect(() => {
     loadMorePosts(true);
-  }, []);
+  }, [eventsPostSuccess]);
 
   // Infinite scroll trigger
   useEffect(() => {
