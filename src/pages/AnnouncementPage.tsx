@@ -15,7 +15,7 @@ import { useToast } from "../hooks/useToast";
 import { useLeaveListMutation } from "../services/Leave";
 import AbsenceListPage from "../components/AbsenceListPage";
 
-import {  useEventsPostMutation, useLazyGetVibeQuery } from "../services/vibe";
+import { useLazyGetVibeQuery } from "../services/vibe";
 
 const AnnouncementList = lazy(() => import("../components/AnnouncementList"));
 
@@ -34,7 +34,6 @@ const AnnouncementPage = () => {
   const [leaveList, { data: leaveData, isLoading: leaveLoading }] =
     useLeaveListMutation();
 
-const [eventsPost, {   isSuccess: eventsPostSuccess }] = useEventsPostMutation();
 
   const {
     data: hireData,
@@ -46,7 +45,7 @@ const [eventsPost, {   isSuccess: eventsPostSuccess }] = useEventsPostMutation()
   const [hasMore, setHasMore] = useState(true);
   const [lastId, setLastId] = useState<string | null>(null);
   const [loadingPosts, setLoadingPosts] = useState(false);
-  const [offset, setOffset] = useState(null);
+  const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(5);
 
   const [getVibe, { isLoading: vibeLoading }] = useLazyGetVibeQuery();
@@ -88,22 +87,14 @@ const [eventsPost, {   isSuccess: eventsPostSuccess }] = useEventsPostMutation()
     triggerOnce: false,
   });
 
-  useEffect(() => {
-   eventsPost().unwrap().then((res) => {
-    if (res?.data?.status === "error") {
-      showToast(res?.data?.message || res.data?.message.msg, "error");
-      return;
-    }
-   });
-  }, [])
-  
+
 
   useEffect(() => {
     setPosts([]);
     setLastId(null);
     setHasMore(true);
-    setLimit(0);
-    setOffset(null);
+    setLimit(5); // <-- Use your default page size here
+    setOffset(0);
     loadMorePosts(true);
   }, [postFilter]);
 
@@ -151,7 +142,7 @@ const [eventsPost, {   isSuccess: eventsPostSuccess }] = useEventsPostMutation()
   // Initial load
   useEffect(() => {
     loadMorePosts(true);
-  }, [eventsPostSuccess]);
+  }, []);
 
   // Infinite scroll trigger
   useEffect(() => {
