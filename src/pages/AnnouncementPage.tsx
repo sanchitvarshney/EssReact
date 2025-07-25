@@ -45,7 +45,7 @@ const AnnouncementPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const [lastId, setLastId] = useState<string | null>(null);
   const [loadingPosts, setLoadingPosts] = useState(false);
-  const [offset, setOffset] = useState(null);
+  const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(5);
 
   const [getVibe, { isLoading: vibeLoading }] = useLazyGetVibeQuery();
@@ -94,7 +94,7 @@ const AnnouncementPage = () => {
     setLastId(null);
     setHasMore(true);
     setLimit(5); // <-- Use your default page size here
-    setOffset(null);
+    setOffset(0);
     loadMorePosts(true);
   }, [postFilter]);
 
