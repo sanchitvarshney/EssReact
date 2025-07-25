@@ -20,7 +20,7 @@ const ProfileDropDown = ({ close }: { close: any }) => {
   const navigation = useNavigate();
   const [open, setOpen] = useState(false);
   const { signOut } = useAuth();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  
 
   const handleOptionClick = (item: profileOptionType) => {
     if (item.id === "logout") {
@@ -44,8 +44,8 @@ const ProfileDropDown = ({ close }: { close: any }) => {
             disablePadding
             key={item.id}
             className="hover:bg-gray-600/10 cursor-pointer"
-              onClick={(e:any) => { handleOptionClick(item)
-                setAnchorEl(e.currentTarget);
+              onClick={() => { handleOptionClick(item)
+              
               }}
           >
             <IconButton
@@ -65,7 +65,7 @@ const ProfileDropDown = ({ close }: { close: any }) => {
           </ListItem>
         ))}
       </List>
-      <SignOutModal anchorEl={anchorEl}  openSign={open}
+      <SignOutModal  openSign={open}
         close={() => {
           setOpen(false);
           close();

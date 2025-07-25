@@ -15,7 +15,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import CreateNewPostPage from "../../pages/CreateNewPostPage";
 
 import CustomTextInput from "../reuseable/CustomTextInput";
-import { CustomButton } from "../ui/CustomButton";
 
 const postOption = [
   { label: "All Post", value: "" },
@@ -35,7 +34,6 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
   const [isNewPost, setIsNewPost] = useState<boolean>(false);
 
   const handleNewPost = () => {
-   
     setIsNewPost(true);
   };
 
@@ -51,49 +49,46 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
       }}
       className=" bg-gradient-to-br from-[#ffffff] to-[#fff] shadow-lg border border-[#2eacb3] "
     >
-      <div className="flex items-center justify-between">
-        <Typography variant="h6" fontWeight={600}>
-          Create a Post
-        </Typography>
-        {/* <div className="block sm:hidden">
-          <CustomToolTip title={"Notice And Birthdays"} placement={"bottom"}>
-            <IconButton onClick={() => setIsNoticeView(true)}>
-              <Note sx={{ color: "#000" }} />
-            </IconButton>
-          </CustomToolTip>
-        </div> */}
+      <div className="flex items-center justify-between gap-6">
+        <div className="flex  flex-col gap-2">
+          <Typography variant="h6" fontWeight={600}>
+            Create a Post
+          </Typography>
+          <div className="w-40 sm:w-60 flex flex-col justify-start items-start gap-1 ">
+            <CustomTextInput
+              // isDisabled={true}
+              field={{
+                value: postFilter,
+                onChange: (e: any) => {
+                  setFilter(e);
+                },
+              }}
+              label={"Select Filter"}
+              select={true}
+              options={postOption}
+            />
+          </div>
+        </div>
+
+        <label className="w-full flex flex-col justify-center border-2 border-dashed border-gray-300 rounded-sm p-2 cursor-text hover:border-[#2eacb3] hover:bg-gradient-to-br hover:from-blue-50 hover:to-cyan-50 transition-all duration-300 text-center group">
+          <textarea
+            placeholder="Write your caption..."
+            className="bg-transparent outline-none resize-none text-start text-gray-700 placeholder:text-gray-400"
+            rows={3}
+            onClick={() => handleNewPost()}
+          />
+        </label>
       </div>
 
-      <Box
+      {/* <Box
         display="flex"
         justifyContent={"space-between"}
         gap={2}
         flexDirection={{ xs: "column", sm: "row" }}
         marginTop={2}
-      >
-        <div className="w-40 sm:w-60 flex flex-col justify-start items-start gap-1 ">
-          <CustomTextInput
-            // isDisabled={true}
-            field={{
-              value: postFilter,
-              onChange: (e: any) => {
-                setFilter(e);
-              },
-            }}
-            label={"Select Filter"}
-            select={true}
-            options={postOption}
-          />
-        </div>
+      > */}
 
-        <CustomButton
-          onClick={() => handleNewPost()}
-          className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer hover:bg-[#4a4949]"
-        >
-          <AssignmentIcon sx={{ fontSize: 26, color: "#fff", mr: 1 }} />
-          Create Post
-        </CustomButton>
-      </Box>
+      {/* </Box> */}
 
       <Dialog
         open={isNewPost}

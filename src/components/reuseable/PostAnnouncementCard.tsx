@@ -38,6 +38,7 @@ interface PostAnnouncementCardProps {
 
 // Utility function to normalize images to an array
 function getImageArray(images: any): string[] {
+ 
   if (!images) return [];
   if (Array.isArray(images)) return images;
   if (typeof images === "string") {
@@ -128,12 +129,18 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
   };
   //@ts-ignore
   const userid: any = user?.id;
-  useEffect(() => {
-    if (!post || !post?.likes) return;
-    const liked = post?.likes?.some((item: any) => item?.userId === userid);
+  // useEffect(() => {
+  //   if (!post || !post?.likes) return;
+  //   const liked = post?.likes?.some((item: any) => item?.userId === userid);
 
-    setIsLike(liked);
-  }, [post, userid, isSuccess]);
+  //   setIsLike(liked);
+  // }, [post, userid, isSuccess]);
+  useEffect(() => {
+  if (!post?.likes || !userid) return;
+
+  const liked = post.likes.some((like: any) => like?.userId === userid);
+  setIsLike(liked);
+}, [post?.likes, userid, isSuccess]);
 
   const handleEmojiClick = (emojiData: { emoji: string }) => {
     setCommentText(commentText + emojiData.emoji);

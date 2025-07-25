@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CustomButton } from "../components/ui/CustomButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "../contextapi/AuthContext";
 import { btnstyle } from "../constants/themeConstant";
 import { useToast } from "../hooks/useToast";
 import { useCreatePostMutation } from "../services/vibe";
+import { Bold, Italic,  ArrowUpAZ, ArrowDownAZ } from "lucide-react";
 
 import { CircularProgress } from "@mui/material";
+
 
 const hasMinimumWords = (text: string, minWords: number = 3): boolean => {
   const words = text.trim().split(/\s+/); // split by any whitespace
@@ -18,7 +20,7 @@ export default function CreateNewPostPage({ closeModal }: { closeModal: any }) {
   const { showToast } = useToast();
   const { name, imgUrl } = user as any;
   const [caption, setCaption] = useState("");
-
+ const textareaRef = useRef(null);
   const [previewImages, setPreviewImages] = useState<string[]>([]); // for display
   const [imageFiles, setImageFiles] = useState<File[]>([]);
 
@@ -80,6 +82,43 @@ export default function CreateNewPostPage({ closeModal }: { closeModal: any }) {
       });
   };
 
+
+    const applyFormat = (formatType:any) => {
+    const textarea:any = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = caption.substring(start, end);
+
+    let formatted = selectedText;
+
+    switch (formatType) {
+      case "bold":
+        formatted = `**${selectedText}**`;
+        break;
+      case "italic":
+        formatted = `*${selectedText}*`;
+        break;
+      case "uppercase":
+        formatted = selectedText.toUpperCase();
+        break;
+      case "lowercase":
+        formatted = selectedText.toLowerCase();
+        break;
+      default:
+        break;
+    }
+
+    const newText =
+      caption.substring(0, start) + formatted + caption.substring(end);
+    setCaption(newText);
+
+    // Move cursor after formatted text
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start, start + formatted.length);
+    }, 0);
+  };
+
   return (
     <div className=" mx-auto p-2 bg-white  rounded-lg my-3 space-y-6">
       <div className="flex items-center gap-2">
@@ -91,16 +130,52 @@ export default function CreateNewPostPage({ closeModal }: { closeModal: any }) {
         </div>
       </div>
 
-      <div>
-        <label className="text-sm font-semibold mb-1 block">Caption</label>
-        <textarea
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-          rows={4}
-          className="w-full p-3 border rounded-lg resize-none"
-          placeholder="Write your caption here..."
-        />
+     <div className="w-full">
+      <label className="text-sm font-semibold mb-1 block">Caption</label>
+
+     
+
+      {/* Textarea */}
+      <textarea
+        ref={textareaRef}
+        value={caption}
+        onChange={(e) => setCaption(e.target.value)}
+        rows={4}
+        className="w-full p-3 border rounded-lg resize-none"
+        placeholder="Write your caption here..."
+      />
+       {/* Formatting Toolbar */}
+      <div className="flex gap-2 mt-1">
+        <button
+          onClick={() => applyFormat("bold")}
+          className="p-2 border rounded hover:bg-gray-100"
+          title="Bold"
+        >
+          <Bold size={16} />
+        </button>
+        <button
+          onClick={() => applyFormat("italic")}
+          className="p-2 border rounded hover:bg-gray-100"
+          title="Italic"
+        >
+          <Italic size={16} />
+        </button>
+        <button
+          onClick={() => applyFormat("uppercase")}
+          className="p-2 border rounded hover:bg-gray-100"
+          title="Uppercase"
+        >
+          <ArrowUpAZ size={16} />
+        </button>
+        <button
+          onClick={() => applyFormat("lowercase")}
+          className="p-2 border rounded hover:bg-gray-100"
+          title="Lowercase"
+        >
+          <ArrowDownAZ size={16} />
+        </button>
       </div>
+    </div>
 
       <div>
         <label className="text-sm font-semibold block mb-1">Add Images</label>
