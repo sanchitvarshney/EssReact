@@ -34,14 +34,6 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
         },
       }),
     }),
-    eventsPost: builder.mutation<any, void>({
-      query: () => ({
-        url: `/vibe/autoEvents`,
-        method: "POST",
-        body: "",
-       
-      }),
-    }),
   }),
   overrideExisting: false,
 });
@@ -51,5 +43,4 @@ export const {
   useSendCommentMutation,
   useSendLikeMutation,
   useCreatePostMutation,
-  useEventsPostMutation
 } = extendedAuthApi;
