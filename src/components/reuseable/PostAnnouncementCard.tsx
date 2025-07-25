@@ -36,6 +36,23 @@ interface PostAnnouncementCardProps {
   post: any;
 }
 
+// Utility function to normalize images to an array
+function getImageArray(images: any): string[] {
+  if (!images) return [];
+  if (Array.isArray(images)) return images;
+  if (typeof images === "string") {
+    try {
+      const parsed = JSON.parse(images);
+      if (Array.isArray(parsed)) return parsed;
+      if (typeof parsed === "string") return [parsed];
+    } catch {
+      if (images.startsWith("data:image")) return [images];
+      return [];
+    }
+  }
+  return [];
+}
+
 const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
   const { showToast } = useToast();
   const { user } = useAuth();
@@ -112,7 +129,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
   //@ts-ignore
   const userid: any = user?.id;
   useEffect(() => {
-    if(!post || !post?.likes) return;
+    if (!post || !post?.likes) return;
     const liked = post?.likes?.some((item: any) => item?.userId === userid);
 
     setIsLike(liked);
@@ -194,7 +211,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
         {/* {post?.description} */}
         {/* </Typography> */}
 
-        {post?.images?.length > 0 && (
+        {getImageArray(post?.images).length > 0 && (
           <Box mb={3}>
             <Box
               sx={{
@@ -204,19 +221,22 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                 // px: 2,
               }}
             >
-              {post?.images?.map((image: any, index: number) => (
+              {getImageArray(post?.images).map((image: any, index: number) => (
                 <Box
                   key={index}
                   sx={{
                     width:
-                      post?.images?.length === 1
+                      getImageArray(post?.images).length === 1
                         ? { xs: "100%", sm: "100%" }
-                        : post?.images?.length === 2
+                        : getImageArray(post?.images).length === 2
                         ? { xs: "100%", sm: "calc(50% - 8px)" }
-                        : post?.images?.length === 3
+                        : getImageArray(post?.images).length === 3
                         ? { xs: "100%", sm: "calc(33.33% - 8px)" }
                         : { xs: "calc(50% - 8px)", sm: "calc(25% - 8px)" },
-                    minWidth: post?.images?.length === 1 ? "250px" : "200px",
+                    minWidth:
+                      getImageArray(post?.images).length === 1
+                        ? "250px"
+                        : "200px",
                   }}
                 >
                   <Paper
@@ -231,7 +251,10 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                       alt={`Attachment ${index + 1}`}
                       style={{
                         width: "100%",
-                        height: post?.images?.length === 1 ? "300px" : "120px",
+                        height:
+                          getImageArray(post?.images).length === 1
+                            ? "300px"
+                            : "120px",
                         objectFit: "fill",
                       }}
                     />
@@ -267,7 +290,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
             </IconButton>
           </div>
           <div className="">
-            {(post?.likes?.length > 0 ) && (
+            {post?.likes?.length > 0 && (
               <div
                 className="flex items-center space-x-2 cursor-pointer "
                 onClick={handleOpenLikeView}
@@ -285,7 +308,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                 } Likes`}</span>
               </div>
             )}
-            {(post?.comments?.length > 0 ) && (
+            {post?.comments?.length > 0 && (
               <div className=" cursor-pointer" onClick={handleOpenCommentView}>
                 <span className="select-none text-sm border-b-1 border-gray-500">{`${
                   commentData?.data?.total_comments
