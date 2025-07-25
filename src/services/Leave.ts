@@ -75,7 +75,7 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
     }),
     fetchEmployee: builder.mutation({
       query: (credentials) => ({
-        url: "leave/fetchEMP",
+        url: "/leave/fetchEMP",
         method: "POST",
         body: credentials,
       }),

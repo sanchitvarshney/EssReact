@@ -21,9 +21,9 @@ const AnnouncementList = lazy(() => import("../components/AnnouncementList"));
 
 const AnnouncementPage = () => {
   const { showToast } = useToast();
-  const [postFilter, setPostFilter] = useState<string>("all");
+  const [postFilter, setPostFilter] = useState<string>("");
   const [expandedPanel, setExpandedPanel] = useState("birthdays");
-  const [lastId, setLastId] = useState<string | null>(null);
+
   const [
     getDOBList,
     { data: dobData, isLoading: dobLoading, error: dobError },
@@ -40,11 +40,15 @@ const AnnouncementPage = () => {
     error: hireError,
   } = useGetHireListQuery();
 
-  const [getVibe, { data: vibeData, isLoading: vibeLoading }] =
-    useLazyGetVibeQuery();
-  const [posts, setPosts] = useState<any>([]);
+  const [posts, setPosts] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const limit = 10;
+  const [lastId, setLastId] = useState<string | null>(null);
+  const [loadingPosts, setLoadingPosts] = useState(false);
+  const [offset, setOffset] = useState(null);
+  const [limit, setLimit] = useState(5);
+
+  const [getVibe, { isLoading: vibeLoading }] = useLazyGetVibeQuery();
+
   const fetchInitialData = async () => {
     try {
       await Promise.all([
@@ -64,6 +68,7 @@ const AnnouncementPage = () => {
       .then((res) => {
         if (res?.data?.data?.success === false) {
           showToast(res?.data?.data?.message || res.data?.message.msg, "error");
+          return;
         }
       })
       .catch((err) => {
@@ -81,62 +86,67 @@ const AnnouncementPage = () => {
     triggerOnce: false,
   });
 
-  const loadMorePosts = async () => {
-    if (!hasMore) return;
+  useEffect(() => {
+    setPosts([]);
+    setLastId(null);
+    setHasMore(true);
+    setLimit(0);
+    setOffset(null);
+    loadMorePosts(true);
+  }, [postFilter]);
+
+  const loadMorePosts = async (reset = false) => {
+    if (loadingPosts || !hasMore) return;
+    setLoadingPosts(true);
 
     try {
       const res = await getVibe({
         limit,
-        last_id: lastId,
+        offset: reset ? 0 : offset,
+        last_id: reset ? null : lastId,
         tmln_type: postFilter,
       }).unwrap();
 
-     
-
       if (res?.data?.success === false) {
         showToast(res?.data?.message || "Failed to load posts", "error");
+        setLoadingPosts(false);
         return;
       }
 
-      
+      const newPosts = res?.data || [];
+      const scrollInfo = res?.scroll || {};
 
-     
+      setPosts((prev) => (reset ? newPosts : [...prev, ...newPosts]));
+      setHasMore(scrollInfo?.hasMore ?? false);
+      setLastId(scrollInfo?.nextLastId || null);
+      setOffset((prevOffset: any) =>
+        reset ? limit : (prevOffset || 0) + limit
+      );
     } catch (err) {
       showToast(
         //@ts-ignore
         err?.data?.message?.msg ||
-          // @ts-ignore
+          //@ts-ignore
           err?.message ||
           "We're Sorry An unexpected error has occurred.",
         "error"
       );
+    } finally {
+      setLoadingPosts(false);
     }
   };
 
+  // Initial load
   useEffect(() => {
-    if (vibeData?.data) {
-      
-
-      const newPosts = vibeData?.data || [];
-      const scrollInfo = vibeData?.scroll || {};
-
-      setPosts((prev: any) => [...prev, ...newPosts]);
-       // Update pagination
-      setHasMore(scrollInfo?.hasMore ?? false);
-      setLastId(scrollInfo?.nextLastId || null);
-    }
-  }, [vibeData?.data]);
-
-  // Load first posts
-  useEffect(() => {
-    loadMorePosts();
+    loadMorePosts(true);
   }, []);
 
+  // Infinite scroll trigger
   useEffect(() => {
-    if (inView && hasMore) {
+    if (inView && hasMore && !loadingPosts) {
       loadMorePosts();
     }
-  }, [inView, hasMore]);
+  }, [inView, hasMore, loadingPosts]);
 
   const handlePanelChange = useCallback((panel: string) => {
     setExpandedPanel((prev) => (prev === panel ? "" : panel));
@@ -178,7 +188,9 @@ const AnnouncementPage = () => {
               <PostHeader setFilter={handleSetFilter} postFilter={postFilter} />
             </div>
             <div className="space-y-6">
-              <Suspense fallback={<CircularProgress sx={{ color: "#2eacb3" }} />}>
+              <Suspense
+                fallback={<CircularProgress sx={{ color: "#2eacb3" }} />}
+              >
                 <AnnouncementList posts={posts} hasMore={hasMore} ref={ref} />
               </Suspense>
             </div>

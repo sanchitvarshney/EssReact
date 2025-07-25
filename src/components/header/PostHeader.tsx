@@ -1,6 +1,5 @@
 import {
   Box,
-  // ButtonGroup,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -8,26 +7,22 @@ import {
   Typography,
 } from "@mui/material";
 import { useState, type FC } from "react";
-import CustomToolTip from "../reuseable/CustomToolTip";
-import CampaignIcon from "@mui/icons-material/Campaign";
-// import CelebrationIcon from "@mui/icons-material/Celebration";
-// import CakeIcon from "@mui/icons-material/Cake";
+
 import AssignmentIcon from "@mui/icons-material/Assignment";
 
 import CloseIcon from "@mui/icons-material/Close";
 
-// import PersonAddIcon from "@mui/icons-material/PersonAdd";
-
 import CreateNewPostPage from "../../pages/CreateNewPostPage";
 
 import CustomTextInput from "../reuseable/CustomTextInput";
+import { CustomButton } from "../ui/CustomButton";
 
 const postOption = [
-  { label: "All Post", value: "all" },
+  { label: "All Post", value: "" },
   { label: "Anniversary Post", value: "WOKANV" },
   { label: "Birthday Post", value: "BIRTHDAY" },
   { label: "New Hire Post", value: "NEWHIRES" },
-  { label: "Announcement Post", value: "ANNOUNCEMENT" },
+  { label: "Announcement Post", value: "ANNOUNCEMNT" },
   { label: "Event", value: "EVENT" },
   { label: "Promotion", value: "PROMOTION" },
 ];
@@ -38,30 +33,29 @@ type PostHeaderProps = {
 };
 const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
   const [isNewPost, setIsNewPost] = useState<boolean>(false);
-  const [postType, setPostType] = useState<any>("");
 
-  const handleNewPost = (value: string) => {
-    switch (value) {
-      case "Anniversary":
-        setPostType(value);
-        setIsNewPost(true);
-        break;
-      case "Annoucement":
-        setPostType(value);
-        setIsNewPost(true);
-        break;
-      case "BirthDay":
-        setPostType(value);
-        setIsNewPost(true);
-        break;
-      case "New Hire":
-        setPostType("Hire");
-        setIsNewPost(true);
-        break;
+  const handleNewPost = () => {
+    // switch (value) {
+    //   case "Anniversary":
+    //     setPostType(value);
+    //     setIsNewPost(true);
+    //     break;
+    //   case "Annoucement":
+    //     setPostType(value);
+    //     setIsNewPost(true);
+    //     break;
+    //   case "BirthDay":
+    //     setPostType(value);
+    //     setIsNewPost(true);
+    //     break;
+    //   case "New Hire":
+    //     setPostType("Hire");
+    //     setIsNewPost(true);
+    //     break;
 
-      default:
-        break;
-    }
+    //   default:
+    //     break;
+    // }
     setIsNewPost(true);
   };
 
@@ -75,7 +69,7 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
         mb: 1,
         boxShadow: 0,
       }}
-      className=" bg-gradient-to-br from-[#d7f1f3] to-[#d7f1f3]"
+      className=" bg-gradient-to-br from-[#ffffff] to-[#fff] shadow-lg border border-[#2eacb3] "
     >
       <div className="flex items-center justify-between">
         <Typography variant="h6" fontWeight={600}>
@@ -112,32 +106,13 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
           />
         </div>
 
-        {/* <ButtonGroup
-          variant="outlined"
-          aria-label="Basic button group"
-          sx={{ display: "flex", alignItems: "center" }}
-        > */}
-          <CustomToolTip title={"Annoucement"} placement={"bottom"}>
-            <IconButton onClick={() => handleNewPost("Announcement")} disabled>
-              <CampaignIcon sx={{ fontSize: 26, color: "#000" }} />
-            </IconButton>
-          </CustomToolTip>
-          {/* <CustomToolTip title={"BirthDay"} placement={"bottom"}>
-            <IconButton onClick={() => handleNewPost("BirthDay")} disabled>
-              <CakeIcon sx={{ fontSize: 26, color: "#000" }} />
-            </IconButton>
-          </CustomToolTip>
-          <CustomToolTip title={"Anniversary"} placement={"bottom"}>
-            <IconButton onClick={() => handleNewPost("Anniversary")} disabled>
-              <CelebrationIcon sx={{ fontSize: 26, color: "#000" }} />
-            </IconButton>
-          </CustomToolTip>
-          <CustomToolTip title={"New Hire"} placement={"bottom"}>
-            <IconButton onClick={() => handleNewPost("New Hire")} disabled>
-              <PersonAddIcon sx={{ fontSize: 26, color: "#000" }} />
-            </IconButton>
-          </CustomToolTip> */}
-        {/* </ButtonGroup> */}
+        <CustomButton
+          onClick={() => handleNewPost()}
+          className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer hover:bg-[#4a4949]"
+        >
+          <AssignmentIcon sx={{ fontSize: 26, color: "#fff", mr: 1 }} />
+          Create Post
+        </CustomButton>
       </Box>
 
       <Dialog
@@ -164,7 +139,7 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <AssignmentIcon sx={{ color: "#2eacb3" }} />
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
-              {`New ${postType} Post`}
+              {`Create Post`}
             </Typography>
           </Box>
           <IconButton onClick={() => setIsNewPost(false)} size="small">
@@ -173,7 +148,7 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
         </DialogTitle>
 
         <DialogContent sx={{ pt: 3 }}>
-          <CreateNewPostPage />
+          <CreateNewPostPage closeModal={() => setIsNewPost(false)} />
         </DialogContent>
       </Dialog>
 

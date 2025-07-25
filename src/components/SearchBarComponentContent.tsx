@@ -38,7 +38,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
   useEffect(() => {
     if (inputText.length > 2) {
       fetchEmployee({ emp_code: inputText, emp_name: inputText })
-        .then((res) => {
+        .then((res) => {//@ts-ignore
           if (res?.data?.status === "error") {
             showToast(res?.data?.message, "error");
 
@@ -46,6 +46,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
           }
         })
         .catch((err) => {
+          console.log(err);
           showToast(err?.data?.message, "error");
         });
     }

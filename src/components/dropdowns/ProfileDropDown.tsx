@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contextapi/AuthContext";
 import ConfirmationModal from "../reuseable/ConfirmationModal";
 import { useState } from "react";
+// import SignOutModal from "../SignOutModal";
 
 const ProfileDropDown = ({ close }: { close: any }) => {
   const navigation = useNavigate();
@@ -61,6 +62,7 @@ const ProfileDropDown = ({ close }: { close: any }) => {
           </ListItem>
         ))}
       </List>
+      {/* <SignOutModal /> */}
       <ConfirmationModal
         open={open}
         close={() => {

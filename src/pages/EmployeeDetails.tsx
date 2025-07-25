@@ -61,16 +61,19 @@ const EmployeeDetails = () => {
   });
 
   useEffect(() => {
-    if (error) {
-      console.log(error)
+    //@ts-ignore
+    if (error?.error) {
+    
       // @ts-ignore
-      showToast(error?.data?.message || "Something went wrong", "error");
+      showToast(error?.message || "Something went wrong", "error");
+      return;
     }
   }, [error]);
 
   useEffect(() => {
-    if (data?.error) {
+    if (data?.status === "error") {
       showToast(data.message, "error");
+      return;
     }
   }, [data]);
 
@@ -168,7 +171,9 @@ const EmployeeDetails = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3   px-4 pl-10 ">
                 <Information
                   label={"Manager"}
-                  value={`${data?.officeInfo?.manager?.name || "--"} (${data?.officeInfo?.manager?.empCode || "--"})`}
+                  value={`${data?.officeInfo?.manager?.name || "--"} (${
+                    data?.officeInfo?.manager?.empCode || "--"
+                  })`}
                 />
               </div>
               <Divider sx={{ my: 1 }} />
@@ -197,8 +202,14 @@ const EmployeeDetails = () => {
                   label={"Branch Info"}
                   value={data?.companyInfo?.branch}
                 />
-                <Information label={"GSTIN"} value={data?.companyInfo?.GSTIN || "--"} />
-                <Information label={"CIN"} value={data?.companyInfo?.CIN || "--"} />
+                <Information
+                  label={"GSTIN"}
+                  value={data?.companyInfo?.GSTIN || "--"}
+                />
+                <Information
+                  label={"CIN"}
+                  value={data?.companyInfo?.CIN || "--"}
+                />
               </div>
             </div>
           </div>

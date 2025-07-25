@@ -24,12 +24,15 @@ import { useNavigate } from "react-router-dom";
 import logoImg from "../../assets/img/hrms_mscorpres_logo.png";
 import { useAuth } from "../../contextapi/AuthContext";
 import { useSelector } from "react-redux";
+import { useToast } from "../../hooks/useToast";
+
 
 const pages = ["Products", "Pricing", "Blog"];
 
 function Header() {
   const path = window.location.pathname;
   const { user, searchValueLength } = useAuth();
+ const { showToast } = useToast();
 
   const navigate = useNavigate();
   const inputRef = React.useRef(null);
@@ -60,6 +63,11 @@ function Header() {
 
   React.useEffect(() => {
     if (empCode) {
+      //@ts-ignore
+      if (empCode === user?.id) {
+        showToast("You cannot access your own profile with this method", "error");
+        return
+      }
       navigate(`/employee/details/${empCode}`);
       setSearchText("");
     }
@@ -244,8 +252,10 @@ function Header() {
               </CustomPopover>
             )}
           </Box>
+          
         </Toolbar>
       </Container>
+    
     </AppBar>
   );
 }

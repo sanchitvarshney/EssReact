@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { lazy, Suspense, type FC } from "react";
 
@@ -32,7 +33,7 @@ const AnnouncementList: FC<AnnouncementListProps> = React.memo(
 
       {hasMore && (
         <div ref={ref} className="h-10 w-full flex justify-center items-center">
-          <span>Loading more...</span>
+          <CircularProgress sx={{ color: "#2eacb3" }} />
         </div>
       )}
     </div>
