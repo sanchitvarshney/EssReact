@@ -22,9 +22,9 @@ import { useAuth } from "../../contextapi/AuthContext";
 const getTextSize = (level: number) => {
   switch (level) {
     case 0:
-      return "text-[18px]";
+      return "text-[16px]";
     case 1:
-      return "text-[17px]";
+      return "text-[15px]";
     case 2:
       return "text-[17px]";
     default:
@@ -103,7 +103,7 @@ export const renderMenu = (
                               <DynamicIcon name={item.icon} size="medium" />
                             )}
                             <span
-                              className={` ${getTextSize(level)} font-[500]`}
+                              className={` ${getTextSize(level)} font-[500] `}
                             >
                               {item.title}
                             </span>

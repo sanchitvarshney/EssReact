@@ -64,7 +64,7 @@ export const menu: MenuItem[] = [
   },
   {
     id: "payroll",
-    title: "Payroll",
+    title: "Quick Payslip",
     path: "/payroll",
     icon: "compensation",
   },

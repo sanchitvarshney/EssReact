@@ -23,6 +23,7 @@ const SearchBarComponent: React.FC<Props> = ({
   selectedIndex,
   setSelectedIndex,
   shouldNavigateOnSelect = true, // default true
+  
 }) => {
   return (
     <Popover

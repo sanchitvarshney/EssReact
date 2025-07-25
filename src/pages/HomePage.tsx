@@ -82,6 +82,9 @@ const HomePage = () => {
                 }  linear infinite`,
                 fontSize: "1rem",
                 fontWeight: 500,
+                "&:hover": {
+                  animationPlayState: "paused",
+                }
               }}
             >
               We’re excited to introduce you to the enhanced version of ESS

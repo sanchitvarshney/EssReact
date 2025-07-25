@@ -86,7 +86,7 @@ const NoticeboardCard: React.FC = () => {
             textAlign={"center"}
             sx={{ borderBottom: "2px solid #0d918b", py: 1 }}
           >
-            📢 Announcement's & Notice
+            📌 Announcement's 
           </Typography>
           {/* <Divider sx={{ my: 1, background }} /> */}
         </>

@@ -157,7 +157,7 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
               <Button color="error" onClick={handleClose}>
                 Disagree
               </Button>
-              <Button color="success" onClick={()=>window.open("https://support.mscorpres.com/open.php","_blank")}>
+              <Button color="success" variant="contained" onClick={()=>window.open("https://support.mscorpres.com/open.php","_blank")}>
                 Agree&nbsp;
                 <ArrowOutwardIcon fontSize="small" />
               </Button>

@@ -17,11 +17,11 @@ const CustomModal: React.FC<CustomModalProps> = ({ open, onClose, title, childre
   return (
     <Dialog
       open={open}
-      onClose={(reason) => {
-        if (reason !== 'backdropClick') {
-          onClose(false);
-        }
-      }}
+      // onClose={(reason) => {
+      //   if (reason !== 'backdropClick') {
+      //     onClose(false);
+      //   }
+      // }}
       maxWidth="md"
       fullWidth
       PaperProps={{
@@ -31,6 +31,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ open, onClose, title, childre
           flexDirection: 'column',
           bgcolor: 'background.paper',
           userSelect: 'none',
+          
         },
       }}
   

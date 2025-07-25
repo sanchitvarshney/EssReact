@@ -188,7 +188,7 @@ const DocumentsPage = () => {
                         </Typography>
                       </div>
                       <div>
-                        <img src={row?.file_type === "pdf" ? pdf : row?.file_type === "img" ? img : otherType} alt="pdf icon" className="w-14 h-14" />
+                        <img src={row?.file_type === "pdf" ? pdf : row?.file_type === "img" ? img : otherType} alt="pdf icon" className="w-14 h-14 opacity-65" />
                       </div>
                     </CardContent>
                     <CardActions

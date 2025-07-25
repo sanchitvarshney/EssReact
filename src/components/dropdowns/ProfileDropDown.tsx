@@ -12,14 +12,15 @@ import {
 } from "../../staticData/profileoption";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contextapi/AuthContext";
-import ConfirmationModal from "../reuseable/ConfirmationModal";
+
 import { useState } from "react";
-// import SignOutModal from "../SignOutModal";
+import SignOutModal from "../SignOutModal";
 
 const ProfileDropDown = ({ close }: { close: any }) => {
   const navigation = useNavigate();
   const [open, setOpen] = useState(false);
   const { signOut } = useAuth();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleOptionClick = (item: profileOptionType) => {
     if (item.id === "logout") {
@@ -43,7 +44,9 @@ const ProfileDropDown = ({ close }: { close: any }) => {
             disablePadding
             key={item.id}
             className="hover:bg-gray-600/10 cursor-pointer"
-              onClick={() => handleOptionClick(item)}
+              onClick={(e:any) => { handleOptionClick(item)
+                setAnchorEl(e.currentTarget);
+              }}
           >
             <IconButton
             
@@ -62,17 +65,13 @@ const ProfileDropDown = ({ close }: { close: any }) => {
           </ListItem>
         ))}
       </List>
-      {/* <SignOutModal /> */}
-      <ConfirmationModal
-        open={open}
+      <SignOutModal anchorEl={anchorEl}  openSign={open}
         close={() => {
           setOpen(false);
           close();
         }}
-        aggree={() => signOut()}
-        title={"Are you sure you want to logout?"}
-        description="Logging out will end your current session and return you to the login screen."
-      />
+        aggree={() => signOut()}/>
+    
     </div>
   );
 };

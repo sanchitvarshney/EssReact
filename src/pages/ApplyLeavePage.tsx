@@ -282,7 +282,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <div className=" flex flex-col items-center   ">
+    <div className=" flex flex-col items-center  z-999 ">
       <div className="w-full bg-white rounded-2xl relative h-[65vh] overflow-y-auto p-6 will-change-transform md:p-6 flex flex-col gap-4">
         <div className="flex  justify-between items-center mb-2 ">
           <Typography>
@@ -506,7 +506,11 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        className="border border-gray-500 text-md rounded-sm focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all min-h-[80px]"
+                      
+                      maxLength={500}
+                      minLength={15}
+                      rows={8}
+                        className="border resize-none border-gray-500 text-md rounded-sm focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all  min-h-[80px]"
                         placeholder="Enter Reason"
                         {...field}
                       />

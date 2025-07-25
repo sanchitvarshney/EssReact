@@ -78,12 +78,14 @@ const EmployeeDetails = () => {
   }, [data]);
 
   return (
-    <div className="w-full h-[calc(100vh-90px)]  overflow-y-auto p-4 will-change-transform bg-white">
+    <div className="w-full h-[calc(100vh-90px)]  overflow-y-auto p-4 will-change-transform bg-white ">
       {isLoading ? (
         <EmployeeProfilePageSkeleton />
       ) : (
         <>
-          <div className="w-[100%] sm:w-[80%] px-4 py-6 m-auto flex justify-between ">
+          <div className="w-[100%] sm:w-[80%] px-4 py-6 m-auto flex justify-between   "   style={{
+    background: 'linear-gradient(0deg, rgba(255, 255, 255, 1) 63%, rgba(240, 240, 240, 1) 100%)',
+  }}>
             <div className="flex items-center gap-x-15 gap-y-8 flex-wrap  ">
               <div>
                 <Avatar

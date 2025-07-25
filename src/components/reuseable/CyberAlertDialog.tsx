@@ -34,7 +34,7 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
         />
         <DialogPrimitive.Content
           className={cn(
-            "fixed left-[50%] top-[50%] z-50 w-full max-w-2xl translate-x-[-50%] translate-y-[-50%] gap-4 bg-white p-8 shadow-md duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-2xl",
+            " fixed left-[50%] top-[50%] z-50 w-full max-w-4xl translate-x-[-50%] translate-y-[-50%] gap-4 bg-white p-8 shadow-md duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-sm",
             "max-h-[70vh] overflow-y-auto custom-scrollbar-for-menu"
           )}
           // Prevent closing on Escape key
@@ -42,8 +42,8 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
           // Prevent closing on pointer down outside
           onPointerDownOutside={(e) => e.preventDefault()}
         >
-          <div className="flex flex-col space-y-6">
-            <div className="flex items-center space-x-3 text-[#2eacb3]">
+          <div className="flex flex-col space-y-6 ">
+            <div className="flex items-center space-x-3 text-[#2eacb3] sticky top-[-32px] h-10 bg-white z-10">
               <ShieldCheck className="h-8 w-8" />
               <h2 className="text-2xl font-bold">
                 Important - Cyber Alert & Prevention
@@ -139,13 +139,13 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
               </div>
             </div>
 
-            <div className="flex justify-end pt-4">
+            <div className="flex justify-center pt-4">
               <button
                 onClick={onConfirm}
                 className="bg-[#2eacb3] text-white px-6 py-2.5 rounded-lg hover:bg-[#279aa0] transition-colors font-semibold text-lg flex items-center space-x-2 group"
               >
                 <span onClick={onConfirm} className="cursor-pointer">
-                  I Read
+                  I Agree
                 </span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </button>

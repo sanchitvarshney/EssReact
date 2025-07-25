@@ -44,6 +44,8 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
 
             return;
           }
+
+         
         })
         .catch((err) => {
           console.log(err);

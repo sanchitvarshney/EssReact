@@ -156,7 +156,7 @@ const PeripheralPage: React.FC = () => {
             <div className="hidden sm:block mt-0">
               <button
                 onClick={handlePrev}
-                className="bg-[#2eacb3] shadow-lg p-2 rounded-full transition-transform hover:scale-110"
+                className="bg-[#ffd43b] shadow-lg p-2 rounded-full transition-transform hover:scale-110"
                 disabled={peripherals.length < 2}
               >
                 <FiChevronLeft size={24} className="text-white" />
@@ -191,7 +191,7 @@ const PeripheralPage: React.FC = () => {
                         : selectedPeripheral?.image
                     }`}
                     alt={selectedPeripheral?.name}
-                    className={`w-full h-full object-cover rounded-xl p-1 shadow-lg transition-all duration-300 ring-4 ring-[#2eacb3]`}
+                    className={`w-full h-full object-cover rounded-xl p-1 shadow-lg transition-all duration-300 ring-4 ring-[#ffd43b]`}
                   />
                 </motion.div>
               </AnimatePresence>
@@ -199,7 +199,7 @@ const PeripheralPage: React.FC = () => {
             <div className="hidden sm:block mt-0">
               <button
                 onClick={handleNext}
-                className="bg-[#2eacb3] shadow-lg p-2 rounded-full transition-transform hover:scale-110"
+                className="bg-[#ffd43b] shadow-lg p-2 rounded-full transition-transform hover:scale-110"
                 disabled={peripherals.length < 2}
               >
                 <FiChevronRight size={24} className="text-white" />
@@ -210,14 +210,14 @@ const PeripheralPage: React.FC = () => {
           <div className="flex w-full justify-center space-x-4 items-center mt-1 sm:hidden">
             <button
               onClick={handlePrev}
-              className="bg-[#2eacb3] shadow-lg p-2 rounded-full transition-transform hover:scale-110"
+              className="bg-[#ffd43b] shadow-lg p-2 rounded-full transition-transform hover:scale-110"
               disabled={peripherals.length < 2}
             >
               <FiChevronLeft size={20} className="text-white" />
             </button>
             <button
               onClick={handleNext}
-              className="bg-[#2eacb3] shadow-lg p-2 rounded-full transition-transform hover:scale-110"
+              className="bg-[#ffd43b] shadow-lg p-2 rounded-full transition-transform hover:scale-110"
               disabled={peripherals.length < 2}
             >
               <FiChevronRight size={20} className="text-white" />
@@ -225,8 +225,8 @@ const PeripheralPage: React.FC = () => {
           </div>
         </div>
         {/* Details Section */}
-        <div className="w-full max-w-2xl m-auto overflow-y-auto will-change-transform h-[60vh] sm:h-[70vh] rounded-2xl shadow-2xl border border-gray-200 bg-white flex flex-col">
-          <div className="h-2 w-full bg-[#2eacb3] rounded-t-2xl mb-2" />
+        <div className="w-full max-w-2xl m-auto overflow-y-auto will-change-transform h-[60vh] sm:h-[70vh] md:h-[80vh] shadow-2xl border border-gray-200 bg-white flex flex-col">
+          <div className="h-1 w-full bg-[#2eacb3]  mb-2" />
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedPeripheral?.id}
@@ -248,7 +248,7 @@ const PeripheralPage: React.FC = () => {
                   <p className="w-32 sm:w-40 min-w-[100px] sm:min-w-[120px] font-semibold text-gray-500 text-base">
                     Serial ID:
                   </p>
-                  <p className="text-gray-800 text-base break-words">
+                  <p className="text-gray-800 text-base break-words text-[15px]">
                     {selectedPeripheral?.serialNo}
                   </p>
                 </div>
@@ -256,16 +256,16 @@ const PeripheralPage: React.FC = () => {
                   <p className="w-32 sm:w-40 min-w-[100px] sm:min-w-[120px] font-semibold text-gray-500 text-base">
                     Model:
                   </p>
-                  <p className="text-gray-800 text-base break-words">
+                  <p className="text-gray-800 text-base break-words text-[15px]">
                     {selectedPeripheral?.model}
                   </p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-2">
-                  <p className="w-32 sm:w-40 min-w-[100px] sm:min-w-[120px] font-semibold text-gray-500 text-base">
+                  <p className="w-32 sm:w-40 min-w-[100px] sm:min-w-[120px] font-semibold text-gray-500 text-base ">
                     Description:
                   </p>
-                  <p className="text-gray-800 text-base flex-1 text-justify break-words">
+                  <p className="text-gray-800 text-base flex-1  break-words text-[15px]">
                     {selectedPeripheral?.description}
                   </p>
                 </div>
@@ -274,7 +274,7 @@ const PeripheralPage: React.FC = () => {
                   <p className="w-32 sm:w-40 min-w-[100px] sm:min-w-[120px] font-semibold text-gray-500 text-base">
                     Allotted Date:
                   </p>
-                  <p className="text-gray-800 text-base">
+                  <p className="text-gray-800 text-base text-[15px]" >
                     {selectedPeripheral?.allotedon}
                   </p>
                 </div>

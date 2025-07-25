@@ -68,7 +68,7 @@
 .custom-scrollbar-for-menu {
  
   scrollbar-width: thin; 
-  scrollbar-color: rgb(33, 34, 34) transparent; 
+  scrollbar-color: rgb(192, 192, 192) transparent; 
   
   -webkit-scrollbar {
     width: 4px;
