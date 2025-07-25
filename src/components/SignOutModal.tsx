@@ -8,18 +8,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Avatar } from "@mui/material";
 
 interface SignOutModalProps {
-  open?: boolean;
+  // open?: boolean;
   close?: () => void;
-  aggree?: () => void;
-  title?: string;
-  description?: string;
+  // aggree?: () => void;
+  // title?: string;
+  // description?: string;
 }
 const SignOutModal: React.FC<SignOutModalProps> = ({
-  open,
+  // open,
   close,
-  title,
-  description,
-  aggree,
+  // title,
+  // description,
+  // aggree,
 }) => {
       const [selected, setSelected] = React.useState<string | null>(null);
 
