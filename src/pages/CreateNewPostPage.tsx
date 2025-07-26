@@ -1,30 +1,51 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { CustomButton } from "../components/ui/CustomButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "../contextapi/AuthContext";
 import { btnstyle } from "../constants/themeConstant";
 import { useToast } from "../hooks/useToast";
-import { useCreatePostMutation } from "../services/vibe";
-import { Bold, Italic,  ArrowUpAZ, ArrowDownAZ } from "lucide-react";
+
+import { Bold, Italic, ArrowUpAZ, ArrowDownAZ } from "lucide-react";
 
 import { CircularProgress } from "@mui/material";
-
 
 const hasMinimumWords = (text: string, minWords: number = 3): boolean => {
   const words = text.trim().split(/\s+/); // split by any whitespace
   return words.length >= minWords;
 };
 
-export default function CreateNewPostPage({ closeModal }: { closeModal: any }) {
+export default function CreateNewPostPage({
+  closeModal,
+  onCreatePost,
+}: {
+  closeModal: any;
+  onCreatePost: (payload: any) => Promise<{ success: boolean }>;
+}) {
+  console.log(
+    "CreateNewPostPage rendered with onCreatePost:",
+    typeof onCreatePost
+  );
   const { user } = useAuth();
   const { showToast } = useToast();
   const { name, imgUrl } = user as any;
   const [caption, setCaption] = useState("");
- const textareaRef = useRef(null);
+  const textareaRef = useRef(null);
   const [previewImages, setPreviewImages] = useState<string[]>([]); // for display
   const [imageFiles, setImageFiles] = useState<File[]>([]);
 
-  const [createPost, { isLoading }] = useCreatePostMutation();
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Debug logging
+  useEffect(() => {
+    console.log(
+      "Button disabled state:",
+      imageFiles.length === 0 && caption.length === 0,
+      "imageFiles:",
+      imageFiles.length,
+      "caption:",
+      caption.length
+    );
+  }, [imageFiles.length, caption.length]);
 
   const handleImageUpload = (e: any) => {
     if (!e.target.files) return;
@@ -48,78 +69,82 @@ export default function CreateNewPostPage({ closeModal }: { closeModal: any }) {
   };
 
   const handleCreatePost = async () => {
+    console.log("handleCreatePost called in CreateNewPostPage");
     if (!hasMinimumWords(caption)) {
       showToast("Caption must have at least 3 words", "error");
       return;
     }
- 
-    //@ts-ignore
-    const base64Images = await Promise.all(imageFiles.map(fileToBase64));
 
-    const payload = {
-      description: caption,
-      image: base64Images,
-    };
+    setIsLoading(true);
 
-    createPost(payload)
-      .then((res) => {
-        showToast(res?.data?.message || "Post created successfully", "success");
+    try {
+      //@ts-ignore
+      const base64Images = await Promise.all(imageFiles.map(fileToBase64));
+
+      const payload = {
+        description: caption,
+        image: base64Images,
+      };
+
+      const result = await onCreatePost(payload);
+
+      if (result.success) {
         setCaption("");
         setImageFiles([]);
         setPreviewImages([]);
         closeModal();
-      })
-      .catch((err) => {
-        showToast(
-          err ||
-            err?.message?.msg ||
-            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
-          "error"
-        );
-      });
+      }
+    } catch (err: any) {
+      showToast(
+        err?.message?.msg ||
+          err?.message ||
+          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+        "error"
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+  const applyFormat = (formatType: string) => {
+    const textarea: any = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
 
-const applyFormat = (formatType: string) => {
-  const textarea:any = textareaRef.current ;
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
+    if (start === end) return; // No text selected
 
-  if (start === end) return; // No text selected
+    const selectedText = caption.substring(start, end);
+    let formatted = selectedText;
 
-  const selectedText = caption.substring(start, end);
-  let formatted = selectedText;
+    switch (formatType) {
+      case "bold":
+        formatted = `**${selectedText}**`;
+        break;
+      case "italic":
+        formatted = `*${selectedText}*`;
+        break;
+      case "bolditalic":
+        formatted = `***${selectedText}***`;
+        break;
+      case "uppercase":
+        formatted = selectedText.toUpperCase();
+        break;
+      case "lowercase":
+        formatted = selectedText.toLowerCase();
+        break;
+      default:
+        break;
+    }
 
-  switch (formatType) {
-    case "bold":
-      formatted = `**${selectedText}**`;
-      break;
-    case "italic":
-      formatted = `*${selectedText}*`;
-      break;
-    case "bolditalic":
-      formatted = `***${selectedText}***`;
-      break;
-    case "uppercase":
-      formatted = selectedText.toUpperCase();
-      break;
-    case "lowercase":
-      formatted = selectedText.toLowerCase();
-      break;
-    default:
-      break;
-  }
+    const newText =
+      caption.substring(0, start) + formatted + caption.substring(end);
+    setCaption(newText);
 
-  const newText =
-    caption.substring(0, start) + formatted + caption.substring(end);
-  setCaption(newText);
-
-  setTimeout(() => {
-    textarea.focus();
-    textarea.setSelectionRange(start, start + formatted.length);
-  }, 0);
-};
-
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start, start + formatted.length);
+    }, 0);
+  };
 
   return (
     <div className=" mx-auto p-2 bg-white  rounded-lg my-3 space-y-6">
@@ -132,52 +157,50 @@ const applyFormat = (formatType: string) => {
         </div>
       </div>
 
-     <div className="w-full">
-      <label className="text-sm font-semibold mb-1 block">Caption</label>
+      <div className="w-full">
+        <label className="text-sm font-semibold mb-1 block">Caption</label>
 
-     
-
-      {/* Textarea */}
-      <textarea
-        ref={textareaRef}
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-        rows={4}
-        className="w-full p-3 border rounded-lg resize-none"
-        placeholder="Write your caption here..."
-      />
-       {/* Formatting Toolbar */}
-      <div className="flex gap-2 mt-">
-        <button
-          onClick={() => applyFormat("bold")}
-          className="p-2 border rounded hover:bg-gray-100"
-          title="Bold"
-        >
-          <Bold size={16} />
-        </button>
-        <button
-          onClick={() => applyFormat("italic")}
-          className="p-2 border rounded hover:bg-gray-100"
-          title="Italic"
-        >
-          <Italic size={16} />
-        </button>
-        <button
-          onClick={() => applyFormat("uppercase")}
-          className="p-2 border rounded hover:bg-gray-100"
-          title="Uppercase"
-        >
-          <ArrowUpAZ size={16} />
-        </button>
-        <button
-          onClick={() => applyFormat("lowercase")}
-          className="p-2 border rounded hover:bg-gray-100"
-          title="Lowercase"
-        >
-          <ArrowDownAZ size={16} />
-        </button>
+        {/* Textarea */}
+        <textarea
+          ref={textareaRef}
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          rows={4}
+          className="w-full p-3 border rounded-lg resize-none"
+          placeholder="Write your caption here..."
+        />
+        {/* Formatting Toolbar */}
+        <div className="flex gap-2 mt-">
+          <button
+            onClick={() => applyFormat("bold")}
+            className="p-2 border rounded hover:bg-gray-100"
+            title="Bold"
+          >
+            <Bold size={16} />
+          </button>
+          <button
+            onClick={() => applyFormat("italic")}
+            className="p-2 border rounded hover:bg-gray-100"
+            title="Italic"
+          >
+            <Italic size={16} />
+          </button>
+          <button
+            onClick={() => applyFormat("uppercase")}
+            className="p-2 border rounded hover:bg-gray-100"
+            title="Uppercase"
+          >
+            <ArrowUpAZ size={16} />
+          </button>
+          <button
+            onClick={() => applyFormat("lowercase")}
+            className="p-2 border rounded hover:bg-gray-100"
+            title="Lowercase"
+          >
+            <ArrowDownAZ size={16} />
+          </button>
+        </div>
       </div>
-    </div>
 
       <div>
         <label className="text-sm font-semibold block mb-1">Add Images</label>

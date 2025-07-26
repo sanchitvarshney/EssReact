@@ -15,7 +15,7 @@ import { useToast } from "../hooks/useToast";
 import { useLeaveListMutation } from "../services/Leave";
 import AbsenceListPage from "../components/AbsenceListPage";
 
-import { useLazyGetVibeQuery } from "../services/vibe";
+import { useLazyGetVibeQuery, useCreatePostMutation } from "../services/vibe";
 
 const AnnouncementList = lazy(() => import("../components/AnnouncementList"));
 
@@ -34,7 +34,6 @@ const AnnouncementPage = () => {
   const [leaveList, { data: leaveData, isLoading: leaveLoading }] =
     useLeaveListMutation();
 
-
   const {
     data: hireData,
     isLoading: hireLoading,
@@ -49,6 +48,8 @@ const AnnouncementPage = () => {
   const [limit, setLimit] = useState(5);
 
   const [getVibe, { isLoading: vibeLoading }] = useLazyGetVibeQuery();
+  const [createPost, { isLoading: createPostLoading }] =
+    useCreatePostMutation();
 
   const fetchInitialData = async () => {
     try {
@@ -86,8 +87,6 @@ const AnnouncementPage = () => {
     threshold: 0.2,
     triggerOnce: false,
   });
-
-
 
   useEffect(() => {
     setPosts([]);
@@ -158,6 +157,57 @@ const AnnouncementPage = () => {
     setPostFilter((prev) => (prev === filter ? "" : filter));
   }, []);
 
+  const handleCreatePost = async (payload: any) => {
+    try {
+      const res = await createPost(payload).unwrap();
+      showToast(
+        (res as any)?.data?.message || "Post created successfully",
+        "success"
+      );
+      // Call vibe API with exact parameters after successful post creation
+      try {
+        const vibeRes = await getVibe({
+          limit: 5,
+          last_id: null,
+          tmln_type: "",
+          offset: 0,
+        }).unwrap();
+
+        if (vibeRes?.data?.success === false) {
+          showToast(
+            vibeRes?.data?.message || "Failed to refresh posts",
+            "error"
+          );
+        } else {
+          const newPosts = vibeRes?.data || [];
+          const scrollInfo = vibeRes?.scroll || {};
+
+          setPosts(newPosts);
+          setHasMore(scrollInfo?.hasMore ?? false);
+          setLastId(scrollInfo?.nextLastId || null);
+          setOffset(5);
+        }
+      } catch (vibeErr: any) {
+        showToast(
+          vibeErr?.data?.message?.msg ||
+            vibeErr?.message ||
+            "Failed to refresh posts after creation",
+          "error"
+        );
+      }
+
+      return { success: true };
+    } catch (err: any) {
+      showToast(
+        err?.data?.message?.msg ||
+          err?.message ||
+          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+        "error"
+      );
+      return { success: false };
+    }
+  };
+
   useEffect(() => {
     if (dobError || waError || hireError) {
       showToast(
@@ -188,7 +238,11 @@ const AnnouncementPage = () => {
           {" "}
           <div className="flex flex-col gap-4">
             <div className="sticky top-[-30px] z-10 ">
-              <PostHeader setFilter={handleSetFilter} postFilter={postFilter} />
+              <PostHeader
+                setFilter={handleSetFilter}
+                postFilter={postFilter}
+                onCreatePost={handleCreatePost}
+              />
             </div>
             <div className="space-y-6">
               <Suspense
