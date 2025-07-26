@@ -58,8 +58,79 @@ export default function CreateNewPostPage({
     setImageFiles((prev: any) => [...prev, ...files]);
   };
 
+  const validateFiles = (files: File[]) => {
+    const maxSize = 2 * 1024 * 1024; // 2MB per file
+    const maxTotalSize = 8 * 1024 * 1024; // 8MB total
+
+    let totalSize = 0;
+
+    for (const file of files) {
+      if (file.size > maxSize) {
+        throw new Error(
+          `File "${file.name}" is too large. Maximum size is 2MB.`
+        );
+      }
+      totalSize += file.size;
+    }
+
+    if (totalSize > maxTotalSize) {
+      throw new Error(
+        `Total file size is too large. Maximum total size is 8MB.`
+      );
+    }
+  };
+
+  const compressImage = (file: File): Promise<File> => {
+    return new Promise((resolve) => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      const img = new Image();
+
+      img.onload = () => {
+        // Calculate new dimensions (max 800px width/height)
+        const maxSize = 800;
+        let { width, height } = img;
+
+        if (width > height) {
+          if (width > maxSize) {
+            height = (height * maxSize) / width;
+            width = maxSize;
+          }
+        } else {
+          if (height > maxSize) {
+            width = (width * maxSize) / height;
+            height = maxSize;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        // Draw and compress
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg",
+                lastModified: Date.now(),
+              });
+              resolve(compressedFile);
+            } else {
+              resolve(file);
+            }
+          },
+          "image/jpeg",
+          0.7
+        ); // 70% quality
+      };
+
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
   const fileToBase64 = (file: File): Promise<string> => {
-    console.log(file);
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result as string);
@@ -75,11 +146,26 @@ export default function CreateNewPostPage({
       return;
     }
 
+    // Validate files before sending
+    if (imageFiles.length > 0) {
+      try {
+        validateFiles(imageFiles);
+      } catch (error: any) {
+        showToast(error.message, "error");
+        return;
+      }
+    }
+
     setIsLoading(true);
 
     try {
-      //@ts-ignore
-      const base64Images = await Promise.all(imageFiles.map(fileToBase64));
+      // Compress images if they exist
+      let processedFiles = imageFiles;
+      if (imageFiles.length > 0) {
+        showToast("Compressing images...", "success");
+        processedFiles = await Promise.all(imageFiles.map(compressImage));
+      }
+      const base64Images = await Promise.all(processedFiles.map(fileToBase64));
 
       const payload = {
         description: caption,
