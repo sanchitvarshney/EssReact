@@ -35,10 +35,10 @@ export const PWARegistration = () => {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-999">
+    <div className="fixed bottom-2 right-2 z-50">
       <button
         onClick={handleInstallClick}
-        className="bg-[#018c85] text-white px-4 py-2 rounded-lg shadow-lg hover:bg-[#016c65] transition-colors flex items-center gap-2"
+        className="bg-[#018c85] text-white  rounded-lg shadow-lg  flex items-center gap-2"
       >
         <span>📱</span>
         Install App

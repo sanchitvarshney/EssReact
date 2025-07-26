@@ -5,6 +5,7 @@ import { AuthProvider } from "./contextapi/AuthContext";
 import { ToastContext } from "./contextapi/ToastContext";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./styles/theme";
+import PWARegistration from "./components/PWARegistration";
 
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
       <ToastContext>
         <AuthProvider>
           <RouterProvider router={route} />
-       
+       <PWARegistration />
         </AuthProvider>
       </ToastContext>
     </ThemeProvider>

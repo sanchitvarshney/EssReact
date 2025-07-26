@@ -18,7 +18,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
 import { useEffect, useState } from "react";
 import CustomFooter from "../components/reuseable/CustomFooter";
-import PWARegistration from "../components/PWARegistration";
+
 
 
 // Create dynamic keyframes based on screen size
@@ -143,7 +143,7 @@ const HomePage = () => {
           <div className="w-full  hidden md:block">
             <NoticeboardCard />
           </div>
-             <PWARegistration />
+             
         </div>
             <CustomFooter />
             
