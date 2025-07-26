@@ -60,8 +60,7 @@ export default function CreateNewPostPage({ closeModal }: { closeModal: any }) {
       description: caption,
       image: base64Images,
     };
-console.log(payload)
-return
+
     createPost(payload)
       .then((res) => {
         showToast(res?.data?.message || "Post created successfully", "success");
