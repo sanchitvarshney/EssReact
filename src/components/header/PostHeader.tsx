@@ -101,7 +101,7 @@ const PostHeader: FC<PostHeaderProps> = ({
 
       <Dialog
         open={isNewPost}
-        onClose={() => setIsNewPost(false)}
+        // onClose={() => setIsNewPost(false)}
         fullWidth
         maxWidth="md"
         BackdropProps={{

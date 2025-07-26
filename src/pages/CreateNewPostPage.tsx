@@ -49,17 +49,33 @@ export default function CreateNewPostPage({
 
   const handleImageUpload = (e: any) => {
     if (!e.target.files) return;
+
     const files = Array.from(e.target.files);
+
+    const allowedFiles = files.filter(
+      (file: any) =>
+        file.type === "image/jpeg" || file.name.toLowerCase().endsWith(".jpg")
+    );
+
+    if (allowedFiles.length === 0) {
+      showToast("Only JPG or JPEG files are allowed.", "error");
+      return;
+    }
+
+    if (imageFiles.length + allowedFiles.length > 2) {
+      showToast("You can only upload up to 2 images.", "error");
+      return;
+    }
 
     setPreviewImages((prev: any) => [
       ...prev,
-      ...files.map((file: any) => URL.createObjectURL(file)),
+      ...allowedFiles.map((file: any) => URL.createObjectURL(file)),
     ]);
-    setImageFiles((prev: any) => [...prev, ...files]);
+    setImageFiles((prev: any) => [...prev, ...allowedFiles]);
   };
 
   const validateFiles = (files: File[]) => {
-    const maxSize = 2 * 1024 * 1024; // 2MB per file
+    const maxSize = 5 * 1024 * 1024;
     const maxTotalSize = 8 * 1024 * 1024; // 8MB total
 
     let totalSize = 0;
@@ -171,7 +187,7 @@ export default function CreateNewPostPage({
         description: caption,
         image: base64Images,
       };
-
+  
       const result = await onCreatePost(payload);
 
       if (result.success) {
