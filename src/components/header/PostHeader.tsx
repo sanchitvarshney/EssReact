@@ -29,8 +29,13 @@ const postOption = [
 type PostHeaderProps = {
   setFilter: (e: string) => void;
   postFilter: string;
+  onCreatePost: (payload: any) => Promise<{ success: boolean }>;
 };
-const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
+const PostHeader: FC<PostHeaderProps> = ({
+  setFilter,
+  postFilter,
+  onCreatePost,
+}) => {
   const [isNewPost, setIsNewPost] = useState<boolean>(false);
 
   const handleNewPost = () => {
@@ -91,7 +96,6 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
       {/* </Box> */}
 
       <Dialog
-      
         open={isNewPost}
         onClose={() => setIsNewPost(false)}
         fullWidth
@@ -131,7 +135,10 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
         </DialogTitle>
 
         <DialogContent sx={{ pt: 3 }}>
-          <CreateNewPostPage closeModal={() => setIsNewPost(false)} />
+          <CreateNewPostPage
+            closeModal={() => setIsNewPost(false)}
+            onCreatePost={onCreatePost}
+          />
         </DialogContent>
       </Dialog>
 
