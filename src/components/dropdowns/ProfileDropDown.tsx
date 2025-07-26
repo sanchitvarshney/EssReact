@@ -34,13 +34,15 @@ const ProfileDropDown = ({ close }: { close: any }) => {
   };
   const handleLogout = () => {
     if (selected) {
-      setSelected(null);
+      //@ts-ignore
+      if (!user?.id) return;
+
       onFeedBack({
         feedback: selected,
         //@ts-ignore
         empcode: user?.id,
       });
-
+      setSelected(null);
       signOut();
 
       return;
