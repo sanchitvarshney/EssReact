@@ -117,7 +117,7 @@ const PostHeader: FC<PostHeaderProps> = ({
             alignItems: "center",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}> 
             <AssignmentIcon sx={{ color: "#2eacb3" }} />
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
               {`Create Post`}
@@ -130,7 +130,7 @@ const PostHeader: FC<PostHeaderProps> = ({
 
         <DialogContent sx={{ pt: 3 }}>
           <CreateNewPostPage
-            closeModal={() => setIsNewPost(false)}
+            closeModal={() => setIsNewPost(false)} 
             onCreatePost={onCreatePost}
           />
         </DialogContent>
