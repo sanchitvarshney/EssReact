@@ -2,20 +2,19 @@
   "name": "ESS Portal",
   "short_name": "ESSP",
   "description": "Human Resource Management System, Designed & Hosted By : MsCorpres Automation Private Limited",
-  "display": "portable",
-  "start_url": "https://ess.mscorpres.com",
-  "display_override": ["fullscreen"],
+  "display": "standalone",
+  "start_url": "/",
   "scope": "/",
   "background_color": "#ffffff",
   "theme_color": "#018c85",
-  "orientation": "landscape-primary",
+  "orientation": "portrait-primary",
   "author": "MsCorpres Automation Private Limited",
   "developer": {
     "name": "Shiv, Lovish, Sanchit and Deepak"
   },
-  "manifest_version": "0.1",
-  "version": "0.1",
-  "version_name": "0.1 stable",
+  "manifest_version": 3,
+  "version": "1.0.0",
+  "version_name": "1.0.0 stable",
   "icons": [
     {
       "src": "https://ess.mscorpres.com/assets/images/manifest/icon-192x192.png",
