@@ -10,11 +10,9 @@ interface Props {
   height?: string | number;
   children: React.ReactNode;
   isCone?: boolean;
-  vertical?:any
-  horizontal?:any
-  transformOrigin?:any
-  
-
+  vertical?: any;
+  horizontal?: any;
+  transformOrigin?: any;
 }
 
 const DocView: React.FC<Props> = ({
@@ -22,18 +20,17 @@ const DocView: React.FC<Props> = ({
   close,
   anchorEl,
   width,
-height,
+  height,
   children,
-    vertical="center",
-  horizontal="right",
-  transformOrigin="right",
-
+  vertical = "center",
+  horizontal = "right",
+  transformOrigin = "right",
 }) => {
   return (
     <AnimatePresence>
       {open && (
         <Popover
-        className="custom-scrollbar-for-menu"
+          className="custom-scrollbar-for-menu"
           open={open}
           anchorEl={anchorEl?.current || null}
           onClose={close}
@@ -47,24 +44,28 @@ height,
           }}
           disableAutoFocus
           disableEnforceFocus
+          BackdropProps={{
+            sx: {
+              backgroundColor: "rgba(0, 0, 0, 0)",
+              backdropFilter: "blur(5px)",
+              WebkitBackdropFilter: "blur(5px)",
+            },
+          }}
           PaperProps={{
             style: {
               transformOrigin: transformOrigin,
               margin: 0,
               borderRadius: "2px",
               overflow: "auto",
-      
             },
             sx: {
               width: width ? width : 800,
               height: height || "95vh",
               zIndex: 1600,
-              display:"flex",
-              justifyContent:"center"
-              
+              display: "flex",
+              justifyContent: "center",
             },
           }}
-        
         >
           {children}
         </Popover>

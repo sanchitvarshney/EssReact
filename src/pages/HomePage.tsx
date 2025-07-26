@@ -14,9 +14,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { keyframes, useTheme } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 // import SendIcon from "@mui/icons-material/Send";
-import nextgenimg from "../assets/lightlogov2.svg";
+
 import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
 import { useEffect, useState } from "react";
+import CustomFooter from "../components/reuseable/CustomFooter";
 
 // Create dynamic keyframes based on screen size
 const getScrollKeyframes = (fromX: string, toX: string) => keyframes`
@@ -141,34 +142,7 @@ const HomePage = () => {
             <NoticeboardCard />
           </div>
         </div>
-        <div className="w-full  flex-wrap bg-[#444445] px-[50px] sm:px-[200px] flex items justify-between gap-[50px] py-[20px] border-t-1 border-gray-300 text-white">
-          <div className="flex flex-col gap-[10px] w-[500px] items-start text-left justify-end">
-            <img src="./ms.png" alt="" className="w-[250px]" />
-            <div>
-              <Typography fontSize={13} className=" ">
-                MsCorpres Automation Pvt Ltd
-              </Typography>
-              <Typography fontSize={13} className=" ">
-                Office No. 1 and 2, 3rd Floor, Plot number B-88 Sector 83,
-                Noida, Gautam Buddha Nagar, 201305
-              </Typography>
-              <Typography fontSize={13} className=" ">
-                Phone 2: +91 88 26 788880{" "}
-              </Typography>
-              <Typography fontSize={13} className=" ">
-                Email: marketing@mscorpres.in
-              </Typography>
-            </div>
-          </div>
-          <div className="flex flex-col items-start gap-y-4  ">
-            <div>
-              <img src={nextgenimg} alt="nextgenlogo" className="w-50 " />
-            </div>
-            <Typography fontSize={13} className="">
-              © 2017 - {new Date().getFullYear()} | All rights reserved
-            </Typography>
-          </div>
-        </div>
+            <CustomFooter />
       </div>
       <CyberAlertDialog
         open={showCyberAlert }
@@ -183,6 +157,7 @@ const HomePage = () => {
 
         }}
       />
+  
     </div>
   );
 };

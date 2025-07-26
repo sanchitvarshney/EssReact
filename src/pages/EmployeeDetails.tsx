@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import EmployeeHierarchyPage from "../components/EmployeeHierarchyPage";
 // import { useNavigate } from "react-router-dom";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CustomFooter from "../components/reuseable/CustomFooter";
 
 const Information = ({
   label,
@@ -78,12 +79,12 @@ const EmployeeDetails = () => {
   }, [data]);
 
   return (
-    <div className="w-full h-[calc(100vh-90px)]  overflow-y-auto p-4 will-change-transform bg-white ">
+    <div className="w-full h-[calc(100vh-90px)]  overflow-y-auto p-0 will-change-transform bg-white ">
       {isLoading ? (
         <EmployeeProfilePageSkeleton />
       ) : (
         <>
-          <div className="w-[100%] sm:w-[80%] px-4 py-6 m-auto flex justify-between   "   style={{
+          <div className="w-[100%] sm:w-[80%] px-4 py-6  flex justify-between mx-auto  "   style={{
     background: 'linear-gradient(0deg, rgba(255, 255, 255, 1) 63%, rgba(240, 240, 240, 1) 100%)',
   }}>
             <div className="flex items-center gap-x-15 gap-y-8 flex-wrap  ">
@@ -117,7 +118,7 @@ const EmployeeDetails = () => {
             </div>
           </div>
           <Divider sx={{ marginTop: 1 }} />
-          <div className=" my-6">
+          <div className=" my-4 px-4">
             <div>
               <div className="flex justify-between items-center">
                 <Typography
@@ -216,7 +217,7 @@ const EmployeeDetails = () => {
             </div>
           </div>
           <Divider sx={{ my: 1 }} />
-          <div className="flex justify-between items-center ">
+          <div className="flex justify-between items-center px-4">
             <Typography
               sx={{
                 fontSize: 20,
@@ -228,9 +229,10 @@ const EmployeeDetails = () => {
               Hierarchy
             </Typography>
           </div>
-          <div className="mb-4 w-full overflow-x-auto will-change-transform px-20">
+          <div className="mb-4  w-full overflow-x-auto will-change-transform px-20">
             <EmployeeHierarchyPage userId={empCode} />
           </div>
+          <CustomFooter />
         </>
       )}
     </div>

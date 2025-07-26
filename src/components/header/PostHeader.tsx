@@ -91,14 +91,22 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
       {/* </Box> */}
 
       <Dialog
+      
         open={isNewPost}
         onClose={() => setIsNewPost(false)}
         fullWidth
         maxWidth="md"
+        BackdropProps={{
+          sx: {
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            backdropFilter: "blur(5px)",
+            WebkitBackdropFilter: "blur(5px)",
+          },
+        }}
         PaperProps={{
           sx: {
             borderRadius: 3,
-            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+            boxShadow: " 20px 25px -5px rgba(102, 102, 102, 0.4)",
           },
         }}
       >

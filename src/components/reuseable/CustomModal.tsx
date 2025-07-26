@@ -1,19 +1,24 @@
-import React from 'react';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
+import React from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
 // import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface CustomModalProps {
   open: boolean;
-  onClose?:  any;
+  onClose?: any;
   title?: string;
   children?: React.ReactNode;
 }
 
-const CustomModal: React.FC<CustomModalProps> = ({ open, onClose, title, children }) => {
+const CustomModal: React.FC<CustomModalProps> = ({
+  open,
+  onClose,
+  title,
+  children,
+}) => {
   return (
     <Dialog
       open={open}
@@ -24,25 +29,30 @@ const CustomModal: React.FC<CustomModalProps> = ({ open, onClose, title, childre
       // }}
       maxWidth="md"
       fullWidth
-      PaperProps={{
+      BackdropProps={{
         sx: {
-          height: '90vh',
-          display: 'flex',
-          flexDirection: 'column',
-          bgcolor: 'background.paper',
-          userSelect: 'none',
-          
+          backgroundColor: "rgba(0, 0, 0, 0)",
+          backdropFilter: "blur(5px)",
+          WebkitBackdropFilter: "blur(5px)",
         },
       }}
-  
+      PaperProps={{
+        sx: {
+          height: "90vh",
+          display: "flex",
+          flexDirection: "column",
+          bgcolor: "background.paper",
+          userSelect: "none",
+        },
+      }}
     >
-      <DialogTitle sx={{ color: 'text.primary', }}>
+      <DialogTitle sx={{ color: "text.primary" }}>
         {title}
         <IconButton
           aria-label="close"
           onClick={() => onClose(false)}
           sx={{
-            position: 'absolute',
+            position: "absolute",
             right: 8,
             top: 12,
             // color: (theme) => theme.palette.grey[500],
@@ -55,7 +65,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ open, onClose, title, childre
       <DialogContent
         dividers
         sx={{
-          overflowY: 'auto',
+          overflowY: "auto",
           flex: 1,
           // mt: 1,
         }}

@@ -370,8 +370,10 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
           vertical: "bottom",
           horizontal: "left",
         }}
+        
         disableAutoFocus
         disableEnforceFocus
+        
         PaperProps={{
           style: {
             transformOrigin: "bottom",
