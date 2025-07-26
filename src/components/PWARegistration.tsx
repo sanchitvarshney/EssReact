@@ -35,7 +35,7 @@ export const PWARegistration = () => {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-4 right-4 z-999">
       <button
         onClick={handleInstallClick}
         className="bg-[#018c85] text-white px-4 py-2 rounded-lg shadow-lg hover:bg-[#016c65] transition-colors flex items-center gap-2"

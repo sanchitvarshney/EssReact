@@ -18,6 +18,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
 import { useEffect, useState } from "react";
 import CustomFooter from "../components/reuseable/CustomFooter";
+import PWARegistration from "../components/PWARegistration";
+
 
 // Create dynamic keyframes based on screen size
 const getScrollKeyframes = (fromX: string, toX: string) => keyframes`
@@ -32,8 +34,8 @@ const HomePage = () => {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediamDevice = useMediaQuery(theme.breakpoints.down("md"));
-  const fromX = isSmallDevice ? "20%" : isMediamDevice ? "40%" : "100%";
-  const toX = isSmallDevice ? "-20%" : isMediamDevice ? "-40%" : "-100%";
+  const fromX = isSmallDevice ? "20%" : isMediamDevice ? "40%" : "90%";
+  const toX = isSmallDevice ? "-20%" : isMediamDevice ? "-40%" : "-120%";
   const scroll = getScrollKeyframes(fromX, toX);
 
   const [showCyberAlert, setShowCyberAlert] = useState(false);
@@ -141,8 +143,11 @@ const HomePage = () => {
           <div className="w-full  hidden md:block">
             <NoticeboardCard />
           </div>
+             <PWARegistration />
         </div>
             <CustomFooter />
+            
+             
       </div>
       <CyberAlertDialog
         open={showCyberAlert }
