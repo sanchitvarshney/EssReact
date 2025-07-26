@@ -38,7 +38,6 @@ interface PostAnnouncementCardProps {
 
 // Utility function to normalize images to an array
 function getImageArray(images: any): string[] {
- 
   if (!images) return [];
   if (Array.isArray(images)) return images;
   if (typeof images === "string") {
@@ -67,7 +66,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const [sendComment, { data: commentData }] = useSendCommentMutation();
-  const [sendLike, { data: likeData, isSuccess }] = useSendLikeMutation();
+  const [sendLike, { data: likeData,  }] = useSendLikeMutation();
 
   const [isLikeView, setIsLikeView] = useState(false);
   const [isLike, setIsLike] = useState(false);
@@ -84,6 +83,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
   };
 
   const handleComment = (key: string) => {
+
     if (commentText.trim() === "") {
       showToast("Comment cannot be empty", "error");
       return;
@@ -105,11 +105,13 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
         }
       })
       .catch((err) => {
+        
         showToast(err?.data?.message, "error");
       });
   };
 
   const handleLike = (key: string) => {
+      setIsLike(true);
     const payload = {
       post_key: key,
     };
@@ -121,26 +123,24 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
         }
         if (res?.data?.status === "success") {
           showToast(res?.data?.message, "success");
+         
         }
       })
       .catch((err) => {
+        setIsLike(false);
         showToast(err?.data?.message, "error");
       });
   };
   //@ts-ignore
   const userid: any = user?.id;
-  // useEffect(() => {
-  //   if (!post || !post?.likes) return;
-  //   const liked = post?.likes?.some((item: any) => item?.userId === userid);
 
-  //   setIsLike(liked);
-  // }, [post, userid, isSuccess]);
   useEffect(() => {
-  if (!post?.likes || !userid) return;
+    if (!post?.likes || !userid  ) return;
 
-  const liked = post.likes.some((like: any) => like?.userId === userid);
-  setIsLike(liked);
-}, [post?.likes, userid, isSuccess]);
+    const liked = post.likes.some((like: any) => like?.userId === userid);
+    
+    setIsLike(liked);
+  }, [post?.likes, userid,  ]);
 
   const handleEmojiClick = (emojiData: { emoji: string }) => {
     setCommentText(commentText + emojiData.emoji);
@@ -247,7 +247,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                   }}
                 >
                   <Paper
-                    elevation={2}
+                    elevation={0}
                     sx={{
                       borderRadius: 4,
                       overflow: "hidden",
@@ -261,8 +261,8 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                         height:
                           getImageArray(post?.images).length === 1
                             ? "300px"
-                            : "120px",
-                        objectFit: "fill",
+                            : "200px",
+                        objectFit: "contain",
                       }}
                     />
                   </Paper>
@@ -370,10 +370,8 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
           vertical: "bottom",
           horizontal: "left",
         }}
-        
         disableAutoFocus
         disableEnforceFocus
-        
         PaperProps={{
           style: {
             transformOrigin: "bottom",

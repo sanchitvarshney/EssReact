@@ -7,7 +7,7 @@ import EmployeeProfilePageSkeleton from "../skeleton/EmployeeProfilePageSkeleton
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import EmployeeHierarchyPage from "../components/EmployeeHierarchyPage";
-// import { useNavigate } from "react-router-dom";
+import badge from "../assets/img/badge.png";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CustomFooter from "../components/reuseable/CustomFooter";
 
@@ -84,7 +84,7 @@ const EmployeeDetails = () => {
       ) : (
         <>
           <div
-            className="w-[100%] sm:w-[100%] px-4   flex justify-between   "
+            className="w-[100%] sm:w-[100%] px-15   flex justify-between    "
             style={{
               background:
                 "linear-gradient(0deg, rgba(255, 255, 255, 1) 63%, rgba(240, 240, 240, 1) 100%)",
@@ -118,6 +118,13 @@ const EmployeeDetails = () => {
                   {data?.officeInfo?.department}
                 </Typography>
               </div>
+            </div>
+            <div className="flex items-center mr-30">
+              <img
+                src={badge}
+                alt="nextgenlogo"
+                className="w-[140px] hidden sm:block"
+              />
             </div>
           </div>
           <Divider sx={{ marginTop: 1 }} />
