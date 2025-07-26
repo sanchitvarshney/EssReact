@@ -35,10 +35,10 @@ export const PWARegistration = () => {
   }
 
   return (
-    <div className="fixed bottom-2 right-2 z-50">
+    <div className="fixed bottom-2 right-2 z-99">
       <button
         onClick={handleInstallClick}
-        className=" text-white  rounded-lg shadow-lg  flex items-center gap-2"
+        className=" text-[#000]   flex items-center gap-2"
       >
         <span>📱</span>
         Install App
