@@ -15,13 +15,13 @@ import { useAuth } from "../../contextapi/AuthContext";
 
 import { useState } from "react";
 import SignOutModal from "../SignOutModal";
-// import { useOnFeedBackMutation } from "../../services/vibe";
+import { useOnFeedBackMutation } from "../../services/vibe";
 
 const ProfileDropDown = ({ close }: { close: any }) => {
   const navigation = useNavigate();
   const [open, setOpen] = useState(false);
   const { signOut } = useAuth();
-// const [onFeedBack] =  useOnFeedBackMutation();
+const [onFeedBack] =  useOnFeedBackMutation();
 const [selected, setSelected] = useState<string|null>(null);
   
 
@@ -36,9 +36,9 @@ const [selected, setSelected] = useState<string|null>(null);
   const handleLogout = () => {
     if (selected) {
       setSelected(null);
-      // onFeedBack({
-      //   feedback: selected,
-      // })
+      onFeedBack({
+        feedback: selected,
+      })
       signOut();
 
       return
