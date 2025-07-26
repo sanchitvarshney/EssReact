@@ -43,7 +43,9 @@ const SignOutModal: React.FC<SignOutModalProps> = ({
       onClose={close}
        BackdropProps={{
     sx: {
-      backgroundColor: 'rgba(0, 0, 0, 0.09)', // Adjust this value to control opacity
+      backgroundColor: 'rgba(0, 0, 0, 0)', 
+        backdropFilter: 'blur(5px)', 
+      WebkitBackdropFilter: 'blur(5px)', 
     },
   }}
       PaperProps={{

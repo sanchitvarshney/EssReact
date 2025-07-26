@@ -304,7 +304,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
         </div>
         {addRecipient && (
           <div className="mb-0">
-            <span className="text-[#2eacb3] font-semibold">Recipient</span>
+            <span className=" font-semibold">Recipient</span>
             <Input
               ref={inputRef}
               className="w-full md:w-96 rounded-sm p-3  mt-1 border border-gray-500] focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all"
@@ -501,7 +501,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                 name="message"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[#2eacb3] font-semibold">
+                    <FormLabel className=" font-semibold">
                       Reason
                     </FormLabel>
                     <FormControl>
@@ -524,11 +524,11 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
         </Form>
       </div>
 
-      <div className="flex justify-center  absolute bottom-3 w-full z-10 border-t-1  border-gray-300 bg-white">
+      <div className="flex justify-center  absolute bottom-0 w-full z-10 border-t-1 py-3  border-gray-300 bg-[#444445]">
         <CustomButton
           onClick={handleConfirmSubmit}
           className={btnstyle}
-          style={{ marginTop: "12px" }}
+          style={{ marginTop: "0px" }}
         >
           {applySLLeaveLoading ? (
             <CircularProgress sx={{ color: "#ffffff" }} size={"25px"} />

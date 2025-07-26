@@ -141,6 +141,13 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
+            BackdropProps={{
+              sx: {
+                backgroundColor: "rgba(0, 0, 0, 0)",
+                backdropFilter: "blur(5px)",
+                WebkitBackdropFilter: "blur(5px)",
+              },
+            }}
           >
             <DialogTitle id="alert-dialog-title">{"Disclaimer"}</DialogTitle>
             <DialogContent>
@@ -157,7 +164,16 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
               <Button color="error" onClick={handleClose}>
                 Disagree
               </Button>
-              <Button color="success" variant="contained" onClick={()=>window.open("https://support.mscorpres.com/open.php","_blank")}>
+              <Button
+                color="success"
+                variant="contained"
+                onClick={() =>
+                  window.open(
+                    "https://support.mscorpres.com/open.php",
+                    "_blank"
+                  )
+                }
+              >
                 Agree&nbsp;
                 <ArrowOutwardIcon fontSize="small" />
               </Button>
