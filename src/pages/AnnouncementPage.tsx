@@ -48,7 +48,7 @@ const AnnouncementPage = () => {
   const [limit, setLimit] = useState(5);
 
   const [getVibe, { isLoading: vibeLoading }] = useLazyGetVibeQuery();
-  const [createPost, { isLoading: createPostLoading }] =
+  const [createPost] =
     useCreatePostMutation();
 
   const fetchInitialData = async () => {
