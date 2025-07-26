@@ -34,6 +34,13 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
         },
       }),
     }),
+    onFeedBack: builder.mutation<any, any>({
+      query: (credentials) => ({
+        url: `/login/feedback`,
+        method: "POST",
+        body: credentials,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -43,4 +50,5 @@ export const {
   useSendCommentMutation,
   useSendLikeMutation,
   useCreatePostMutation,
+  useOnFeedBackMutation
 } = extendedAuthApi;

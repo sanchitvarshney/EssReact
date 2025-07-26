@@ -150,7 +150,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
     <Card
       elevation={0}
       sx={{
-        maxWidth: "1050px",
+        // maxWidth: "1050px",
         borderRadius: 3,
         boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
         background: "#ffffff",

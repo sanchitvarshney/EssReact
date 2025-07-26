@@ -48,16 +48,14 @@ const PostHeader: FC<PostHeaderProps> = ({
         p: 2,
 
         borderRadius: 0,
-        // display: "flex",
-        // justifyContent: "space-between",
-        // alignItems: "center",
+      
 
         mb: 1,
         boxShadow: 0,
       }}
       className=" bg-gradient-to-br from-[#ffffff] to-[#fff] shadow-lg border border-[#2eacb3] "
     >
-      <div className="flex items-center justify-between gap-6">
+      <div className="flex w-full items-center justify-between gap-6">
         <div className="flex  flex-col gap-2">
           <Typography variant="h6" fontWeight={600}>
             Create a Post
@@ -89,15 +87,7 @@ const PostHeader: FC<PostHeaderProps> = ({
         </label>
       </div>
 
-      {/* <Box
-        display="flex"
-        justifyContent={"space-between"}
-        gap={2}
-        flexDirection={{ xs: "column", sm: "row" }}
-        marginTop={2}
-      > */}
-
-      {/* </Box> */}
+    
 
       <Dialog
         open={isNewPost}

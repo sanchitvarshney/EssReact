@@ -7,8 +7,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Avatar, Box } from "@mui/material";
 
-import { useAuth } from "../contextapi/AuthContext";
-
 const feedbackStyles = {
   poor: {
     bg: "#ffe5e5",
@@ -30,16 +28,16 @@ interface SignOutModalProps {
   aggree?: () => void;
   title?: string;
   description?: string;
+  setSelected?: any;
+  selected?: any;
 }
 const SignOutModal: React.FC<SignOutModalProps> = ({
   openSign,
   close,
-
+  setSelected,
+  selected,
   aggree,
 }) => {
-  const {} = useAuth();
-  const [selected, setSelected] = React.useState<string | null>(null);
-
   const feedbackOptions = [
     { emoji: "😞", label: "Poor", value: "poor" },
     { emoji: "🙂", label: "Good", value: "good" },
@@ -48,7 +46,7 @@ const SignOutModal: React.FC<SignOutModalProps> = ({
   return (
     <Dialog
       open={openSign}
-      onClose={close}
+      // onClose={close}
       BackdropProps={{
         sx: {
           backgroundColor: "rgba(0, 0, 0, 0)",

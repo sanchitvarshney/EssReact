@@ -15,11 +15,14 @@ import { useAuth } from "../../contextapi/AuthContext";
 
 import { useState } from "react";
 import SignOutModal from "../SignOutModal";
+// import { useOnFeedBackMutation } from "../../services/vibe";
 
 const ProfileDropDown = ({ close }: { close: any }) => {
   const navigation = useNavigate();
   const [open, setOpen] = useState(false);
   const { signOut } = useAuth();
+// const [onFeedBack] =  useOnFeedBackMutation();
+const [selected, setSelected] = useState<string|null>(null);
   
 
   const handleOptionClick = (item: profileOptionType) => {
@@ -30,6 +33,18 @@ const ProfileDropDown = ({ close }: { close: any }) => {
       close();
     }
   };
+  const handleLogout = () => {
+    if (selected) {
+      setSelected(null);
+      // onFeedBack({
+      //   feedback: selected,
+      // })
+      signOut();
+
+      return
+    }
+    signOut();
+  }
 
   return (
     <div className="w-full p-4 border-t-4 border-[#1e8a8f]">
@@ -70,7 +85,9 @@ const ProfileDropDown = ({ close }: { close: any }) => {
           setOpen(false);
           close();
         }}
-        aggree={() => signOut()}/>
+        aggree={handleLogout}    setSelected={setSelected}
+        selected={selected}/>
+     
     
     </div>
   );

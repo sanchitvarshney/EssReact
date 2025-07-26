@@ -205,17 +205,17 @@ const AnnouncementPage = () => {
       {dobLoading || waLoading || hireLoading || leaveLoading || vibeLoading ? (
         <AnnouncementPageSkeleton />
       ) : (
-        <Box className=" h-[calc(100vh-90px)] overflow-auto p-4 gap-4 grid  sm:grid-cols-[2fr_1fr] grid-cols-1  md:grid-cols-[2fr_1fr] lg:grid-cols-[3fr_1fr] ">
+        <Box className="w-full h-[calc(100vh-90px)] overflow-auto p-4 gap-4 grid  sm:grid-cols-[2fr_1fr] grid-cols-1 md:grid-cols-[2fr_1fr] lg:grid-cols-[3fr_1fr] ">
           {" "}
-          <div className="flex flex-col gap-4">
-            <div className="sticky top-[-30px] z-10 ">
+          <div className="flex flex-col gap-4 ">
+            <div className=" sticky top-[-30px] z-10 ">
               <PostHeader
                 setFilter={handleSetFilter}
                 postFilter={postFilter}
                 onCreatePost={handleCreatePost}
               />
             </div>
-            <div className="space-y-6">
+            <div className="">
               <Suspense
                 fallback={<CircularProgress sx={{ color: "#2eacb3" }} />}
               >

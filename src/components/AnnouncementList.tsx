@@ -13,7 +13,7 @@ interface AnnouncementListProps {
 
 const AnnouncementList: FC<AnnouncementListProps> = React.memo(
   ({ posts, hasMore, ref }) => (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       {posts.map((post: any, index: number) => (
         <motion.div
           key={index}
