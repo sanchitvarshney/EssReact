@@ -38,7 +38,7 @@ export const PWARegistration = () => {
     <div className="fixed bottom-2 right-2 z-50">
       <button
         onClick={handleInstallClick}
-        className="bg-[#018c85] text-white  rounded-lg shadow-lg  flex items-center gap-2"
+        className=" text-white  rounded-lg shadow-lg  flex items-center gap-2"
       >
         <span>📱</span>
         Install App
