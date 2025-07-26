@@ -47,7 +47,10 @@ const PostHeader: FC<PostHeaderProps> = ({
       sx={{
         p: 2,
 
-        borderRadius: 1,
+        borderRadius: 0,
+        // display: "flex",
+        // justifyContent: "space-between",
+        // alignItems: "center",
 
         mb: 1,
         boxShadow: 0,
@@ -80,6 +83,7 @@ const PostHeader: FC<PostHeaderProps> = ({
             placeholder="Write what's in your mind, beneficial for others..."
             className="bg-transparent outline-none resize-none text-start text-gray-700 placeholder:text-gray-400"
             rows={3}
+            readOnly
             onClick={() => handleNewPost()}
           />
         </label>
