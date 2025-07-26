@@ -140,7 +140,7 @@ const PostHeader: FC<PostHeaderProps> = ({
 
         <DialogContent sx={{ pt: 3 }}>
           <CreateNewPostPage
-            closeModal={() => setIsNewPost(false)}
+            closeModal={() => setIsNewPost(false)} 
             onCreatePost={onCreatePost}
           />
         </DialogContent>
