@@ -72,7 +72,7 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
 
         <label className="w-full flex flex-col justify-center border-2 border-dashed border-gray-300 rounded-sm p-2 cursor-text hover:border-[#2eacb3] hover:bg-gradient-to-br hover:from-blue-50 hover:to-cyan-50 transition-all duration-300 text-center group">
           <textarea
-            placeholder="Write your caption..."
+            placeholder="Write what's in your mind, beneficial for others..."
             className="bg-transparent outline-none resize-none text-start text-gray-700 placeholder:text-gray-400"
             rows={3}
             onClick={() => handleNewPost()}
@@ -135,45 +135,7 @@ const PostHeader: FC<PostHeaderProps> = ({ setFilter, postFilter }) => {
         </DialogContent>
       </Dialog>
 
-      {/* <Dialog
-        open={isNoticeView}
-        onClose={() => setIsNoticeView(false)}
-        fullWidth
-        maxWidth="md"
-        PaperProps={{
-          sx: {
-            borderRadius: 3,
-            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
-          },
-        }}
-      >
-        <DialogTitle
-          sx={{
-            // pb: 1,
-            borderBottom: "1px solid #e5e7eb",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <EventNoteIcon sx={{ color: "#2eacb3", mr: 1 }} />
-            <Typography variant="h6" sx={{ fontSize: 18, fontWeight: 600 }}>
-              Notice And Events
-            </Typography>
-          </Box>
-
-          <IconButton onClick={() => setIsNoticeView(false)} size="small">
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent sx={{ pt: 0 }}>
-          <div className="flex flex-col items-center my-2  gap-4 block sm:hidden">
-            <NoticeboardCard />
-            <MilestonesAndEventsCard title={""} data={undefined} />
-          </div>
-        </DialogContent>
-      </Dialog> */}
+    
     </Box>
   );
 };

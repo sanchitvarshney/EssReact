@@ -5,9 +5,24 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 
 import DialogTitle from "@mui/material/DialogTitle";
-import { Avatar } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 
 import { useAuth } from "../contextapi/AuthContext";
+
+const feedbackStyles = {
+  poor: {
+    bg: "#ffe5e5",
+    border: "#e53935",
+  },
+  good: {
+    bg: "#fff4e5",
+    border: "#fb8c00",
+  },
+  excellent: {
+    bg: "#e6f7e6",
+    border: "#43a047",
+  },
+};
 
 interface SignOutModalProps {
   openSign?: any;
@@ -15,22 +30,15 @@ interface SignOutModalProps {
   aggree?: () => void;
   title?: string;
   description?: string;
-
 }
 const SignOutModal: React.FC<SignOutModalProps> = ({
   openSign,
   close,
 
   aggree,
-  
-  
 }) => {
- const {  } = useAuth();
+  const {} = useAuth();
   const [selected, setSelected] = React.useState<string | null>(null);
-
-  
- 
-
 
   const feedbackOptions = [
     { emoji: "😞", label: "Poor", value: "poor" },
@@ -41,13 +49,13 @@ const SignOutModal: React.FC<SignOutModalProps> = ({
     <Dialog
       open={openSign}
       onClose={close}
-       BackdropProps={{
-    sx: {
-      backgroundColor: 'rgba(0, 0, 0, 0)', 
-        backdropFilter: 'blur(5px)', 
-      WebkitBackdropFilter: 'blur(5px)', 
-    },
-  }}
+      BackdropProps={{
+        sx: {
+          backgroundColor: "rgba(0, 0, 0, 0)",
+          backdropFilter: "blur(5px)",
+          WebkitBackdropFilter: "blur(5px)",
+        },
+      }}
       PaperProps={{
         sx: {
           overflow: "visible",
@@ -81,26 +89,53 @@ const SignOutModal: React.FC<SignOutModalProps> = ({
       <DialogContent
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
-        <div className="flex gap-13  my-4">
-          {feedbackOptions.map((option) => (
-            <div
-              key={option.value}
-              onClick={() => setSelected(option.value)}
-              className={`flex flex-col items-center  cursor-pointer transition  hover:scale-103 ${
-                selected === option.value
-                  ? "scale-110 text-blue-600"
-                  : "text-gray-500"
-              }`}
-            >
-              <span className="text-4xl">{option.emoji}</span>
-              <span className="mt-1 text-sm font-medium">{option.label}</span>
-            </div>
-          ))}
-        </div>
+        <Box sx={{ display: "flex", gap: 3, my: 2 }}>
+          {feedbackOptions.map((option) => {
+            const isSelected = selected === option.value;
+            const { bg, border } =
+              feedbackStyles[option.value as keyof typeof feedbackStyles];
+
+            return (
+              <Box
+                key={option.value}
+                onClick={() => setSelected(option.value)}
+                sx={{
+                  width: 100,
+                  height: 100,
+                  cursor: "pointer",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 2,
+                  backgroundColor: isSelected ? bg : "transparent",
+                  border: `2px solid ${isSelected ? border : "transparent"}`,
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    backgroundColor: bg,
+                    borderColor: border,
+                    transform: "scale(1.05)",
+                  },
+                }}
+              >
+                <span style={{ fontSize: "2rem" }}>{option.emoji}</span>
+                <span style={{ marginTop: 8, fontWeight: 500 }}>
+                  {option.label}
+                </span>
+              </Box>
+            );
+          })}
+        </Box>
       </DialogContent>
 
       <DialogActions sx={{ justifyContent: "center", px: 3, gap: 2 }}>
-        <Button  onClick={close}  variant="text" className="text-blue-500 text-sm">Cancel</Button>
+        <Button
+          onClick={close}
+          variant="text"
+          className="text-blue-500 text-sm"
+        >
+          Cancel
+        </Button>
         <Button variant="contained" color="warning" onClick={aggree}>
           Secure Logout
         </Button>

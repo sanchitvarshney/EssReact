@@ -18,7 +18,7 @@ const CustomFooter = () => {
                 Phone 2: +91 88 26 788880{" "}
               </Typography>
               <Typography fontSize={13} className=" ">
-                Email: marketing@mscorpres.in
+                Email:  iot@mscorpres.in
               </Typography>
             </div>
           </div>

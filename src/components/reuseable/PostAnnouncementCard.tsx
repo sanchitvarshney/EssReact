@@ -282,7 +282,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
               onClick={() => handleLike(post?.postKey)}
             >
               <ThumbUpIcon
-                sx={{ color: isLike ? "red" : "#000", fontSize: 24 }}
+                sx={{ color: isLike ? "green" : "#000", fontSize: 24 }}
               />
             </IconButton>
             <IconButton

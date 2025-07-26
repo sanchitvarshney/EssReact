@@ -1,0 +1,60 @@
+{
+  "name": "ESS Portal",
+  "short_name": "ESSP",
+  "description": "Human Resource Management System, Designed & Hosted By : MsCorpres Automation Private Limited",
+  "display": "portable",
+  "start_url": "https://ess.mscorpres.com",
+  "display_override": ["fullscreen"],
+  "scope": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#018c85",
+  "orientation": "landscape-primary",
+  "author": "MsCorpres Automation Private Limited",
+  "developer": {
+    "name": "Shiv, Lovish, Sanchit and Deepak"
+  },
+  "manifest_version": "0.1",
+  "version": "0.1",
+  "version_name": "0.1 stable",
+  "icons": [
+    {
+      "src": "https://ess.mscorpres.com/assets/images/manifest/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://ess.mscorpres.com/assets/images/manifest/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "https://ess.mscorpres.com/assets/images/manifest/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "https://ess.mscorpres.com/assets/images/manifest/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "share_target": {
+    "action": "https://ess.mscorpres.com/app/",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "body"
+    }
+  },
+  "shortcuts": [
+    {
+      "name": "ESS Portal",
+      "short_name": "ESSP",
+      "url": "https://ess.mscorpres.com"
+    }
+  ]
+}
