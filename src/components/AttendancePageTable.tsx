@@ -69,9 +69,11 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({
       elevation={0}
       sx={{
         width: "100%",
-        borderRadius: 2,
+        borderRadius: 0,
         boxShadow: 0,
         // p: 2,
+        backgroundColor: "#fff",
+       py:1
       }}
     >
       <Box

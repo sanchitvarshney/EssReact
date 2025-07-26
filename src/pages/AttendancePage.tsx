@@ -118,12 +118,12 @@ const AttendancePage = () => {
   }, [shifts?.data]);
 
   return (
-    <div className="w-full p-2 h-full overflow-y-scroll  will-change-transform ">
+    <div className=" relative w-full p-2 h-full overflow-y-scroll  will-change-transform ">
       {shiftDetailsLoading || shiftsLoading || isLoading ? (
         <AttendencePageSkeleton />
       ) : (
         <>
-          <div className="sticky top-0 z-10  ">
+          <div className="sticky top-[-8px] z-10  ">
              <AttendancePageTable value={shiftDetails} date={date} />
             </div>
          

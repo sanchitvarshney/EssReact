@@ -64,7 +64,6 @@ const EmployeeDetails = () => {
   useEffect(() => {
     //@ts-ignore
     if (error?.error) {
-    
       // @ts-ignore
       showToast(error?.message || "Something went wrong", "error");
       return;
@@ -84,10 +83,14 @@ const EmployeeDetails = () => {
         <EmployeeProfilePageSkeleton />
       ) : (
         <>
-          <div className="w-[100%] sm:w-[80%] px-4 py-6  flex justify-between mx-auto  "   style={{
-    background: 'linear-gradient(0deg, rgba(255, 255, 255, 1) 63%, rgba(240, 240, 240, 1) 100%)',
-  }}>
-            <div className="flex items-center gap-x-15 gap-y-8 flex-wrap  ">
+          <div
+            className="w-[100%] sm:w-[100%] px-4   flex justify-between   "
+            style={{
+              background:
+                "linear-gradient(0deg, rgba(255, 255, 255, 1) 63%, rgba(240, 240, 240, 1) 100%)",
+            }}
+          >
+            <div className="flex items-center gap-x-15 gap-y-8 flex-wrap py-6 px-6 ">
               <div>
                 <Avatar
                   src={data?.personalInfo?.empPhoto}
