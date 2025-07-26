@@ -41,6 +41,11 @@ const SignOutModal: React.FC<SignOutModalProps> = ({
     <Dialog
       open={openSign}
       onClose={close}
+       BackdropProps={{
+    sx: {
+      backgroundColor: 'rgba(0, 0, 0, 0.09)', // Adjust this value to control opacity
+    },
+  }}
       PaperProps={{
         sx: {
           overflow: "visible",

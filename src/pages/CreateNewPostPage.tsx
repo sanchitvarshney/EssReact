@@ -52,10 +52,7 @@ export default function CreateNewPostPage({ closeModal }: { closeModal: any }) {
       showToast("Caption must have at least 3 words", "error");
       return;
     }
-    if (imageFiles.length === 0) {
-      showToast("Please add at least one image", "error");
-      return;
-    }
+ 
     //@ts-ignore
     const base64Images = await Promise.all(imageFiles.map(fileToBase64));
 
@@ -63,7 +60,8 @@ export default function CreateNewPostPage({ closeModal }: { closeModal: any }) {
       description: caption,
       image: base64Images,
     };
-
+console.log(payload)
+return
     createPost(payload)
       .then((res) => {
         showToast(res?.data?.message || "Post created successfully", "success");
@@ -83,41 +81,46 @@ export default function CreateNewPostPage({ closeModal }: { closeModal: any }) {
   };
 
 
-    const applyFormat = (formatType:any) => {
-    const textarea:any = textareaRef.current;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = caption.substring(start, end);
+const applyFormat = (formatType: string) => {
+  const textarea:any = textareaRef.current ;
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
 
-    let formatted = selectedText;
+  if (start === end) return; // No text selected
 
-    switch (formatType) {
-      case "bold":
-        formatted = `**${selectedText}**`;
-        break;
-      case "italic":
-        formatted = `*${selectedText}*`;
-        break;
-      case "uppercase":
-        formatted = selectedText.toUpperCase();
-        break;
-      case "lowercase":
-        formatted = selectedText.toLowerCase();
-        break;
-      default:
-        break;
-    }
+  const selectedText = caption.substring(start, end);
+  let formatted = selectedText;
 
-    const newText =
-      caption.substring(0, start) + formatted + caption.substring(end);
-    setCaption(newText);
+  switch (formatType) {
+    case "bold":
+      formatted = `**${selectedText}**`;
+      break;
+    case "italic":
+      formatted = `*${selectedText}*`;
+      break;
+    case "bolditalic":
+      formatted = `***${selectedText}***`;
+      break;
+    case "uppercase":
+      formatted = selectedText.toUpperCase();
+      break;
+    case "lowercase":
+      formatted = selectedText.toLowerCase();
+      break;
+    default:
+      break;
+  }
 
-    // Move cursor after formatted text
-    setTimeout(() => {
-      textarea.focus();
-      textarea.setSelectionRange(start, start + formatted.length);
-    }, 0);
-  };
+  const newText =
+    caption.substring(0, start) + formatted + caption.substring(end);
+  setCaption(newText);
+
+  setTimeout(() => {
+    textarea.focus();
+    textarea.setSelectionRange(start, start + formatted.length);
+  }, 0);
+};
+
 
   return (
     <div className=" mx-auto p-2 bg-white  rounded-lg my-3 space-y-6">
@@ -145,7 +148,7 @@ export default function CreateNewPostPage({ closeModal }: { closeModal: any }) {
         placeholder="Write your caption here..."
       />
        {/* Formatting Toolbar */}
-      <div className="flex gap-2 mt-1">
+      <div className="flex gap-2 mt-">
         <button
           onClick={() => applyFormat("bold")}
           className="p-2 border rounded hover:bg-gray-100"

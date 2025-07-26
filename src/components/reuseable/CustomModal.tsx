@@ -36,7 +36,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ open, onClose, title, childre
       }}
   
     >
-      <DialogTitle sx={{ color: 'text.primary' }}>
+      <DialogTitle sx={{ color: 'text.primary', }}>
         {title}
         <IconButton
           aria-label="close"
@@ -44,8 +44,8 @@ const CustomModal: React.FC<CustomModalProps> = ({ open, onClose, title, childre
           sx={{
             position: 'absolute',
             right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
+            top: 12,
+            // color: (theme) => theme.palette.grey[500],
           }}
         >
           <CloseIcon />
@@ -57,7 +57,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ open, onClose, title, childre
         sx={{
           overflowY: 'auto',
           flex: 1,
-          mt: 1,
+          // mt: 1,
         }}
       >
         {children}

@@ -68,15 +68,15 @@ const LeavePage = () => {
 
   const [
     updateElLeave,
-    { isLoading: updateElLeaveLoading, isSuccess: updateElLeaveSuccess },
+    { isLoading: updateElLeaveLoading, isSuccess: updateElLeaveSuccess,data:updateElLeaveData },
   ] = useUpdateElLeaveMutation();
   const [
     updateSlLeave,
-    { isLoading: updateSlLeaveLoading, isSuccess: updateSlLeaveSuccess },
+    { isLoading: updateSlLeaveLoading, isSuccess: updateSlLeaveSuccess,data:updateSlLeaveData },
   ] = useUpdateSlLeaveMutation();
   const [
     updateWfhLeave,
-    { isLoading: updateWfhLeaveLoading, isSuccess: updateWfhLeaveSuccess },
+    { isLoading: updateWfhLeaveLoading, isSuccess: updateWfhLeaveSuccess,data:updateWfhLeaveData },
   ] = useUpdateWfhLeaveMutation();
 
   useEffect(() => {
@@ -133,9 +133,9 @@ const LeavePage = () => {
   }, [
     //@ts-ignore
     user?.id,
-    updateElLeaveSuccess,
-    updateSlLeaveSuccess,
-    updateWfhLeaveSuccess,
+    // updateElLeaveSuccess,
+    // updateSlLeaveSuccess,
+    // updateWfhLeaveSuccess,
   ]);
 
   useEffect(() => {
@@ -144,24 +144,24 @@ const LeavePage = () => {
         {
           type: "Earned Leave",
           img: elimg,
-          currentlyAvailable: eranLeaveData?.data?.l_cl_bal,
+          currentlyAvailable: eranLeaveData?.data?.l_cl_bal || updateElLeaveData?.data?.l_cl_bal,
 
-          creditedFromLastMonth: eranLeaveData?.data?.l_op_bal,
-          annualAllotment: eranLeaveData?.data?.total_yr_bal,
+          creditedFromLastMonth: eranLeaveData?.data?.l_op_bal || updateElLeaveData?.data?.l_op_bal,
+          annualAllotment: eranLeaveData?.data?.total_yr_bal || updateElLeaveData?.data?.total_yr_bal,
         },
         {
           type: "Sick Leave",
           img: slimg,
-          currentlyAvailable: sickLeaveData?.l_cl_bal,
-          creditedFromLastMonth: sickLeaveData?.l_op_bal,
-          annualAllotment: sickLeaveData?.total_yr_bal,
+          currentlyAvailable: sickLeaveData?.l_cl_bal || updateSlLeaveData?.l_cl_bal,
+          creditedFromLastMonth: sickLeaveData?.l_op_bal || updateSlLeaveData?.l_op_bal,
+          annualAllotment: sickLeaveData?.total_yr_bal || updateSlLeaveData?.total_yr_bal,
         },
         {
           type: "Work From Home",
           img: wfmimg,
-          currentlyAvailable: wfhData?.l_cl_bal,
-          creditedFromLastMonth: wfhData?.l_op_bal,
-          annualAllotment: wfhData?.total_yr_bal,
+          currentlyAvailable: wfhData?.l_cl_bal || updateWfhLeaveData?.l_cl_bal,
+          creditedFromLastMonth: wfhData?.l_op_bal || updateWfhLeaveData?.l_op_bal,
+          annualAllotment: wfhData?.total_yr_bal || updateWfhLeaveData?.total_yr_bal,
         },
         {
           type: "Compensatory Leave",

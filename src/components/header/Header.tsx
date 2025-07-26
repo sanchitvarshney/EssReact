@@ -23,8 +23,9 @@ import ProfileDropDown from "../dropdowns/ProfileDropDown";
 import { useNavigate } from "react-router-dom";
 import logoImg from "../../assets/img/hrms_mscorpres_logo.png";
 import { useAuth } from "../../contextapi/AuthContext";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "../../hooks/useToast";
+import { setEmplyeeCode } from "../../slices/authSlices";
 
 
 const pages = ["Products", "Pricing", "Blog"];
@@ -33,7 +34,7 @@ function Header() {
   const path = window.location.pathname;
   const { user, searchValueLength } = useAuth();
  const { showToast } = useToast();
-
+const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRef = React.useRef(null);
 
@@ -53,6 +54,7 @@ function Header() {
   const isSmallScreen = useMediaQuery("(max-width:450px)");
   const { empCode } = useSelector((state: any) => state?.auth);
 
+
   const handleOpenUserMenu = () => {
     setAnchorElUser(true);
   };
@@ -65,6 +67,7 @@ function Header() {
     if (empCode) {
       //@ts-ignore
       if (empCode === user?.id) {
+         dispatch(setEmplyeeCode({ empCode: "" }));
         showToast("You cannot access your own profile with this method", "error");
         return
       }
@@ -177,6 +180,7 @@ function Header() {
               }}
               bgColor="#8c8c8c80"
               textColor="#8e8b8bff"
+              value={searchText}
             />
             {searchText && (
               <SearchBarComponent
