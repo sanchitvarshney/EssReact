@@ -165,36 +165,7 @@ const AnnouncementPage = () => {
         "success"
       );
       // Call vibe API with exact parameters after successful post creation
-      try {
-        const vibeRes = await getVibe({
-          limit: 5,
-          last_id: null,
-          tmln_type: "",
-          offset: 0,
-        }).unwrap();
-
-        if (vibeRes?.data?.success === false) {
-          showToast(
-            vibeRes?.data?.message || "Failed to refresh posts",
-            "error"
-          );
-        } else {
-          const newPosts = vibeRes?.data || [];
-          const scrollInfo = vibeRes?.scroll || {};
-
-          setPosts(newPosts);
-          setHasMore(scrollInfo?.hasMore ?? false);
-          setLastId(scrollInfo?.nextLastId || null);
-          setOffset(5);
-        }
-      } catch (vibeErr: any) {
-        showToast(
-          vibeErr?.data?.message?.msg ||
-            vibeErr?.message ||
-            "Failed to refresh posts after creation",
-          "error"
-        );
-      }
+      loadMorePosts(true);
 
       return { success: true };
     } catch (err: any) {
