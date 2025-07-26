@@ -1,9 +1,9 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box, } from "@mui/material";
 import { useInView } from "react-intersection-observer";
 
 import MilestonesAndEventsCard from "../components/MilestonesAndEventsCard";
 import PostHeader from "../components/header/PostHeader";
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import {  useCallback, useEffect, useState } from "react";
 import {
   useGetDOBListMutation,
   useGetHireListQuery,
@@ -17,7 +17,7 @@ import AbsenceListPage from "../components/AbsenceListPage";
 
 import { useLazyGetVibeQuery, useCreatePostMutation } from "../services/vibe";
 
-const AnnouncementList = lazy(() => import("../components/AnnouncementList"));
+import AnnouncementList from "../components/AnnouncementList";
 
 const AnnouncementPage = () => {
   const { showToast } = useToast();
@@ -216,11 +216,9 @@ const AnnouncementPage = () => {
               />
             </div>
             <div className="">
-              <Suspense
-                fallback={<CircularProgress sx={{ color: "#2eacb3" }} />}
-              >
+              
                 <AnnouncementList posts={posts} hasMore={hasMore} ref={ref} />
-              </Suspense>
+            
             </div>
           </div>
           {/* <PostAnniversaryCard authorName={"test"} /> */}

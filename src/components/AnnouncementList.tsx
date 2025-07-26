@@ -1,10 +1,9 @@
 import { CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
-import React, { lazy, Suspense, type FC } from "react";
+import React, {  type FC } from "react";
 
-const PostAnnouncementCard = lazy(
-  () => import("./reuseable/PostAnnouncementCard")
-);
+import PostAnnouncementCard from "./reuseable/PostAnnouncementCard"
+
 interface AnnouncementListProps {
   posts: any[];
   hasMore: boolean;
@@ -25,9 +24,9 @@ const AnnouncementList: FC<AnnouncementListProps> = React.memo(
             delay: 0.05 * index,
           }}
         >
-          <Suspense fallback={null}>
+        
             <PostAnnouncementCard post={post} />
-          </Suspense>
+     
         </motion.div>
       ))}
 
