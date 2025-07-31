@@ -236,7 +236,8 @@ const dispatch = useDispatch();
             >
               <Avatar
                 ref={profileRef}
-                alt="Remy Sharp"
+                //@ts-ignore
+                alt={user?.name}
                 //@ts-ignore
                 src={user?.imgUrl}
                 sx={{ backgroundColor: "#2eacb3" }}
