@@ -40,12 +40,8 @@ const PaySlipPage = () => {
   const star = "******";
   const [getPaySlip, { isLoading, data, error, isError, isSuccess }] =
     useGetPaySlipMutation();
-  const [
-    downloadPaySlip,
-    {
-      isLoading: isDownloadLoading,
-    },
-  ] = useDownloadPaySlipMutation();
+  const [downloadPaySlip, { isLoading: isDownloadLoading }] =
+    useDownloadPaySlipMutation();
 
   useApiErrorMessage({
     error,
@@ -84,24 +80,27 @@ const PaySlipPage = () => {
   const downloadPDF = (bufferData: any, filename: string = "document.pdf") => {
     const byteArray = new Uint8Array(bufferData);
 
+    // Create PDF Blob
     const file = new Blob([byteArray], { type: "application/pdf" });
-
     const url = URL.createObjectURL(file);
 
+    // Trigger download
     const link = document.createElement("a");
     link.href = url;
     link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    // Clean up
     URL.revokeObjectURL(url);
   };
 
   const downloadPayslip = () => {
     const period = moment(data.toDate).format("YYYY-MM");
     downloadPaySlip({ month: period }).then((res) => {
-      if (res?.data?.code==200) {
-        downloadPDF(res?.data?.data?.buffer, res?.data?.data?.filename);
+      if (res?.data?.status === "success") {
+        downloadPDF(res?.data?.data?.buffer?.data, res?.data?.data?.filename);
       }
     });
   };
@@ -211,7 +210,7 @@ const PaySlipPage = () => {
           </div>
         )}
       </div>
-<Divider />
+      <Divider />
       <div className="sticky   w-full flex flex-row items-center justify-between  space-x-10 px-8 ">
         <div>
           {data?.earing && (
@@ -250,9 +249,13 @@ const PaySlipPage = () => {
                 onClick={downloadPayslip}
                 disabled={isDownloadLoading}
               >
-               {isDownloadLoading ? <CircularProgress color="inherit"  size={20} sx={{mr:1}}  /> : <FileDownloadIcon
-                  sx={{ color: "#ffffff", fontSize: 20, mr: 1 }}
-                />}
+                {isDownloadLoading ? (
+                  <CircularProgress color="inherit" size={20} sx={{ mr: 1 }} />
+                ) : (
+                  <FileDownloadIcon
+                    sx={{ color: "#ffffff", fontSize: 20, mr: 1 }}
+                  />
+                )}
                 <span className="text-white">Download</span>
               </CustomButton>
             </>
