@@ -23,6 +23,7 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
         url: "empPayslip/print",
         method: "POST",
         body: payload,
+        
       }),
     }),
   }),

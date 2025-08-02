@@ -97,7 +97,9 @@ const PaySlipPage = () => {
   };
 
   const downloadPayslip = () => {
-    const period = moment(data.toDate).format("YYYY-MM");
+    const d = form.watch("toDate");
+
+    const period = moment(d).format("YYYY-MM");
     downloadPaySlip({ month: period }).then((res) => {
       if (res?.data?.status === "success") {
         downloadPDF(res?.data?.data?.buffer?.data, res?.data?.data?.filename);
@@ -108,6 +110,7 @@ const PaySlipPage = () => {
   if (isLoading) {
     return <PaySlipPageSkeleton />;
   }
+ 
 
   return (
     <div className=" h-[calc(100vh-90px)] flex flex-col items-center overflow-hidden py-4 ">
