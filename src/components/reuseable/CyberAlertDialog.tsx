@@ -46,6 +46,7 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
           borderRadius: 2,
           maxHeight: "70vh",
           overflowY: "auto",
+          willChange: "transform",
         },
       }}
     >
