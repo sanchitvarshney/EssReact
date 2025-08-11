@@ -12,7 +12,7 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => {
         if (response.status === "error") {
-          return response.message;
+          return response;
         } else {
           return response.data;
         }

@@ -63,7 +63,20 @@ const PaySlipPage = () => {
   const onSubmit = async (data: any) => {
     const period = moment(data.toDate).format("YYYY-MM");
 
-    getPaySlip({ period: period });
+    getPaySlip({ period: period }).then((res) => {
+      console.log(res)
+      if (res?.data?.status === "error") {
+       showToast(res?.data?.message, "error"); 
+      }
+
+    }).catch((err) => {
+      showToast(
+        err?.data?.message?.msg ||
+          err?.message ||
+          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+        "error"
+      );
+    });
   };
 
   useEffect(() => {
@@ -106,7 +119,9 @@ const PaySlipPage = () => {
       if (res?.data?.status === "success") {
         downloadPDF(res?.data?.data?.buffer?.data, res?.data?.data?.filename);
       }
+   
       if (res?.data?.status === "error") {
+    
         showToast(res?.data?.message, "error");
       }
     });
