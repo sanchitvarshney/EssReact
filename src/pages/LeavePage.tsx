@@ -24,6 +24,7 @@ import slimg from "../assets/slimg.png";
 import wfmimg from "../assets/wfhpng.png";
 import climg from "../assets/climg.png";
 import CustomToolTip from "../components/reuseable/CustomToolTip";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -40,6 +41,7 @@ const style = {
 };
 
 const LeavePage = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [countPendingReq, setCountPendingReq] = useState<number | string>(0);
 
@@ -234,7 +236,7 @@ const LeavePage = () => {
           {" "}
           <div className="flex w-full justify-between items-center flex-wrap gap-2   ">
             <div className="flex gap-[2px] flex-wrap">
-              <span className="text-md  select-none  font-semibold   ">
+              <span className="text-md  select-none  font-semibold  hover:underline cursor-pointer  " onClick={() => navigate("/self-service/leave-status")}>
                 Pending Requests ({countPendingReq})
               </span>
             </div>

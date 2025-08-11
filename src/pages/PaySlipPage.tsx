@@ -26,6 +26,7 @@ import PaySlipPageSkeleton from "../skeleton/PaySlipPageSkeleton";
 
 import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
 import { CircularProgress, Divider } from "@mui/material";
+import { useToast } from "../hooks/useToast";
 
 const schema = z.object({
   toDate: z.date({ required_error: "Month is required" }),
@@ -34,6 +35,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 const PaySlipPage = () => {
+ const { showToast } =  useToast();
   const [showPayslip, setShowPayslip] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
   const [netSalary, setNetSalary] = useState(0);
@@ -103,6 +105,9 @@ const PaySlipPage = () => {
     downloadPaySlip({ month: period }).then((res) => {
       if (res?.data?.status === "success") {
         downloadPDF(res?.data?.data?.buffer?.data, res?.data?.data?.filename);
+      }
+      if (res?.data?.status === "error") {
+        showToast(res?.data?.message, "error");
       }
     });
   };
