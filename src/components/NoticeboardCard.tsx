@@ -49,6 +49,7 @@ const NoticeboardCard: React.FC = () => {
   const [current, setCurrent] = useState<number>(0);
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
+   
   const [isPaused, setIsPaused] = useState(true);
 
   const prevNotice = () => {
@@ -93,7 +94,7 @@ const NoticeboardCard: React.FC = () => {
       )}
 
       {dummyData.length === 0 ? (
-        <div className="h-[45vh] flex justify-center items-center px-4">
+        <div className=" py-2  flex justify-center items-center px-4">
           <div className="max-w-xl text-sm text-gray-700">
             {/* <h2 className="text-lg font-semibold mb-2"> HR Notice Board</h2> */}
             <p className="mb-3">
