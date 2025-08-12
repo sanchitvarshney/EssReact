@@ -50,10 +50,10 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       transformResponse: (response: any) => response.data.events,
     }),
     getPendingRequest: builder.mutation({
-      query: (credentials) => ({
-        url: "/leave/getEmpLeaveList",
-        method: "POST",
-        body: credentials,
+      query: () => ({
+        url: "/leave/pendingRequests",
+        method: "GET",
+       
       }),
       transformResponse: (response: any) => response.data,
     }),

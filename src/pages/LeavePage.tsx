@@ -43,7 +43,6 @@ const style = {
 const LeavePage = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [countPendingReq, setCountPendingReq] = useState<number | string>(0);
 
   const [
     getEranLeave,
@@ -70,33 +69,21 @@ const LeavePage = () => {
 
   const [
     updateElLeave,
-    {
-      isLoading: updateElLeaveLoading,
-      isSuccess: updateElLeaveSuccess,
-     
-    },
+    { isLoading: updateElLeaveLoading, isSuccess: updateElLeaveSuccess },
   ] = useUpdateElLeaveMutation();
   const [
     updateSlLeave,
-    {
-      isLoading: updateSlLeaveLoading,
-      isSuccess: updateSlLeaveSuccess,
-    
-    },
+    { isLoading: updateSlLeaveLoading, isSuccess: updateSlLeaveSuccess },
   ] = useUpdateSlLeaveMutation();
   const [
     updateWfhLeave,
-    {
-      isLoading: updateWfhLeaveLoading,
-      isSuccess: updateWfhLeaveSuccess,
-     
-    },
+    { isLoading: updateWfhLeaveLoading, isSuccess: updateWfhLeaveSuccess },
   ] = useUpdateWfhLeaveMutation();
 
   useEffect(() => {
     if (!user) return;
     //@ts-ignore
-    getPendingRequest({ empcode: user?.id }).unwrap();
+    getPendingRequest().unwrap();
   }, [user, updateElLeaveSuccess, updateSlLeaveSuccess, updateWfhLeaveSuccess]);
 
   useEffect(() => {
@@ -158,32 +145,24 @@ const LeavePage = () => {
         {
           type: "Earned Leave",
           img: elimg,
-          currentlyAvailable:
-            eranLeaveData?.data?.l_cl_bal ,
+          currentlyAvailable: eranLeaveData?.data?.l_cl_bal,
 
-          creditedFromLastMonth:
-            eranLeaveData?.data?.l_op_bal ,
-          annualAllotment:
-            eranLeaveData?.data?.total_yr_bal 
+          creditedFromLastMonth: eranLeaveData?.data?.l_op_bal,
+          annualAllotment: eranLeaveData?.data?.total_yr_bal,
         },
         {
           type: "Sick Leave",
           img: slimg,
-          currentlyAvailable:
-            sickLeaveData?.l_cl_bal ,
-          creditedFromLastMonth:
-            sickLeaveData?.l_op_bal ,
-          annualAllotment:
-            sickLeaveData?.total_yr_bal ,
+          currentlyAvailable: sickLeaveData?.l_cl_bal,
+          creditedFromLastMonth: sickLeaveData?.l_op_bal,
+          annualAllotment: sickLeaveData?.total_yr_bal,
         },
         {
           type: "Work From Home",
           img: wfmimg,
-          currentlyAvailable: wfhData?.l_cl_bal ,
-          creditedFromLastMonth:
-            wfhData?.l_op_bal ,
-          annualAllotment:
-            wfhData?.total_yr_bal ,
+          currentlyAvailable: wfhData?.l_cl_bal,
+          creditedFromLastMonth: wfhData?.l_op_bal,
+          annualAllotment: wfhData?.total_yr_bal,
         },
         {
           type: "Compensatory Leave",
@@ -212,15 +191,6 @@ const LeavePage = () => {
     }
   };
 
-  useEffect(() => {
-    if (pendingReqData) {
-      const countValue = pendingReqData.filter((item: any) => {
-        return item.status === "PEN";
-      }).length;
-      setCountPendingReq(countValue);
-    }
-  }, [pendingReqData]);
-
   return (
     <div className="w-full px-6 py-3">
       {eranLeaveLoading ||
@@ -236,8 +206,11 @@ const LeavePage = () => {
           {" "}
           <div className="flex w-full justify-between items-center flex-wrap gap-2   ">
             <div className="flex gap-[2px] flex-wrap">
-              <span className="text-md  select-none  font-semibold  hover:underline cursor-pointer  " onClick={() => navigate("/self-service/leave-status")}>
-                Pending Requests ({countPendingReq})
+              <span
+                className="text-md  select-none  font-semibold  hover:underline cursor-pointer  "
+                onClick={() => navigate("/self-service/leave-status")}
+              >
+                Pending Requests ({pendingReqData?.pendingRequests})
               </span>
             </div>
             <div className="flex gap-[20px] flex-wrap">
