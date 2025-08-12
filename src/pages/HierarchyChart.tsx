@@ -1,24 +1,24 @@
-import { Tree, TreeNode } from "react-organizational-chart";
-import { Avatar, Card, CardContent } from "@mui/material";
-import { Chip } from "@mui/material";
+import { Tree,  } from "react-organizational-chart";
+// import { Avatar, Card, CardContent } from "@mui/material";
+// import { Chip } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+// import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+// import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 // import PeopleIcon from "@mui/icons-material/People";
 // import BusinessIcon from "@mui/icons-material/Business";
 
 import type { JSX } from "react";
 
-import {
-  departmentData,
-  type DepartmentNode,
-} from "../dummydata/HierarchyData";
+// import {
+//   departmentData,
+//   type DepartmentNode,
+// } from "../dummydata/HierarchyData";
 // import CustomToolTip from "../components/reuseable/CustomToolTip";
-import { customColor } from "../constants/themeConstant";
-import { DepartmentCard } from "../components/reuseable/hierarchyChatComponents/DepartmentCard";
+// import { customColor } from "../constants/themeConstant";
+// import { DepartmentCard } from "../components/reuseable/hierarchyChatComponents/DepartmentCard";
 
 import { RootEmployeeTree } from "../components/reuseable/hierarchyChatComponents/RootEmployeeTree";
 import { EmployeeTree } from "../components/reuseable/hierarchyChatComponents/EmployeeTree";
@@ -49,6 +49,7 @@ const HierarchyChart = () => {
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
 
   const toggleNode = (id: string) => {
+   
     setExpandedNodes((prev) => ({
       ...prev,
       [id]: !prev[id],
@@ -83,145 +84,145 @@ const HierarchyChart = () => {
     }
   }, [hierarchyData]);
 
-  const renderDepartmentTree = (node: DepartmentNode): JSX.Element => {
-    const hasChildren = Boolean(node.children && node.children.length > 0);
-    const isExpanded = expandedNodes[node.id] ?? true;
+  // const renderDepartmentTree = (node: DepartmentNode): JSX.Element => {
+  //   const hasChildren = Boolean(node.children && node.children.length > 0);
+  //   const isExpanded = expandedNodes[node.id] ?? true;
 
-    return (
-      <TreeNode
-        label={
-          <DepartmentCard
-            name={node.name}
-            title={node.title}
-            imageUrl={node.imageUrl}
-            tags={node.tags}
-            employeeCount={node.employeeCount}
-            hasChildren={hasChildren}
-            isExpanded={isExpanded}
-            onToggle={() => toggleNode(node.id)}
-          />
-        }
-        key={node.id}
-      >
-        {isExpanded &&
-          hasChildren &&
-          (node.children ?? []).map(renderDepartmentTree)}
-      </TreeNode>
-    );
-  };
+  //   return (
+  //     <TreeNode
+  //       label={
+  //         <DepartmentCard
+  //           name={node.name}
+  //           title={node.title}
+  //           imageUrl={node.imageUrl}
+  //           tags={node.tags}
+  //           employeeCount={node.employeeCount}
+  //           hasChildren={hasChildren}
+  //           isExpanded={isExpanded}
+  //           onToggle={() => toggleNode(node.id)}
+  //         />
+  //       }
+  //       key={node.id}
+  //     >
+  //       {isExpanded &&
+  //         hasChildren &&
+  //         (node.children ?? []).map(renderDepartmentTree)}
+  //     </TreeNode>
+  //   );
+  // };
 
-  const renderDepartmentRoot = () => (
-    <div className="flex justify-center">
-      <Card
-        sx={{
-          background: customColor.bgColor,
-          color: "#fff",
-          borderRadius: 3,
-          minWidth: 280,
-          maxWidth: 320,
-          boxShadow: 6,
-          border: "1px solid #333",
-          position: "relative",
-        }}
-      >
-        <CardContent
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            pb: 1,
-            pt: 1,
-          }}
-        >
-          <Avatar
-            alt={departmentData.name}
-            src={departmentData.imageUrl}
-            sx={{
-              width: 48,
-              height: 48,
-              border: "2px solid #444",
-              backgroundColor: "#2eacb3",
-              pointerEvents: "none",
-              userSelect: "none",
-            }}
-          />
-          <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 600, fontSize: 18 }}>
-              {departmentData.name}
-            </div>
-            <div style={{ fontSize: 14, color: "#cbd5e1" }}>
-              {departmentData.title}
-            </div>
-            <div
-              style={{
-                marginTop: 6,
-                display: "flex",
-                gap: 6,
-                flexWrap: "wrap",
-              }}
-            >
-              {departmentData.tags?.map((tag: string) => (
-                <Chip
-                  key={tag}
-                  label={tag}
-                  size="small"
-                  sx={{
-                    background: tagColors[tag] || "#64748b",
-                    color: "#23272f",
-                    fontWeight: 600,
-                    fontSize: 12,
-                    px: 1,
-                    height: 22,
-                  }}
-                />
-              ))}
-              <Chip
-                label={`${departmentData.employeeCount} employees`}
-                size="small"
-                sx={{
-                  background: "#10b981",
-                  color: "#fff",
-                  fontWeight: 600,
-                  fontSize: 11,
-                  px: 1,
-                  height: 20,
-                }}
-              />
-            </div>
-            <div className="mt-4">
-              {departmentData.children &&
-                departmentData.children.length > 0 && (
-                  <IconButton
-                    size="small"
-                    onClick={() => toggleNode(departmentData.id)}
-                    sx={{
-                      position: "absolute",
-                      left: "50%",
-                      bottom: 3,
-                      transform: "translate(-50%, 50%)",
-                      background: "#334155",
-                      color: "#fff",
-                      "&:hover": { background: "#475569" },
-                      zIndex: 1,
-                      width: 32,
-                      height: 32,
-                      fontSize: 20,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {expandedNodes[departmentData.id] ?? true ? (
-                      <KeyboardArrowUpIcon />
-                    ) : (
-                      <KeyboardArrowDownIcon />
-                    )}
-                  </IconButton>
-                )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  // const renderDepartmentRoot = () => (
+  //   <div className="flex justify-center">
+  //     <Card
+  //       sx={{
+  //         background: customColor.bgColor,
+  //         color: "#fff",
+  //         borderRadius: 3,
+  //         minWidth: 280,
+  //         maxWidth: 320,
+  //         boxShadow: 6,
+  //         border: "1px solid #333",
+  //         position: "relative",
+  //       }}
+  //     >
+  //       <CardContent
+  //         sx={{
+  //           display: "flex",
+  //           alignItems: "center",
+  //           gap: 2,
+  //           pb: 1,
+  //           pt: 1,
+  //         }}
+  //       >
+  //         <Avatar
+  //           alt={departmentData.name}
+  //           src={departmentData.imageUrl}
+  //           sx={{
+  //             width: 48,
+  //             height: 48,
+  //             border: "2px solid #444",
+  //             backgroundColor: "#2eacb3",
+  //             pointerEvents: "none",
+  //             userSelect: "none",
+  //           }}
+  //         />
+  //         <div style={{ flex: 1 }}>
+  //           <div style={{ fontWeight: 600, fontSize: 18 }}>
+  //             {departmentData.name}
+  //           </div>
+  //           <div style={{ fontSize: 14, color: "#cbd5e1" }}>
+  //             {departmentData.title}
+  //           </div>
+  //           <div
+  //             style={{
+  //               marginTop: 6,
+  //               display: "flex",
+  //               gap: 6,
+  //               flexWrap: "wrap",
+  //             }}
+  //           >
+  //             {departmentData.tags?.map((tag: string) => (
+  //               <Chip
+  //                 key={tag}
+  //                 label={tag}
+  //                 size="small"
+  //                 sx={{
+  //                   background: tagColors[tag] || "#64748b",
+  //                   color: "#23272f",
+  //                   fontWeight: 600,
+  //                   fontSize: 12,
+  //                   px: 1,
+  //                   height: 22,
+  //                 }}
+  //               />
+  //             ))}
+  //             <Chip
+  //               label={`${departmentData.employeeCount} employees`}
+  //               size="small"
+  //               sx={{
+  //                 background: "#10b981",
+  //                 color: "#fff",
+  //                 fontWeight: 600,
+  //                 fontSize: 11,
+  //                 px: 1,
+  //                 height: 20,
+  //               }}
+  //             />
+  //           </div>
+  //           <div className="mt-4">
+  //             {departmentData.children &&
+  //               departmentData.children.length > 0 && (
+  //                 <IconButton
+  //                   size="small"
+  //                   onClick={() => toggleNode(departmentData.id)}
+  //                   sx={{
+  //                     position: "absolute",
+  //                     left: "50%",
+  //                     bottom: 3,
+  //                     transform: "translate(-50%, 50%)",
+  //                     background: "#334155",
+  //                     color: "#fff",
+  //                     "&:hover": { background: "#475569" },
+  //                     zIndex: 1,
+  //                     width: 32,
+  //                     height: 32,
+  //                     fontSize: 20,
+  //                     fontWeight: "bold",
+  //                   }}
+  //                 >
+  //                   {expandedNodes[departmentData.id] ?? true ? (
+  //                     <KeyboardArrowUpIcon />
+  //                   ) : (
+  //                     <KeyboardArrowDownIcon />
+  //                   )}
+  //                 </IconButton>
+  //               )}
+  //           </div>
+  //         </div>
+  //       </CardContent>
+  //     </Card>
+  //   </div>
+  // );
 
   const rootNode = useMemo(
     () => (Array.isArray(nodeData) && nodeData.length > 0 ? nodeData[0] : null),
@@ -400,7 +401,7 @@ const HierarchyChart = () => {
             lineBorderRadius={"20px"}
             label={
               viewMode === "employee"
-                ? rootNode && (
+                && rootNode && (
                     <RootEmployeeTree
                       toggleNode={toggleNode}
                       expandedNodes={expandedNodes}
@@ -410,7 +411,7 @@ const HierarchyChart = () => {
                       onUnhover={() => setHoveredNodeId(null)}
                     />
                   )
-                : renderDepartmentRoot()
+                // : renderDepartmentRoot()
             }
           
           >
@@ -422,8 +423,7 @@ const HierarchyChart = () => {
                     rootNode.children.filter((n: any) => n.id !== child.id)
                   )
                 )
-              : (expandedNodes[departmentData.id] ?? true) &&
-                (departmentData.children ?? []).map(renderDepartmentTree)}
+              : null}
           </Tree>
         </div>
       </div>
