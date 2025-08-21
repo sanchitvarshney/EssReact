@@ -71,10 +71,11 @@ const SignInScreen = () => {
 
     try {
       const response = await login(payload).unwrap();
-      if (response?.data?.success === false) {
-        showToast(response?.data?.message, "error");
+      if (response?.success === false) {
+        showToast(response?.message, "error");
         return;
       }
+      console.log(response)
       showToast(response?.message, "success");
       localStorage.setItem("cyberAlertAcknowledged", "false");
     } catch (err: any) {
