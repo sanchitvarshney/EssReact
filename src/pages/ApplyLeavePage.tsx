@@ -78,6 +78,8 @@ const schema = z.object({
 
   fromDate: z.date({ required_error: "From Date is required" }),
   toDate: z.date({ required_error: "To Date is required" }),
+
+  compensatoryDate: z.string().min(1, { message: "Session value is required" }),
 });
 
 <GlobalStyles
@@ -231,6 +233,10 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
   }, [toDate, startSession, endSession, type, fromDate]);
 
   const handleConfirmSubmit = async () => {
+    if (type === "ACL") {
+      setIsConfirm(true);
+      return;
+    }
     const isValid = await form.trigger();
 
     if (!isValid) {
@@ -238,20 +244,32 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
     }
     setIsConfirm(true);
   };
+
   const onSubmit = async () => {
     setIsConfirm(false);
 
     const data = form.getValues();
-    const payload = {
-      comp_date: null,
-      email_cc: recipient.map((item: any) => item.id),
-      endDate: moment(data.toDate).format("DD-MM-YYYY"),
-      endSession: data.toSession,
-      startDate: moment(data.fromDate).format("DD-MM-YYYY"),
-      startSession: data.fromSession,
-      type: data.wise,
-      reason: data.message,
-    };
+
+    let payload;
+    if (type === "ACL") {
+      payload = {
+        comp_date: data.compensatoryDate,
+         email_cc: recipient.map((item: any) => item.id),
+        type: data.wise,
+        reason: data.message,
+      };
+    } else {
+      payload = {
+       comp_date:null,
+        email_cc: recipient.map((item: any) => item.id),
+        endDate: moment(data.toDate).format("DD-MM-YYYY"),
+        endSession: data.toSession,
+        startDate: moment(data.fromDate).format("DD-MM-YYYY"),
+        startSession: data.fromSession,
+        type: data.wise,
+        reason: data.message,
+      };
+    }
     if (
       getLeaveCalculateData?.currentBooking >
       getLeaveBalanceData?.leaveBalance?.balance
@@ -380,91 +398,113 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                   </FormItem>
                 )}
               />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="fromDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <CustomModalDatePicker
-                          field={field}
-                          openTo={"day"}
-                          view={["year", "month", "day"]}
-                          label={"From Date"}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-[red] mt-1" />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="toDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <CustomModalDatePicker
-                          field={field}
-                          openTo={"day"}
-                          view={["year", "month", "day"]}
-                          label={"To Date"}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-[red] mt-1" />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              {getLeaveBalanceLoading ? (
-                <DotLoading />
-              ) : (
+              {type !== "ACL" ? (
                 <>
-                  {getLeaveBalanceData && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <FormField
-                        control={form.control}
-                        name="fromSession"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <CustomTextInput
-                                select={true}
-                                field={field}
-                                label={"From Session"}
-                                options={
-                                  getLeaveBalanceData?.leaveOptions?.options
-                                }
-                              />
-                            </FormControl>
-                            <FormMessage className="text-[red] mt-1" />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="toSession"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <CustomTextInput
-                                select={true}
-                                field={field}
-                                label={"To Session"}
-                                options={
-                                  getLeaveBalanceData?.leaveOptions?.options
-                                }
-                              />
-                            </FormControl>
-                            <FormMessage className="text-[red] mt-1" />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                  {" "}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="fromDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <CustomModalDatePicker
+                              field={field}
+                              openTo={"day"}
+                              view={["year", "month", "day"]}
+                              label={"From Date"}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-[red] mt-1" />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="toDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <CustomModalDatePicker
+                              field={field}
+                              openTo={"day"}
+                              view={["year", "month", "day"]}
+                              label={"To Date"}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-[red] mt-1" />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  {getLeaveBalanceLoading ? (
+                    <DotLoading />
+                  ) : (
+                    <>
+                      {getLeaveBalanceData && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <FormField
+                            control={form.control}
+                            name="fromSession"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <CustomTextInput
+                                    select={true}
+                                    field={field}
+                                    label={"From Session"}
+                                    options={
+                                      getLeaveBalanceData?.leaveOptions?.options
+                                    }
+                                  />
+                                </FormControl>
+                                <FormMessage className="text-[red] mt-1" />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="toSession"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <CustomTextInput
+                                    select={true}
+                                    field={field}
+                                    label={"To Session"}
+                                    options={
+                                      getLeaveBalanceData?.leaveOptions?.options
+                                    }
+                                  />
+                                </FormControl>
+                                <FormMessage className="text-[red] mt-1" />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      )}
+                    </>
                   )}
                 </>
+              ) : (
+                <FormField
+                  control={form.control}
+                  name="compensatoryDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <CustomTextInput
+                          select={true}
+                          field={field}
+                          label={"Select Compensatory Date"}
+                          options={getLeaveBalanceData?.balance}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-[red] mt-1" />
+                    </FormItem>
+                  )}
+                />
               )}
-
               {getLeaveCalculateLoading ? (
                 <DotLoading />
               ) : (
@@ -501,15 +541,12 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                 name="message"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className=" font-semibold">
-                      Reason
-                    </FormLabel>
+                    <FormLabel className=" font-semibold">Reason</FormLabel>
                     <FormControl>
                       <Textarea
-                      
-                      maxLength={500}
-                      minLength={15}
-                      rows={8}
+                        maxLength={500}
+                        minLength={15}
+                        rows={8}
                         className="border resize-none border-gray-500 text-md rounded-sm focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all  min-h-[80px]"
                         placeholder="Enter Reason"
                         {...field}
