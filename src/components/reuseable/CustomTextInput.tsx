@@ -63,9 +63,9 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
       }}
     >
       {select && (
-         options?.map((option) => (
-        <MenuItem key={option.value} value={option.value} >
-          {option.label}
+         options?.map((option,index) => (
+        <MenuItem key={option.value||index} value={option.value || option} >
+          {option.label || option}
         </MenuItem>
       ))
       )}
