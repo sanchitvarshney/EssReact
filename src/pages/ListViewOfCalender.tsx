@@ -67,6 +67,12 @@ const getTextColor = (key: string) => {
         backgroundColor: "#f3f4f6", // bg-gray-100
         textColor: "#1f2937", // text-gray-800
       };
+       case "od":
+    case "on duty":
+      return {
+        backgroundColor: "#d1fae5",
+        textColor: "#21c46b",
+      };
     default:
       return {
         textColor: "red",
