@@ -169,6 +169,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
                 pointerEvents: "none",
                 userSelect: "none",
               }}
+              
             >
               {post?.authorName.charAt(0)}
             </Avatar>

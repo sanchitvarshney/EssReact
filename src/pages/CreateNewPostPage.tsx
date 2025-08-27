@@ -178,7 +178,7 @@ export default function CreateNewPostPage({
       // Compress images if they exist
       let processedFiles = imageFiles;
       if (imageFiles.length > 0) {
-        showToast("Compressing images...", "success");
+     
         processedFiles = await Promise.all(imageFiles.map(compressImage));
       }
       const base64Images = await Promise.all(processedFiles.map(fileToBase64));
@@ -187,6 +187,7 @@ export default function CreateNewPostPage({
         description: caption,
         image: base64Images,
       };
+   
   
       const result = await onCreatePost(payload);
 

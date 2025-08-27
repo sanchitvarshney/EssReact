@@ -25,6 +25,7 @@ const CustomFooter = () => {
           <div className="flex flex-col items-start gap-y-4  ">
             <div>
               <img src={nextgenimg} alt="nextgenlogo" className="w-50 " />
+             
             </div>
             <Typography fontSize={13} className="">
               © 2017 - {new Date().getFullYear()} | All rights reserved

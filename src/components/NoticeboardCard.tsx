@@ -14,7 +14,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Stop } from "@mui/icons-material";
-
+import qrCode from "../assets/img/essDownload.jpeg";
 // import StopIcon from '@mui/icons-material/Stop';
 const dummyData: any = [
   // {
@@ -49,7 +49,7 @@ const NoticeboardCard: React.FC = () => {
   const [current, setCurrent] = useState<number>(0);
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
-   
+
   const [isPaused, setIsPaused] = useState(true);
 
   const prevNotice = () => {
@@ -87,7 +87,7 @@ const NoticeboardCard: React.FC = () => {
             textAlign={"center"}
             sx={{ borderBottom: "2px solid #0d918b", py: 1 }}
           >
-            📌 Announcement's 
+            📌 Announcement's
           </Typography>
           {/* <Divider sx={{ my: 1, background }} /> */}
         </>
@@ -106,12 +106,26 @@ const NoticeboardCard: React.FC = () => {
               <li>🔹 We'd love to hear your feedback and suggestions.</li>
               <li>
                 🔹 Prefer the old version? You can still access it{" "}
-                <a href="https://ess-old.mscorpres.com" className="text-blue-600 underline">
+                <a
+                  href="https://ess-old.mscorpres.com"
+                  className="text-blue-600 underline"
+                >
                   here
-                </a> OR <a href="https://ess-old.mscorpres.com" className="text-blue-600 underline">
-                  https://ess-old.mscorpres.com 
+                </a>{" "}
+                OR{" "}
+                <a
+                  href="https://ess-old.mscorpres.com"
+                  className="text-blue-600 underline"
+                >
+                  https://ess-old.mscorpres.com
                 </a>
-                . <br/><br/>Thank you for being a valued part of our team!
+                .
+              </li>
+              <li>
+                {" "}
+                <strong>🔹 Download App QR Code</strong>
+                <img src={qrCode} alt="QR" className="w-40 " /> <br />
+                Thank you for being a valued part of our team!
               </li>
             </ul>
 
