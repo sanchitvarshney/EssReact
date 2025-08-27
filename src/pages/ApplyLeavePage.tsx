@@ -70,16 +70,24 @@ const ApplyLeaveOption = [
 
 const schema = z.object({
   wise: z.string().min(1, { message: "Select value is required" }),
-  fromSession: z.number().min(1, { message: "Session value is required" }),
-  toSession: z.number().min(1, { message: "Session value is required" }),
+  fromSession: z.number().optional(),
+  toSession: z.number().optional(),
   message: z
     .string()
     .min(15, { message: "Reason is required please write more" }),
-
-  fromDate: z.date({ required_error: "From Date is required" }),
-  toDate: z.date({ required_error: "To Date is required" }),
-
-  compensatoryDate: z.string().min(1, { message: "Session value is required" }),
+  fromDate: z.date().optional(),
+  toDate: z.date().optional(),
+  compensatoryDate: z.string().optional(),
+}).refine((data) => {
+  // For ACL type, only compensatoryDate is required
+  if (data.wise === "ACL") {
+    return data.compensatoryDate && data.compensatoryDate.length > 0;
+  }
+  // For other types, fromSession, toSession, fromDate, toDate are required
+  return data.fromSession && data.toSession && data.fromDate && data.toDate;
+}, {
+  message: "Please fill all required fields based on leave type",
+  path: ["root"], // This will show as a form-level error
 });
 
 <GlobalStyles
@@ -133,7 +141,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-    mode: "onTouched",
+    mode: "onChange",
   });
 
   const toDate = form.watch("toDate");
@@ -238,29 +246,35 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
       return;
     }
     const isValid = await form.trigger();
+    console.log(isValid)
 
     if (!isValid) {
+      // Show validation errors and return
+      showToast("Please fill all required fields correctly", "error");
       return;
     }
+
+    // If form is valid, show confirmation modal
     setIsConfirm(true);
   };
 
+  
+
   const onSubmit = async () => {
     setIsConfirm(false);
-
     const data = form.getValues();
 
     let payload;
     if (type === "ACL") {
       payload = {
         comp_date: data.compensatoryDate,
-         email_cc: recipient.map((item: any) => item.id),
+        email_cc: recipient.map((item: any) => item.id),
         type: data.wise,
         reason: data.message,
       };
     } else {
       payload = {
-       comp_date:null,
+        comp_date: null,
         email_cc: recipient.map((item: any) => item.id),
         endDate: moment(data.toDate).format("DD-MM-YYYY"),
         endSession: data.toSession,
@@ -270,12 +284,14 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
         reason: data.message,
       };
     }
-    if (
-      getLeaveCalculateData?.currentBooking >
-      getLeaveBalanceData?.leaveBalance?.balance
-    ) {
+
+    // Check leave balance only for non-ACL types
+    if (type !== "ACL" && getLeaveCalculateData?.currentBooking > getLeaveBalanceData?.leaveBalance?.balance) {
       showToast("You don't have enough leave balance", "error");
+      return;
     }
+
+
 
     applySLLeave({ url: urlKey, body: payload })
       .then((res) => {
@@ -287,6 +303,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
         }
         if (res?.data?.status === "error") {
           showToast(res?.data?.message?.msg, "error");
+          return
         }
       })
       .catch((err) => {
