@@ -124,7 +124,8 @@ const NoticeboardCard: React.FC = () => {
               <li>
                 {" "}
                 <strong>🔹 Download App QR Code</strong>
-                <img src={qrCode} alt="QR" className="w-40 " /> <br />
+                <div className="flex justify-center">
+                  <img src={qrCode} alt="QR" className="w-40 " /></div> <br />
                 Thank you for being a valued part of our team!
               </li>
             </ul>
