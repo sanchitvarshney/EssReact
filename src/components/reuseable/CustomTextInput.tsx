@@ -42,9 +42,9 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           backgroundColor: "#f9fafb",
         
           transition: "all 0.2s",
-          "& fieldset": {
-            borderColor: "#000",
-          },
+          // "& fieldset": {
+          //   borderColor: "#000",
+          // },
           "&:hover fieldset": {
             borderColor: "#9ca3af",
           },

@@ -342,7 +342,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
             <span className=" font-semibold">Recipient</span>
             <Input
               ref={inputRef}
-              className="w-full md:w-96 rounded-sm p-3  mt-1 border border-gray-500] focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all"
+              className="w-full md:w-96 rounded-sm p-3  mt-1 border border-gray-400 focus:border-[#2eacb3] focus:ring focus:ring-[#2eacb3] transition-all"
               placeholder="Add Recipients"
               onChange={(e) => {
                 const value = e.target.value;

@@ -25,7 +25,7 @@ import ConfirmationModal from "../components/reuseable/ConfirmationModal";
 
 const LeaveGrantPage = () => {
   const [view, setView] = useState(false);
-  
+
   const { showToast } = useToast();
   const [reason, setReason] = useState<string>("");
   const [rejectedData, setRejectedData] = useState<any | null>(null);
@@ -80,12 +80,15 @@ const LeaveGrantPage = () => {
           return;
         }
         showToast(res?.data?.message, "success");
+        setIsRejected(false);
         setReason("");
         setView(false);
       })
       .catch((err) => {
         showToast(
-          err?.data?.message?.msg || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+          err?.data?.message?.msg ||
+            err?.message ||
+            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
           "error"
         );
       });
@@ -100,7 +103,7 @@ const LeaveGrantPage = () => {
       <Typography variant="subtitle1" fontWeight={600}>{`Total Request (${
         leaveGrantData?.totalrequest ? leaveGrantData?.totalrequest : 0
       })`}</Typography>
-      { leaveGrantData?.data?.length === 0 ||
+      {leaveGrantData?.data?.length === 0 ||
       leaveGrantData?.status === "error" ? (
         <div className="w-full h-full flex items-center justify-center">
           <EmptyData />
@@ -234,13 +237,10 @@ const LeaveGrantPage = () => {
                     Approve
                   </CustomButton>
                   <CustomButton
-                    onClick={() =>
-                    {
-                      setRejectedData(leaveGrantDetailsData?.data)
-                      setIsRejected(true)
-                    }
-                      
-                    }
+                    onClick={() => {
+                      setRejectedData(leaveGrantDetailsData?.data);
+                      setIsRejected(true);
+                    }}
                     className="bg-red-700 text-white hover:bg-red-600    transition-transform duration-300 ease-in-out hover:scale-105 cursor-pointer"
                   >
                     Reject
@@ -252,13 +252,13 @@ const LeaveGrantPage = () => {
         )}
       </DocView>
 
-         <ConfirmationModal
-          open={isRejected}
-          close={() => setIsRejected(false)}
-          aggree={()=>handleReject(rejectedData, "reject")}
-          title={`Alert`}
-          description={`Do you want to reject this request?`}
-        />
+      <ConfirmationModal
+        open={isRejected}
+        close={() => setIsRejected(false)}
+        aggree={() => handleReject(rejectedData, "reject")}
+        title={`Alert`}
+        description={`Do you want to reject this request?`}
+      />
     </div>
   );
 };
