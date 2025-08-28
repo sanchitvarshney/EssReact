@@ -21,12 +21,15 @@ import SessionTable from "../components/reuseable/SessionTable";
 
 import { CustomButton } from "../components/ui/CustomButton";
 import { Textarea } from "../components/ui/textarea";
+import ConfirmationModal from "../components/reuseable/ConfirmationModal";
 
 const LeaveGrantPage = () => {
   const [view, setView] = useState(false);
   
   const { showToast } = useToast();
   const [reason, setReason] = useState<string>("");
+  const [rejectedData, setRejectedData] = useState<any | null>(null);
+  const [isRejected, setIsRejected] = useState(false);
   const [getLeaveList, { data: leaveGrantData, isLoading: leaveGrantLoading }] =
     useGetLeaveListMutation();
   const [
@@ -228,15 +231,19 @@ const LeaveGrantPage = () => {
                     }
                     className="bg-green-700 text-white  hover:bg-green-600  transition-transform duration-300 ease-in-out hover:scale-105  cursor-pointer"
                   >
-                    Approved
+                    Approve
                   </CustomButton>
                   <CustomButton
                     onClick={() =>
-                      handleReject(leaveGrantDetailsData?.data, "reject")
+                    {
+                      setRejectedData(leaveGrantDetailsData?.data)
+                      setIsRejected(true)
+                    }
+                      
                     }
                     className="bg-red-700 text-white hover:bg-red-600    transition-transform duration-300 ease-in-out hover:scale-105 cursor-pointer"
                   >
-                    Rejected
+                    Reject
                   </CustomButton>
                 </div>
               )}
@@ -244,6 +251,14 @@ const LeaveGrantPage = () => {
           </div>
         )}
       </DocView>
+
+         <ConfirmationModal
+          open={isRejected}
+          close={() => setIsRejected(false)}
+          aggree={()=>handleReject(rejectedData, "reject")}
+          title={`Alert`}
+          description={`Do you want to reject this request?`}
+        />
     </div>
   );
 };
