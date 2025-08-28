@@ -53,22 +53,22 @@ export const renderMenu = (
         setAccordionValues({ ...accordionValues, [path]: val })
       }
     >
-      <ul className="flex flex-col gap-[10px]">
+      <ul className="flex flex-col gap-[10px] w-full">
         {menu?.map((item: any, index: number) => {
           const currentPath = `${path}/${item.title}-${index}`;
           return (
-            <li key={item.id || item.name + index}>
+            <li key={item.id || item.name + index} className="w-full">
               {item?.children ? (
                 <AccordionItem
                   value={currentPath}
-                  className={`border-0  w-full transition-all duration-100`}
+                  className={`border-0 w-full transition-all duration-100`}
                 >
-                  <div className={`flex flex-col px-4 `}>
+                  <div className={`flex flex-col w-full ${isExpended ? 'px-2' : 'px-0'}`}>
                     {!isExpended ? (
                       <>
                         <CustomToolTip title={item?.title} placement="right">
                           <IconButton
-                            className=" px-1 my-1.5 rounded-md cursor-pointer transition-all duration-600 ease-in-out hover:bg-gray-500/20"
+                            className="w-full px-0 my-1.5 rounded-md cursor-pointer transition-all duration-600 ease-in-out hover:bg-gray-500/20 flex justify-center items-center"
                             onClick={() => {
                               if (!isExpended) {
                                 setIsExpended(true);
@@ -90,7 +90,7 @@ export const renderMenu = (
                     ) : (
                       <>
                         <AccordionTrigger
-                          className="w-[100%] py-2  m-0 leading-none hover:no-underline cursor-pointer rounded-md hover:bg-gray-500/20 hover:rounded-[20px]"
+                          className="w-full py-2 m-0 leading-none hover:no-underline cursor-pointer rounded-md hover:bg-gray-500/20 hover:rounded-[20px]"
                           onClick={() => {
                             setAccordionValues({
                               ...accordionValues,
@@ -98,12 +98,12 @@ export const renderMenu = (
                             });
                           }}
                         >
-                          <div className="w-full px-2 flex items-center cursor-pointer  rounded-md gap-2">
+                          <div className="w-full px-2 flex items-center cursor-pointer rounded-md gap-2 min-w-0">
                             {isNew && (
                               <DynamicIcon name={item.icon} size="medium" />
                             )}
                             <span
-                              className={` ${getTextSize(level)} font-[500] `}
+                              className={`${getTextSize(level)} font-[500] truncate`}
                             >
                               {item.title}
                             </span>
@@ -111,7 +111,7 @@ export const renderMenu = (
                         </AccordionTrigger>
 
                         {item.children && (
-                          <AccordionContent className=" mx-4   border-l-2 border-black">
+                          <AccordionContent className="mx-2 border-l-2 border-black">
                             {renderMenu(
                               item.children,
                               false,
@@ -133,7 +133,7 @@ export const renderMenu = (
                 </AccordionItem>
               ) : (
                 <div
-                  className={` flex items-center justify-between w-full px-4 rounded-md `}
+                  className={`flex items-center justify-between w-full ${isExpended ? 'px-2' : 'px-0'} rounded-md`}
                 >
                   {!isExpended ? (
                     <CustomToolTip
@@ -141,12 +141,7 @@ export const renderMenu = (
                       placement={"right"}
                     >
                       <IconButton
-                        // to={item?.path}
-                        className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] pl-1 
-                        
-                          hover:bg-gray-500/20 hover:rounded-[20px]
-                        
-                      `}
+                        className={`w-full rounded-md cursor-pointer p-0 flex items-center justify-center hover:bg-gray-500/20 hover:rounded-[20px]`}
                         onClick={() => {
                           navigate(item?.path);
                           setAccordionValues({});
@@ -159,7 +154,7 @@ export const renderMenu = (
 
                         {isExpended && (
                           <span
-                            className={`${getTextSize(level)} font-[500] ml-2 `}
+                            className={`${getTextSize(level)} font-[500] ml-2 truncate`}
                           >
                             {item.title}
                           </span>
@@ -169,8 +164,9 @@ export const renderMenu = (
                   ) : (
                     <Link
                       to={item?.path}
-                      className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px]  ${
-                        isExpended && " hover:bg-gray-500/20 hover:rounded-[20px]"
+                      className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] min-w-0 ${
+                        isExpended &&
+                        " hover:bg-gray-500/20 hover:rounded-[20px]"
                       } 
                       `}
                       onClick={() => {
@@ -181,7 +177,7 @@ export const renderMenu = (
                       {isNew && <DynamicIcon name={item.icon} size="medium" />}
 
                       {isExpended && (
-                        <span className={`${getTextSize(level)} font-[500]  `}>
+                        <span className={`${getTextSize(level)} font-[500] truncate`}>
                           {item.title}
                         </span>
                       )}
@@ -209,19 +205,19 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-[calc(100vh-90px)] flex flex-row ">
+    <div className="w-full h-[calc(100vh-90px)] flex flex-row overflow-hidden">
       <Box sx={{ display: { xs: "none", md: "flex" } }}>
         {/* Sidebar container */}
         <div
           className={`${
-            isExpended ? "w-[40vh] " : "w-[10vh] "
-          } flex flex-col  transition-all shadow-md  z-999 shadow-[#2eacb3]  duration-500 ease-in-out`}
+            isExpended ? "w-[280px] min-w-[280px] max-w-[320px]" : "w-[60px] min-w-[60px]"
+          } flex flex-col transition-all shadow-md z-999 shadow-[#2eacb3] duration-500 ease-in-out overflow-hidden`}
         >
           {/* Profile section */}
           {isExpended && (
             <>
               {" "}
-              <div className="flex flex-col justify-center items-center px-2 py-1 transition-all duration-500 ease-in-out">
+              <div className="flex flex-col justify-center items-center px-2 py-1 transition-all duration-500 ease-in-out min-w-0">
                 <div className="flex ml-auto mt-1">
                   <CustomToolTip title="Collapse" placement="right">
                     <IconButton
@@ -232,7 +228,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
                     </IconButton>
                   </CustomToolTip>
                 </div>
-                <div className="flex flex-col items-center text-center py-1 gap-y-1 w-full ">
+                <div className="flex flex-col items-center text-center py-1 gap-y-1 w-full min-w-0">
                   <Avatar
                     //@ts-ignore
                     alt={user?.name}
@@ -246,33 +242,33 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
                       userSelect: "none",
                     }}
                   />
-                  <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">
+                  <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold truncate">
                     {/*@ts-ignore */}
                     {user?.name}
                   </h2>
-                  <h2 className=" break-words max-w-full text-[0.92rem] font-medium  ">
+                  <h2 className="break-words max-w-full text-[0.92rem] font-medium truncate">
                     {/* @ts-ignore */}
                     {user?.role}
                   </h2>
-                  <h2 className=" break-words max-w-full text-[0.90rem] font-medium ">
+                  <h2 className="break-words max-w-full text-[0.90rem] font-medium truncate">
                     {/* @ts-ignore */}
                     {user?.dept}
                   </h2>
-                  <p className=" break-words max-w-full text-[0.9rem] font-medium ">
+                  <p className="break-words max-w-full text-[0.9rem] font-medium truncate">
                     {/* @ts-ignore */}
                     {user?.id}
                   </p>
                 </div>
               </div>
-              <Divider className="w-[90%] self-center " />{" "}
+              <Divider className="w-[90%] self-center" />{" "}
             </>
           )}
           {/* Scrollable menu section */}
 
           <div
             className={`flex-1 ${
-              !isExpended && "flex items-center"
-            } custom-scrollbar-for-menu  overflow-y-auto   will-change-transform my-2 transition-all duration-400 ease-in-out`}
+              !isExpended && "flex items-center justify-center"
+            } custom-scrollbar-for-menu overflow-y-auto overflow-x-hidden will-change-transform my-2 transition-all duration-400 ease-in-out`}
           >
             {renderMenu(
               menu,
@@ -286,14 +282,14 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
           </div>
 
           {!isExpended && (
-            <div className=" flex self-center mb-4">
+            <div className="flex self-center mb-4">
               <div>
-                <CustomToolTip title="Expend" placement="right">
+                <CustomToolTip title="Expand" placement="right">
                   <IconButton
                     onClick={() => {
                       setIsExpended(!isExpended);
                     }}
-                    className={` cursor-pointer rounded-md transition-all duration-500 ease-in-out `}
+                    className={`cursor-pointer rounded-md transition-all duration-500 ease-in-out`}
                   >
                     <ArrowForwardIcon sx={{ color: "#000" }} />
                   </IconButton>
@@ -304,7 +300,7 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
         </div>
       </Box>
       {/* Main content area */}
-      <div className="flex-1 overflow-y-auto  will-change-transform w-full ">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden will-change-transform w-full">
         <Outlet />
       </div>
       <CustomDrawer />
