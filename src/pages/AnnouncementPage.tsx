@@ -47,6 +47,8 @@ const AnnouncementPage = () => {
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(5);
 
+  
+
   const [getVibe, { isLoading: vibeLoading }] = useLazyGetVibeQuery();
   const [createPost] =
     useCreatePostMutation();
@@ -216,12 +218,12 @@ const AnnouncementPage = () => {
               />
             </div>
             <div className="">
-              
+           
                 <AnnouncementList posts={posts} hasMore={hasMore} ref={ref} />
             
             </div>
           </div>
-          {/* <PostAnniversaryCard authorName={"test"} /> */}
+         
           {
             <div className="flex flex-col items-center  sm:gap-4  hidden sm:flex">
               <MilestonesAndEventsCard

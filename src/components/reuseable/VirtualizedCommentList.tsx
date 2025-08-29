@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import { FixedSizeList } from "react-window";
 import type { ListChildComponentProps } from "react-window";
-import { formatDistanceToNow } from "date-fns";
+
 import EmptyData from "./EmptyData";
 import Divider from "@mui/material/Divider";
 
@@ -51,17 +51,11 @@ hight=400,
       .slice(0, 2);
   };
 
-  const formatDate = (dateString: string) => {
-    try {
-      return formatDistanceToNow(new Date(dateString), { addSuffix: true });
-    } catch {
-      return dateString;
-    }
-  };
+  
 
   const renderRow = (props: ListChildComponentProps) => {
     const { index, style } = props;
-    const item = data[index];
+    const item:any = data[index];
 
     if (!item) return null;
 
@@ -135,7 +129,7 @@ hight=400,
                         fontWeight: 500,
                       }}
                     >
-                      {formatDate(item.timestamp)}
+                      {item?.timeAgo}
                     </Typography>
                   </div>
                   {item.role && (

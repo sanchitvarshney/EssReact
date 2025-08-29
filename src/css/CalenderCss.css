@@ -41,7 +41,8 @@
 /* Style date numbers */
 .rbc-month-view .rbc-date-cell {
   font-weight: 600;
-  color: z;
+  color: #2e2e2e !important;
+   pointer-events: none;
 }
 
 /* eventstyle */
@@ -64,6 +65,7 @@
   text-overflow: ellipsis;
   padding: 0;
   overflow: auto;
+  pointer-events: none;
   
 }
 

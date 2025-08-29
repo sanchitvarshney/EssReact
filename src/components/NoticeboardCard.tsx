@@ -116,6 +116,7 @@ const NoticeboardCard: React.FC = () => {
                 <a
                   href="https://ess-old.mscorpres.com"
                   className="text-blue-600 underline"
+                  target="_blank"
                 >
                   https://ess-old.mscorpres.com
                 </a>
@@ -123,7 +124,7 @@ const NoticeboardCard: React.FC = () => {
               </li>
               <li>
                 {" "}
-                <strong>🔹 Download App QR Code</strong>
+                <strong>🔹 Download Android App QR Code</strong>
                 <div className="flex justify-center">
                   <img src={qrCode} alt="QR" className="w-40 " /></div> <br />
                 Thank you for being a valued part of our team!
