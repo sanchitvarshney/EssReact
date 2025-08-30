@@ -66,10 +66,10 @@ const SignInScreen = () => {
       return;
     }
 
-    if (!recaptchaValue) {
-      setIsError("Please verify you are not a robot.");
-      // return;
-    }
+    // if (!recaptchaValue) {
+    //   setIsError("Please verify you are not a robot.");
+    //   // return;
+    // }
 
     const payload = {
       username: employeeCode,
@@ -183,13 +183,13 @@ const SignInScreen = () => {
                 </button>
               )}
             </div>
-            <div className="flex justify-center">
+            {/* <div className="flex justify-center">
               <ReCAPTCHA
                 ref={recaptchaRef}
                 sitekey="6Lf66bcrAAAAAHCob6_GVKq8otpXPFKO58WqlIgY"
                 onChange={handleRecaptchaChange}
               />
-            </div>
+            </div> */}
 
             {isLoading ? (
               <div className="flex items-center justify-center">
