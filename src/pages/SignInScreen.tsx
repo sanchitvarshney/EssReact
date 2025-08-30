@@ -7,7 +7,7 @@ import PasswordIcon from "@mui/icons-material/Password";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../services/auth";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import ReCAPTCHA from "react-google-recaptcha";
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../contextapi/AuthContext";
 import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
@@ -21,6 +21,8 @@ const SignInScreen = () => {
   const [employeeCode, setEmployeeCode] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState("");
+  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [login, { isLoading, error, data, isError: isErrorLogin, isSuccess }] =
     useLoginMutation();
   useApiErrorMessage({
@@ -64,6 +66,11 @@ const SignInScreen = () => {
       return;
     }
 
+    if (!recaptchaValue) {
+      setIsError("Please verify you are not a robot.");
+      // return;
+    }
+
     const payload = {
       username: employeeCode,
       password: password,
@@ -75,7 +82,6 @@ const SignInScreen = () => {
         showToast(response?.message, "error");
         return;
       }
-      console.log(response)
       showToast(response?.message, "success");
       localStorage.setItem("cyberAlertAcknowledged", "false");
     } catch (err: any) {
@@ -85,7 +91,13 @@ const SignInScreen = () => {
           "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
         "error"
       );
+    } finally {
+      recaptchaRef.current?.reset();
+      setRecaptchaValue(null);
     }
+  };
+  const handleRecaptchaChange = (value: string | null) => {
+    setRecaptchaValue(value);
   };
 
   return (
@@ -120,8 +132,8 @@ const SignInScreen = () => {
                   value={employeeCode}
                   onChange={(e) => {
                     const inputValue = e.target.value.toUpperCase();
-                    setEmployeeCode(inputValue)
-                  } }
+                    setEmployeeCode(inputValue);
+                  }}
                 />
               </div>
             </div>
@@ -170,6 +182,13 @@ const SignInScreen = () => {
                   Forgot password?
                 </button>
               )}
+            </div>
+            <div className="flex justify-center">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="6Lf66bcrAAAAAHCob6_GVKq8otpXPFKO58WqlIgY"
+                onChange={handleRecaptchaChange}
+              />
             </div>
 
             {isLoading ? (
