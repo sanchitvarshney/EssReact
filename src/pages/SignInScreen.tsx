@@ -21,7 +21,7 @@ const SignInScreen = () => {
   const [employeeCode, setEmployeeCode] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState("");
-  // const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
+  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [login, { isLoading, error, data, isError: isErrorLogin, isSuccess }] =
     useLoginMutation();
@@ -66,10 +66,10 @@ const SignInScreen = () => {
       return;
     }
 
-    // if (!recaptchaValue) {
-    //   setIsError("Please verify you are not a robot.");
-    //   // return;
-    // }
+    if (!recaptchaValue) {
+      setIsError("Please verify you are not a robot.");
+      return;
+    }
 
     const payload = {
       username: employeeCode,
@@ -93,12 +93,12 @@ const SignInScreen = () => {
       );
     } finally {
       recaptchaRef.current?.reset();
-      // setRecaptchaValue(null);
+      setRecaptchaValue(null);
     }
   };
-  // const handleRecaptchaChange = (value: string | null) => {
-  //   setRecaptchaValue(value);
-  // };
+  const handleRecaptchaChange = (value: string | null) => {
+    setRecaptchaValue(value);
+  };
 
   return (
     <div
@@ -183,13 +183,13 @@ const SignInScreen = () => {
                 </button>
               )}
             </div>
-            {/* <div className="flex justify-center">
+            <div className="flex justify-center">
               <ReCAPTCHA
                 ref={recaptchaRef}
-                sitekey="6Lf66bcrAAAAAHCob6_GVKq8otpXPFKO58WqlIgY"
+                sitekey="6Leq9bcrAAAAAN4pE9n7FurJWMOsWdYajA3tRdbU"
                 onChange={handleRecaptchaChange}
               />
-            </div> */}
+            </div>
 
             {isLoading ? (
               <div className="flex items-center justify-center">
