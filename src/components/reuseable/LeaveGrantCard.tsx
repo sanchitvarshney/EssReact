@@ -46,12 +46,12 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({
             </Typography>
 
             <span className="text-[14px]">{`${
-              data.totalday ? data.totalday : data.totalDuration
+              data?.totalday ? data?.totalday : data?.totalDuration
             } `}</span>
           </div>
           <div>
             <Chip
-              label={data.regago}
+              label={data?.regago}
               size="small"
               sx={{
                 backgroundColor: "#e6f4ea",
@@ -64,8 +64,8 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({
 
         <div className="flex">
           <Avatar
-            src={data.photo}
-            alt={data.empname}
+            src={data?.photo}
+            alt={data?.empname}
             sx={{
               width: isView ? 60 : 40,
               height: isView ? 60 : 40,
@@ -82,7 +82,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({
                 fontSize: { xs: "0.8rem", sm: "1rem" },
               }}
             >
-              {`${data.empname} (${data.empcode})`}
+              {`${data?.empname} (${data?.empcode})`}
             </Typography>
             <div className="flex gap-2 items-center">
               <Typography
@@ -95,7 +95,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({
                 Designation:
               </Typography>
 
-              <span className="text-[14px]">{`${data.designation}`}</span>
+              <span className="text-[14px]">{`${data?.designation}`}</span>
             </div>
             <div className="flex gap-2 items-center">
               <Typography
@@ -108,7 +108,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({
                 Designation:
               </Typography>
 
-              <span className="text-[14px]">{`${data.department}`}</span>
+              <span className="text-[14px]">{`${data?.department}`}</span>
             </div>
           </div>
         </div>
