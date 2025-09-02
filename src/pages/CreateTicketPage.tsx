@@ -25,7 +25,7 @@ const CreateTicketPage = () => {
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("call");
+  
     const uploaded = e.target.files;
     if (!uploaded) return;
 

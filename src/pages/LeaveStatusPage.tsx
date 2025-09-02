@@ -132,7 +132,7 @@ const LeaveStatusPage = () => {
 
     rejectLeave(payload)
       .then((res) => {
-        console.log(res);
+      
         if (res?.data?.status === "success") {
           showToast(res?.data?.message, "success");
         }

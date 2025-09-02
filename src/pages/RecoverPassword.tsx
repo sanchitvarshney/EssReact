@@ -34,7 +34,7 @@ const RecoverPassword = () => {
         setEmployeeCode("");
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 

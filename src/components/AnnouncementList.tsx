@@ -13,7 +13,7 @@ interface AnnouncementListProps {
 
 const AnnouncementList: FC<AnnouncementListProps> = React.memo(
   ({ posts, hasMore, ref }) => {
-    console.log(posts);
+    
     return (
       <div className="space-y-6 w-full">
         {posts.map((post: any, index: number) => (

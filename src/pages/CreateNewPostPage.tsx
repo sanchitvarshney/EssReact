@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, } from "react";
 import { CustomButton } from "../components/ui/CustomButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "../contextapi/AuthContext";
@@ -21,10 +21,7 @@ export default function CreateNewPostPage({
   closeModal: any;
   onCreatePost: (payload: any) => Promise<{ success: boolean }>;
 }) {
-  console.log(
-    "CreateNewPostPage rendered with onCreatePost:",
-    typeof onCreatePost
-  );
+ 
   const { user } = useAuth();
   const { showToast } = useToast();
   const { name, imgUrl } = user as any;
@@ -35,17 +32,6 @@ export default function CreateNewPostPage({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // Debug logging
-  useEffect(() => {
-    console.log(
-      "Button disabled state:",
-      imageFiles.length === 0 && caption.length === 0,
-      "imageFiles:",
-      imageFiles.length,
-      "caption:",
-      caption.length
-    );
-  }, [imageFiles.length, caption.length]);
 
   const handleImageUpload = (e: any) => {
     if (!e.target.files) return;
@@ -156,7 +142,7 @@ export default function CreateNewPostPage({
   };
 
   const handleCreatePost = async () => {
-    console.log("handleCreatePost called in CreateNewPostPage");
+   
     if (!hasMinimumWords(caption)) {
       showToast("Caption must have at least 3 words", "error");
       return;
