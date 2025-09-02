@@ -120,7 +120,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({
 
           <div className="flex items-center space-x-2 mb-1">
             <div className={`w-3 h-3 rounded-full ${"bg-green-700"}`} />
-            <span className="text-[14px]">{`${data.leavetype} Leave`}</span>
+            <span className="text-[14px]">{`${data?.leavetype} Leave`}</span>
           </div>
         </div>
 
@@ -130,7 +130,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({
           </Typography>
 
           <div className="flex items-center space-x-2 mb-1">
-            <span className="text-[14px]">{`${data.regdate}`}</span>
+            <span className="text-[14px]">{`${data?.regdate}`}</span>
           </div>
         </div>
       </Box>
