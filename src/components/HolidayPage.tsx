@@ -47,6 +47,7 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [getHolidaysList, { data, isLoading, error }] =
     useGetHolidaysListMutation();
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedYear(newValue);
     console.log(event);

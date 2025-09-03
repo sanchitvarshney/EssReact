@@ -48,7 +48,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
          
         })
         .catch((err) => {
-          console.log(err);
+         
           showToast(err?.data?.message, "error");
         });
     }

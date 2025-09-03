@@ -18,7 +18,7 @@ const CustomToggle: FC<CustomTogglePropsTypes> = ({
   setMethod,
 }) => {
   const toggleDayStatus = (value: string) => {
-    // console.log("click");
+ 
     if (value === title) {
       setMethod((prev: boolean) => !prev);
     } else {

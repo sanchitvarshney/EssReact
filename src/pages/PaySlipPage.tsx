@@ -64,7 +64,7 @@ const PaySlipPage = () => {
     const period = moment(data.toDate).format("YYYY-MM");
 
     getPaySlip({ period: period }).then((res) => {
-      console.log(res)
+     
       if (res?.data?.status === "error") {
        showToast(res?.data?.message, "error"); 
       }

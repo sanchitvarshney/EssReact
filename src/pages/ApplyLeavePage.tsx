@@ -246,7 +246,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
       return;
     }
     const isValid = await form.trigger();
-    console.log(isValid)
+   
 
     if (!isValid) {
       // Show validation errors and return

@@ -109,6 +109,7 @@ const NoticeboardCard: React.FC = () => {
                 <a
                   href="https://ess-old.mscorpres.com"
                   className="text-blue-600 underline"
+                  target="_blank"
                 >
                   here
                 </a>{" "}

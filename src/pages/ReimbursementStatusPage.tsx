@@ -54,17 +54,21 @@ const ReimbursementStatusPage = () => {
       showToast("Please select a reimbursement", "error");
       return;
     }
-    console.log(trackId);
+
     cancelReimbursement({ trxn: trackId })
       .then((res) => {
-        console.log(res);
         if (res?.data?.status === "error") {
           showToast(res?.data?.message, "error");
         }
         showToast(res?.data?.message, "success");
       })
       .catch((err) => {
-        showToast(err || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.", "error");
+        showToast(
+          err ||
+            err?.message ||
+            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+          "error"
+        );
       });
   };
 
@@ -72,20 +76,21 @@ const ReimbursementStatusPage = () => {
     statusReimbursement()
       .then((res) => {
         if (res?.data?.status === "error") {
-          const len = res?.data?.message.length 
-          let msg
-       if (len>20) {
-        msg = "Data Not Found"
-       } else {
-        msg = res?.data?.message
-       }
+          const len = res?.data?.message.length;
+          let msg;
+          if (len > 20) {
+            msg = "Data Not Found";
+          } else {
+            msg = res?.data?.message;
+          }
           showToast(msg, "error");
         }
       })
       .catch((err) => {
-        console.log(err.message);
         showToast(
-          err?.data?.message || err?.message || "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+          err?.data?.message ||
+            err?.message ||
+            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
           "error"
         );
       });
@@ -119,7 +124,9 @@ const ReimbursementStatusPage = () => {
         <div className="flex justify-between items-center mb-4">
           <div className="flex  items-center ">
             <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
-              {`Reimbursement Status (${ !(data?.totalrequest) ? 0 : data?.totalrequest})`}
+              {`Reimbursement Status (${
+                !data?.totalrequest ? 0 : data?.totalrequest
+              })`}
             </Typography>
           </div>
 
@@ -132,7 +139,9 @@ const ReimbursementStatusPage = () => {
           />
         </div>
 
-        {data?.data?.length === 0 ||filteredData?.length === 0 || data?.status === "error" ? (
+        {data?.data?.length === 0 ||
+        filteredData?.length === 0 ||
+        data?.status === "error" ? (
           <div className="w-full h-full flex items-center justify-center">
             <EmptyData />
           </div>

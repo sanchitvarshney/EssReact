@@ -37,7 +37,7 @@ const eventStyleGetter = (event: any) => {
 };
 
 
-  // console.log(mergedEvents)
+  
   return (
     <div className="w-full ">
       <Calendar
