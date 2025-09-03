@@ -186,7 +186,7 @@ const SignInScreen = () => {
             <div className="flex justify-center">
               <ReCAPTCHA
                 ref={recaptchaRef}
-                sitekey="6LfUrLwrAAAAABBeLemuNHmtDQwLdbPXCJICLfIp"
+                sitekey="6Leq9bcrAAAAAN4pE9n7FurJWMOsWdYajA3tRdbU"
                 onChange={handleRecaptchaChange}
               />
             </div>
