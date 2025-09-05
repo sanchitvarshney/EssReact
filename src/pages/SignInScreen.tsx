@@ -40,13 +40,20 @@ const SignInScreen = () => {
   };
 
   useEffect(() => {
+    if (data?.isTwoStep) {
+      localStorage.setItem("tempUser", JSON.stringify(data?.data));
+      sessionStorage.setItem("tempUser", JSON.stringify(data?.data));
+      navigation("/two-factor-auth");
+      return;
+    }
+
     if (data?.data) {
       localStorage.setItem("user", JSON.stringify(data.data));
       sessionStorage.setItem("user", JSON.stringify(data.data));
       signIn();
       navigation("/");
     }
-  }, [data]);
+  }, [data, navigation, signIn]);
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -84,6 +91,7 @@ const SignInScreen = () => {
       }
       showToast(response?.message, "success");
       localStorage.setItem("cyberAlertAcknowledged", "false");
+      localStorage.setItem("username", response?.username);
     } catch (err: any) {
       showToast(
         err?.data?.message?.msg ||

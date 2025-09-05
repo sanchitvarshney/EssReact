@@ -12,6 +12,15 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => response,
     }),
+    authentication: builder.mutation({
+      query: (credentials) => ({
+        url: "/login/verify",
+        method: "POST",
+        body: credentials,
+      }),
+      transformResponse: (response: any) => response,
+    }),
+
 
     getuserdata: builder.mutation({
       query: (credentials) => ({
@@ -79,6 +88,7 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
 
 export const {
   useLoginMutation,
+  useAuthenticationMutation,
   useGetuserdataMutation,
   useChangePasswordInfoMutation,
   useChangePasswordMutation,

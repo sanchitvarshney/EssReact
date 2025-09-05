@@ -25,6 +25,7 @@ import ViewStatusTicketPage from "./src/pages/ViewStatusTicketPage";
 import ReimbursementStatusPage from "./src/pages/ReimbursementStatusPage";
 import ReimbursementGrantPage from "./src/pages/ReimbursementGrantPage";
 import RecoverPassword from "./src/pages/RecoverPassword";
+import TwoFactorAuthPage from "./src/pages/TwoFactorAuthPage";
 import Protected from "./src/routes/Protected";
 import SignInScreen from "./src/pages/SignInScreen";
 import TaskPage from "./src/pages/TaskPage";
@@ -171,6 +172,14 @@ export const route = createBrowserRouter([
     element: (
       <Protected authentication={false}>
         <RecoverPassword />
+      </Protected>
+    ),
+  },
+  {
+    path: "/two-factor-auth",
+    element: (
+      <Protected authentication={false}>
+        <TwoFactorAuthPage />
       </Protected>
     ),
   },
