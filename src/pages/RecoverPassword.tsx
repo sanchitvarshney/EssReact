@@ -102,7 +102,7 @@ const RecoverPassword = () => {
             <div className="flex justify-center">
               <ReCAPTCHA
                 ref={recaptchaRef}
-                sitekey="6Leq9bcrAAAAAN4pE9n7FurJWMOsWdYajA3tRdbU"
+                sitekey="6LfnCN8qAAAAAGEKq5Biwbq4OqdpP6zwY1uuRiTE"
                 onChange={(value) => setRecaptchaValue(value)}
               />
             </div>
