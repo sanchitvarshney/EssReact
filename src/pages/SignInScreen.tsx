@@ -147,13 +147,25 @@ const SignInScreen = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1 ml-1">
-                Password
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="block text-sm font-medium text-gray-600 mb-1 ml-1">
+                  Password
+                </label>
+                <span
+                  className="text-[#2eacb3] hover:underline text-xs font-medium focus:outline-none focus:underline transition-all px-1  rounded cursor-pointer"
+                  onClick={() => navigation("/recover-password")}
+                >
+                  {" "}
+                 {
+                  !isLoading &&  "Forgot password?" 
+                 }
+                </span>
+              </div>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                   <PasswordIcon fontSize="small" />
                 </span>
+
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
@@ -179,18 +191,7 @@ const SignInScreen = () => {
               </div>
             )}
 
-            <div className="flex justify-end">
-              {isLoading ? null : (
-                <button
-                  type="button"
-                  className="text-[#2eacb3] hover:underline text-sm font-medium focus:outline-none focus:underline transition-all px-1 py-0.5 rounded cursor-pointer"
-                  tabIndex={0}
-                  onClick={() => navigation("/recover-password")}
-                >
-                  Forgot password?
-                </button>
-              )}
-            </div>
+        
             <div className="flex justify-center">
               <ReCAPTCHA
                 ref={recaptchaRef}
