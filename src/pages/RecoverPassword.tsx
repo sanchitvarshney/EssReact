@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import bgImg from "../assets/img/auth_bg.png";
 import logoImg from "../assets/img/hrms_mscorpres_logo.png";
 
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useResetPasswordMutation } from "../services/auth";
 import { useToast } from "../hooks/useToast";
 import { CircularProgress } from "@mui/material";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const RecoverPassword = () => {
   const { showToast } = useToast();
@@ -14,6 +15,8 @@ const RecoverPassword = () => {
   const navigation = useNavigate();
 
   const [employeeCode, setEmployeeCode] = useState("");
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +24,11 @@ const RecoverPassword = () => {
       showToast("Employee code is required", "error");
       return;
     }
-    resetPassword( { username:employeeCode})
+    if (!recaptchaValue) {
+      showToast("Please verify you are not a robot.", "error");
+      return;
+    }
+    resetPassword({ username: employeeCode })
       .then((res) => {
         if (res?.data?.status === "error") {
           showToast(res?.data?.message, "error");
@@ -35,6 +42,10 @@ const RecoverPassword = () => {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        recaptchaRef.current?.reset();
+        setRecaptchaValue(null);
       });
   };
 
@@ -86,6 +97,14 @@ const RecoverPassword = () => {
               >
                 SignIn
               </button>
+            </div>
+
+            <div className="flex justify-center">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="6Leq9bcrAAAAAN4pE9n7FurJWMOsWdYajA3tRdbU"
+                onChange={(value) => setRecaptchaValue(value)}
+              />
             </div>
 
             {/* Submit Button */}
