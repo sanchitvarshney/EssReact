@@ -120,8 +120,8 @@ const ChangePasswordScreen = () => {
 
   const criteria = [
     {
-      label: "At least 8 characters",
-      test: (pw: string) => /.{8,}/.test(pw),
+      label: "At least 10 characters",
+      test: (pw: string) => /.{10,}/.test(pw),
     },
     {
       label: "One uppercase letter",
