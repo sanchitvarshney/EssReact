@@ -14,7 +14,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Stop } from "@mui/icons-material";
-import qrCode from "../assets/img/essDownload.jpeg";
+import qrCode from "../assets/img/essDownload.png";
 // import StopIcon from '@mui/icons-material/Stop';
 const dummyData: any = [
   // {
@@ -104,25 +104,7 @@ const NoticeboardCard: React.FC = () => {
             </p>
             <ul className="list-none list-inside space-y-1 text-sm text-gray-700">
               <li>🔹 We'd love to hear your feedback and suggestions.</li>
-              <li>
-                🔹 Prefer the old version? You can still access it{" "}
-                <a
-                  href="https://ess-old.mscorpres.com"
-                  className="text-blue-600 underline"
-                  target="_blank"
-                >
-                  here
-                </a>{" "}
-                OR{" "}
-                <a
-                  href="https://ess-old.mscorpres.com"
-                  className="text-blue-600 underline"
-                  target="_blank"
-                >
-                  https://ess-old.mscorpres.com
-                </a>
-                .
-              </li>
+  
               <li>
                 {" "}
                 <strong>🔹 Download Android App QR Code</strong>

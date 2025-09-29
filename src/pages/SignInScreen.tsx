@@ -81,6 +81,7 @@ const SignInScreen = () => {
     const payload = {
       username: employeeCode,
       password: password,
+      captchaToken: recaptchaValue,
     };
 
     try {
