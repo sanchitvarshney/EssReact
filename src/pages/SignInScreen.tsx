@@ -157,9 +157,7 @@ const SignInScreen = () => {
                   onClick={() => navigation("/recover-password")}
                 >
                   {" "}
-                 {
-                  !isLoading &&  "Forgot password?" 
-                 }
+                  {!isLoading && "Forgot password?"}
                 </span>
               </div>
               <div className="relative">
@@ -192,7 +190,6 @@ const SignInScreen = () => {
               </div>
             )}
 
-        
             <div className="flex justify-center">
               <ReCAPTCHA
                 ref={recaptchaRef}
