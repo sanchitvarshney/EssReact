@@ -14,7 +14,7 @@ const TwoFactorAuthPage = () => {
   const { signIn } = useAuth();
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const [isLoading, setIsLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(300); // 10 minutes in seconds
   const [canResend, setCanResend] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [authentication] = useAuthenticationMutation();
