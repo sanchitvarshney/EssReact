@@ -376,7 +376,7 @@ const LeaveStatusPage = () => {
                         <IconButton
                           sx={{ color: "gray", "&:hover": { color: "red" } }}
                           disabled={
-                            row?.status === "APR" || row?.status === "RTN"
+                            row?.status === "APR" || row?.status === "RTN" || row?.status === "REJ"
                           }
                           onClick={() => {
                             setTrackId(row?.trackid);
