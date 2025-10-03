@@ -169,7 +169,7 @@ const TwoFactorAuthPage = () => {
             </h2>
             <p className="text-gray-600 text-sm text-center leading-relaxed">
               Enter the 6-digit verification code sent to your registered Email
-              address (expires in 10 minutes)
+              address (expires in 5 minutes)
             </p>
           </div>
 
