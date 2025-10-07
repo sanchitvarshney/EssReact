@@ -14,7 +14,7 @@ const TwoFactorAuthPage = () => {
   const { signIn } = useAuth();
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const [isLoading, setIsLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(300); // 10 minutes in seconds
   const [canResend, setCanResend] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [authentication] = useAuthenticationMutation();
@@ -169,7 +169,7 @@ const TwoFactorAuthPage = () => {
             </h2>
             <p className="text-gray-600 text-sm text-center leading-relaxed">
               Enter the 6-digit verification code sent to your registered Email
-              address (expires in 10 minutes)
+              address (expires in 5 minutes)
             </p>
           </div>
 
