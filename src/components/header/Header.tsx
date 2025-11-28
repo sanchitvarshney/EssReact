@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 // import Badge from "@mui/material/Badge";
 import CustomSearch from "../reuseable/CustomSearch";
 
-import { useMediaQuery } from "@mui/material";
+import { Button, useMediaQuery } from "@mui/material";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 import SearchBarComponent from "../dropdowns/SearchBarComponent";
 
@@ -26,18 +26,18 @@ import { useAuth } from "../../contextapi/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "../../hooks/useToast";
 import { setEmplyeeCode } from "../../slices/authSlices";
-
+import CreateTicketDrawer from "../createTicket/CreateTicketDrawer";
 
 const pages = ["Products", "Pricing", "Blog"];
 
 function Header() {
   const path = window.location.pathname;
   const { user, searchValueLength } = useAuth();
- const { showToast } = useToast();
-const dispatch = useDispatch();
+  const { showToast } = useToast();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRef = React.useRef(null);
-
+const [isCreateTicket, setIsCreateTicket] = React.useState<boolean>(false);
   const notificationRef = React.useRef(null);
   const profileRef = React.useRef(null);
   const [searchText, setSearchText] = React.useState("");
@@ -55,6 +55,15 @@ const dispatch = useDispatch();
   const { empCode } = useSelector((state: any) => state?.auth);
 
 
+  //open ticket drawer 
+  const handleOpenTicketDrawer = () => {
+    setIsCreateTicket(true);
+  };
+
+  const handleCloseTicketDrawer = () => {
+    setIsCreateTicket(false);
+  };
+
   const handleOpenUserMenu = () => {
     setAnchorElUser(true);
   };
@@ -67,9 +76,12 @@ const dispatch = useDispatch();
     if (empCode) {
       //@ts-ignore
       if (empCode === user?.id) {
-         dispatch(setEmplyeeCode({ empCode: "" }));
-        showToast("You cannot access your own profile with this method", "error");
-        return
+        dispatch(setEmplyeeCode({ empCode: "" }));
+        showToast(
+          "You cannot access your own profile with this method",
+          "error"
+        );
+        return;
       }
       navigate(`/employee/details/${empCode}`);
       setSearchText("");
@@ -195,7 +207,9 @@ const dispatch = useDispatch();
               />
             )}
           </Box>
-
+          <Button sx={{ mr: 4 }} variant="outlined" onClick={handleOpenTicketDrawer}>
+            Riase Ticket
+          </Button>
           <Box sx={{ flexGrow: 0 }}>
             {/* {!isSmallScreen && ( */}
             <>
@@ -215,10 +229,10 @@ const dispatch = useDispatch();
                 <CustomPopover
                   open={isOpenNotification}
                   close={() => setIsOpenNotification(false)}
-                  //@ts-ignore
+            
                   anchorEl={notificationRef}
                   width={400}
-                  // height={360}
+              
                   isCone={true}
                   coneColor="#1e8a8f"
                 >
@@ -257,10 +271,9 @@ const dispatch = useDispatch();
               </CustomPopover>
             )}
           </Box>
-          
         </Toolbar>
       </Container>
-    
+      <CreateTicketDrawer open={isCreateTicket} close={handleCloseTicketDrawer} />
     </AppBar>
   );
 }

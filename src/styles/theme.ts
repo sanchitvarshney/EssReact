@@ -140,7 +140,7 @@ export const theme = createTheme({
   palette: {
     primary: {
       light: "#22d3ee", // Light teal
-      main: "#0891b2", // Main teal
+      main: "#04b0a8", // Main teal
       dark: "#0e7490", // Dark teal
       contrastText: "#fff",
     },
