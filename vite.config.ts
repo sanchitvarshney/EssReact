@@ -6,6 +6,17 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
+   server: {
+    proxy: {
+      // Proxy for support.mscorpres.com to avoid CORS issues
+      "/api/support": {
+        target: "https://support.mscorpres.com",
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api\/support/, "/api"),
+      },
+    },
+  },
   plugins: [
     react(),
     tailwindcss(),

@@ -62,7 +62,6 @@ const SignInScreen = () => {
     e.preventDefault();
     setIsError("");
 
-    // Basic validation
     if (!employeeCode.trim()) {
       setIsError("Employee code is required");
       return;

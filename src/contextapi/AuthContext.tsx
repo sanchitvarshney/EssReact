@@ -53,7 +53,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (storedUserStr) {
       const storedUser = JSON.parse(storedUserStr);
       dispatch(setCredentials({ token: storedUser?.token }));
+      
       const userData = {
+        email: storedUser.officeMail,
+        phone: storedUser.officePhone,
         name: storedUser.userName,
         imgUrl: storedUser.photo,
         id: storedUser.userID,

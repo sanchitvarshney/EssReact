@@ -84,7 +84,7 @@ const ToastShow: React.FC<ToastShowProps> = ({
   const Icon = type === "success" ? CheckCircleIcon : ErrorIcon;
 
   return (
-    <Box sx={{ width: 500 }}>
+    <Box sx={{ width: 500, zIndex:130000 }}>
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={isOpen}

@@ -207,7 +207,7 @@ const [isCreateTicket, setIsCreateTicket] = React.useState<boolean>(false);
               />
             )}
           </Box>
-          <Button sx={{ mr: 4 }} variant="outlined" onClick={handleOpenTicketDrawer}>
+          <Button sx={{ mr: 4, display: { xs: "none", md: "flex" }}} variant="outlined" onClick={handleOpenTicketDrawer}>
             Riase Ticket
           </Button>
           <Box sx={{ flexGrow: 0 }}>
