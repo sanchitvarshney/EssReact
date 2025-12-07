@@ -514,7 +514,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                           select={true}
                           field={field}
                           label={"Select Compensatory Date"}
-                          options={getLeaveBalanceData?.balance}
+                         options={getLeaveBalanceData?.leaveBalance?.balance}
                         />
                       </FormControl>
                       <FormMessage className="text-[red] mt-1" />
