@@ -254,9 +254,13 @@ const SignInScreen = () => {
                 Sign In
               </button>
             )}
-            {(!isLoading && !isLoadingGoogle) && (
+            {(!isLoading && !isLoadingGoogle) ? (
               <Typography textAlign={"center"} variant="subtitle2">
                 OR
+              </Typography>
+            ) : (
+                <Typography textAlign={"center"} variant="subtitle2">
+                Please wait.....
               </Typography>
             )}
             <div className="flex justify-center w-full items-center py-2 ">
