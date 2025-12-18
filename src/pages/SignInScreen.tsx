@@ -27,7 +27,7 @@ const SignInScreen = () => {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [login, { isLoading, error, data, isError: isErrorLogin, isSuccess }] =
     useLoginMutation();
-     const [loginGoogle, { isLoading: isLoadingGoogle, data: dataGoogle,  }] =
+     const [loginGoogle, { isLoading: isLoadingGoogle }] =
     useLoginGoogleMutation();
   useApiErrorMessage({
     error,
@@ -35,6 +35,7 @@ const SignInScreen = () => {
     isSuccess,
     errorMessage: data?.msg,
   });
+  
  
 
   const togglePasswordVisibility = () => {
@@ -44,16 +45,16 @@ const SignInScreen = () => {
     setShowPassword((prev) => !prev);
   };
 
-  useEffect(() => {
+  // useEffect(() => {
   
 
-    if (dataGoogle?.data) {
-      localStorage.setItem("user", JSON.stringify(dataGoogle.data));
-      sessionStorage.setItem("user", JSON.stringify(dataGoogle.data));
-      signIn();
-      navigation("/");
-    }
-  }, [dataGoogle]);
+  //   if (dataGoogle?.data) {
+  //     localStorage.setItem("user", JSON.stringify(dataGoogle.data));
+  //     sessionStorage.setItem("user", JSON.stringify(dataGoogle.data));
+  //     signIn();
+  //     navigation("/");
+  //   }
+  // }, [dataGoogle]);
 
   useEffect(() => {
     if (data?.isTwoStep) {
@@ -103,6 +104,7 @@ const SignInScreen = () => {
 
     try {
       const response = await login(payload).unwrap();
+     
       if (response?.success === false) {
         showToast(response?.message, "error");
         return;
@@ -112,7 +114,7 @@ const SignInScreen = () => {
       localStorage.setItem("username", response?.username);
     } catch (err: any) {
       showToast(
-        err?.data?.message?.msg ||
+        err?.data?.message ||
           err?.message ||
           "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
         "error"
@@ -127,24 +129,26 @@ const SignInScreen = () => {
     const data: any = {
       credential: googleResponse.credential,
     };
-    try {
-      const response: any = loginGoogle(data).unwrap();
-      if (response?.success) {
-        
-        showToast(response?.message, "success");
-        localStorage.setItem("cyberAlertAcknowledged", "false");
-        localStorage.setItem("username", response?.username);
-      } else {
-          showToast(response?.message, "error");
-      }
-    } catch (error: any) {
+    loginGoogle(data).unwrap().then((res: any) => {
+     if (res?.success) {
+      showToast(res?.message, "success");
+           localStorage.setItem("user", JSON.stringify(res.data));
+      sessionStorage.setItem("user", JSON.stringify(res.data));
+      signIn();
+      navigation("/");
+     } else {
+      showToast(res?.message, "error");
+     }
+    }).catch((err: any) => {
       showToast(
-        error?.data?.message ||
-          error?.message ||
+        err?.data?.message ||
+          err?.message ||
           "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
         "error"
       );
-    }
+    });
+     
+   
   };
   const handleRecaptchaChange = (value: string | null) => {
     setRecaptchaValue(value);
