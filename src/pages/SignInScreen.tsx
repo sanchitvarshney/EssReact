@@ -75,7 +75,7 @@ const SignInScreen = () => {
       signIn();
       navigation("/");
     }
-  }, [data, navigation, signIn]);
+  }, [data, navigation, signIn])
 
   useEffect(() => {
     inputRef.current?.focus();
