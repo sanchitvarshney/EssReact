@@ -5,12 +5,14 @@ import { Eye, EyeOff } from "lucide-react";
 import PersonIcon from "@mui/icons-material/Person";
 import PasswordIcon from "@mui/icons-material/Password";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../services/auth";
+import { useLoginGoogleMutation, useLoginMutation } from "../services/auth";
 import CircularProgress from "@mui/material/CircularProgress";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../contextapi/AuthContext";
 import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
+import { Typography } from "@mui/material";
+import { GoogleLogin } from "@react-oauth/google";
 
 const SignInScreen = () => {
   const { signIn } = useAuth();
@@ -25,12 +27,21 @@ const SignInScreen = () => {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [login, { isLoading, error, data, isError: isErrorLogin, isSuccess }] =
     useLoginMutation();
+     const [loginGoogle, { isLoading: isLoadingGoogle, error: errorGoogle, data: dataGoogle, isError: isErrorLoginGoogle, isSuccess: isSuccessGoogle }] =
+    useLoginGoogleMutation();
   useApiErrorMessage({
     error,
     isError: isErrorLogin,
     isSuccess,
     errorMessage: data?.msg,
   });
+    useApiErrorMessage({
+    error:errorGoogle,
+    isError: isErrorLoginGoogle,
+    isSuccess:isSuccessGoogle,
+    errorMessage: dataGoogle?.msg,
+  });
+ 
 
   const togglePasswordVisibility = () => {
     if (password === "") {
@@ -38,6 +49,17 @@ const SignInScreen = () => {
     }
     setShowPassword((prev) => !prev);
   };
+
+  useEffect(() => {
+  
+
+    if (dataGoogle?.data) {
+      localStorage.setItem("user", JSON.stringify(dataGoogle.data));
+      sessionStorage.setItem("user", JSON.stringify(dataGoogle.data));
+      signIn();
+      navigation("/");
+    }
+  }, [dataGoogle]);
 
   useEffect(() => {
     if (data?.isTwoStep) {
@@ -54,6 +76,7 @@ const SignInScreen = () => {
       navigation("/");
     }
   }, [data, navigation, signIn]);
+
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -103,6 +126,27 @@ const SignInScreen = () => {
     } finally {
       recaptchaRef.current?.reset();
       setRecaptchaValue(null);
+    }
+  };
+
+  const handleLoginWithGoogle = (googleResponse: any) => {
+    const data: any = {
+      credential: googleResponse.credential,
+    };
+    try {
+      const response: any = loginGoogle(data).unwrap();
+      if (response?.success) {
+        showToast(response?.message, "success");
+        localStorage.setItem("cyberAlertAcknowledged", "false");
+        localStorage.setItem("username", response?.username);
+      }
+    } catch (error: any) {
+      showToast(
+        error?.data?.message?.msg ||
+          error?.message ||
+          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+        "error"
+      );
     }
   };
   const handleRecaptchaChange = (value: string | null) => {
@@ -157,7 +201,7 @@ const SignInScreen = () => {
                   onClick={() => navigation("/recover-password")}
                 >
                   {" "}
-                  {!isLoading && "Forgot password?"}
+                  {!isLoading || !isLoadingGoogle && "Forgot password?"}
                 </span>
               </div>
               <div className="relative">
@@ -198,18 +242,39 @@ const SignInScreen = () => {
               />
             </div>
 
-            {isLoading ? (
+            {isLoading ||isLoadingGoogle ? (
               <div className="flex items-center justify-center">
                 <CircularProgress color="success" size={"40px"} />
               </div>
             ) : (
               <button
                 type="submit"
-                className="w-full bg-[#2eacb3] text-white font-semibold py-2.5 rounded-lg shadow-md hover:bg-[#279aa0] active:bg-[#238b91] transition-colors duration-200 text-lg focus:outline-none focus:ring-2 focus:ring-[#2eacb3]/60 cursor-pointer"
+                className="w-full bg-[#2eacb3] text-white font-semibold py-2 rounded-lg shadow-md hover:bg-[#279aa0] active:bg-[#238b91] transition-colors duration-200 text-lg focus:outline-none focus:ring-2 focus:ring-[#2eacb3]/60 cursor-pointer"
               >
                 Sign In
               </button>
             )}
+            {(!isLoading || !isLoadingGoogle) && (
+              <Typography textAlign={"center"} variant="subtitle2">
+                OR
+              </Typography>
+            )}
+            <div className="flex justify-center w-full items-center py-2 ">
+              {(!isLoading || !isLoadingGoogle) && (
+                <>
+                  <GoogleLogin
+                    onSuccess={(credentialResponse) => {
+                      handleLoginWithGoogle(credentialResponse);
+                    }}
+                    onError={() => {
+                      showToast("Login failed", "error");
+                    }}
+                    shape="circle"
+                    text="continue_with"
+                  />
+                </>
+              )}
+            </div>
           </form>
         </div>
       </div>

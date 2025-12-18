@@ -12,6 +12,14 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => response,
     }),
+      loginGoogle: builder.mutation({
+      query: (credentials) => ({
+        url: "/login/auth/google",
+        method: "POST",
+        body: credentials,
+      }),
+      transformResponse: (response: any) => response,
+    }),
     authentication: builder.mutation({
       query: (credentials) => ({
         url: "/login/verify",
@@ -88,6 +96,7 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
 
 export const {
   useLoginMutation,
+  useLoginGoogleMutation,
   useAuthenticationMutation,
   useGetuserdataMutation,
   useChangePasswordInfoMutation,
