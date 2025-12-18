@@ -242,7 +242,7 @@ const SignInScreen = () => {
               />
             </div>
 
-            {isLoading ||isLoadingGoogle ? (
+            {isLoading || isLoadingGoogle ? (
               <div className="flex items-center justify-center">
                 <CircularProgress color="success" size={"40px"} />
               </div>
@@ -254,13 +254,13 @@ const SignInScreen = () => {
                 Sign In
               </button>
             )}
-            {(!isLoading || !isLoadingGoogle) && (
+            {(!isLoading && !isLoadingGoogle) && (
               <Typography textAlign={"center"} variant="subtitle2">
                 OR
               </Typography>
             )}
             <div className="flex justify-center w-full items-center py-2 ">
-              {(!isLoading || !isLoadingGoogle) && (
+              {(!isLoading && !isLoadingGoogle) && (
                 <>
                   <GoogleLogin
                     onSuccess={(credentialResponse) => {
