@@ -27,19 +27,13 @@ const SignInScreen = () => {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [login, { isLoading, error, data, isError: isErrorLogin, isSuccess }] =
     useLoginMutation();
-     const [loginGoogle, { isLoading: isLoadingGoogle, error: errorGoogle, data: dataGoogle, isError: isErrorLoginGoogle, isSuccess: isSuccessGoogle }] =
+     const [loginGoogle, { isLoading: isLoadingGoogle, data: dataGoogle,  }] =
     useLoginGoogleMutation();
   useApiErrorMessage({
     error,
     isError: isErrorLogin,
     isSuccess,
     errorMessage: data?.msg,
-  });
-    useApiErrorMessage({
-    error:errorGoogle,
-    isError: isErrorLoginGoogle,
-    isSuccess:isSuccessGoogle,
-    errorMessage: dataGoogle,
   });
  
 
@@ -140,10 +134,12 @@ const SignInScreen = () => {
         showToast(response?.message, "success");
         localStorage.setItem("cyberAlertAcknowledged", "false");
         localStorage.setItem("username", response?.username);
+      } else {
+          showToast(response?.message, "error");
       }
     } catch (error: any) {
       showToast(
-        error?.data?.message?.msg ||
+        error?.data?.message ||
           error?.message ||
           "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
         "error"
