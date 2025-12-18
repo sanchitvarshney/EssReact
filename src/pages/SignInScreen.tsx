@@ -39,7 +39,7 @@ const SignInScreen = () => {
     error:errorGoogle,
     isError: isErrorLoginGoogle,
     isSuccess:isSuccessGoogle,
-    errorMessage: dataGoogle?.msg,
+    errorMessage: dataGoogle,
   });
  
 
@@ -136,6 +136,7 @@ const SignInScreen = () => {
     try {
       const response: any = loginGoogle(data).unwrap();
       if (response?.success) {
+        
         showToast(response?.message, "success");
         localStorage.setItem("cyberAlertAcknowledged", "false");
         localStorage.setItem("username", response?.username);
