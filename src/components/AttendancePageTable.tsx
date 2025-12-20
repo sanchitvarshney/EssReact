@@ -21,7 +21,7 @@ type AttendancePageTablePropsType = {
 const AttendancePageTable: FC<AttendancePageTablePropsType> = ({
   value,
   date,
-}) => {
+}:any) => {
   const [downloadAttendance, { data, error, isLoading }] =
     useDownloadAttendanceMutation();
   const { showToast } = useToast();
@@ -63,6 +63,18 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({
     const formatted = moment(date).format("YYYY-MM");
     downloadAttendance({ period: formatted });
   };
+
+  const getHours = (totalHours: string | undefined) => {
+    value?.total_hour ? value?.total_hour :  " -- h & -- m" 
+    if (isNaN(totalHours as any) || totalHours === undefined) {
+      return "-- h & -- m";
+    }
+    else if (totalHours) {
+      return totalHours;
+    }
+    return "-- h & -- m";
+  }
+
 
   return (
     <Card
@@ -111,7 +123,7 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({
               Total Hours
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {value?.total_hour ? value?.total_hour : " -- h & -- m"}
+              {getHours(value?.total_hours)}
             </Typography>
           </Box>
         </Box>
