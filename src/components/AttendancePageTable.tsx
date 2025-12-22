@@ -64,17 +64,7 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({
     downloadAttendance({ period: formatted });
   };
 
-  const getHours = (totalHours: string | undefined) => {
-    value?.total_hour ? value?.total_hour :  " -- h & -- m" 
-    if (isNaN(totalHours as any) || totalHours === undefined) {
-      return "-- h & -- m";
-    }
-    else if (totalHours) {
-      return totalHours;
-    }
-    return "-- h & -- m";
-  }
-
+  
 
   return (
     <Card
@@ -123,7 +113,7 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({
               Total Hours
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {getHours(value?.total_hours)}
+              {value?.total_hours ? value?.total_hours : "--"}
             </Typography>
           </Box>
         </Box>
