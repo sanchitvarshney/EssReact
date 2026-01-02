@@ -202,20 +202,25 @@ const AttendancePage = () => {
                   <CardForAttendance
                     title={"Present"}
                     icon={accept}
-                    value={shifts?.total_present ? shifts?.total_present : "--"}
+                    value={shifts?.total_present ?? "--"}
                   />
 
                   <CardForAttendance
                     title={"Mispunch"}
                     icon={warning}
                     value={
-                      shifts?.total_misspunch ? shifts?.total_misspunch : "--"
+                      shifts?.total_misspunch ?? "--"
                     }
                   />
                   <CardForAttendance
                     title={"Short"}
                     icon={clock}
-                    value={shifts?.srtCount ? shifts?.srtCount : "--"}
+                    value={shifts?.srtCount ?? "--"}
+                  />
+                     <CardForAttendance
+                    title={"Late"}
+                    icon={clock}
+                    value={ shifts?.lateCount ?? "--"} 
                   />
                 </div>
               </div>

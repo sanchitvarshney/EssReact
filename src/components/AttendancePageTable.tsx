@@ -102,7 +102,7 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({
               Today In
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {value?.today_in ? value?.today_in : "--"}
+              {value?.today_in ?? "--"}
             </Typography>
           </Box>
           <Box textAlign="center">
@@ -113,7 +113,7 @@ const AttendancePageTable: FC<AttendancePageTablePropsType> = ({
               Total Hours
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {value?.total_hour ? value?.total_hour : "--"}
+              {value?.total_hour ?? "--"}
             </Typography>
           </Box>
         </Box>
