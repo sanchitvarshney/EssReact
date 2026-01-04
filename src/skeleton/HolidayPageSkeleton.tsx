@@ -11,11 +11,7 @@ const HolidayPageSkeleton = () => {
         height: "85vh",
       }}
     >
-      <div className="w-100 grid grid-cols-3  place-items-center">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <Skeleton key={index} variant="rounded" width={100} height={40} />
-        ))}
-      </div>
+ 
 
 
 

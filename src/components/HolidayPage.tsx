@@ -75,11 +75,7 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
         height: "85vh",
       }}
     >
-      {isLoading ? (
-        <HolidayPageSkeleton />
-      ) : (
-        <>
-          {" "}
+ 
           <div className="flex justify-between items-center">
             <Tabs
               value={selectedYear}
@@ -131,7 +127,13 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
               <EmptyData />
             </Box>
           ) : (
-            <TableContainer
+      <>
+      {
+        isLoading ? (
+          <HolidayPageSkeleton />
+          
+        ) : (
+              <TableContainer
               component={Paper}
               sx={{
                 maxHeight: "75vh",
@@ -211,9 +213,12 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
                 </TableBody>
               </Table>
             </TableContainer>
+        )
+      }
+      </>
           )}
-        </>
-      )}
+        {/* // </>
+      )} */}
     </Box>
   );
 };
