@@ -1,26 +1,32 @@
-import { Component } from "react";
+import { Component} from "react";
 import FallBackUi from "./FallBackUi";
 
+interface ErrorBoundaryProps {
+  children: any;
+}
 
-class ErrorBoundary extends Component {
-  constructor(props: any) {
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
-  static getDerivedStateFromError(__: any) {
+
+  static getDerivedStateFromError(_: Error): ErrorBoundaryState {
     return { hasError: true };
   }
 
-  componentDidCatch(error: any, errorInfo: any) {
-    console.error(error, errorInfo);
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
   }
 
   render() {
-    //@ts-ignore
     if (this.state.hasError) {
       return <FallBackUi />;
     }
-    //@ts-ignore
     return this.props.children;
   }
 }

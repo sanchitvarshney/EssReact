@@ -1,13 +1,28 @@
 import { Box, Typography, Container, Button } from "@mui/material";
 import warningImg from "../../assets/warning.png";
-import { useNavigate } from "react-router-dom";
 import { ArrowForward } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
-const FallBackUi = () => {
-  const navigate = useNavigate();
+interface FallBackUiProps {
+  error?: Error | null;
+  onReset?: () => void;
+}
+
+const FallBackUi = ({ error, onReset }: FallBackUiProps) => {
+    const navigate = useNavigate();
   const handleReload = () => {
-    navigate("/");
+   navigate("/");
   };
+
+  const handleReset = () => {
+    if (onReset) {
+      onReset();
+    } else {
+      window.location.reload();
+    }
+  };
+
+  const isDevelopment = import.meta.env.DEV;
 
   return (
     <Container
@@ -58,20 +73,67 @@ const FallBackUi = () => {
         page or contact support if the problem persists.
       </Typography>
 
-      <Button
-        variant="contained"
-        onClick={handleReload}
-        sx={{
-          px: 4,
-          py: 1.5,
-          fontSize: "1rem",
-          textTransform: "none",
-          borderRadius: 2,
-        }}
-        endIcon={<ArrowForward />}
-      >
-        Go to Home
-      </Button>
+      {isDevelopment && error && (
+        <Box
+          sx={{
+            mb: 3,
+            p: 2,
+            bgcolor: "error.light",
+            color: "error.contrastText",
+            borderRadius: 1,
+            maxWidth: "600px",
+            width: "100%",
+            textAlign: "left",
+          }}
+        >
+          <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+            Error Details (Development Only):
+          </Typography>
+          <Typography
+            variant="caption"
+            component="pre"
+            sx={{
+              fontSize: "0.75rem",
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+              fontFamily: "monospace",
+            }}
+          >
+            {error.toString()}
+            {error.stack && `\n\nStack:\n${error.stack}`}
+          </Typography>
+        </Box>
+      )}
+
+      <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center" }}>
+        <Button
+          variant="contained"
+          onClick={handleReset}
+          sx={{
+            px: 4,
+            py: 1.5,
+            fontSize: "1rem",
+            textTransform: "none",
+            borderRadius: 2,
+          }}
+        >
+          Try Again
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={handleReload}
+          sx={{
+            px: 4,
+            py: 1.5,
+            fontSize: "1rem",
+            textTransform: "none",
+            borderRadius: 2,
+          }}
+          endIcon={<ArrowForward />}
+        >
+            Go to Home
+        </Button>
+      </Box>
     </Container>
   );
 };

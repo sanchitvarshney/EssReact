@@ -31,6 +31,7 @@ import SignInScreen from "./src/pages/SignInScreen";
 import TaskPage from "./src/pages/TaskPage";
 import { HierarchyProvider } from "./src/contextapi/hierarchyProvider";
 import EmployeeDetails from "./src/pages/EmployeeDetails";
+import FallBackUi from "./src/pages/errorBoundary/FallBackUi";
 
 export const route = createBrowserRouter([
   {
@@ -40,6 +41,7 @@ export const route = createBrowserRouter([
         <MainLayout />
       </Protected>
     ),
+    errorElement: <FallBackUi />,
     children: [
       {
         index: true,
