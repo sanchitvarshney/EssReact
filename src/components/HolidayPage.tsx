@@ -136,8 +136,8 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
               <TableContainer
               component={Paper}
               sx={{
-                maxHeight: "75vh",
-                height: "75vh",
+                maxHeight: "calc(100vh - 200px)",
+                
                 overflow: "auto",
                 pb: 1.5,
               }}
