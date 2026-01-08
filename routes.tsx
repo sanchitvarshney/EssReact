@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainLayout from "./src/layouts/MainLayout";
 import HolidayPage from "./src/components/HolidayPage";
 import Custom404Page from "./src/pages/Custom404Page";
 import LeavePage from "./src/pages/LeavePage";
@@ -32,14 +31,20 @@ import TaskPage from "./src/pages/TaskPage";
 import { HierarchyProvider } from "./src/contextapi/hierarchyProvider";
 import EmployeeDetails from "./src/pages/EmployeeDetails";
 import FallBackUi from "./src/pages/errorBoundary/FallBackUi";
+import { lazy, Suspense } from "react";
+import AppLoader from "./src/pages/AppLoader";
+const MainLayout = lazy(() => import("./src/layouts/MainLayout"));
+import logo from "./src/assets/img/hrms_mscorpres_logo.png";
 
 export const route = createBrowserRouter([
   {
     path: "/",
     element: (
+        <Suspense fallback={<AppLoader logo={logo}/>}>
       <Protected>
         <MainLayout />
       </Protected>
+      </Suspense>
     ),
     errorElement: <FallBackUi />,
     children: [

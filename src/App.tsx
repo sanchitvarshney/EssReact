@@ -10,21 +10,18 @@ import ErrorBoundary from "./pages/errorBoundary/ErrorBoundary";
 
 const googleId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID;
 
-
-
 function App() {
   return (
     <ErrorBoundary>
       <GoogleOAuthProvider clientId={googleId}>
-    <ThemeProvider theme={theme}>
-      <ToastContext>
-        <AuthProvider>
-          <RouterProvider router={route} />
-       {/* <PWARegistration /> */}
-        </AuthProvider>
-      </ToastContext>
-    </ThemeProvider>
-    </GoogleOAuthProvider>
+        <ThemeProvider theme={theme}>
+          <ToastContext>
+            <AuthProvider>
+              <RouterProvider router={route} />
+            </AuthProvider>
+          </ToastContext>
+        </ThemeProvider>
+      </GoogleOAuthProvider>
     </ErrorBoundary>
   );
 }
