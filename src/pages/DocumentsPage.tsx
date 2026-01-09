@@ -205,7 +205,7 @@ const DocumentsPage = () => {
                           variant="body2"
                           sx={{ color: "#374151", ml: 1 }}
                         >
-                          <b>Size:</b> {row.file_size}
+                          <b>Size:</b> {row.file_size ?? "N/A"}
                         </Typography>
                         {/* <Typography
                           variant="body2"
