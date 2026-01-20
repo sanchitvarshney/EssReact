@@ -1,5 +1,8 @@
-import React, { useEffect, useCallback, type ReactNode } from "react";
+
+import React, { useEffect, useCallback, type ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/img/hrms_mscorpres_logo.png";
+import AppLoader from "../pages/AppLoader";
 
 interface ProtectedProps {
   children: ReactNode;
@@ -11,7 +14,7 @@ const Protected: React.FC<ProtectedProps> = ({
   authentication = true,
 }) => {
   const navigate = useNavigate();
-
+ const [isLoading, setIsLoading] = useState(true);
   const isAuthenticated = !!sessionStorage.getItem("user");
 
   const checkAuth = useCallback(async () => {
@@ -26,11 +29,18 @@ const Protected: React.FC<ProtectedProps> = ({
       navigate("/");
       return;
     }
+      setIsLoading(false);
   }, [authentication, navigate, isAuthenticated]);
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+   if (isLoading) {
+    return (
+    <AppLoader logo={logo} />
+    );
+  }
 
   return <>{children}</>;
 };
