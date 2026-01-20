@@ -40,10 +40,10 @@ export const route = createBrowserRouter([
   {
     path: "/",
     element: (
-        <Suspense fallback={<AppLoader logo={logo}/>}>
-      <Protected>
-        <MainLayout />
-      </Protected>
+      <Suspense fallback={<AppLoader logo={logo} />}>
+        <Protected>
+          <MainLayout />
+        </Protected>
       </Suspense>
     ),
     errorElement: <FallBackUi />,
