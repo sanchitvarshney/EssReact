@@ -202,7 +202,7 @@ const SignInScreen = () => {
                   onClick={() => navigation("/recover-password")}
                 >
                   {" "}
-                  {!isLoading || !isLoadingGoogle && "Forgot password?"}
+                  {(!isLoading || !isLoadingGoogle) && "Forgot password?"}
                 </span>
               </div>
               <div className="relative">
