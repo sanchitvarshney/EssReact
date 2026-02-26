@@ -17,8 +17,8 @@ interface CyberAlertDialogProps {
 // Styled custom backdrop with blur
 const StyledBackdrop = styled(Backdrop)({
   backgroundColor: "rgba(255, 255, 255, 0.1)",
-  backdropFilter: "blur(5px)",
-  WebkitBackdropFilter: "blur(5px)",
+  backdropFilter: "blur(2px)",
+  WebkitBackdropFilter: "blur(2px)",
 });
 
 const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
