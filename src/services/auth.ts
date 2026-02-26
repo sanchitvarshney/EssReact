@@ -12,7 +12,7 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => response,
     }),
-      loginGoogle: builder.mutation({
+    loginGoogle: builder.mutation({
       query: (credentials) => ({
         url: "/login/auth/google",
         method: "POST",
@@ -28,7 +28,6 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => response,
     }),
-
 
     getuserdata: builder.mutation({
       query: (credentials) => ({
@@ -75,7 +74,6 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       },
 
       transformResponse: (response: any) => {
-
         if (response.status === "error") {
           return { error: true, message: response.message };
         }
@@ -86,7 +84,9 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
         return {
           error: true,
           status: errorResponse.status,
-          message: errorResponse.data?.message || "Were Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency. while fetching user data.",
+          message:
+            errorResponse.data?.message ||
+            "Were Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency. while fetching user data.",
         };
       },
     }),

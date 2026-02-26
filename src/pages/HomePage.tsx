@@ -152,8 +152,8 @@ const HomePage = () => {
       <CyberAlertDialog
         open={showCyberAlert }
         onOpenChange={(open) => {
-          // Only allow closing if user clicks I Read
-          if (!open) return; // block closing from outside click/escape
+          
+          if (!open) return; 
           setShowCyberAlert(open);
         }}
         onConfirm={() => {

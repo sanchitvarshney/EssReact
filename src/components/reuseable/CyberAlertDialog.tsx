@@ -1,14 +1,12 @@
-import React from "react";
 import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Backdrop,
-  Button,
+  Drawer,
   Typography,
+  Button,
+  Backdrop,
+  Divider,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { ShieldCheck, Info, ArrowRight } from "lucide-react";
-import { styled } from "@mui/system";
 
 interface CyberAlertDialogProps {
   open: boolean;
@@ -29,55 +27,52 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
   onConfirm,
 }) => {
   return (
-    <Dialog
+    <Drawer
+      anchor="top"
       open={open}
-      onClose={(event, reason) => {
-        console.log(event);
-        // Prevent closing on backdrop click or Escape key
+      onClose={(__, reason) => {
         if (reason === "backdropClick" || reason === "escapeKeyDown") return;
         onOpenChange(false);
       }}
-      maxWidth="lg"
-      fullWidth
-      BackdropComponent={StyledBackdrop}
+      ModalProps={{
+        BackdropComponent: StyledBackdrop,
+      }}
+      SlideProps={{
+        timeout: 1000, 
+      }}
       PaperProps={{
         sx: {
           p: 4,
-          borderRadius: 2,
+          borderBottomLeftRadius: 16,
+          borderBottomRightRadius: 16,
           maxHeight: "70vh",
           overflowY: "auto",
           willChange: "transform",
         },
       }}
     >
-      <DialogTitle>
-        <div className="flex items-center space-x-3 text-[#2eacb3]">
-          <ShieldCheck className="h-8 w-8" />
-          <Typography variant="h5" fontWeight="bold">
-            Important - Cyber Alert & Prevention
-          </Typography>
-        </div>
-      </DialogTitle>
+      <div className="flex items-center space-x-3 text-[#2eacb3] mb-4">
+        <ShieldCheck className="h-8 w-8" />
+        <Typography variant="h5" fontWeight="bold">
+          Important - Cyber Alert & Prevention
+        </Typography>
+      </div>
+      <Divider sx={{mb:2}} />
 
-      <DialogContent
-        dividers
-        sx={{ display: "flex", flexDirection: "column", gap: 4 }}
-      >
+      <div className="flex flex-col gap-6 max-h-[calc(100vh-200px)] overflow-y-auto">
         {/* Section 1 */}
         <div className="bg-gradient-to-r from-[#2eacb3]/10 to-transparent p-6 rounded-xl">
           <div className="flex items-center space-x-3 mb-4">
             <Info className="h-6 w-6 text-[#2eacb3]" />
-            <Typography variant="h6" color="textPrimary">
-              Cybersecurity Measures
-            </Typography>
+            <Typography variant="h6">Cybersecurity Measures</Typography>
           </div>
           <ul className="space-y-3 text-gray-600">
             {[
-              "Avoid downloading unverified attachments or clicking on unknown links. These can contain malware or lead to phishing websites.",
-              "Use strong and unique passwords that include a mix of upper and lower-case letters, numbers, and special characters.",
-              "Regularly update your passwords and avoid reusing old ones.",
-              "Enable multi-factor authentication (MFA) where possible for extra security.",
-              "Report any suspicious activity to the IT department immediately.",
+              "Avoid downloading unverified attachments or clicking on unknown links.",
+              "Use strong and unique passwords.",
+              "Regularly update your passwords.",
+              "Enable multi-factor authentication (MFA).",
+              "Report suspicious activity immediately.",
             ].map((text, idx) => (
               <li key={idx} className="flex items-start">
                 <ArrowRight className="h-5 w-5 mr-2 mt-0.5 text-[#2eacb3]" />
@@ -91,16 +86,16 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
         <div className="bg-gradient-to-r from-[#2eacb3]/10 to-transparent p-6 rounded-xl">
           <div className="flex items-center space-x-3 mb-4">
             <Info className="h-6 w-6 text-[#2eacb3]" />
-            <Typography variant="h6" color="textPrimary">
+            <Typography variant="h6">
               Why Windows Updates are Important
             </Typography>
           </div>
           <ul className="space-y-3 text-gray-600">
             {[
-              "Security Patches: These updates address vulnerabilities that hackers can exploit.",
-              "Performance Enhancements: Updates often include optimizations for system speed and responsiveness.",
-              "Bug Fixes: Microsoft continually works to identify and fix system issues.",
-              "New Features: Some updates introduce new functionalities to expand your system's capabilities.",
+              "Security patches fix vulnerabilities.",
+              "Performance enhancements improve speed.",
+              "Bug fixes resolve system issues.",
+              "New features expand functionality.",
             ].map((text, idx) => (
               <li key={idx} className="flex items-start">
                 <ArrowRight className="h-5 w-5 mr-2 mt-0.5 text-[#2eacb3]" />
@@ -109,29 +104,30 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
             ))}
           </ul>
         </div>
-        <div className="flex justify-center">
+
+      
+      </div>
+      <Divider sx={{my:2}} />
+        <div className="flex justify-start">
           <Button
             onClick={onConfirm}
             variant="contained"
             sx={{
               width: 150,
               backgroundColor: "#2eacb3",
-              "&:hover": {
-                backgroundColor: "#279aa0",
-              },
-              px: 4,
-              py: 1.5,
+              "&:hover": { backgroundColor: "#279aa0" },
+              px: 2,
+              py: 1.2,
               fontWeight: "bold",
               fontSize: "1rem",
               borderRadius: 2,
             }}
             endIcon={<ArrowRight className="h-5 w-5" />}
           >
-            I Agree
+            Continue
           </Button>
         </div>
-      </DialogContent>
-    </Dialog>
+    </Drawer>
   );
 };
 
