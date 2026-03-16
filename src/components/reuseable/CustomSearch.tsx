@@ -14,6 +14,7 @@ type CustomSearchPropsType = {
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   itemRefs?: any;
   value?: string;
+  isDisabled?: boolean;
 };
 
 const CustomSearch = forwardRef<HTMLInputElement, CustomSearchPropsType>(
@@ -28,6 +29,7 @@ const CustomSearch = forwardRef<HTMLInputElement, CustomSearchPropsType>(
       textColor,
       onKeyDown,
       value,
+      isDisabled=false,
     },
     ref
   ) => {
@@ -49,6 +51,7 @@ const CustomSearch = forwardRef<HTMLInputElement, CustomSearchPropsType>(
           inputRef={ref}
           textColor={textColor}
           value={value}
+          disabled={isDisabled}
         />
       </SearchContainer>
     );

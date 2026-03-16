@@ -9,6 +9,7 @@ type CustomModalDatePickerProps = {
   openTo: string;
   view: any;
   label: string;
+  isDisabled?:boolean
 };
 
 const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
@@ -16,6 +17,7 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
   openTo,
   view,
   label,
+  isDisabled = false
 }) => {
   const value = field.value ? dayjs(field.value) : null;
 
@@ -42,9 +44,7 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
           field.onChange(nativeDate);
         }}
         label={label}
-        // slots={{
-        //   toolbar: () => null,
-        // }}
+       disabled={isDisabled}
         slotProps={{
           layout: {
             sx: {

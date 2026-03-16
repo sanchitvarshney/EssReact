@@ -22,7 +22,6 @@ import moment from "moment";
 
 import DotLoading from "../components/reuseable/DotLoading";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import PaySlipPageSkeleton from "../skeleton/PaySlipPageSkeleton";
 
 import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
 import { CircularProgress, Divider } from "@mui/material";
@@ -35,7 +34,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 const PaySlipPage = () => {
- const { showToast } =  useToast();
+  const { showToast } = useToast();
   const [showPayslip, setShowPayslip] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
   const [netSalary, setNetSalary] = useState(0);
@@ -63,20 +62,20 @@ const PaySlipPage = () => {
   const onSubmit = async (data: any) => {
     const period = moment(data.toDate).format("YYYY-MM");
 
-    getPaySlip({ period: period }).then((res) => {
-     
-      if (res?.data?.status === "error") {
-       showToast(res?.data?.message, "error"); 
-      }
-
-    }).catch((err) => {
-      showToast(
-        err?.data?.message?.msg ||
-          err?.message ||
-          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
-        "error"
-      );
-    });
+    getPaySlip({ period: period })
+      .then((res) => {
+        if (res?.data?.status === "error") {
+          showToast(res?.data?.message, "error");
+        }
+      })
+      .catch((err) => {
+        showToast(
+          err?.data?.message?.msg ||
+            err?.message ||
+            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+          "error",
+        );
+      });
   };
 
   useEffect(() => {
@@ -119,18 +118,12 @@ const PaySlipPage = () => {
       if (res?.data?.status === "success") {
         downloadPDF(res?.data?.data?.buffer?.data, res?.data?.data?.filename);
       }
-   
+
       if (res?.data?.status === "error") {
-    
         showToast(res?.data?.message, "error");
       }
     });
   };
-
-  if (isLoading) {
-    return <PaySlipPageSkeleton />;
-  }
- 
 
   return (
     <div className=" h-[calc(100vh-90px)] flex flex-col items-center overflow-hidden py-4 ">
@@ -156,26 +149,28 @@ const PaySlipPage = () => {
                         view={["year", "month"]}
                         openTo={"month"}
                         label={"Select Date"}
+                        isDisabled={isLoading || showLoader || isDownloadLoading}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
+                
               />
-              <CustomButton className={btnstyle} type="submit">
+              <CustomButton className={btnstyle} type="submit" disabled={isLoading ||showLoader || isDownloadLoading}>
                 Generate
               </CustomButton>
             </form>
           </Form>
         </div>
 
-        {showLoader ? (
+        {showLoader || isLoading ? (
           <div className="w-full h-[53vh] flex justify-center items-center">
             <DotLoading />{" "}
           </div>
         ) : (
           <div className="w-full relative h-[40vh] sm:h-[45vh] md:h-[55vh] will-change-transform overflow-y-auto">
-            {data?.earing && (
+            {data?.earing ? (
               <>
                 <div className=" mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 ">
                   <div className="bg-green-50 p-4 rounded-lg shadow-md">
@@ -192,7 +187,7 @@ const PaySlipPage = () => {
                             <span>{item.label}</span>
                             <span>₹ {showPayslip ? item.value : star}</span>
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                     <div className="flex justify-between mt-4 pt-4 border-t font-bold text-green-800">
@@ -217,7 +212,7 @@ const PaySlipPage = () => {
                             <span>{item.label}</span>
                             <span>₹ {showPayslip ? item.value : star}</span>
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                     <div className="flex  justify-between  pt-4 border-t font-bold text-red-600">
@@ -229,6 +224,10 @@ const PaySlipPage = () => {
                   </div>
                 </div>
               </>
+            ) : (
+              <p className="text-gray-500 w-full text-center my-10 ">
+                Generate last month payslip
+              </p>
             )}
           </div>
         )}
@@ -260,6 +259,7 @@ const PaySlipPage = () => {
                   setShowLoader(true);
                   setShowPayslip(!showPayslip);
                 }}
+                disabled={showLoader || isLoading || isDownloadLoading}
               >
                 <VisibilityIcon
                   sx={{ color: "#ffffff", fontSize: 20, mr: 1 }}
@@ -270,7 +270,7 @@ const PaySlipPage = () => {
               <CustomButton
                 className={btnstyle}
                 onClick={downloadPayslip}
-                disabled={isDownloadLoading}
+                disabled={isDownloadLoading || showLoader || isLoading}
               >
                 {isDownloadLoading ? (
                   <CircularProgress color="inherit" size={20} sx={{ mr: 1 }} />

@@ -93,7 +93,7 @@ const LeavePage = () => {
         error?.message ||
           error?.data?.message ||
           "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
-        "error"
+        "error",
       );
     }
   }, [pendingError]);
@@ -115,7 +115,7 @@ const LeavePage = () => {
           //@ts-ignore
           wfhError?.data?.message ||
           "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
-        "error"
+        "error",
       );
     }
   }, [eranLeaveError, sickLeaveError, wfhError]);
@@ -193,7 +193,7 @@ const LeavePage = () => {
 
   return (
     <div className="w-full px-6 py-3">
-      {eranLeaveLoading ||
+      {/* {eranLeaveLoading ||
       sickLeaveLoading ||
       wfhLoading ||
       pendingReqLoading ||
@@ -202,45 +202,95 @@ const LeavePage = () => {
       updateWfhLeaveLoading ? (
         <LeavePageSkeleton />
       ) : (
-        <>
-          {" "}
-          <div className="flex w-full justify-between items-center flex-wrap gap-2   ">
-            <div className="flex gap-[2px] flex-wrap">
-              <span
-                className="text-md  select-none  font-semibold  hover:underline cursor-pointer  "
-                onClick={() => navigate("/self-service/leave-status")}
-              >
-                Pending Requests ({pendingReqData?.pendingRequests})
-              </span>
-            </div>
-            <div className="flex gap-[20px] flex-wrap">
-              <CustomButton
-                onClick={() => setOpen(true)}
-                className="bg-[#fff] text-[#000] border-[#000] border-1 rounded-[2px] cursor-pointer hover:bg-[#e0e0e0]"
-              >
-                LIST OF HOLYDAYS
-              </CustomButton>
-              <CustomButton
-                onClick={() => setIsOpenModal(true)}
-                className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer hover:bg-[#4a4949]"
-              >
-                APPLY LEAVE
-              </CustomButton>
-              <CustomToolTip
-                title={
-                  "You can update your leave starting on the 1st of each month."
-                }
-                placement={"bottom"}
-              >
-                <CustomButton
-                  onClick={() => refetch()}
-                  className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer hover:bg-[#4a4949]"
-                >
-                  Refresh Leave
-                </CustomButton>
-              </CustomToolTip>
-            </div>
-          </div>
+        <> */}{" "}
+      <div className="flex w-full justify-between items-center flex-wrap gap-2   ">
+        <div className="flex gap-[2px] flex-wrap">
+          <span
+            className="text-md  select-none  font-semibold  hover:underline cursor-pointer  "
+            onClick={() => {
+              if (   
+              eranLeaveLoading ||
+              sickLeaveLoading ||
+              wfhLoading ||
+              pendingReqLoading ||
+              updateElLeaveLoading ||
+              updateSlLeaveLoading ||
+              updateWfhLeaveLoading
+            ) {
+              showToast("Please wait for the data to load", "error");
+                return
+              }
+              navigate("/self-service/leave-status")
+            }}
+          >
+            Pending Requests ({pendingReqData?.pendingRequests ?? 0})
+          </span>
+        </div>
+        <div className="flex gap-[20px] flex-wrap">
+          <CustomButton
+            onClick={() => setOpen(true)}
+            className="bg-[#fff] text-[#000] border-[#000] border-1 rounded-[2px] cursor-pointer hover:bg-[#e0e0e0]"
+            disabled={
+              eranLeaveLoading ||
+              sickLeaveLoading ||
+              wfhLoading ||
+              pendingReqLoading ||
+              updateElLeaveLoading ||
+              updateSlLeaveLoading ||
+              updateWfhLeaveLoading
+            }
+          >
+            LIST OF HOLYDAYS
+          </CustomButton>
+          <CustomButton
+            onClick={() => setIsOpenModal(true)}
+            className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer hover:bg-[#4a4949]"
+                disabled={
+              eranLeaveLoading ||
+              sickLeaveLoading ||
+              wfhLoading ||
+              pendingReqLoading ||
+              updateElLeaveLoading ||
+              updateSlLeaveLoading ||
+              updateWfhLeaveLoading
+            }
+          >
+            APPLY LEAVE
+          </CustomButton>
+          <CustomToolTip
+            title={
+              "You can update your leave starting on the 1st of each month."
+            }
+            placement={"bottom"}
+          >
+            <CustomButton
+              onClick={() => refetch()}
+              className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer hover:bg-[#4a4949]"
+                  disabled={
+              eranLeaveLoading ||
+              sickLeaveLoading ||
+              wfhLoading ||
+              pendingReqLoading ||
+              updateElLeaveLoading ||
+              updateSlLeaveLoading ||
+              updateWfhLeaveLoading
+            }
+            >
+              Refresh Leave
+            </CustomButton>
+          </CustomToolTip>
+        </div>
+      </div>
+      <>
+        {eranLeaveLoading ||
+        sickLeaveLoading ||
+        wfhLoading ||
+        pendingReqLoading ||
+        updateElLeaveLoading ||
+        updateSlLeaveLoading ||
+        updateWfhLeaveLoading ? (
+          <LeavePageSkeleton />
+        ) : (
           <div className="  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4  gap-4  ">
             {leaveData.map((leave: any) => (
               <LeaveCard
@@ -253,32 +303,34 @@ const LeavePage = () => {
               />
             ))}
           </div>
-          <CustomModal
-            open={isOpenModal}
-            onClose={() => setIsOpenModal(false)}
-            title={"Apply For Leave"}
-          >
-            <ApplyLeavePage onClose={() => setIsOpenModal(false)} />
-          </CustomModal>
-          <Modal
-            open={open}
-            onClose={() => setOpen(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            BackdropProps={{
-              sx: {
-                backgroundColor: "rgba(0, 0, 0, 0)",
-                backdropFilter: "blur(5px)",
-                WebkitBackdropFilter: "blur(5px)",
-              },
-            }}
-          >
-            <Box sx={style}>
-              <HolidayPage openClose={() => setOpen(false)} open={open} />
-            </Box>
-          </Modal>
-        </>
-      )}
+        )}
+      </>
+      <CustomModal
+        open={isOpenModal}
+        onClose={() => setIsOpenModal(false)}
+        title={"Apply For Leave"}
+      >
+        <ApplyLeavePage onClose={() => setIsOpenModal(false)} />
+      </CustomModal>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        BackdropProps={{
+          sx: {
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            backdropFilter: "blur(5px)",
+            WebkitBackdropFilter: "blur(5px)",
+          },
+        }}
+      >
+        <Box sx={style}>
+          <HolidayPage openClose={() => setOpen(false)} open={open} />
+        </Box>
+      </Modal>
+      {/* </>
+      )} */}
     </div>
   );
 };

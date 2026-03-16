@@ -117,6 +117,13 @@ const AttendancePage = () => {
     }
   }, [shifts?.data]);
 
+  useEffect(() => {
+    const tabData = localStorage.getItem("tabvalue");
+    if (tabData) {
+      setTabvalue(tabData);
+    }
+  }, []);
+
   return (
     <div className=" relative w-full p-2 h-full overflow-y-scroll  will-change-transform ">
       {shiftDetailsLoading || shiftsLoading || isLoading ? (
@@ -124,9 +131,9 @@ const AttendancePage = () => {
       ) : (
         <>
           <div className="sticky top-[-8px] z-10  ">
-             <AttendancePageTable value={shiftDetails} date={date} />
-            </div>
-         
+            <AttendancePageTable value={shiftDetails} date={date} />
+          </div>
+
           <div className="w-full flex justify-between flex-wrap gap-y-5 gap-x-1 py-3 px-4">
             <div className="flex gap-x-8 gap-y-4 flex-wrap">
               {dotColor.map((item, index) => (
@@ -139,18 +146,66 @@ const AttendancePage = () => {
 
             <ButtonGroup variant="outlined" aria-label="Basic button group">
               <CustomToolTip title={"Calendar View"} placement={"bottom"}>
-                <IconButton onClick={() => setTabvalue("calendar")}>
-                  <CalendarMonthIcon sx={{ fontSize: 32, color: "#000" }} />
+                <IconButton
+                  onClick={() => {
+                    setTabvalue("calendar");
+                    localStorage.setItem("tabvalue", "calendar");
+                  }}
+                   sx={{
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                >
+                  <CalendarMonthIcon
+                    sx={{
+                      fontSize: 25,
+                      color: "#000",
+                      transform: tabvalue === "calendar" ? "scale(1.3)" : "",
+                    }}
+                  />
                 </IconButton>
               </CustomToolTip>
               <CustomToolTip title={"List View"} placement={"bottom"}>
-                <IconButton onClick={() => setTabvalue("listview")}>
-                  <ListIcon sx={{ fontSize: 32, color: "#000" }} />
+                <IconButton
+                  onClick={() => {
+                    setTabvalue("listview");
+                    localStorage.setItem("tabvalue", "listview");
+                  }}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                >
+                  <ListIcon
+                    sx={{
+                      fontSize: 25,
+                      color: "#000",
+                      transform: tabvalue === "listview" ? "scale(1.2)" : "",
+                    }}
+                  />
                 </IconButton>
               </CustomToolTip>
               <CustomToolTip title={"Graph View"} placement={"bottom"}>
-                <IconButton onClick={() => setTabvalue("graph")}>
-                  <TimelineIcon sx={{ fontSize: 32, color: "#000" }} />
+                <IconButton
+                  onClick={() => {
+                    setTabvalue("graph");
+                    localStorage.setItem("tabvalue", "graph");
+                  }}
+                   sx={{
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                >
+                  <TimelineIcon
+                    sx={{
+                      fontSize: 25,
+                      color: "#000",
+                      transform: tabvalue === "graph" ? "scale(1.2)" : "",
+                    }}
+                  />
                 </IconButton>
               </CustomToolTip>
             </ButtonGroup>
@@ -208,19 +263,17 @@ const AttendancePage = () => {
                   <CardForAttendance
                     title={"Mispunch"}
                     icon={warning}
-                    value={
-                      shifts?.total_misspunch ?? "--"
-                    }
+                    value={shifts?.total_misspunch ?? "--"}
                   />
                   <CardForAttendance
                     title={"Short"}
                     icon={clock}
                     value={shifts?.srtCount ?? "--"}
                   />
-                     <CardForAttendance
+                  <CardForAttendance
                     title={"Late"}
                     icon={clock}
-                    value={ shifts?.lateCount ?? "--"} 
+                    value={shifts?.lateCount ?? "--"}
                   />
                 </div>
               </div>

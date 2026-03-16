@@ -98,10 +98,7 @@ const DocumentsPage = () => {
 
   return (
     <div className="w-full p-4 h-[calc(90vh-80px)]">
-      {isLoading ? (
-        <DocumentsPageSkeleton />
-      ) : (
-        <>
+ 
           <div className="w-full flex items-center flex-wrap justify-between mb-2">
             <Typography sx={{ fontWeight: 600, fontSize: 22, pb: 1 }}>
               Documents
@@ -113,10 +110,16 @@ const DocumentsPage = () => {
                 bgColor="#8a8a8a"
                 textColor="#000"
                 onChange={(e: any) => filterData(e.target.value)}
+                isDisabled={isLoading}
               />
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 w-full lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2  mx-auto h-[calc(100vh-170px)] py-3 overflow-y-auto  will-change-transform">
+         {
+          isLoading ? (
+             <DocumentsPageSkeleton />
+            
+          ):(
+             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 w-full lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2  mx-auto h-[calc(100vh-170px)] py-3 overflow-y-auto  will-change-transform">
             {data?.data?.length === 0 ? (
               <Box
                 display="flex"
@@ -250,8 +253,9 @@ const DocumentsPage = () => {
               ))
             )}
           </div>
-        </>
-      )}
+          )
+         }
+   
     </div>
   );
 };

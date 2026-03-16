@@ -29,6 +29,7 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
   if (result.error && result.error.status === 401) {
     localStorage.removeItem("user");
     sessionStorage.removeItem("user");
+    localStorage.removeItem("tabvalue")
 
     window.location.href = "/sign-in";
   }

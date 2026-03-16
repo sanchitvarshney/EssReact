@@ -73,6 +73,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    
     localStorage.removeItem("user");
     sessionStorage.removeItem("user");
+    localStorage.removeItem("tabvalue");
 
     window.location.href = "/sign-in";
      setUser(null);
