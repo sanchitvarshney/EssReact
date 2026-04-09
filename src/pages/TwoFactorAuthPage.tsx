@@ -7,6 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../contextapi/AuthContext";
 import { useAuthenticationMutation } from "../services/auth";
+import { consumeReturnToPath } from "../helper/returnTo";
 
 const TwoFactorAuthPage = () => {
   const navigate = useNavigate();
@@ -109,10 +110,10 @@ const TwoFactorAuthPage = () => {
       // For demo purposes, accept any 6-digit OTP
       if(response?.success){
         showToast(response?.message, "success");
-        navigate("/")
         localStorage.setItem("user", JSON.stringify(response?.data));
         sessionStorage.setItem("user", JSON.stringify(response?.data));
         signIn();
+        navigate(consumeReturnToPath(), { replace: true });
       }
        else {
         showToast(response?.message||"Invalid OTP. Please try again.", "error");

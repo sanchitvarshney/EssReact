@@ -13,6 +13,7 @@ import { useAuth } from "../contextapi/AuthContext";
 import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
 import { Typography } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
+import { consumeReturnToPath } from "../helper/returnTo";
 
 const SignInScreen = () => {
   const { signIn } = useAuth();
@@ -68,7 +69,7 @@ const SignInScreen = () => {
       localStorage.setItem("user", JSON.stringify(data.data));
       sessionStorage.setItem("user", JSON.stringify(data.data));
       signIn();
-      navigation("/");
+      navigation(consumeReturnToPath(), { replace: true });
     }
   }, [data, navigation, signIn])
 
@@ -135,7 +136,7 @@ const SignInScreen = () => {
            localStorage.setItem("user", JSON.stringify(res.data));
       sessionStorage.setItem("user", JSON.stringify(res.data));
       signIn();
-      navigation("/");
+      navigation(consumeReturnToPath(), { replace: true });
      } else {
       showToast(res?.message, "error");
      }
