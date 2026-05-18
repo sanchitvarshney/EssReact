@@ -151,12 +151,10 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
 }) => {
   const { showToast } = useToast();
   const [answers, setAnswers] = useState<SurveyAnswersState>({});
-  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     if (open) {
       setAnswers({});
-      setFormError(null);
     }
   }, [open]);
 
@@ -184,7 +182,7 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
 
   const handleSingleChange = (key: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [key]: value }));
-    setFormError(null);
+  
   };
 
   const handleMultiToggle = (key: string, value: string) => {
@@ -195,7 +193,6 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
         : [...current, value];
       return { ...prev, [key]: next };
     });
-    setFormError(null);
   };
 
   const handleDismiss = () => {
@@ -206,7 +203,7 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
   const handleSubmit = async () => {
     const validationError = validateSurveyAnswers(questions, answers);
     if (validationError) {
-      setFormError(validationError);
+      showToast(validationError, "error");
       return;
     }
 
@@ -360,11 +357,7 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
               </Box>
             </Box>
 
-            {formError && (
-              <Alert severity="warning" sx={{ mb: 2 }} onClose={() => setFormError(null)}>
-                {formError}
-              </Alert>
-            )}
+        
 
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {questions.map((question, index) => (
