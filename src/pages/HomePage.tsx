@@ -16,8 +16,14 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 // import SendIcon from "@mui/icons-material/Send";
 
 import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
+import AISurveyDialog from "../components/reuseable/AISurveyDialog";
 import { useEffect, useState } from "react";
 import CustomFooter from "../components/reuseable/CustomFooter";
+import {
+  clearAiSurveyPendingForLogin,
+  isAiSurveyMandatory,
+  shouldOpenAiSurveyOnHome,
+} from "../helper/aiSurveyStorage";
 
 
 
@@ -38,13 +44,31 @@ const HomePage = () => {
   const toX = isSmallDevice ? "-20%" : isMediamDevice ? "-40%" : "-120%";
   const scroll = getScrollKeyframes(fromX, toX);
 
+  const needsAiSurvey = shouldOpenAiSurveyOnHome();
+  const surveyMandatory = isAiSurveyMandatory();
+  const [aiSurveySessionDone, setAiSurveySessionDone] = useState(!needsAiSurvey);
   const [showCyberAlert, setShowCyberAlert] = useState(false);
+
   useEffect(() => {
-    setShowCyberAlert(localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true);
-  }, []);
+    if (!aiSurveySessionDone) return;
+    setShowCyberAlert(
+      localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true
+    );
+  }, [aiSurveySessionDone]);
+
   const handleCyberAlertConfirm = () => {
     setShowCyberAlert(false);
     localStorage.setItem("cyberAlertAcknowledged", "true");
+  };
+
+  const handleAiSurveyDismiss = () => {
+    clearAiSurveyPendingForLogin();
+    setAiSurveySessionDone(true);
+  };
+
+  const handleAiSurveyComplete = () => {
+    clearAiSurveyPendingForLogin();
+    setAiSurveySessionDone(true);
   };
 
   return (
@@ -149,17 +173,21 @@ const HomePage = () => {
             
              
       </div>
+      <AISurveyDialog
+        open={needsAiSurvey && !aiSurveySessionDone}
+        mandatory={surveyMandatory}
+        onClose={handleAiSurveyDismiss}
+        onComplete={handleAiSurveyComplete}
+      />
       <CyberAlertDialog
-        open={showCyberAlert }
+        open={showCyberAlert}
         onOpenChange={(open) => {
-          
-          if (!open) return; 
+          if (!open) return;
           setShowCyberAlert(open);
         }}
         onConfirm={() => {
           setShowCyberAlert(false);
           handleCyberAlertConfirm();
-
         }}
       />
   

@@ -8,6 +8,7 @@ import React, {
 import type { ReactNode } from "react";
 import { setCredentials } from "../slices/authSlices";
 import { useAppDispatch } from "../hooks/useReduxHook";
+import { clearAiSurveyPendingForLogin } from "../helper/aiSurveyStorage";
 
 
 interface AuthContextType {
@@ -77,7 +78,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     window.location.href = "/sign-in";
      setUser(null);
-     localStorage.removeItem("cyberAlertAcknowledged")
+     localStorage.removeItem("cyberAlertAcknowledged");
+     clearAiSurveyPendingForLogin();
   }, []);
 
   return (

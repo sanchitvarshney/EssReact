@@ -14,6 +14,7 @@ import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
 import { Typography } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import { consumeReturnToPath } from "../helper/returnTo";
+import { markAiSurveyPendingForLogin } from "../helper/aiSurveyStorage";
 
 const SignInScreen = () => {
   const { signIn } = useAuth();
@@ -68,6 +69,7 @@ const SignInScreen = () => {
     if (data?.data) {
       localStorage.setItem("user", JSON.stringify(data.data));
       sessionStorage.setItem("user", JSON.stringify(data.data));
+      markAiSurveyPendingForLogin();
       signIn();
       navigation(consumeReturnToPath(), { replace: true });
     }
@@ -135,6 +137,7 @@ const SignInScreen = () => {
       showToast(res?.message, "success");
            localStorage.setItem("user", JSON.stringify(res.data));
       sessionStorage.setItem("user", JSON.stringify(res.data));
+      markAiSurveyPendingForLogin();
       signIn();
       navigation(consumeReturnToPath(), { replace: true });
      } else {

@@ -8,6 +8,7 @@ import { useToast } from "../hooks/useToast";
 import { useAuth } from "../contextapi/AuthContext";
 import { useAuthenticationMutation } from "../services/auth";
 import { consumeReturnToPath } from "../helper/returnTo";
+import { markAiSurveyPendingForLogin } from "../helper/aiSurveyStorage";
 
 const TwoFactorAuthPage = () => {
   const navigate = useNavigate();
@@ -112,6 +113,7 @@ const TwoFactorAuthPage = () => {
         showToast(response?.message, "success");
         localStorage.setItem("user", JSON.stringify(response?.data));
         sessionStorage.setItem("user", JSON.stringify(response?.data));
+        markAiSurveyPendingForLogin();
         signIn();
         navigate(consumeReturnToPath(), { replace: true });
       }
