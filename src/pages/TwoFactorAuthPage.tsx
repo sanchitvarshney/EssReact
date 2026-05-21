@@ -9,6 +9,7 @@ import { useAuth } from "../contextapi/AuthContext";
 import { useAuthenticationMutation } from "../services/auth";
 import { consumeReturnToPath } from "../helper/returnTo";
 import { markAiSurveyPendingForLogin } from "../helper/aiSurveyStorage";
+import { persistLoginUser } from "../helper/userStorage";
 
 const TwoFactorAuthPage = () => {
   const navigate = useNavigate();
@@ -111,8 +112,7 @@ const TwoFactorAuthPage = () => {
       // For demo purposes, accept any 6-digit OTP
       if(response?.success){
         showToast(response?.message, "success");
-        localStorage.setItem("user", JSON.stringify(response?.data));
-        sessionStorage.setItem("user", JSON.stringify(response?.data));
+        persistLoginUser(response);
         markAiSurveyPendingForLogin();
         signIn();
         navigate(consumeReturnToPath(), { replace: true });

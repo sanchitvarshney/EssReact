@@ -21,8 +21,10 @@ import { useEffect, useState } from "react";
 import CustomFooter from "../components/reuseable/CustomFooter";
 import {
   clearAiSurveyPendingForLogin,
+  getAiSurveyDay,
   isAiSurveyMandatory,
   shouldOpenAiSurveyOnHome,
+  syncAiSurveyStateWithUser,
 } from "../helper/aiSurveyStorage";
 
 
@@ -44,13 +46,24 @@ const HomePage = () => {
   const toX = isSmallDevice ? "-20%" : isMediamDevice ? "-40%" : "-120%";
   const scroll = getScrollKeyframes(fromX, toX);
 
-  const needsAiSurvey = shouldOpenAiSurveyOnHome();
   const surveyMandatory = isAiSurveyMandatory();
-  const [aiSurveySessionDone, setAiSurveySessionDone] = useState(!needsAiSurvey);
+  const surveyDay = getAiSurveyDay();
+  const needsAiSurvey = shouldOpenAiSurveyOnHome();
+
+  const [aiSurveySessionDone, setAiSurveySessionDone] = useState(() => {
+    syncAiSurveyStateWithUser();
+    return !shouldOpenAiSurveyOnHome();
+  });
   const [showCyberAlert, setShowCyberAlert] = useState(false);
 
+  const aiSurveyOpen = needsAiSurvey && !aiSurveySessionDone;
+
   useEffect(() => {
-    if (!aiSurveySessionDone) return;
+    if (!aiSurveySessionDone) {
+      setShowCyberAlert(false);
+      return;
+    }
+
     setShowCyberAlert(
       localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true
     );
@@ -174,13 +187,14 @@ const HomePage = () => {
              
       </div>
       <AISurveyDialog
-        open={needsAiSurvey && !aiSurveySessionDone}
+        open={aiSurveyOpen}
         mandatory={surveyMandatory}
+        surveyDay={surveyDay}
         onClose={handleAiSurveyDismiss}
         onComplete={handleAiSurveyComplete}
       />
       <CyberAlertDialog
-        open={showCyberAlert}
+        open={showCyberAlert && aiSurveySessionDone && !aiSurveyOpen}
         onOpenChange={(open) => {
           if (!open) return;
           setShowCyberAlert(open);

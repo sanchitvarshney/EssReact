@@ -1,4 +1,8 @@
-import { getStoredUser, shouldDisplayAISurvey } from "./userStorage";
+import {
+  getDisplayAISurveyFlag,
+  getStoredUser,
+  shouldDisplayAISurvey,
+} from "./userStorage";
 
 const PREFIX = "aiSurvey";
 
@@ -22,16 +26,23 @@ const storageKey = (suffix: string, empCode: string) =>
 
 export const getAiSurveyEmpCode = (): string | null => getEmpCode();
 
-export const isAiSurveyPermanentlyCompleted = (): boolean => {
+/** Keep local flags aligned with API `displayAISurvey` on the stored user. */
+export const syncAiSurveyStateWithUser = (): void => {
   const empCode = getEmpCode();
-  if (!empCode) return false;
-  return localStorage.getItem(storageKey("completed", empCode)) === "true";
-};
+  const flag = getDisplayAISurveyFlag();
 
-export const markAiSurveyPermanentlyCompleted = (): void => {
-  const empCode = getEmpCode();
-  if (!empCode) return;
-  localStorage.setItem(storageKey("completed", empCode), "true");
+  if (flag !== "Y") {
+    clearAiSurveyPendingForLogin();
+    if (empCode) {
+      localStorage.removeItem(storageKey("completed", empCode));
+    }
+    return;
+  }
+
+  // API says Y — remove stale "completed" so survey can show again after reset
+  if (empCode) {
+    localStorage.removeItem(storageKey("completed", empCode));
+  }
 };
 
 export const getAiSurveyDay = (): number => {
@@ -52,12 +63,13 @@ export const getAiSurveyDay = (): number => {
 
 export const isAiSurveyMandatory = (): boolean => getAiSurveyDay() >= 3;
 
-export const shouldShowAiSurvey = (): boolean =>
-  shouldDisplayAISurvey() && !isAiSurveyPermanentlyCompleted();
+/** API flag is the source of truth for whether the survey applies. */
+export const shouldShowAiSurvey = (): boolean => shouldDisplayAISurvey();
 
 const LOGIN_PENDING_KEY = `${PREFIX}_showAfterLogin`;
 
 export const markAiSurveyPendingForLogin = (): void => {
+  syncAiSurveyStateWithUser();
   if (!shouldDisplayAISurvey()) return;
   sessionStorage.setItem(LOGIN_PENDING_KEY, "true");
 };
@@ -69,8 +81,10 @@ export const clearAiSurveyPendingForLogin = (): void => {
   sessionStorage.removeItem(LOGIN_PENDING_KEY);
 };
 
-export const shouldOpenAiSurveyOnHome = (): boolean =>
-  shouldShowAiSurvey() && isAiSurveyPendingForLogin();
+export const shouldOpenAiSurveyOnHome = (): boolean => {
+  syncAiSurveyStateWithUser();
+  return shouldShowAiSurvey() && isAiSurveyPendingForLogin();
+};
 
 export const clearAiSurveyStorageForUser = (empCode?: string): void => {
   const code = empCode ?? getEmpCode();

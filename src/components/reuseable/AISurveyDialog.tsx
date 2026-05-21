@@ -21,10 +21,8 @@ import {
   useGetAiSurveyQuestionsQuery,
   useSaveAiSurveyResponseMutation,
 } from "../../services/aiSurvey";
-import {
-  getAiSurveyEmpCode,
-  markAiSurveyPermanentlyCompleted,
-} from "../../helper/aiSurveyStorage";
+import { getAiSurveyEmpCode } from "../../helper/aiSurveyStorage";
+import { updateStoredUserDisplayAISurvey } from "../../helper/userStorage";
 import {
   buildSavePayload,
   parseOption,
@@ -38,6 +36,7 @@ import { useToast } from "../../hooks/useToast";
 interface AISurveyDialogProps {
   open: boolean;
   mandatory: boolean;
+  surveyDay: number;
   onClose: () => void;
   onComplete: () => void;
 }
@@ -225,7 +224,7 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
         return;
       }
 
-      markAiSurveyPermanentlyCompleted();
+      updateStoredUserDisplayAISurvey("N");
       showToast(
         response?.message || "Survey submitted successfully. Thank you!",
         "success"

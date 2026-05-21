@@ -8,7 +8,11 @@ import React, {
 import type { ReactNode } from "react";
 import { setCredentials } from "../slices/authSlices";
 import { useAppDispatch } from "../hooks/useReduxHook";
-import { clearAiSurveyPendingForLogin } from "../helper/aiSurveyStorage";
+import {
+  clearAiSurveyPendingForLogin,
+  clearAiSurveyStorageForUser,
+  syncAiSurveyStateWithUser,
+} from "../helper/aiSurveyStorage";
 
 
 interface AuthContextType {
@@ -63,6 +67,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       };
 
       setUser(userData);
+      syncAiSurveyStateWithUser();
     }
   }, [dispatch]);
 
@@ -71,15 +76,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [signIn]);
 
   const signOut = useCallback(() => {
-   
+    const storedUserStr = localStorage.getItem("user");
+    let empCode: string | undefined;
+    if (storedUserStr) {
+      try {
+        const storedUser = JSON.parse(storedUserStr);
+        empCode = storedUser?.userID ?? storedUser?.empCode;
+      } catch {
+        empCode = undefined;
+      }
+    }
+
+    clearAiSurveyPendingForLogin();
+    if (empCode) clearAiSurveyStorageForUser(empCode);
+
     localStorage.removeItem("user");
     sessionStorage.removeItem("user");
     localStorage.removeItem("tabvalue");
 
     window.location.href = "/sign-in";
-     setUser(null);
-     localStorage.removeItem("cyberAlertAcknowledged");
-     clearAiSurveyPendingForLogin();
+    setUser(null);
+    localStorage.removeItem("cyberAlertAcknowledged");
   }, []);
 
   return (

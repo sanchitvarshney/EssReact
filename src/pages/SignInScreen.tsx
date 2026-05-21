@@ -15,6 +15,7 @@ import { Typography } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import { consumeReturnToPath } from "../helper/returnTo";
 import { markAiSurveyPendingForLogin } from "../helper/aiSurveyStorage";
+import { persistLoginUser } from "../helper/userStorage";
 
 const SignInScreen = () => {
   const { signIn } = useAuth();
@@ -67,8 +68,7 @@ const SignInScreen = () => {
     }
 
     if (data?.data) {
-      localStorage.setItem("user", JSON.stringify(data.data));
-      sessionStorage.setItem("user", JSON.stringify(data.data));
+      persistLoginUser(data);
       markAiSurveyPendingForLogin();
       signIn();
       navigation(consumeReturnToPath(), { replace: true });
@@ -135,8 +135,7 @@ const SignInScreen = () => {
     loginGoogle(data).unwrap().then((res: any) => {
      if (res?.success) {
       showToast(res?.message, "success");
-           localStorage.setItem("user", JSON.stringify(res.data));
-      sessionStorage.setItem("user", JSON.stringify(res.data));
+      persistLoginUser(res);
       markAiSurveyPendingForLogin();
       signIn();
       navigation(consumeReturnToPath(), { replace: true });
