@@ -21,8 +21,6 @@ import { useEffect, useState } from "react";
 import CustomFooter from "../components/reuseable/CustomFooter";
 import {
   clearAiSurveyPendingForLogin,
-  getAiSurveyDay,
-  isAiSurveyMandatory,
   shouldOpenAiSurveyOnHome,
   syncAiSurveyStateWithUser,
 } from "../helper/aiSurveyStorage";
@@ -46,8 +44,6 @@ const HomePage = () => {
   const toX = isSmallDevice ? "-20%" : isMediamDevice ? "-40%" : "-120%";
   const scroll = getScrollKeyframes(fromX, toX);
 
-  const surveyMandatory = isAiSurveyMandatory();
-  const surveyDay = getAiSurveyDay();
   const needsAiSurvey = shouldOpenAiSurveyOnHome();
 
   const [aiSurveySessionDone, setAiSurveySessionDone] = useState(() => {
@@ -188,8 +184,6 @@ const HomePage = () => {
       </div>
       <AISurveyDialog
         open={aiSurveyOpen}
-        mandatory={surveyMandatory}
-        surveyDay={surveyDay}
         onClose={handleAiSurveyDismiss}
         onComplete={handleAiSurveyComplete}
       />

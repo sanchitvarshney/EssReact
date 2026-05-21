@@ -35,8 +35,6 @@ import { useToast } from "../../hooks/useToast";
 
 interface AISurveyDialogProps {
   open: boolean;
-  mandatory: boolean;
-  surveyDay: number;
   onClose: () => void;
   onComplete: () => void;
 }
@@ -144,7 +142,6 @@ const QuestionBlock = ({
 
 const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
   open,
-  mandatory,
   onClose,
   onComplete,
 }) => {
@@ -195,7 +192,6 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
   };
 
   const handleDismiss = () => {
-    if (mandatory) return;
     onClose();
   };
 
@@ -247,7 +243,6 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
       anchor="top"
       open={open}
       onClose={(__, reason) => {
-        if (mandatory) return;
         if (reason === "backdropClick" || reason === "escapeKeyDown") return;
         handleDismiss();
       }}
@@ -386,23 +381,21 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
           bgcolor: "background.paper",
         }}
       >
-        {!mandatory && (
-          <Button
-            variant="outlined"
-            onClick={handleDismiss}
-            disabled={isLoadingState || isSaving}
-            sx={{
-              borderColor: "#2eacb3",
-              color: "#2eacb3",
-              "&:hover": {
-                borderColor: "#279aa0",
-                bgcolor: "rgba(46, 172, 179, 0.06)",
-              },
-            }}
-          >
-            Skip for now
-          </Button>
-        )}
+        <Button
+          variant="outlined"
+          onClick={handleDismiss}
+          disabled={isLoadingState || isSaving}
+          sx={{
+            borderColor: "#2eacb3",
+            color: "#2eacb3",
+            "&:hover": {
+              borderColor: "#279aa0",
+              bgcolor: "rgba(46, 172, 179, 0.06)",
+            },
+          }}
+        >
+          Skip for now
+        </Button>
         <Button
           onClick={handleSubmit}
           disabled={isLoadingState || isSaving || isError}
