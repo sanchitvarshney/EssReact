@@ -17,7 +17,7 @@ const Protected: React.FC<ProtectedProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
-  const isAuthenticated = !!sessionStorage.getItem("user");
+  const isAuthenticated = !!sessionStorage.getItem("user") || !!localStorage.getItem("user");
 
   const checkAuth = useCallback(async () => {
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -38,7 +38,7 @@ const Protected: React.FC<ProtectedProps> = ({
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+  }, [isAuthenticated]);
 
   if (isLoading) {
     return (
