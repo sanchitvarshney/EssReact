@@ -15,17 +15,6 @@ const Protected: React.FC<ProtectedProps> = ({
   authentication = true,
 }) => {
   const navigate = useNavigate();
-  const [showApp, setShowApp] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowApp(true);
-    }, 3200); 
-
-    return () => clearTimeout(timer);
-  }, []);
-
-
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const isAuthenticated = !!sessionStorage.getItem("user") || !!localStorage.getItem("user");
@@ -51,7 +40,7 @@ const Protected: React.FC<ProtectedProps> = ({
     checkAuth();
   }, [isAuthenticated]);
 
-  if (isLoading || !showApp) {
+  if (isLoading) {
     return (
       <AppLoader logo={logo} />
     );
