@@ -5,20 +5,10 @@ import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Avatar, Typography } from "@mui/material";
 import nointernet from "../assets/no-wifi.png";
-import useVersionCheck from "../hooks/useVersionCheck";
-import UpdateVersionPopup from "../components/UpdateVersionPopup";
 
 // props: { children: React.ReactNode }
 function MainLayout() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const { updateAvailable } = useVersionCheck();
-  const [showUpdatePopup, setShowUpdatePopup] = useState(false);
-
-  useEffect(() => {
-    if (updateAvailable) {
-      setShowUpdatePopup(true);
-    }
-  }, [updateAvailable]);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -62,10 +52,6 @@ function MainLayout() {
       {/* <div className="absolute bottom-0 right-4 sm:right-10 z-99">
         <CustomFooter />
       </div> */}
-      <UpdateVersionPopup
-        open={showUpdatePopup}
-        onRefresh={() => window.location.reload()}
-      />
     </Wrapper>
   );
 }
