@@ -1,4 +1,3 @@
-
 import React, { useEffect, useCallback, type ReactNode, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/img/hrms_mscorpres_logo.png";
@@ -9,6 +8,8 @@ interface ProtectedProps {
   children: ReactNode;
   authentication?: boolean;
 }
+const SPLASH_DELAY = 3200;
+const AUTH_DELAY = 500;
 
 const Protected: React.FC<ProtectedProps> = ({
   children,
@@ -17,43 +18,52 @@ const Protected: React.FC<ProtectedProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
-  const isAuthenticated = !!sessionStorage.getItem("user") || !!localStorage.getItem("user");
-    const [showApp, setShowApp] = useState(true);
+  const [showApp, setShowApp] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowApp(false);
-    }, 3200); 
+    }, SPLASH_DELAY);
 
     return () => clearTimeout(timer);
   }, []);
 
+  const checkAuth = useCallback(() => {
+    const run = async () => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, AUTH_DELAY));
 
-  const checkAuth = useCallback(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+        const currentAuth =
+          !!sessionStorage.getItem("user") || !!localStorage.getItem("user");
 
-    if (authentication && !isAuthenticated) {
-      const intendedUrl = `${location.pathname}${location.search}${location.hash}`;
-      storeReturnToPath(intendedUrl);
-      navigate("/sign-in", { replace: true });
-      return;
-    }
+        if (authentication && !currentAuth) {
+          const intendedUrl = `${location.pathname}${location.search}${location.hash}`;
+          storeReturnToPath(intendedUrl);
 
-    if (!authentication && isAuthenticated) {
-      navigate("/", { replace: true });
-      return;
-    }
-    setIsLoading(false);
-  }, [authentication, isAuthenticated, location.hash, location.pathname, location.search, navigate]);
+          navigate("/sign-in", { replace: true });
+          return;
+        }
+
+        if (!authentication && currentAuth) {
+          navigate("/", { replace: true });
+          return;
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    run();
+  }, [authentication, location, navigate]);
 
   useEffect(() => {
     checkAuth();
-  }, [isAuthenticated]);
+  }, [checkAuth]);
 
-  if (isLoading || showApp) {
-    return (
-      <AppLoader logo={logo} />
-    );
+  const isBusy = isLoading || showApp;
+
+  if (isBusy) {
+    return <AppLoader logo={logo} />;
   }
 
   return <>{children}</>;
