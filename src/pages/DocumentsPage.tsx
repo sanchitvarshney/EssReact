@@ -1,60 +1,70 @@
 import {
-  Box,
   Typography,
-  ButtonGroup,
   IconButton,
   Card,
   CardContent,
   CardActions,
+  Chip,
+  InputAdornment,
+  TextField,
 } from "@mui/material";
 
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import SearchIcon from "@mui/icons-material/Search";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import ImageIcon from "@mui/icons-material/Image";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import DataUsageIcon from "@mui/icons-material/DataUsage";
 
 import CustomToolTip from "../components/reuseable/CustomToolTip";
 import { useGetDocumentsMutation } from "../services/doc";
 import { useEffect, useState } from "react";
-
-import CustomSearch from "../components/reuseable/CustomSearch";
 import DocumentsPageSkeleton from "../skeleton/DocumentsPageSkeleton";
 import { useToast } from "../hooks/useToast";
 import EmptyData from "../components/reuseable/EmptyData";
-import pdf from "../assets/pdf.png";
-import img from "../assets/img.png";
-import otherType from "../assets/othertype.png";
+
+const fileTypeConfig: Record<
+  string,
+  { color: string; bg: string; label: string }
+> = {
+  pdf: { color: "#ef4444", bg: "#fef2f2", label: "PDF" },
+  img: { color: "#3b82f6", bg: "#eff6ff", label: "Image" },
+  other: { color: "#6b7280", bg: "#f9fafb", label: "File" },
+};
+
+const getFileCfg = (type: string) =>
+  fileTypeConfig[type] ?? fileTypeConfig.other;
 
 const DocumentsPage = () => {
-  // const [searchQuary, setSearchQuary] = useState<string>("");
   const { showToast } = useToast();
   const [getDocuments, { isLoading, data, error }] = useGetDocumentsMutation();
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState<any[]>([]);
+  const [search, setSearch] = useState("");
 
   const fnOpenNewWindow = (link: string) => {
-    var width = 1000;
-    var height = 600;
-
-    var left = window.screen.width / 2 - width / 2;
-    var top = window.screen.height / 2 - height / 2;
-
+    const w = 1000,
+      h = 600;
+    const left = window.screen.width / 2 - w / 2;
+    const top = window.screen.height / 2 - h / 2;
     window.open(
       link,
       "MsCorpres",
-      `width=${width},height=${height},top=${top},left=${left},status=1,scrollbars=1,location=0,resizable=yes`
+      `width=${w},height=${h},top=${top},left=${left},status=1,scrollbars=1,location=0,resizable=yes`,
     );
   };
 
-  const downloadPDF = (pdfUrl: string, fileName: string = "document.pdf") => {
-    const link = document.createElement("a");
-    link.href = pdfUrl;
-    link.download = fileName;
-    link.target = "_blank";
-    link.click();
+  const downloadFile = (url: string, name: string = "document") => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    a.target = "_blank";
+    a.click();
   };
 
   useEffect(() => {
-    if (data?.data) {
-      setFilteredData(data.data);
-    }
+    if (data?.data) setFilteredData(data.data);
   }, [data]);
 
   useEffect(() => {
@@ -63,199 +73,250 @@ const DocumentsPage = () => {
 
   useEffect(() => {
     if (!error) return;
-
-    if (error) {
-      //@ts-ignore
-      const errData = error.data as { message?: string };
-
-      showToast(
-        errData?.message ||
-          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
-        "error"
-      );
-    } else {
-      //@ts-ignore
-      showToast(error.message || "An unexpected error occurred", "error");
-    }
+    //@ts-ignore
+    const errData = error.data as { message?: string };
+    showToast(errData?.message || "An unexpected error has occurred.", "error");
   }, [error]);
 
-  const filterData = (searchQuary: string) => {
-    if (!searchQuary.trim()) {
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    if (!value.trim()) {
       setFilteredData(data?.data || []);
       return;
     }
-
-    const filtered = data?.data?.filter(
-      (item: any) =>
-        item.file_type.toLowerCase().includes(searchQuary.toLowerCase()) ||
-        item.name.toLowerCase().includes(searchQuary.toLowerCase())
+    setFilteredData(
+      data?.data?.filter(
+        (item: any) =>
+          item.file_type.toLowerCase().includes(value.toLowerCase()) ||
+          item.name.toLowerCase().includes(value.toLowerCase()),
+      ) || [],
     );
-
-    setFilteredData(filtered || []);
   };
 
-  
-
   return (
-    <div className="w-full p-4 h-[calc(90vh-80px)]">
- 
-          <div className="w-full flex items-center flex-wrap justify-between mb-2">
-            <Typography sx={{ fontWeight: 600, fontSize: 22, pb: 1 }}>
-              Documents
-            </Typography>
-            <div className="flex items-center gap-2">
-              <CustomSearch
-                width={"40ch"}
-                placeholder={"Search your documents here..."}
-                bgColor="#8a8a8a"
-                textColor="#000"
-                onChange={(e: any) => filterData(e.target.value)}
-                isDisabled={isLoading}
-              />
-            </div>
-          </div>
-         {
-          isLoading ? (
-             <DocumentsPageSkeleton />
-            
-          ):(
-             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 w-full lg:grid-cols-3 xl:grid-cols-3 gap-6 px-2  mx-auto h-[calc(100vh-170px)] py-3 overflow-y-auto  will-change-transform">
-            {data?.data?.length === 0 ? (
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height={200}
-              >
-                <EmptyData />
-              </Box>
-            ) : (
-              (filteredData ?? []).map((row: any) => (
-                <div key={row?.key || row?.id} className="min-w-[350px]">
-                  <Card
-                    sx={{
-                      borderRadius: 3,
-                      boxShadow: 3,
+    <div className="w-full p-4 h-[calc(100vh-90px)]">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <div
+            style={{ backgroundColor: "#2eacb3" }}
+            className="w-1 h-7 rounded-full"
+          />
+          <Typography sx={{ fontSize: 19, fontWeight: 700, color: "#232324" }}>
+            Documents
+          </Typography>
+          {!isLoading && data?.data && (
+            <Chip
+              label={`${filteredData.length} files`}
+              size="small"
+              sx={{
+                backgroundColor: "#e0f7f8",
+                color: "#2eacb3",
+                fontWeight: 600,
+                fontSize: 11,
+                height: 22,
+                ml: 0.5,
+              }}
+            />
+          )}
+        </div>
 
-                      minHeight: 200,
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <CardContent sx={{display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between", alignItems: "center"}}>
-                      <div>
-                        <CustomToolTip title={row.name} placement={"bottom"}>
+        <TextField
+          size="small"
+          placeholder="Search documents..."
+          value={search}
+          onChange={(e) => handleSearch(e.target.value)}
+          disabled={isLoading}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: "#2eacb3", fontSize: 17 }} />
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "20px",
+              fontSize: 13,
+              "& fieldset": { borderColor: "#e0e0e0" },
+              "&:hover fieldset": { borderColor: "#2eacb3" },
+              "&.Mui-focused fieldset": { borderColor: "#2eacb3" },
+            },
+            minWidth: 220,
+          }}
+        />
+      </div>
+
+      {/* Content */}
+      {isLoading ? (
+        <DocumentsPageSkeleton />
+      ) : filteredData.length === 0 ? (
+        <EmptyData />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 h-[calc(100vh-160px)] overflow-y-auto py-2 pr-1 custom-scrollbar-for-menu">
+          {filteredData.map((row: any) => {
+            const cfg = getFileCfg(row?.file_type);
+            return (
+              <Card
+                key={row?.key || row?.id}
+                elevation={0}
+                sx={{
+                  borderRadius: 3,
+                  border: "1px solid #eeeeee",
+                  borderLeft: `4px solid ${cfg.color}`,
+                  minHeight: 170,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  transition: "box-shadow 0.2s, transform 0.15s",
+                  "&:hover": {
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.10)",
+                    transform: "translateY(-2px)",
+                  },
+                }}
+              >
+                <CardContent sx={{ pb: 1, flex: 1 }}>
+                  {/* Name + icon + type chip */}
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="flex items-start gap-2 min-w-0">
+                      <div
+                        className="p-2 rounded-lg flex-shrink-0"
+                        style={{ backgroundColor: cfg.bg }}
+                      >
+                        {row?.file_type === "pdf" ? (
+                          <PictureAsPdfIcon
+                            sx={{ fontSize: 20, color: cfg.color }}
+                          />
+                        ) : row?.file_type === "img" ? (
+                          <ImageIcon sx={{ fontSize: 20, color: cfg.color }} />
+                        ) : (
+                          <InsertDriveFileIcon
+                            sx={{ fontSize: 20, color: cfg.color }}
+                          />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <CustomToolTip title={row.name} placement="bottom">
                           <Typography
-                            variant="h6"
                             sx={{
                               fontWeight: 700,
+                              fontSize: 14,
                               color: "#1f2937",
-                              mb: 1,
                               whiteSpace: "nowrap",
                               overflow: "hidden",
                               textOverflow: "ellipsis",
-                              maxWidth: 250,
-
-                              userSelect: "none",
+                              maxWidth: 180,
+                              lineHeight: 1.3,
                             }}
-                            color="text.secondary"
-                            gutterBottom
                           >
                             {row.name}
                           </Typography>
                         </CustomToolTip>
                         <CustomToolTip
                           title={row.description}
-                          placement={"bottom"}
+                          placement="bottom"
                         >
                           <Typography
                             variant="body2"
                             sx={{
+                              color: "#9ca3af",
+                              fontSize: 12,
                               whiteSpace: "nowrap",
                               overflow: "hidden",
                               textOverflow: "ellipsis",
-                              maxWidth: 250,
-                              display: "inline-block",
-                              userSelect: "none",
+                              maxWidth: 180,
                             }}
                           >
-                            {row.description === "" ? "N/A" : row.description}
+                            {row.description || "No description"}
                           </Typography>
                         </CustomToolTip>
-                        <Typography
-                          variant="body2"
-                          sx={{ color: "#374151", mb: 0.5 }}
-                        >
-                          <b>Date:</b> {row.datetime}
-                        </Typography>
                       </div>
-                      <div>
-                        <img src={row?.file_type === "pdf" ? pdf : row?.file_type === "img" ? img : otherType} alt="pdf icon" className="w-14 h-14 opacity-65" />
-                      </div>
-                    </CardContent>
-                    <CardActions
+                    </div>
+
+                    <Chip
+                      label={cfg.label}
+                      size="small"
                       sx={{
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        pb: 2,
-                        pr: 2,
+                        backgroundColor: cfg.bg,
+                        color: cfg.color,
+                        fontWeight: 700,
+                        fontSize: 10,
+                        height: 20,
+                        flexShrink: 0,
+                        border: `1px solid ${cfg.color}30`,
+                        "& .MuiChip-label": { px: 1 },
                       }}
-                    >
-                      <div>
-                        {" "}
-                        <Typography
-                          variant="body2"
-                          sx={{ color: "#374151", ml: 1 }}
-                        >
-                          <b>Size:</b> {row.file_size ?? "N/A"}
-                        </Typography>
-                        {/* <Typography
-                          variant="body2"
-                          sx={{ color: "#374151", ml: 1 }}
-                        >
-                          <b>Type:</b> {row.file_type}
-                        </Typography> */}
-                      </div>
-                      <ButtonGroup
-                        variant="outlined"
-                        aria-label="document actions"
+                    />
+                  </div>
+
+                  {/* Date + Size meta row */}
+                  <div
+                    className="flex items-center gap-4 mt-3 pt-2"
+                    style={{ borderTop: "1px solid #f3f4f6" }}
+                  >
+                    <div className="flex items-center gap-1">
+                      <CalendarTodayIcon
+                        sx={{ fontSize: 12, color: "#9ca3af" }}
+                      />
+                      <Typography sx={{ fontSize: 12, color: "#6b7280" }}>
+                        {row.datetime}
+                      </Typography>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <DataUsageIcon sx={{ fontSize: 12, color: "#9ca3af" }} />
+                      <Typography sx={{ fontSize: 12, color: "#6b7280" }}>
+                        {row.file_size ?? "N/A"}
+                      </Typography>
+                    </div>
+                  </div>
+                </CardContent>
+
+                <CardActions
+                  sx={{
+                    justifyContent: "flex-end",
+                    pt: 1,
+                    pb: 1.5,
+                    px: 2,
+                    borderTop: "1px solid #f3f4f6",
+                    backgroundColor: "#fafafa",
+                    borderBottomLeftRadius: 12,
+                    borderBottomRightRadius: 12,
+                  }}
+                >
+                  {row?.file_type !== "other" && (
+                    <CustomToolTip title="View" placement="bottom">
+                      <IconButton
+                        size="small"
+                        onClick={() => fnOpenNewWindow(row.path)}
+                        sx={{
+                          color: "#2eacb3",
+                          "&:hover": { backgroundColor: "#e0f7f8" },
+                        }}
                       >
-                        {!(row?.file_type === "other") && (
-                          <CustomToolTip title={"View"} placement={"bottom"}>
-                            <IconButton
-                              onClick={() => fnOpenNewWindow(row.path)}
-                            >
-                              <VisibilityIcon
-                                sx={{ fontSize: 24, color: "#2eacb3" }}
-                              />
-                            </IconButton>
-                          </CustomToolTip>
-                        )}
-                        {row?.file_type === "other" && (
-                          <CustomToolTip
-                            title={"Download"}
-                            placement={"bottom"}
-                          >
-                            <IconButton
-                              onClick={() => downloadPDF(row.path, row.name)}
-                            >
-                              <CloudDownloadIcon
-                                sx={{ fontSize: 24, color: "#2eacb3" }}
-                              />
-                            </IconButton>
-                          </CustomToolTip>
-                        )}
-                      </ButtonGroup>
-                    </CardActions>
-                  </Card>
-                </div>
-              ))
-            )}
-          </div>
-          )
-         }
-   
+                        <VisibilityIcon sx={{ fontSize: 18 }} />
+                      </IconButton>
+                    </CustomToolTip>
+                  )}
+                  {row?.file_type === "other" && (
+                    <CustomToolTip title="Download" placement="bottom">
+                      <IconButton
+                        size="small"
+                        onClick={() => downloadFile(row.path, row.name)}
+                        sx={{
+                          color: "#2eacb3",
+                          "&:hover": { backgroundColor: "#e0f7f8" },
+                        }}
+                      >
+                        <CloudDownloadIcon sx={{ fontSize: 18 }} />
+                      </IconButton>
+                    </CustomToolTip>
+                  )}
+                </CardActions>
+              </Card>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

@@ -65,9 +65,11 @@ const CustomModal: React.FC<CustomModalProps> = ({
       <DialogContent
         dividers
         sx={{
-          overflowY: "auto",
           flex: 1,
-          // mt: 1,
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+          padding: "0 !important",
         }}
       >
         {children}
