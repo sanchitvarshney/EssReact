@@ -20,7 +20,7 @@ import PerformancePage from "./src/pages/PerformancePage";
 import ReimbursementClaim from "./src/pages/ReimbursementClaim";
 import PeripheralPage from "./src/pages/PeripheralPage";
 import CreateTicketPage from "./src/pages/CreateTicketPage";
-import ViewStatusTicketPage from "./src/pages/ViewStatusTicketPage";
+// import ViewStatusTicketPage from "./src/pages/ViewStatusTicketPage";
 import ReimbursementStatusPage from "./src/pages/ReimbursementStatusPage";
 import ReimbursementGrantPage from "./src/pages/ReimbursementGrantPage";
 import RecoverPassword from "./src/pages/RecoverPassword";
@@ -143,10 +143,10 @@ export const route = createBrowserRouter([
             path: "support-portal/create-new-ticket",
             element: <CreateTicketPage />,
           },
-          {
-            path: "support-portal/ticket-status",
-            element: <ViewStatusTicketPage />,
-          },
+          // {
+          //   path: "support-portal/ticket-status",
+          //   element: <ViewStatusTicketPage />,
+          // },
           {
             path: "reimbursement/status",
             element: <ReimbursementStatusPage />,

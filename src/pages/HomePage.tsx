@@ -3,7 +3,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-
   Typography,
 } from "@mui/material";
 import ImageCard from "../components/reuseable/ImageCard";
@@ -24,8 +23,6 @@ import {
   shouldOpenAiSurveyOnHome,
   syncAiSurveyStateWithUser,
 } from "../helper/aiSurveyStorage";
-
-
 
 // Create dynamic keyframes based on screen size
 const getScrollKeyframes = (fromX: string, toX: string) => keyframes`
@@ -61,7 +58,7 @@ const HomePage = () => {
     }
 
     setShowCyberAlert(
-      localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true
+      localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true,
     );
   }, [aiSurveySessionDone]);
 
@@ -81,9 +78,9 @@ const HomePage = () => {
   };
 
   return (
-    <div className="w-full  h-[calc(100vh-90px)] flex justify-center overflow-y-auto will-change-transform">
-      <div className="w-full flex justify-start items-start flex-col">
-        <div className="w-[98%]  max-w-[380px] sm:max-w-[500px] bg-[#fefeea] md:max-w-[800px] lg:max-w-[1200px] xl:max-w-[1500px] flex  items-center mx-4 my-4 mb-6 border border-[#fec300ff] mx-auto ">
+    <div className="w-full  h-[calc(100vh-90px)] flex   flex-col overflow-y-auto will-change-transform">
+      <div className="w-full  ">
+        <div className="w-[calc(100%-32px)]  max-w-[500px] sm:max-w-[100%] bg-[#fefeea]  flex  items-center mx-4 my-4 mb-6 border border-[#fec300ff] mx-auto ">
           <div className="w-40 sm:w-30 p-1  bg-[#fec300ff] relative">
             <div
               style={{
@@ -120,7 +117,7 @@ const HomePage = () => {
                 fontWeight: 500,
                 "&:hover": {
                   animationPlayState: "paused",
-                }
+                },
               }}
             >
               We’re excited to introduce you to the enhanced version of ESS
@@ -161,9 +158,9 @@ const HomePage = () => {
                     ? "md:grid-cols-[2fr_1fr]"
                     : "lg:grid-cols-[3fr_1fr]"
                 }  gap-4  overflow-visible px-4  `
-          }   `}
+          } min-h-[calc(100vh-90px)]  `}
         >
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 w-full lg:grid-cols-4 xl:grid-cols-5  gap-x-8 px-4  mx-auto overflow-visible ">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 w-full lg:grid-cols-4   gap-x-8 px-4   overflow-visible ">
             {homeData.map((item: homeMenuTypes) => (
               <ImageCard
                 key={item.id}
@@ -173,15 +170,13 @@ const HomePage = () => {
               />
             ))}
           </div>
-          <div className="w-full  hidden md:block">
+          <div className="w-full   hidden md:block">
             <NoticeboardCard />
           </div>
-             
         </div>
-            <CustomFooter />
-            
-             
       </div>
+      <CustomFooter />
+
       <AISurveyDialog
         open={aiSurveyOpen}
         onClose={handleAiSurveyDismiss}
@@ -198,7 +193,6 @@ const HomePage = () => {
           handleCyberAlertConfirm();
         }}
       />
-  
     </div>
   );
 };

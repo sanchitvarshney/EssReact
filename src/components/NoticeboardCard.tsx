@@ -94,7 +94,7 @@ const NoticeboardCard: React.FC = () => {
       )}
 
       {dummyData.length === 0 ? (
-        <div className=" py-2  flex justify-center items-center px-4">
+        <div className=" py-2  flex justify-start px-4">
           <div className="max-w-xl text-sm text-gray-700">
             {/* <h2 className="text-lg font-semibold mb-2"> HR Notice Board</h2> */}
             <p className="mb-3">

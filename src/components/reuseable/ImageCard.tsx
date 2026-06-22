@@ -64,7 +64,6 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
         boxShadow: "none",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
         backgroundColor: "transparent",
         transition: "transform 0.3s ease-in-out",
         "&:hover": {

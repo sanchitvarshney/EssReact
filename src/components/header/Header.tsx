@@ -83,9 +83,10 @@ const dispatch = useDispatch();
         backgroundColor: "#ffffff",
         paddingTop: 1.5,
         paddingBottom: 1.5,
+        
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" >
         <Toolbar disableGutters>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <img
