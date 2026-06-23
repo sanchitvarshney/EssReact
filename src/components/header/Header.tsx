@@ -61,6 +61,7 @@ function Header() {
         return;
       }
       navigate(`/employee/details/${empCode}`);
+      dispatch(setEmplyeeCode({ empCode: "" }));
       setSearchText("");
     }
   }, [empCode]);

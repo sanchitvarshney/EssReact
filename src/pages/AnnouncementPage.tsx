@@ -21,7 +21,7 @@ import AnnouncementList from "../components/AnnouncementList";
 
 const AnnouncementPage = () => {
   const { showToast } = useToast();
-  const [postFilter, setPostFilter] = useState<string>("");
+  const [postFilter, setPostFilter] = useState<string>("all");
   const [expandedPanel, setExpandedPanel] = useState("birthdays");
 
   const [

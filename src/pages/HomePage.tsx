@@ -54,7 +54,7 @@ const HomePage = () => {
       return;
     }
     setShowCyberAlert(
-      localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true
+      localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true,
     );
   }, [aiSurveySessionDone]);
 
@@ -75,13 +75,14 @@ const HomePage = () => {
 
   return (
     <div className="w-full h-[calc(100vh-78px)] flex flex-col overflow-y-auto will-change-transform">
-
       {/* What's New marquee banner */}
       <div className="mx-4 mt-4 mb-5 flex items-stretch bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex-shrink-0">
         {/* Label */}
-        <div className="relative flex-shrink-0 bg-[#fec300ff] flex items-center px-3">
+        <div className="relative flex-shrink-0 bg-[#fec300ff]  flex items-center px-3">
           <CampaignIcon sx={{ color: "#fff", fontSize: 18, mr: 0.5 }} />
-          <span className="text-white font-bold text-sm whitespace-nowrap">What's New</span>
+          <span className="text-white font-bold text-sm whitespace-nowrap">
+            What's New
+          </span>
           {/* Triangle pointer */}
           <div
             style={{
@@ -93,12 +94,21 @@ const HomePage = () => {
               borderTop: "22px solid transparent",
               borderBottom: "22px solid transparent",
               borderLeft: "12px solid #fec300ff",
+            filter: "drop-shadow(-2px 0 2px rgba(0, 0, 0, 0.1))",
             }}
           />
         </div>
 
         {/* Scrolling text */}
-        <Box sx={{ width: "100%", overflow: "hidden", whiteSpace: "nowrap", pl: "20px", py: "10px" }}>
+        <Box
+          sx={{
+            width: "100%",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            pl: "20px",
+            py: "10px",
+          }}
+        >
           <Box
             component="span"
             sx={{
@@ -112,7 +122,10 @@ const HomePage = () => {
               "&:hover": { animationPlayState: "paused" },
             }}
           >
-            Welcome to the Employee Self-Service Portal. You can mark attendance, apply for leave, access your payslips, update your profile, and manage your work-related requests — all from a single platform. For any assistance, please reach out to your HR team.
+            We're excited to introduce you to the enhanced version of ESS
+            (Employee Self-Service) — redesigned with a fresh look, improved
+            performance, and user-friendly features to make your experience
+            smoother and more efficient than ever before.
           </Box>
         </Box>
       </div>
@@ -151,7 +164,9 @@ const HomePage = () => {
           isSmallDevice
             ? "w-full px-4"
             : `grid ${
-                isMediamDevice ? "md:grid-cols-[2fr_1fr]" : "lg:grid-cols-[3fr_1fr]"
+                isMediamDevice
+                  ? "md:grid-cols-[2fr_1fr]"
+                  : "lg:grid-cols-[3fr_1fr]"
               } gap-4 px-4`
         }`}
       >

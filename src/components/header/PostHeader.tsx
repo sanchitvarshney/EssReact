@@ -15,7 +15,7 @@ import CreateNewPostPage from "../../pages/CreateNewPostPage";
 import CustomTextInput from "../reuseable/CustomTextInput";
 
 const postOption = [
-  { label: "All Posts", value: "" },
+  { label: "All Posts", value: "all" },
   { label: "Anniversary", value: "WOKANV" },
   { label: "Birthday", value: "BIRTHDAY" },
   { label: "New Hire", value: "NEWHIRES" },
