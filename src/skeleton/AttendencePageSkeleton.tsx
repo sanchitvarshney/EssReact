@@ -12,12 +12,8 @@ const AttendencePageSkeleton = () => (
 
     {/* Attendance summary table */}
     <div className="flex-shrink-0 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-50">
-        {[160, 100, 90, 90, 80, 80, 80].map((w, i) => (
-          <Skeleton key={i} variant="text" width={w} height={18} sx={{ borderRadius: 1 }} />
-        ))}
-      </div>
-      {[...Array(3)].map((_, i) => (
+     
+      {[...Array(2)].map((_, i) => (
         <div key={i} className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 last:border-0">
           {[160, 100, 90, 90, 80, 80, 80].map((w, j) => (
             <Skeleton key={j} variant="text" width={w} height={16} sx={{ borderRadius: 1 }} />
@@ -29,7 +25,7 @@ const AttendencePageSkeleton = () => (
     {/* Toolbar: legend pills + view toggle */}
     <div className="flex-shrink-0 mt-3 bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-2.5 flex items-center justify-between gap-4">
       <div className="flex items-center gap-2 overflow-hidden">
-        {[...Array(8)].map((_, i) => (
+        {[...Array(4)].map((_, i) => (
           <Skeleton
             key={i}
             variant="rectangular"
