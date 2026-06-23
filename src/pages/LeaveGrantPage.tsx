@@ -24,7 +24,9 @@ import ConfirmationModal from "../components/reuseable/ConfirmationModal";
 /* ── Info row used inside the drawer ── */
 const InfoRow = ({ label, value }: { label: string; value?: any }) => (
   <div className="flex flex-col gap-0.5">
-    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">{label}</span>
+    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">
+      {label}
+    </span>
     <span className="text-sm font-medium text-gray-800">{value || "—"}</span>
   </div>
 );
@@ -35,6 +37,9 @@ const LeaveGrantPage = () => {
   const [reason, setReason] = useState<string>("");
   const [rejectedData, setRejectedData] = useState<any | null>(null);
   const [isRejected, setIsRejected] = useState(false);
+  const [pendingAction, setPendingAction] = useState<
+    "approve" | "reject" | null
+  >(null);
 
   const [getLeaveList, { data: leaveGrantData, isLoading: leaveGrantLoading }] =
     useGetLeaveListMutation();
@@ -60,12 +65,19 @@ const LeaveGrantPage = () => {
     });
   };
 
-  const handleReject = (data: any, type: string) => {
+  const handleReject = (data: any, type: "approve" | "reject") => {
+    setPendingAction(type);
     approvalGrantLeave({
       url: type === "approve" ? "LeaveApprove" : "LeaveReject",
-      body: { empcode: data?.empcode, trackid: data?.trackid, status: data?.status, reason },
+      body: {
+        empcode: data?.empcode,
+        trackid: data?.trackid,
+        status: data?.status,
+        reason,
+      },
     })
       .then((res: any) => {
+        setPendingAction(null);
         if (res?.status === "error") {
           showToast(res?.data?.message, "error");
           return;
@@ -76,10 +88,12 @@ const LeaveGrantPage = () => {
         setView(false);
       })
       .catch((err) => {
+        setPendingAction(null);
         showToast(
-          err?.data?.message?.msg || err?.message ||
-          "An unexpected error has occurred.",
-          "error"
+          err?.data?.message?.msg ||
+            err?.message ||
+            "An unexpected error has occurred.",
+          "error",
         );
       });
   };
@@ -90,7 +104,6 @@ const LeaveGrantPage = () => {
 
   return (
     <div className="h-[calc(100vh-78px)] flex flex-col overflow-hidden px-3 py-4 w-full">
-
       {/* Page header */}
       <div className="flex items-center gap-2 mb-3 flex-shrink-0">
         <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
@@ -104,7 +117,8 @@ const LeaveGrantPage = () => {
       </div>
 
       {/* Grid */}
-      {leaveGrantData?.data?.length === 0 || leaveGrantData?.status === "error" ? (
+      {leaveGrantData?.data?.length === 0 ||
+      leaveGrantData?.status === "error" ? (
         <div className="flex-1 flex items-center justify-center">
           <EmptyData />
         </div>
@@ -139,18 +153,22 @@ const LeaveGrantPage = () => {
           </div>
         ) : (
           <div className="w-full flex flex-col h-full">
-
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 flex-shrink-0">
               <div className="flex items-center gap-2">
                 <div className="w-1 h-5 rounded-full bg-[#2eacb3]" />
                 <EventNoteIcon sx={{ fontSize: 16, color: "#2eacb3" }} />
-                <span className="text-sm font-bold text-gray-800">Leave Grant Details</span>
+                <span className="text-sm font-bold text-gray-800">
+                  Leave Grant Details
+                </span>
               </div>
               <IconButton
                 size="small"
                 onClick={() => setView(false)}
-                sx={{ color: "#94a3b8", "&:hover": { bgcolor: "#f1f5f9", color: "#475569" } }}
+                sx={{
+                  color: "#94a3b8",
+                  "&:hover": { bgcolor: "#f1f5f9", color: "#475569" },
+                }}
               >
                 <CloseIcon sx={{ fontSize: 18 }} />
               </IconButton>
@@ -158,7 +176,6 @@ const LeaveGrantPage = () => {
 
             {/* Scrollable body */}
             <div className="flex-1 overflow-y-auto custom-scrollbar-for-menu px-5 py-4">
-
               {/* Employee card (view mode) */}
               <LeaveGrantCard maxWidth="100%" isView={true} data={details} />
 
@@ -166,33 +183,62 @@ const LeaveGrantPage = () => {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
                 <div className="flex flex-col gap-0.5">
                   <div className="flex items-center gap-1 mb-0.5">
-                    <AccountBalanceWalletIcon sx={{ fontSize: 12, color: "#2eacb3" }} />
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">Leave Balance</span>
+                    <AccountBalanceWalletIcon
+                      sx={{ fontSize: 12, color: "#2eacb3" }}
+                    />
+                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">
+                      Leave Balance
+                    </span>
                   </div>
-                  <span className="text-lg font-bold text-[#2eacb3]">{details?.leavebalance ?? "—"}</span>
+                  <span className="text-lg font-bold text-[#2eacb3]">
+                    {details?.leavebalance ?? "—"}
+                  </span>
                 </div>
-                <InfoRow label="Leave Type" value={details?.leavetype ? `${details.leavetype} Leave` : undefined} />
+                <InfoRow
+                  label="Leave Type"
+                  value={
+                    details?.leavetype
+                      ? `${details.leavetype} Leave`
+                      : undefined
+                  }
+                />
                 <div className="flex flex-col gap-0.5">
                   <div className="flex items-center gap-1 mb-0.5">
-                    <CalendarMonthIcon sx={{ fontSize: 12, color: "#94a3b8" }} />
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">From Date</span>
+                    <CalendarMonthIcon
+                      sx={{ fontSize: 12, color: "#94a3b8" }}
+                    />
+                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">
+                      From Date
+                    </span>
                   </div>
-                  <span className="text-sm font-medium text-gray-800">{details?.fromdt || "—"}</span>
+                  <span className="text-sm font-medium text-gray-800">
+                    {details?.fromdt || "—"}
+                  </span>
                 </div>
                 <div className="flex flex-col gap-0.5">
                   <div className="flex items-center gap-1 mb-0.5">
-                    <CalendarMonthIcon sx={{ fontSize: 12, color: "#94a3b8" }} />
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">To Date</span>
+                    <CalendarMonthIcon
+                      sx={{ fontSize: 12, color: "#94a3b8" }}
+                    />
+                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">
+                      To Date
+                    </span>
                   </div>
-                  <span className="text-sm font-medium text-gray-800">{details?.todt || "—"}</span>
+                  <span className="text-sm font-medium text-gray-800">
+                    {details?.todt || "—"}
+                  </span>
                 </div>
               </div>
 
               {/* Reason */}
               {details?.reason && (
                 <div className="mt-4 p-4 bg-white rounded-2xl border border-gray-100">
-                  <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide block mb-1">Reason</span>
-                  <p className="text-sm text-gray-700 leading-relaxed">{details.reason}</p>
+                  <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide block mb-1">
+                    Reason
+                  </span>
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    {details.reason}
+                  </p>
                 </div>
               )}
 
@@ -200,7 +246,9 @@ const LeaveGrantPage = () => {
               <div className="mt-4">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-1 h-4 rounded-full bg-[#2eacb3]" />
-                  <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">Breakup</span>
+                  <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">
+                    Breakup
+                  </span>
                 </div>
                 <SessionTable rows={details?.breakup} />
               </div>
@@ -216,32 +264,36 @@ const LeaveGrantPage = () => {
                 rows={2}
               />
               <div className="flex gap-2 justify-end">
-                {rejectGrantLeaveLoading ? (
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <CircularProgress size={18} sx={{ color: "#2eacb3" }} />
-                    <span>Processing…</span>
-                  </div>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => handleReject(details, "approve")}
-                      className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 transition-all duration-200 cursor-pointer shadow-sm"
-                    >
-                      <CheckCircleIcon sx={{ fontSize: 16 }} />
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => {
-                        setRejectedData(details);
-                        setIsRejected(true);
-                      }}
-                      className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 transition-all duration-200 cursor-pointer shadow-sm"
-                    >
-                      <CancelIcon sx={{ fontSize: 16 }} />
-                      Reject
-                    </button>
-                  </>
-                )}
+                {/* Approve */}
+                <button
+                  onClick={() => handleReject(details, "approve")}
+                  disabled={rejectGrantLeaveLoading}
+                  className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer shadow-sm"
+                >
+                  {pendingAction === "approve" ? (
+                    <CircularProgress size={14} sx={{ color: "#fff" }} />
+                  ) : (
+                    <CheckCircleIcon sx={{ fontSize: 16 }} />
+                  )}
+                  {pendingAction === "approve" ? "Approving…" : "Approve"}
+                </button>
+
+                {/* Reject */}
+                <button
+                  onClick={() => {
+                    setRejectedData(details);
+                    setIsRejected(true);
+                  }}
+                  disabled={rejectGrantLeaveLoading}
+                  className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer shadow-sm"
+                >
+                  {pendingAction === "reject" ? (
+                    <CircularProgress size={14} sx={{ color: "#fff" }} />
+                  ) : (
+                    <CancelIcon sx={{ fontSize: 16 }} />
+                  )}
+                  {pendingAction === "reject" ? "Rejecting…" : "Reject"}
+                </button>
               </div>
             </div>
           </div>
@@ -251,7 +303,9 @@ const LeaveGrantPage = () => {
       <ConfirmationModal
         open={isRejected}
         close={() => setIsRejected(false)}
-        aggree={() => handleReject(rejectedData, "reject")}
+        aggree={() =>
+          handleReject(rejectedData, "reject" as "approve" | "reject")
+        }
         title="Confirm Rejection"
         description="Are you sure you want to reject this leave request?"
       />
