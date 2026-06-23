@@ -20,7 +20,7 @@ import DataUsageIcon from "@mui/icons-material/DataUsage";
 
 import CustomToolTip from "../components/reuseable/CustomToolTip";
 import { useGetDocumentsMutation } from "../services/doc";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DocumentsPageSkeleton from "../skeleton/DocumentsPageSkeleton";
 import { useToast } from "../hooks/useToast";
 import EmptyData from "../components/reuseable/EmptyData";
@@ -40,8 +40,19 @@ const getFileCfg = (type: string) =>
 const DocumentsPage = () => {
   const { showToast } = useToast();
   const [getDocuments, { isLoading, data, error }] = useGetDocumentsMutation();
-  const [filteredData, setFilteredData] = useState<any[]>([]);
   const [search, setSearch] = useState("");
+
+  // Derived synchronously — no useEffect gap that causes EmptyData to flash
+  const filteredData = useMemo(() => {
+    const all: any[] = data?.data ?? [];
+    if (!search.trim()) return all;
+    const q = search.toLowerCase();
+    return all.filter(
+      (item: any) =>
+        item.file_type?.toLowerCase().includes(q) ||
+        item.name?.toLowerCase().includes(q),
+    );
+  }, [data?.data, search]);
 
   const fnOpenNewWindow = (link: string) => {
     const w = 1000,
@@ -64,10 +75,6 @@ const DocumentsPage = () => {
   };
 
   useEffect(() => {
-    if (data?.data) setFilteredData(data.data);
-  }, [data]);
-
-  useEffect(() => {
     getDocuments().unwrap();
   }, []);
 
@@ -78,23 +85,8 @@ const DocumentsPage = () => {
     showToast(errData?.message || "An unexpected error has occurred.", "error");
   }, [error]);
 
-  const handleSearch = (value: string) => {
-    setSearch(value);
-    if (!value.trim()) {
-      setFilteredData(data?.data || []);
-      return;
-    }
-    setFilteredData(
-      data?.data?.filter(
-        (item: any) =>
-          item.file_type.toLowerCase().includes(value.toLowerCase()) ||
-          item.name.toLowerCase().includes(value.toLowerCase()),
-      ) || [],
-    );
-  };
-
   return (
-    <div className="w-full p-4 h-[calc(100vh-90px)]">
+    <div className="w-full p-4 h-[calc(100vh-78px)]">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
@@ -125,7 +117,7 @@ const DocumentsPage = () => {
           size="small"
           placeholder="Search documents..."
           value={search}
-          onChange={(e) => handleSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           disabled={isLoading}
           InputProps={{
             startAdornment: (
@@ -153,7 +145,7 @@ const DocumentsPage = () => {
       ) : filteredData.length === 0 ? (
         <EmptyData />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 h-[calc(100vh-160px)] overflow-y-auto py-2 pr-1 custom-scrollbar-for-menu">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 h-[calc(100vh-150px)] overflow-y-auto py-2 pr-1 custom-scrollbar-for-menu">
           {filteredData.map((row: any) => {
             const cfg = getFileCfg(row?.file_type);
             return (

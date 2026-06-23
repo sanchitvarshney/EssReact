@@ -1,83 +1,116 @@
 import React, { useEffect, useState } from "react";
-
-// import { CustomButton } from "./ui/CustomButton";
-
 import EditIcon from "@mui/icons-material/Edit";
-import { IconButton, TextField, Typography } from "@mui/material";
-
 import CancelIcon from "@mui/icons-material/Cancel";
 import SaveIcon from "@mui/icons-material/Save";
+import BadgeIcon from "@mui/icons-material/Badge";
+import HomeIcon from "@mui/icons-material/Home";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import { IconButton, TextField } from "@mui/material";
 
+/* ── Single field display / edit ── */
 const Information = ({
   label,
   value,
   editMode,
   changeValue,
   name,
-}: // changeValue,
-// name,
-{
+}: {
   label: any;
   value: any;
   editMode: boolean;
   changeValue?: any;
   name?: string;
 }) => {
-  return (
-    <div className="flex flex-col gap-2">
-      {editMode ? (
-        <TextField
-          fullWidth
-          id="outlined-basic"
-          label={label}
-          name={name}
-          variant="outlined"
-          onChange={changeValue}
-          value={value}
-          size="small"
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              borderRadius: "4px",
-              backgroundColor: "#f9fafb",
+  if (editMode) {
+    return (
+      <TextField
+        fullWidth
+        id={name}
+        label={label}
+        name={name}
+        variant="outlined"
+        onChange={changeValue}
+        value={value}
+        size="small"
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "10px",
+            backgroundColor: "#f9fafb",
+            transition: "all 0.2s",
+            "& fieldset": { borderColor: "#e2e8f0" },
+            "&:hover fieldset": { borderColor: "#2eacb3" },
+            "&.Mui-focused fieldset": { borderColor: "#2eacb3" },
+          },
+          "& label.Mui-focused": { color: "#2eacb3" },
+          "& label": { fontSize: 13 },
+        }}
+      />
+    );
+  }
 
-              transition: "all 0.2s",
-              "& fieldset": {
-                borderColor: "#000",
-              },
-              "&:hover fieldset": {
-                borderColor: "#9ca3af",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#2eacb3",
-              },
-            },
-            "& label.Mui-focused": {
-              color: "#2eacb3",
-            },
-            "& label": {
-              fontWeight: "bold",
-            },
-          }}
-        />
-      ) : (
-        <div className="flex flex-col">
-          <span className="text-lg font-semibold">{`${label}`}</span>
-          <span className="text-base my-1">
-            {value === null || value === "" ? "N/A" : value}
-          </span>
-        </div>
-      )}
+  const isEmpty = value === null || value === "" || value === "--";
+  return (
+    <div className="flex flex-col gap-0.5">
+      <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">
+        {label}
+      </span>
+      <span className={`text-sm font-medium ${isEmpty ? "text-gray-300" : "text-gray-800"}`}>
+        {isEmpty ? "—" : value}
+      </span>
     </div>
   );
 };
 
-const EmployeeInformationPage = ({
-  // editMode = false,
-  data,
+/* ── Section header ── */
+const SectionHeader = ({
+  icon,
+  title,
+  editMode,
+  onToggleEdit,
+  onSave,
+  disabled = true,
 }: {
-  editMode?: boolean;
-  data: any;
-}) => {
+  icon: React.ReactNode;
+  title: string;
+  editMode: boolean;
+  onToggleEdit: () => void;
+  onSave?: () => void;
+  disabled?: boolean;
+}) => (
+  <div className="flex justify-between items-center px-5 py-3.5 border-b border-gray-50">
+    <div className="flex items-center gap-2">
+      <div className="w-1 h-5 rounded-full bg-[#2eacb3]" />
+      {icon}
+      <span className="text-sm font-bold text-gray-800">{title}</span>
+    </div>
+    <div className="flex gap-1">
+      {editMode && (
+        <IconButton size="small" onClick={onSave}>
+          <SaveIcon sx={{ fontSize: 18, color: "#2eacb3" }} />
+        </IconButton>
+      )}
+      <IconButton size="small" onClick={onToggleEdit} disabled={disabled}>
+        {editMode ? (
+          <CancelIcon sx={{ fontSize: 18, color: "#ef4444" }} />
+        ) : (
+          <EditIcon sx={{ fontSize: 18, color: "#94a3b8" }} />
+        )}
+      </IconButton>
+    </div>
+  </div>
+);
+
+/* ── Sub-section label (Current / Permanent Address) ── */
+const SubLabel = ({ label }: { label: string }) => (
+  <div className="col-span-full flex items-center gap-2 pt-1 pb-0">
+    <div className="w-2 h-2 rounded-full bg-[#2eacb3]/50" />
+    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wide">{label}</span>
+    <div className="flex-1 h-px bg-gray-100" />
+  </div>
+);
+
+/* ── Main component ── */
+const EmployeeInformationPage = ({ data }: { editMode?: boolean; data: any }) => {
   const [fields, setFields] = useState<any>({});
   const [editSection, setEditSection] = useState({
     basic: false,
@@ -85,397 +118,167 @@ const EmployeeInformationPage = ({
     emergency: false,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFields({ ...fields, [e.target.name]: e.target.value });
-  };
 
-  const handleUpdateInformation = () => {
-    // if (editSection.basic) {
-    //   const basic_payload = {
-    //   }
-    // } else if (editSection.contact) {
-    // } else {
-    // }
-    // const payload = {
-    //   other: {
-    //     hobbies: "Reading, Hiking",
-    //   },
-    //   identification: {
-    //     aadhaar_no: "123456789012",
-    //     identity_mark: "Mole on left cheek",
-    //   },
-    //   family: {
-    //     father: "John Doe",
-    //     mother: "Jane Doe",
-    //     anniversary_dt: "2000-06-15",
-    //     spouse: "Mary Doe",
-    //     child_count: 2,
-    //   },
-    //   benifits: {
-    //     esi: "ESI1234567",
-    //     uan: "UAN9876543210",
-    //     pan: "ABCDE1234F",
-    //   },
-    //   contact: {
-    //     permanent: {
-    //       house_no: "12A",
-    //       village: "Greenfield",
-    //       area: "Hilltop",
-    //       city: "Metropolis",
-    //       pincode: "560001",
-    //     },
-    //     correspondence: {
-    //       house_no: "34B",
-    //       village: "Lakeside",
-    //       area: "Sunset Avenue",
-    //       city: "Metropolis",
-    //       pincode: "560002",
-    //     },
-    //     emergency_a: {
-    //       house_no: "78C",
-    //       village: "Old Town",
-    //       area: "Riverwalk",
-    //       city: "Metropolis",
-    //       pincode: "560003",
-    //     },
-    //     passport: {
-    //       passport_no: "M1234567",
-    //       passport_office: "Delhi",
-    //       passport_issue_dt: "2015-05-20",
-    //       passport_exp_dt: "2025-05-19",
-    //     },
-    //     emergency_c: {
-    //       emer_cont_name: ["Alice", "Bob"],
-    //       emer_cont_relation: ["Sister", "Friend"],
-    //       emer_cont_mobile: ["9876543210", "8765432109"],
-    //     },
-    //   },
-    // };
-  };
+  const handleUpdateInformation = () => {};
 
   useEffect(() => {
     if (data?.result) {
-      const valueData = {
-        f_name: data?.result?.basic[0].father_name,
-        m_name: data?.result?.basic[0].mother_name,
-        spouse: data?.result?.basic[0].spouse,
-        uan: data?.result?.basic[0].uan,
-        esi: data?.result?.basic[0].esi,
-        dob: data?.result?.basic[0].dob,
-        joining: data?.result?.basic[0].doj,
-        marital_status: data?.result?.basic[0].marital_status,
-        religion: data?.result?.basic[0].religion,
-        nationality: data?.result?.basic[0].nationality,
-        email: data?.result?.basic[0].email,
-        mobile: data?.result?.basic[0].mobile,
-        address: data?.result?.basic[0].address,
-        city: data?.result?.basic[0].city,
-        state: data?.result?.basic[0].state,
-        country: data?.result?.basic[0].country,
-        pincode: data?.result?.basic[0].pincode,
-        pan: data?.result?.basic[0].pan,
+      setFields({
+        f_name: data.result.basic[0].father_name,
+        m_name: data.result.basic[0].mother_name,
+        spouse: data.result.basic[0].spouse,
+        uan: data.result.basic[0].uan,
+        esi: data.result.basic[0].esi,
+        dob: data.result.basic[0].dob,
+        joining: data.result.basic[0].doj,
+        marital_status: data.result.basic[0].marital_status,
+        religion: data.result.basic[0].religion,
+        nationality: data.result.basic[0].nationality,
+        email: data.result.basic[0].email,
+        mobile: data.result.basic[0].mobile,
+        address: data.result.basic[0].address,
+        city: data.result.basic[0].city,
+        state: data.result.basic[0].state,
+        country: data.result.basic[0].country,
+        pincode: data.result.basic[0].pincode,
+        pan: data.result.basic[0].pan,
 
-        c_house_no: data?.result?.c_address[0]?.house_no,
-        c_village: data?.result?.c_address[0]?.village,
-        c_area: data?.result?.c_address[0]?.area,
-        c_city: data?.result?.c_address[0]?.city,
-        c_state: data?.result?.c_address[0]?.state,
-        c_pincode: data?.result?.c_address[0]?.pincode,
-        p_house_no: data?.result?.p_address[0]?.house_no,
-        p_village: data?.result?.p_address[0]?.village,
-        p_area: data?.result?.p_address[0]?.area,
-        p_city: data?.result?.p_address[0]?.city,
-        p_state: data?.result?.p_address[0]?.state,
-        p_pincode: data?.result?.p_address[0]?.pincode,
-        e_name: data?.result?.e_contact[0]?.contact_name_a,
-        e_mobile: data?.result?.e_contact[0]?.a_contact,
-        b_name: data?.result?.e_contact[0]?.contact_name_b,
-        b_mobile: data?.result?.e_contact[0]?.b_contact,
-      };
-      setFields(valueData);
+        c_house_no: data.result.c_address[0]?.house_no,
+        c_village: data.result.c_address[0]?.village,
+        c_area: data.result.c_address[0]?.area,
+        c_city: data.result.c_address[0]?.city,
+        c_state: data.result.c_address[0]?.state,
+        c_pincode: data.result.c_address[0]?.pincode,
+
+        p_house_no: data.result.p_address[0]?.house_no,
+        p_village: data.result.p_address[0]?.village,
+        p_area: data.result.p_address[0]?.area,
+        p_city: data.result.p_address[0]?.city,
+        p_state: data.result.p_address[0]?.state,
+        p_pincode: data.result.p_address[0]?.pincode,
+
+        e_name: data.result.e_contact[0]?.contact_name_a,
+        e_mobile: data.result.e_contact[0]?.a_contact,
+        b_name: data.result.e_contact[0]?.contact_name_b,
+        b_mobile: data.result.e_contact[0]?.b_contact,
+      });
     }
   }, [data?.result]);
 
   return (
-    <div className=" my-6">
-      <div>
-        <div className="flex justify-between items-center">
-          <Typography
-            sx={{ fontSize: 20, fontWeight: 600, py: 2, color: "#2eacb3" }}
-          >
-            Basic Information
-          </Typography>
-          <div className="flex gap-2">
-            {editSection.basic && (
-              <IconButton onClick={handleUpdateInformation}>
-                <SaveIcon sx={{ color: "#000" }} />
-              </IconButton>
-            )}
-            <IconButton
-              onClick={() =>
-                setEditSection((prev) => ({ ...prev, basic: !prev.basic }))
-              }
-              disabled
-            >
-              {editSection.basic ? (
-                <CancelIcon sx={{ color: "red" }} />
-              ) : (
-                <EditIcon sx={{ color: "#000" }} />
-              )}
-            </IconButton>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
-          <Information
-            label={"Father Name"}
-            value={fields?.f_name || "--"}
-            editMode={editSection.basic}
-            changeValue={handleChange}
-            name="f_name"
-          />
-          <Information
-            label={"Mother Name"}
-            value={fields?.m_name || "--"}
-            editMode={editSection.basic}
-            changeValue={handleChange}
-            name="m_name"
-          />
-          <Information
-            label={"Spouse"}
-            value={fields?.spouse || "--"}
-            editMode={editSection.basic}
-            changeValue={handleChange}
-            name="spouse"
-          />
-          <Information
-            label={"PAN Number"}
-            value={fields?.pan || "--"}
-            editMode={editSection.basic}
-            changeValue={handleChange}
-            name="pan"
-          />
-          <Information
-            label={"UAN Number"}
-            value={fields?.uan || "--"}
-            editMode={editSection.basic}
-            changeValue={handleChange}
-            name="uan"
-          />
-          <Information
-            label={"ESI Number"}
-            value={fields?.esi || "--"}
-            editMode={editSection.basic}
-            changeValue={handleChange}
-            name="esi"
-          />
-          <Information
-            label={"Date of joining"}
-            value={fields?.joining || "--"}
-            editMode={editSection.basic}
-            changeValue={handleChange}
-            name="joining"
-          />
-          <Information
-            label={"Date of birth"}
-            value={fields?.dob || "--"}
-            editMode={editSection.basic}
-            changeValue={handleChange}
-            name="dob"
-          />
-          <Information
-            label={"Office Mobile No."}
-            value={fields?.mobile || "--"}
-            editMode={editSection.basic}
-            changeValue={handleChange}
-            name="mobile"
-          />
-          <Information
-            label={"Email ID"}
-            value={fields?.email || "--"}
-            editMode={editSection.basic}
-            changeValue={handleChange}
-            name="email"
-          />
-        </div>
+    <div className="py-4 flex flex-col gap-4">
 
-        <div className="flex justify-between items-center mt-6">
-          <Typography
-            sx={{ fontSize: 20, fontWeight: 600, py: 2, color: "#2eacb3" }}
-          >
-            Contact Information
-          </Typography>
-          <div className="flex gap-2">
-            {editSection.contact && (
-              <IconButton onClick={() => {}}>
-                <SaveIcon sx={{ color: "#000" }} />
-              </IconButton>
-            )}
-            <IconButton
-              onClick={() =>
-                setEditSection((prev) => ({ ...prev, contact: !prev.contact }))
-              }
-              disabled
-            >
-              {editSection.contact ? (
-                <CancelIcon sx={{ color: "red" }} />
-              ) : (
-                <EditIcon sx={{ color: "#000" }} />
-              )}
-            </IconButton>
-          </div>
-        </div>
-        <Typography variant="body2" fontWeight={600} py={2} sx={{ ml: 2 }}>
-          Current Address
-        </Typography>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
-          <Information
-            label={"House No."}
-            value={`${fields?.c_house_no || "--" || "--" || "--"}`}
-            editMode={editSection.contact}
-            changeValue={handleChange}
-            name="c_house_no"
-          />
-          <Information
-            label={"Village"}
-            value={`${fields?.c_village || "--" || "--" || "--"}`}
-            editMode={editSection.contact}
-            changeValue={handleChange}
-            name="c_village"
-          />
-          <Information
-            label={"Area"}
-            value={`${fields?.c_area || "--" || "--" || "--"}`}
-            editMode={editSection.contact}
-            changeValue={handleChange}
-            name="c_area"
-          />
-          <Information
-            label={"City"}
-            value={`${fields?.c_city || "--" || "--" || "--"}`}
-            editMode={editSection.contact}
-            changeValue={handleChange}
-            name="c_city"
-          />
-          <Information
-            label={"State"}
-            value={`${fields?.c_state || "--" || "--" || "--"}`}
-            editMode={editSection.contact}
-            changeValue={handleChange}
-            name="c_state"
-          />
-        </div>
-        <Typography variant="body2" fontWeight={600} py={2} sx={{ ml: 2 }}>
-          Permanent Address
-        </Typography>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
-          <Information
-            label={"House No."}
-            value={`${fields?.p_house_no || "--" || "--"}`}
-            editMode={editSection.contact}
-            changeValue={handleChange}
-            name="p_house_no"
-          />
-          <Information
-            label={"Village"}
-            value={`${fields?.p_village || "--" || "--"}`}
-            editMode={editSection.contact}
-            changeValue={handleChange}
-            name="p_village"
-          />
-          <Information
-            label={"Area"}
-            value={`${fields?.p_area || "--" || "--"}`}
-            editMode={editSection.contact}
-            changeValue={handleChange}
-            name="p_area"
-          />
-          <Information
-            label={"City"}
-            value={`${fields?.p_city || "--" || "--"}`}
-            editMode={editSection.contact}
-            changeValue={handleChange}
-            name="p_city"
-          />
-          <Information
-            label={"State"}
-            value={`${fields?.p_state || "--"}`}
-            editMode={editSection.contact}
-            changeValue={handleChange}
-            name="p_state"
-          />
-        </div>
-
-        <div className="flex justify-between items-center mt-6">
-          <Typography
-            sx={{ fontSize: 20, fontWeight: 600, py: 2, color: "#2eacb3" }}
-          >
-            Emergency Contact
-          </Typography>
-          <div className="flex gap-2">
-            {editSection.emergency && (
-              <IconButton onClick={() => {}}>
-                <SaveIcon sx={{ color: "#000" }} />
-              </IconButton>
-            )}
-            <IconButton
-              onClick={() =>
-                setEditSection((prev) => ({
-                  ...prev,
-                  emergency: !prev.emergency,
-                }))
-              }
-              disabled
-            >
-              {editSection.emergency ? (
-                <CancelIcon sx={{ color: "red" }} />
-              ) : (
-                <EditIcon sx={{ color: "#000" }} />
-              )}
-            </IconButton>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-8 px-4 pl-10 ">
-          <Information
-            label={"Name"}
-            value={fields?.e_name || "--"}
-            editMode={editSection.emergency}
-            changeValue={handleChange}
-            name="e_name"
-          />
-          <Information
-            label={"Mobile Number"}
-            value={fields?.e_mobile || "--"}
-            editMode={editSection.emergency}
-            changeValue={handleChange}
-            name="e_mobile"
-          />
-          <Information
-            label={"Name"}
-            value={fields?.b_name || "--"}
-            editMode={editSection.emergency}
-            changeValue={handleChange}
-            name="b_name"
-          />
-          <Information
-            label={"Mobile Number"}
-            value={fields?.b_mobile || "--"}
-            editMode={editSection.emergency}
-            changeValue={handleChange}
-            name="b_mobile"
-          />
+      {/* ── Basic Information ── */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <SectionHeader
+          icon={<BadgeIcon sx={{ fontSize: 16, color: "#2eacb3" }} />}
+          title="Basic Information"
+          editMode={editSection.basic}
+          onToggleEdit={() => setEditSection((p) => ({ ...p, basic: !p.basic }))}
+          onSave={handleUpdateInformation}
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-5 p-5">
+          {[
+            { label: "Father Name", name: "f_name" },
+            { label: "Mother Name", name: "m_name" },
+            { label: "Spouse", name: "spouse" },
+            { label: "PAN Number", name: "pan" },
+            { label: "UAN Number", name: "uan" },
+            { label: "ESI Number", name: "esi" },
+            { label: "Date of Joining", name: "joining" },
+            { label: "Date of Birth", name: "dob" },
+            { label: "Office Mobile No.", name: "mobile" },
+            { label: "Email ID", name: "email" },
+          ].map(({ label, name }) => (
+            <Information
+              key={name}
+              label={label}
+              value={fields?.[name] || "--"}
+              editMode={editSection.basic}
+              changeValue={handleChange}
+              name={name}
+            />
+          ))}
         </div>
       </div>
 
-      {/* {editMode && (
-        <div className="w-full my-5 flex">
-          <CustomButton
-            className=" mx-auto px-12 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-102 transition-all duration-200 text-white"
-            // onClick={() => setEditMode((prev) => !prev)}
-          >
-            Update information Approval
-          </CustomButton>
+      {/* ── Contact Information ── */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <SectionHeader
+          icon={<HomeIcon sx={{ fontSize: 16, color: "#2eacb3" }} />}
+          title="Contact Information"
+          editMode={editSection.contact}
+          onToggleEdit={() => setEditSection((p) => ({ ...p, contact: !p.contact }))}
+          onSave={() => {}}
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-5 p-5">
+          <SubLabel label="Current Address" />
+          {[
+            { label: "House No.", name: "c_house_no" },
+            { label: "Village", name: "c_village" },
+            { label: "Area", name: "c_area" },
+            { label: "City", name: "c_city" },
+            { label: "State", name: "c_state" },
+          ].map(({ label, name }) => (
+            <Information
+              key={name}
+              label={label}
+              value={fields?.[name] || "--"}
+              editMode={editSection.contact}
+              changeValue={handleChange}
+              name={name}
+            />
+          ))}
+
+          <SubLabel label="Permanent Address" />
+          {[
+            { label: "House No.", name: "p_house_no" },
+            { label: "Village", name: "p_village" },
+            { label: "Area", name: "p_area" },
+            { label: "City", name: "p_city" },
+            { label: "State", name: "p_state" },
+          ].map(({ label, name }) => (
+            <Information
+              key={name}
+              label={label}
+              value={fields?.[name] || "--"}
+              editMode={editSection.contact}
+              changeValue={handleChange}
+              name={name}
+            />
+          ))}
         </div>
-      )} */}
+      </div>
+
+      {/* ── Emergency Contact ── */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <SectionHeader
+          icon={<LocalPhoneIcon sx={{ fontSize: 16, color: "#2eacb3" }} />}
+          title="Emergency Contact"
+          editMode={editSection.emergency}
+          onToggleEdit={() => setEditSection((p) => ({ ...p, emergency: !p.emergency }))}
+          onSave={() => {}}
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-5 p-5">
+          {[
+            { label: "Contact A — Name", name: "e_name" },
+            { label: "Contact A — Mobile", name: "e_mobile" },
+            { label: "Contact B — Name", name: "b_name" },
+            { label: "Contact B — Mobile", name: "b_mobile" },
+          ].map(({ label, name }) => (
+            <Information
+              key={name}
+              label={label}
+              value={fields?.[name] || "--"}
+              editMode={editSection.emergency}
+              changeValue={handleChange}
+              name={name}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

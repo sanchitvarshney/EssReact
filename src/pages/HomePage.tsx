@@ -74,7 +74,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="w-full h-[calc(100vh-80px)] flex flex-col overflow-y-auto will-change-transform">
+    <div className="w-full h-[calc(100vh-78px)] flex flex-col overflow-y-auto will-change-transform">
 
       {/* What's New marquee banner */}
       <div className="mx-4 mt-4 mb-5 flex items-stretch bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex-shrink-0">

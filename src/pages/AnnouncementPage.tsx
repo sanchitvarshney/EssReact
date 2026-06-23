@@ -207,7 +207,7 @@ const AnnouncementPage = () => {
       {dobLoading || waLoading || hireLoading || leaveLoading || vibeLoading ? (
         <AnnouncementPageSkeleton />
       ) : (
-        <div className="h-[calc(100vh-90px)] flex flex-col overflow-hidden px-3 py-4 w-full">
+        <div className="h-[calc(100vh-78px)] flex flex-col overflow-hidden px-3 py-4 w-full">
           {/* Page header */}
           <div className="flex items-center gap-2 mb-4">
             <div
