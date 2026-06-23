@@ -1,122 +1,70 @@
-// import { LinearProgress, Typography } from "@mui/material";
-
-// const AppLoader = ({ logo }: any) => {
-//   return (
-//     <div className="h-screen flex flex-col items-center justify-center w-full  bg-white">
-//       <img src={logo} alt="Mscorpres Logo" className="w-[500px] opacity-50" />
-
-//       <LinearProgress sx={{ width: "500px", height: "5px", mt: 2 }} />
-//       <Typography variant="h6" sx={{ mt: 4 }}>
-//         Loading ESS Portal
-//       </Typography>
-//     </div>
-//   );
-// };
-
-// export default AppLoader;
-
-
-// import { LinearProgress, Typography } from "@mui/material";
-
-// const AppLoader = ({ logo }: any) => {
-//   return (
-//     <div className="h-screen flex flex-col items-center justify-center w-full  bg-white">
-//       <img src={logo} alt="Mscorpres Logo" className="w-[500px] opacity-50" />
-
-//       <LinearProgress sx={{ width: "500px", height: "5px", mt: 2 }} />
-//       <Typography variant="h6" sx={{ mt: 4 }}>
-//         Loading ESS Portal
-//       </Typography>
-//     </div>
-//   );
-// };
-
-// export default AppLoader;
-
-import { LinearProgress } from "@mui/material";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const AppLoader = ({ logo }: any) => {
-  const text = "Loading ESS Portal...";
-  const [displayed, setDisplayed] = useState("");
+  const [dots, setDots] = useState(0);
+
   useEffect(() => {
-    let i = 0;
-
-    const interval = setInterval(() => {
-      setDisplayed(text.slice(0, i));
-      i++;
-
-      if (i === text.length) {
-        clearInterval(interval);
-      }
-    }, 120);
-
-    return () => clearInterval(interval);
+    const id = setInterval(() => setDots((d) => (d + 1) % 4), 480);
+    return () => clearInterval(id);
   }, []);
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center w-full bg-white">
+    <div className="h-screen w-full flex flex-col items-center justify-center bg-white select-none">
+
+      {/* Subtle radial glow behind logo */}
+      <div
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          width: 480,
+          height: 480,
+          background: "radial-gradient(circle, rgba(46,172,179,0.08) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* Logo */}
       <motion.img
         src={logo}
-        alt="Logo"
-        className="w-[500px] opacity-60"
-        initial={{ opacity: 0, scale: 0.6 }}
-        animate={{
-          opacity: 0.6,
-          scale: [0.98, 1.05, 0.98],
-        }}
+        alt="ESS Portal"
+        className="w-48 sm:w-64 md:w-80 max-w-[80vw] relative z-10"
+        initial={{ opacity: 0, scale: 0.82 }}
+        animate={{ opacity: 1, scale: [0.97, 1.02, 0.97] }}
         transition={{
-          opacity: { duration: 0.8 },
-          scale: {
-            duration: 2.5,
-            repeat: Infinity,
-            ease: "easeInOut",
-          },
-          y: {
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          },
-          x: {
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-          },
+          opacity: { duration: 0.7 },
+          scale: { duration: 3, repeat: Infinity, ease: "easeInOut" },
         }}
       />
 
-      <LinearProgress
-        sx={{
-          width: "500px",
-          height: "4px",
-          mt: 0,
-       
-        }}
-      />
-
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        style={{ marginTop: 5 }}
-      >
-        <h2
+      {/* Progress track */}
+      <div className="relative mt-10 w-56 sm:w-72 h-1 bg-gray-100 rounded-full overflow-hidden">
+        <motion.div
+          className="absolute inset-y-0 left-0 rounded-full"
           style={{
-            fontSize: "18px",
-            fontWeight: 500,
-            color: "#444",
-            textAlign: "center",
-            letterSpacing: "0.5px",
+            width: "45%",
+            background: "linear-gradient(90deg, transparent, #2eacb3, #00d4e4, transparent)",
           }}
-        >
-          {displayed}
-          <span>|</span>
-        </h2>
-      </motion.div>
+          initial={{ x: "-110%" }}
+          animate={{ x: "310%" }}
+          transition={{
+            duration: 1.4,
+            repeat: Infinity,
+            ease: "easeInOut",
+            repeatDelay: 0.15,
+          }}
+        />
+      </div>
+
+      {/* Loading text */}
+      <motion.p
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.35 }}
+        className="mt-4 text-xs font-semibold text-gray-400 tracking-widest uppercase"
+      >
+        Loading ESS Portal{".".repeat(dots)}
+      </motion.p>
     </div>
   );
 };
 
 export default AppLoader;
-
