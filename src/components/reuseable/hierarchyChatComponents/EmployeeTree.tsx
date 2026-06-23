@@ -12,6 +12,7 @@ type EmployeeTreeProps = {
   onUnhover?: () => void;
   children?: ReactNode;
 };
+
 export const EmployeeTree: FC<EmployeeTreeProps> = ({
   toggleNode,
   expandedNodes,
@@ -23,14 +24,13 @@ export const EmployeeTree: FC<EmployeeTreeProps> = ({
 }): JSX.Element => {
   const hasChildren = Boolean(node.children && node.children.length > 0);
   const isExpanded = expandedNodes[node.id] ?? true;
-  
 
   return (
     <TreeNode
       label={
         <NodeCard
           name={node.name}
-            role={node.other?.designation}
+          role={node.other?.designation}
           dept={node.other?.department}
           imageUrl={node.imageUrl}
           tags={node.tags}
@@ -44,7 +44,10 @@ export const EmployeeTree: FC<EmployeeTreeProps> = ({
       }
       key={node.id}
     >
-      {children}
+      {/* Explicitly pass null — not false — when there are no children to show.
+          react-organizational-chart suppresses the connector line only for null/undefined,
+          not for the falsy `false` value that JSX short-circuits produce. */}
+      {hasChildren && isExpanded ? children : null}
     </TreeNode>
   );
 };

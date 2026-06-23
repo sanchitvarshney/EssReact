@@ -5,7 +5,7 @@ import React from "react";
 
 interface CustomTextInputProps {
   field: any;
-  label: string;
+  label?: string;
   type?: string | number;
   select?: boolean;
   options?:any[] 

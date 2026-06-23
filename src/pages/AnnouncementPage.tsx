@@ -1,4 +1,4 @@
-import { Box, } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useInView } from "react-intersection-observer";
 
 import MilestonesAndEventsCard from "../components/MilestonesAndEventsCard";
@@ -207,54 +207,69 @@ const AnnouncementPage = () => {
       {dobLoading || waLoading || hireLoading || leaveLoading || vibeLoading ? (
         <AnnouncementPageSkeleton />
       ) : (
-        <Box className="w-full h-[calc(100vh-90px)] overflow-auto p-4 gap-4 grid  sm:grid-cols-[2fr_1fr] grid-cols-1 md:grid-cols-[2fr_1fr] lg:grid-cols-[3fr_1fr] ">
-          {" "}
-          <div className="flex flex-col gap-4 ">
-            <div className=" sticky top-[-30px] z-10 ">
-              <PostHeader
-                setFilter={handleSetFilter}
-                postFilter={postFilter}
-                onCreatePost={handleCreatePost}
-              />
-            </div>
-            <div className="">
-           
-                <AnnouncementList posts={posts} hasMore={hasMore} ref={ref} />
-            
-            </div>
+        <div className="h-[calc(100vh-90px)] flex flex-col overflow-hidden px-3 py-4 w-full">
+          {/* Page header */}
+          <div className="flex items-center gap-2 mb-4">
+            <div
+              style={{ backgroundColor: "#2eacb3" }}
+              className="w-1 h-7 rounded-full"
+            />
+            <Typography
+              sx={{
+                fontSize: { xs: 16, sm: 19 },
+                fontWeight: 700,
+                color: "#232324",
+              }}
+            >
+              Team Feed
+            </Typography>
           </div>
-         
-          {
-            <div className="flex flex-col items-center  sm:gap-4  hidden sm:flex">
+
+          {/* Two-column grid */}
+          <div className="flex-1 overflow-hidden grid grid-cols-1 sm:grid-cols-[2fr_1fr] lg:grid-cols-[3fr_1fr] gap-4">
+            {/* Left: post feed */}
+            <div className="flex flex-col h-full overflow-hidden">
+              <div className="flex-shrink-0 mb-3">
+                <PostHeader
+                  setFilter={handleSetFilter}
+                  postFilter={postFilter}
+                  onCreatePost={handleCreatePost}
+                />
+              </div>
+              <div className="flex-1 overflow-y-auto custom-scrollbar-for-menu">
+                <AnnouncementList posts={posts} hasMore={hasMore} ref={ref} />
+              </div>
+            </div>
+
+            {/* Right: sidebar */}
+            <div className="hidden sm:flex flex-col h-full overflow-y-auto custom-scrollbar-for-menu gap-3 pr-1">
               <MilestonesAndEventsCard
                 title="Current Month's Birthdays"
                 data={dobData}
                 expanded={expandedPanel === "birthdays"}
                 onChange={() => handlePanelChange("birthdays")}
               />
-
               <MilestonesAndEventsCard
-                title="Anniversary"
+                title="Anniversaries"
                 data={waList}
                 expanded={expandedPanel === "anniversary"}
                 onChange={() => handlePanelChange("anniversary")}
               />
-
               <MilestonesAndEventsCard
-                title="New Hire's"
+                title="New Hires"
                 data={hireData}
                 expanded={expandedPanel === "newhires"}
                 onChange={() => handlePanelChange("newhires")}
               />
               <AbsenceListPage
-                title="Today's On Office Absence"
+                title="Today's Absences"
                 data={leaveData?.data}
                 expanded={expandedPanel === "absence"}
                 onChange={() => handlePanelChange("absence")}
               />
             </div>
-          }{" "}
-        </Box>
+          </div>
+        </div>
       )}
     </>
   );

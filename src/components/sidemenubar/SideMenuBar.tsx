@@ -6,42 +6,38 @@ import {
   AccordionTrigger,
 } from "../ui/CustomAccordion";
 import React from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 
 import CustomToolTip from "../reuseable/CustomToolTip";
 
 import type { MenuItem } from "../../types/dummytypes";
 import { menu } from "../../dummydata/Menu";
 import { Avatar, Box, Divider, IconButton } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CustomDrawer from "../CustomDrawer";
 import { useDrawerContext } from "../../contextapi/DrawerContextApi";
 import { useAuth } from "../../contextapi/AuthContext";
 
 const getTextSize = (level: number) => {
   switch (level) {
-    case 0:
-      return "text-[16px]";
-    case 1:
-      return "text-[15px]";
-    case 2:
-      return "text-[17px]";
-    default:
-      return "text-[16px]";
+    case 0: return "text-[14px]";
+    case 1: return "text-[13px]";
+    default: return "text-[14px]";
   }
 };
+
 export const renderMenu = (
   menu: MenuItem[] | null,
   isNew: boolean,
   isExpended: boolean,
   setIsExpended: any,
-
   accordionValues: any,
   setAccordionValues: (value: { [key: string]: string }) => void,
   navigate?: any,
   level: number = 0,
-  path: string = ""
+  path: string = "",
+  activePath?: string
 ) => {
   const { toggleDrawerClose } = useDrawerContext();
   return (
@@ -53,44 +49,46 @@ export const renderMenu = (
         setAccordionValues({ ...accordionValues, [path]: val })
       }
     >
-      <ul className="flex flex-col gap-[10px] w-full">
+      <ul className="flex flex-col gap-1.5 w-full">
         {menu?.map((item: any, index: number) => {
           const currentPath = `${path}/${item.title}-${index}`;
+          const isActive = Boolean(
+            activePath && item?.path && item.path && activePath === item.path
+          );
+
           return (
             <li key={item.id || item.name + index} className="w-full">
               {item?.children ? (
                 <AccordionItem
                   value={currentPath}
-                  className={`border-0 w-full transition-all duration-100`}
+                  className="border-0 w-full transition-all duration-100"
                 >
-                  <div className={`flex flex-col w-full ${isExpended ? 'px-2' : 'px-0'}`}>
+                  <div className={`flex flex-col w-full ${isExpended ? "px-2" : "px-0"}`}>
                     {!isExpended ? (
-                      <>
-                        <CustomToolTip title={item?.title} placement="right">
-                          <IconButton
-                            className="w-full px-0 my-1.5 rounded-md cursor-pointer transition-all duration-600 ease-in-out hover:bg-gray-500/20 flex justify-center items-center"
-                            onClick={() => {
-                              if (!isExpended) {
-                                setIsExpended(true);
-                                setAccordionValues({
-                                  ...accordionValues,
-                                  [path]: currentPath,
-                                });
-                              }
-                            }}
-                          >
-                            <DynamicIcon
-                              name={item.icon}
-                              size="medium"
-                              // isExpended={isExpanded}
-                            />
-                          </IconButton>
-                        </CustomToolTip>
-                      </>
+                      <CustomToolTip title={item?.title} placement="right">
+                        <IconButton
+                          className="w-full px-0 my-1 rounded-xl cursor-pointer transition-all duration-200 flex justify-center items-center"
+                          sx={{
+                            "&:hover": { bgcolor: "#e0f7fa" },
+                            borderRadius: 2,
+                          }}
+                          onClick={() => {
+                            if (!isExpended) {
+                              setIsExpended(true);
+                              setAccordionValues({
+                                ...accordionValues,
+                                [path]: currentPath,
+                              });
+                            }
+                          }}
+                        >
+                          <DynamicIcon name={item.icon} size="medium" />
+                        </IconButton>
+                      </CustomToolTip>
                     ) : (
                       <>
                         <AccordionTrigger
-                          className="w-full py-2 m-0 leading-none hover:no-underline cursor-pointer rounded-md hover:bg-gray-500/20 hover:rounded-[20px]"
+                          className="w-full py-2 m-0 leading-none hover:no-underline cursor-pointer rounded-xl hover:bg-[#e0f7fa] transition-colors duration-150"
                           onClick={() => {
                             setAccordionValues({
                               ...accordionValues,
@@ -98,32 +96,27 @@ export const renderMenu = (
                             });
                           }}
                         >
-                          <div className="w-full px-2 flex items-center cursor-pointer rounded-md gap-2 min-w-0">
-                            {isNew && (
-                              <DynamicIcon name={item.icon} size="medium" />
-                            )}
-                            <span
-                              className={`${getTextSize(level)} font-[500] truncate`}
-                            >
+                          <div className="w-full px-2 flex items-center cursor-pointer gap-2.5 min-w-0">
+                            {isNew && <DynamicIcon name={item.icon} size="medium" />}
+                            <span className={`${getTextSize(level)} font-medium truncate text-gray-700`}>
                               {item.title}
                             </span>
                           </div>
                         </AccordionTrigger>
 
                         {item.children && (
-                          <AccordionContent className="mx-2 border-l-2 border-black">
+                          <AccordionContent className="mx-2 border-l-2 border-[#2eacb3]/40 pl-1">
                             {renderMenu(
                               item.children,
                               false,
                               isExpended,
                               setIsExpended,
-
                               accordionValues,
                               setAccordionValues,
                               navigate,
                               level + 1,
-
-                              currentPath
+                              currentPath,
+                              activePath
                             )}
                           </AccordionContent>
                         )}
@@ -133,29 +126,30 @@ export const renderMenu = (
                 </AccordionItem>
               ) : (
                 <div
-                  className={`flex items-center justify-between w-full ${isExpended ? 'px-2' : 'px-0'} rounded-md`}
+                  className={`flex items-center justify-between w-full ${isExpended ? "px-2" : "px-0"} rounded-xl`}
                 >
                   {!isExpended ? (
                     <CustomToolTip
                       title={isExpended ? "" : item?.title}
-                      placement={"right"}
+                      placement="right"
                     >
                       <IconButton
-                        className={`w-full rounded-md cursor-pointer p-0 flex items-center justify-center hover:bg-gray-500/20 hover:rounded-[20px]`}
+                        className="w-full rounded-xl cursor-pointer p-0 flex items-center justify-center"
+                        sx={{
+                          bgcolor: isActive ? "#e0f7fa" : "transparent",
+                          "&:hover": { bgcolor: "#e0f7fa" },
+                          borderRadius: 2,
+                          py: 0.75,
+                        }}
                         onClick={() => {
                           navigate(item?.path);
                           setAccordionValues({});
                           toggleDrawerClose();
                         }}
                       >
-                        {isNew && (
-                          <DynamicIcon name={item.icon} size="medium" />
-                        )}
-
+                        {isNew && <DynamicIcon name={item.icon} size="medium" />}
                         {isExpended && (
-                          <span
-                            className={`${getTextSize(level)} font-[500] ml-2 truncate`}
-                          >
+                          <span className={`${getTextSize(level)} font-medium ml-2 truncate`}>
                             {item.title}
                           </span>
                         )}
@@ -164,20 +158,22 @@ export const renderMenu = (
                   ) : (
                     <Link
                       to={item?.path}
-                      className={`w-full rounded-md cursor-pointer p-2 flex items-center gap-[10px] min-w-0 ${
-                        isExpended &&
-                        " hover:bg-gray-500/20 hover:rounded-[20px]"
-                      } 
-                      `}
+                      className={`relative w-full rounded-xl cursor-pointer py-2 px-2.5 flex items-center gap-2.5 min-w-0 transition-colors duration-150 ${
+                        isActive
+                          ? "bg-[#e0f7fa] text-[#0097a7]"
+                          : "hover:bg-[#e0f7fa] hover:text-[#2eacb3] text-gray-700"
+                      }`}
                       onClick={() => {
                         setAccordionValues({});
                         toggleDrawerClose();
                       }}
                     >
+                      {isActive && (
+                        <div className="absolute left-0 top-2 bottom-2 w-[3px] rounded-full bg-[#2eacb3]" />
+                      )}
                       {isNew && <DynamicIcon name={item.icon} size="medium" />}
-
                       {isExpended && (
-                        <span className={`${getTextSize(level)} font-[500] truncate`}>
+                        <span className={`${getTextSize(level)} ${isActive ? "font-semibold" : "font-medium"} truncate`}>
                           {item.title}
                         </span>
                       )}
@@ -195,7 +191,6 @@ export const renderMenu = (
 
 interface CustomSideBarMenuProps {
   children?: React.ReactNode;
-  //   item:any
 }
 
 const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
@@ -203,104 +198,151 @@ const SideMenuBar: React.FC<CustomSideBarMenuProps> = () => {
   const { isExpended, setIsExpended, accordionValues, setAccordionValues } =
     useDrawerContext();
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
-    <div className="w-full h-[calc(100vh-90px)] flex flex-row overflow-hidden">
+    <div className="w-full h-[calc(100vh-78px)] flex flex-row overflow-hidden">
       <Box sx={{ display: { xs: "none", md: "flex" } }}>
         {/* Sidebar container */}
         <div
           className={`${
-            isExpended ? "w-[280px] min-w-[280px] max-w-[320px]" : "w-[60px] min-w-[60px]"
-          } flex flex-col transition-all shadow-md z-999 shadow-[#2eacb3] duration-500 ease-in-out overflow-hidden`}
+            isExpended
+              ? "w-[260px] min-w-[260px] max-w-[260px]"
+              : "w-[60px] min-w-[60px]"
+          } flex flex-col transition-all duration-500 ease-in-out overflow-hidden bg-white border-r border-gray-100`}
+          style={{ boxShadow: "2px 0 12px rgba(0,0,0,0.05)" }}
         >
-          {/* Profile section */}
+          {/* Profile section (expanded) */}
           {isExpended && (
             <>
-              {" "}
-              <div className="flex flex-col justify-center items-center px-2 py-1 transition-all duration-500 ease-in-out min-w-0">
-                <div className="flex ml-auto mt-1">
+              <div
+                className="flex flex-col items-center px-4 pt-3 pb-5 min-w-0 transition-all duration-500 ease-in-out"
+                style={{
+                  background: "linear-gradient(160deg, #e0f7fa 0%, #f8fafc 100%)",
+                }}
+              >
+                {/* Collapse button */}
+                <div className="flex w-full justify-end mb-3">
                   <CustomToolTip title="Collapse" placement="right">
                     <IconButton
-                      className="cursor-pointer rounded-md transition-all duration-300 ease-in-out hover:bg-gray-100"
+                      size="small"
                       onClick={() => setIsExpended(false)}
+                      sx={{
+                        color: "#64748b",
+                        borderRadius: 1.5,
+                        "&:hover": { bgcolor: "rgba(255,255,255,0.7)", color: "#2eacb3" },
+                        transition: "all 0.2s",
+                      }}
                     >
-                      <ArrowBackIcon />
+                      <ArrowBackIosNewIcon sx={{ fontSize: 14 }} />
                     </IconButton>
                   </CustomToolTip>
                 </div>
-                <div className="flex flex-col items-center text-center py-1 gap-y-1 w-full min-w-0">
-                  <Avatar
-                    //@ts-ignore
-                    alt={user?.name}
-                    //@ts-ignore
-                    src={user?.imgUrl}
-                    sx={{
-                      width: 80,
-                      height: 80,
-                      backgroundColor: "#2eacb3",
-                      pointerEvents: "none",
-                      userSelect: "none",
-                    }}
-                  />
-                  <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold truncate">
-                    {/*@ts-ignore */}
-                    {user?.name}
-                  </h2>
-                  <h2 className="break-words max-w-full text-[0.92rem] font-medium truncate">
+
+                {/* Avatar */}
+                <Avatar
+                  //@ts-ignore
+                  alt={user?.name}
+                  //@ts-ignore
+                  src={user?.imgUrl}
+                  sx={{
+                    width: 72,
+                    height: 72,
+                    backgroundColor: "#2eacb3",
+                    border: "3px solid #fff",
+                    boxShadow: "0 4px 16px rgba(46,172,179,0.25)",
+                    pointerEvents: "none",
+                    userSelect: "none",
+                  }}
+                />
+
+                {/* Name */}
+                <h2 className="mt-3 text-[0.95rem] font-bold text-gray-800 truncate max-w-full text-center leading-snug">
+                  {/* @ts-ignore */}
+                  {user?.name}
+                </h2>
+
+                {/* Role */}
+                {/* @ts-ignore */}
+                {user?.role && (
+                  <p className="text-[0.78rem] font-medium text-gray-500 truncate max-w-full text-center mt-0.5">
                     {/* @ts-ignore */}
                     {user?.role}
-                  </h2>
-                  <h2 className="break-words max-w-full text-[0.90rem] font-medium truncate">
+                  </p>
+                )}
+
+                {/* Department */}
+                {/* @ts-ignore */}
+                {user?.dept && (
+                  <p className="text-[0.75rem] text-gray-400 truncate max-w-full text-center">
                     {/* @ts-ignore */}
                     {user?.dept}
-                  </h2>
-                  <p className="break-words max-w-full text-[0.9rem] font-medium truncate">
+                  </p>
+                )}
+
+                {/* Employee ID pill */}
+                {/* @ts-ignore */}
+                {user?.id && (
+                  <span className="mt-2.5 text-[0.7rem] font-mono font-semibold text-[#2eacb3] bg-white border border-[#2eacb3]/30 px-3 py-0.5 rounded-full shadow-sm">
                     {/* @ts-ignore */}
                     {user?.id}
-                  </p>
-                </div>
+                  </span>
+                )}
               </div>
-              <Divider className="w-[90%] self-center" />{" "}
+
+              <Divider sx={{ borderColor: "#e0f7fa" }} />
             </>
           )}
-          {/* Scrollable menu section */}
 
+          {/* Scrollable menu */}
           <div
             className={`flex-1 ${
-              !isExpended && "flex items-center justify-center"
-            } custom-scrollbar-for-menu overflow-y-auto overflow-x-hidden will-change-transform my-2 transition-all duration-400 ease-in-out`}
+              !isExpended ? "flex items-center justify-center" : ""
+            } custom-scrollbar-for-menu overflow-y-auto overflow-x-hidden will-change-transform transition-all duration-400 ease-in-out`}
+            style={{ paddingTop: 8, paddingBottom: 8 }}
           >
-            {renderMenu(
-              menu,
-              true,
-              isExpended,
-              setIsExpended,
-              accordionValues,
-              setAccordionValues,
-              navigate
-            )}
+            <div className={`${isExpended ? "px-2" : "px-1"} w-full`}>
+              {renderMenu(
+                menu,
+                true,
+                isExpended,
+                setIsExpended,
+                accordionValues,
+                setAccordionValues,
+                navigate,
+                0,
+                "",
+                location.pathname
+              )}
+            </div>
           </div>
 
+          {/* Expand button (collapsed state) */}
           {!isExpended && (
             <div className="flex self-center mb-4">
-              <div>
-                <CustomToolTip title="Expand" placement="right">
-                  <IconButton
-                    onClick={() => {
-                      setIsExpended(!isExpended);
-                    }}
-                    className={`cursor-pointer rounded-md transition-all duration-500 ease-in-out`}
-                  >
-                    <ArrowForwardIcon sx={{ color: "#000" }} />
-                  </IconButton>
-                </CustomToolTip>
-              </div>
+              <CustomToolTip title="Expand" placement="right">
+                <IconButton
+                  onClick={() => setIsExpended(!isExpended)}
+                  sx={{
+                    bgcolor: "#e0f7fa",
+                    color: "#2eacb3",
+                    width: 34,
+                    height: 34,
+                    "&:hover": { bgcolor: "#b2ebf2" },
+                    transition: "all 0.2s",
+                    borderRadius: 2,
+                  }}
+                >
+                  <ArrowForwardIosIcon sx={{ fontSize: 14 }} />
+                </IconButton>
+              </CustomToolTip>
             </div>
           )}
         </div>
       </Box>
+
       {/* Main content area */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden will-change-transform w-full">
+      <div className="flex-1  overflow-y-auto overflow-x-hidden will-change-transform w-full">
         <Outlet />
       </div>
       <CustomDrawer />

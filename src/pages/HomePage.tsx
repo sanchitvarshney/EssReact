@@ -12,7 +12,8 @@ import NoticeboardCard from "../components/NoticeboardCard";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { keyframes, useTheme } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import SendIcon from "@mui/icons-material/Send";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import CampaignIcon from "@mui/icons-material/Campaign";
 
 import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
 import AISurveyDialog from "../components/reuseable/AISurveyDialog";
@@ -24,15 +25,11 @@ import {
   syncAiSurveyStateWithUser,
 } from "../helper/aiSurveyStorage";
 
-// Create dynamic keyframes based on screen size
 const getScrollKeyframes = (fromX: string, toX: string) => keyframes`
-  0% {
-    transform: translateX(${fromX});
-  }
-  100% {
-    transform: translateX(${toX});
-  }
+  0%   { transform: translateX(${fromX}); }
+  100% { transform: translateX(${toX}); }
 `;
+
 const HomePage = () => {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
@@ -56,9 +53,8 @@ const HomePage = () => {
       setShowCyberAlert(false);
       return;
     }
-
     setShowCyberAlert(
-      localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true,
+      localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true
     );
   }, [aiSurveySessionDone]);
 
@@ -78,103 +74,108 @@ const HomePage = () => {
   };
 
   return (
-    <div className="w-full  h-[calc(100vh-90px)] flex   flex-col overflow-y-auto will-change-transform">
-      <div className="w-full  ">
-        <div className="w-[calc(100%-32px)]  max-w-[500px] sm:max-w-[100%] bg-[#fefeea]  flex  items-center mx-4 my-4 mb-6 border border-[#fec300ff] mx-auto ">
-          <div className="w-40 sm:w-30 p-1  bg-[#fec300ff] relative">
-            <div
-              style={{
-                position: "absolute",
-                top: "8px",
-                right: `-10px`,
-                width: 0,
-                height: 0,
-                borderTop: "10px solid transparent",
-                borderBottom: "10px solid transparent",
-                borderLeft: "12px solid #fec300ff",
-                zIndex: 5,
-              }}
-            />
-            <Typography variant="subtitle1" fontWeight="bold" color="white">
-              What's New
-            </Typography>
-          </div>
-          <Box
-            sx={{
-              width: "100%",
-              overflow: "hidden",
-              whiteSpace: "nowrap",
+    <div className="w-full h-[calc(100vh-80px)] flex flex-col overflow-y-auto will-change-transform">
+
+      {/* What's New marquee banner */}
+      <div className="mx-4 mt-4 mb-5 flex items-stretch bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex-shrink-0">
+        {/* Label */}
+        <div className="relative flex-shrink-0 bg-[#fec300ff] flex items-center px-3">
+          <CampaignIcon sx={{ color: "#fff", fontSize: 18, mr: 0.5 }} />
+          <span className="text-white font-bold text-sm whitespace-nowrap">What's New</span>
+          {/* Triangle pointer */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: -12,
+              width: 0,
+              height: 0,
+              borderTop: "22px solid transparent",
+              borderBottom: "22px solid transparent",
+              borderLeft: "12px solid #fec300ff",
             }}
-          >
-            <Box
-              component="span"
-              sx={{
-                display: "inline-block",
-                animation: `${scroll} ${
-                  isSmallDevice ? "15s" : isMediamDevice ? "25s" : "35s"
-                }  linear infinite`,
-                fontSize: "1rem",
-                fontWeight: 500,
-                "&:hover": {
-                  animationPlayState: "paused",
-                },
-              }}
-            >
-              We’re excited to introduce you to the enhanced version of ESS
-              (Employee Self-Service) - redesigned with a fresh look, improved
-              performance, and user-friendly features to make your experience
-              smoother and more efficient than ever before.
-            </Box>
-          </Box>
+          />
         </div>
 
-        <div className="w-full block sm:hidden px-4 mb-4">
-          <Accordion
+        {/* Scrolling text */}
+        <Box sx={{ width: "100%", overflow: "hidden", whiteSpace: "nowrap", pl: "20px", py: "10px" }}>
+          <Box
+            component="span"
             sx={{
-              boxShadow: 2,
-              borderRadius: 10,
-              backgroundColor: "#ffffff",
+              display: "inline-block",
+              animation: `${scroll} ${
+                isSmallDevice ? "15s" : isMediamDevice ? "25s" : "35s"
+              } linear infinite`,
+              fontSize: "0.8125rem",
+              fontWeight: 500,
+              color: "#374151",
+              "&:hover": { animationPlayState: "paused" },
             }}
           >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1-content"
-            >
-              <Typography variant="subtitle1" fontWeight="bold">
-                {"Notice board "}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <NoticeboardCard />
-            </AccordionDetails>
-          </Accordion>
-        </div>
-        <div
-          className={`${
-            isSmallDevice
-              ? "w-full"
-              : `grid  ${
-                  isMediamDevice
-                    ? "md:grid-cols-[2fr_1fr]"
-                    : "lg:grid-cols-[3fr_1fr]"
-                }  gap-4  overflow-visible px-4  `
-          } min-h-[calc(100vh-90px)]  `}
+            We're excited to introduce you to the enhanced version of ESS
+            (Employee Self-Service) — redesigned with a fresh look, improved
+            performance, and user-friendly features to make your experience
+            smoother and more efficient than ever before.
+          </Box>
+        </Box>
+      </div>
+
+      {/* Mobile noticeboard accordion */}
+      <div className="block sm:hidden px-4 mb-4">
+        <Accordion
+          sx={{
+            borderRadius: "16px !important",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+            border: "1px solid #e2e8f0",
+            "&:before": { display: "none" },
+            overflow: "hidden",
+          }}
         >
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 w-full lg:grid-cols-4   gap-x-8 px-4   overflow-visible ">
-            {homeData.map((item: homeMenuTypes) => (
-              <ImageCard
-                key={item.id}
-                title={item.title}
-                image={item.icon}
-                path={item.path}
-              />
-            ))}
-          </div>
-          <div className="w-full   hidden md:block">
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon sx={{ color: "#2eacb3" }} />}
+            sx={{ minHeight: 48, "& .MuiAccordionSummary-content": { my: 0 } }}
+          >
+            <div className="flex items-center gap-2">
+              <NotificationsNoneIcon sx={{ fontSize: 18, color: "#2eacb3" }} />
+              <Typography variant="subtitle2" fontWeight={700} color="#1e293b">
+                Notice Board
+              </Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails sx={{ pt: 0, px: 0, pb: 0 }}>
             <NoticeboardCard />
-          </div>
+          </AccordionDetails>
+        </Accordion>
+      </div>
+
+      {/* Main content: menu grid + noticeboard sidebar */}
+      <div
+        className={`flex-1 ${
+          isSmallDevice
+            ? "w-full px-4"
+            : `grid ${
+                isMediamDevice ? "md:grid-cols-[2fr_1fr]" : "lg:grid-cols-[3fr_1fr]"
+              } gap-4 px-4`
+        }`}
+      >
+        {/* Menu grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 content-start pb-4">
+          {homeData.map((item: homeMenuTypes) => (
+            <ImageCard
+              key={item.id}
+              title={item.title}
+              image={item.icon}
+              path={item.path}
+            />
+          ))}
+        </div>
+
+        {/* Noticeboard sidebar (tablet and above) */}
+        <div className="hidden sm:block pb-4">
+          <NoticeboardCard />
         </div>
       </div>
+
       <CustomFooter />
 
       <AISurveyDialog

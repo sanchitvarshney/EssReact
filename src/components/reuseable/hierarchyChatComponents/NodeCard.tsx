@@ -1,13 +1,11 @@
-import { Avatar, Card, CardContent,  IconButton } from "@mui/material";
-import { customColor } from "../../../constants/themeConstant";
-// import { tagColors } from "../../../pages/HierarchyChart";
+import { Avatar, IconButton } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 type NodeCardProps = {
   name: string;
   role: string;
-   dept: string;
+  dept: string;
   imageUrl: string;
   tags: string[];
   hasChildren: boolean;
@@ -17,6 +15,7 @@ type NodeCardProps = {
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 };
+
 export const NodeCard = ({
   name,
   role,
@@ -29,58 +28,129 @@ export const NodeCard = ({
   onMouseEnter,
   onMouseLeave,
 }: NodeCardProps) => {
-  let highlightColor = undefined;
-  if (highlightType === "self") highlightColor = "#facc15"; // yellow
-  else if (highlightType === "colleague") highlightColor = "#38bdf8"; // blue
-  else if (highlightType === "child") highlightColor = "#4ade80"; // green
-  else if (highlightType === "ancestor") highlightColor = "#a78bfa"; // purple
+  const accentColor =
+    highlightType === "self"
+      ? "#facc15"
+      : highlightType === "colleague"
+      ? "#38bdf8"
+      : highlightType === "child"
+      ? "#4ade80"
+      : highlightType === "ancestor"
+      ? "#a78bfa"
+      : "#2eacb3";
+
+  const isHighlighted = Boolean(highlightType);
 
   return (
-    <Card
-      elevation={2}
-      sx={{
-        background: highlightColor || customColor.bgColor,
-        color: highlightType ? "#000" : "#fff",
-        borderRadius: 3,
-        minWidth: 300,
-        maxWidth: 300,
-        boxShadow: 8,
-        border: highlightColor ? `2.5px solid ${highlightColor}` : "1px solid #333",
+    <div
+      style={{
         position: "relative",
+        background: "#fff",
+        borderRadius: 16,
+        minWidth: 220,
+        maxWidth: 220,
+        border: `2px solid ${isHighlighted ? accentColor : "#e2e8f0"}`,
+        boxShadow: isHighlighted
+          ? `0 0 0 4px ${accentColor}28, 0 8px 24px rgba(0,0,0,0.12)`
+          : "0 4px 16px rgba(0,0,0,0.08)",
         display: "flex",
         flexDirection: "column",
-        mx: "auto",
-        transition: "background 0.2s, border 0.2s, color 0.2s",
+        margin: "auto",
+        transition: "border 0.2s, box-shadow 0.2s",
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <CardContent
-        sx={{
+      {/* Top accent bar */}
+      <div
+        style={{
+          height: 4,
+          borderRadius: "14px 14px 0 0",
+          background: isHighlighted
+            ? accentColor
+            : "linear-gradient(90deg, #2eacb3, #00d4e4)",
+        }}
+      />
+
+      {/* Card body */}
+      <div
+        style={{
           display: "flex",
           alignItems: "center",
-          width: "100%",
-          mb: 1,
+          gap: 12,
+          padding: "12px 14px 24px 14px",
         }}
       >
         <Avatar
           alt={name}
           src={imageUrl}
           sx={{
-            width: 90,
-            height: 90,
-            border: "2px solid #444",
-            backgroundColor: "#2eacb3",
+            width: 54,
+            height: 54,
+            border: `3px solid ${accentColor}`,
+            bgcolor: "#2eacb3",
+            fontWeight: 700,
+            fontSize: 20,
+            flexShrink: 0,
             pointerEvents: "none",
             userSelect: "none",
+            transition: "border-color 0.2s",
           }}
-        />
-        <div style={{ flex: 1 }}>
-          <div style={{ fontWeight: 600, fontSize: 18 }}>{name}</div>
-          <div style={{ fontSize: 15, color: highlightType ? "#000" : "#cbd5e1" }}>{role}</div>
-            <div style={{ fontSize: 14, color: highlightType ? "#000" : "#cbd5e1" }}>{dept}</div>
+        >
+          {name?.charAt(0)}
+        </Avatar>
+
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: 13,
+              color: "#1e293b",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {name}
+          </div>
+          {role && (
+            <div
+              style={{
+                fontSize: 11,
+                color: "#64748b",
+                marginTop: 2,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {role}
+            </div>
+          )}
+          {dept && (
+            <div
+              style={{
+                display: "inline-block",
+                marginTop: 5,
+                fontSize: 10,
+                fontWeight: 600,
+                padding: "2px 8px",
+                borderRadius: 999,
+                backgroundColor: isHighlighted ? `${accentColor}20` : "#e0f7fa",
+                color: isHighlighted ? accentColor : "#0097a7",
+                maxWidth: "100%",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {dept}
+            </div>
+          )}
         </div>
-      </CardContent>
+      </div>
+
+      {/* Expand / collapse button — same position as original so tree edges don't break */}
       {hasChildren && (
         <IconButton
           size="small"
@@ -90,24 +160,23 @@ export const NodeCard = ({
             left: "50%",
             bottom: 8,
             transform: "translate(-50%, 50%)",
-            background: "#1f2937",
+            bgcolor: "#1e293b",
             color: "#fff",
-            "&:hover": { background: "#374151" },
+            width: 26,
+            height: 26,
+            "&:hover": { bgcolor: "#374151" },
             zIndex: 1,
-            width: 32,
-            height: 32,
-            fontSize: 20,
-            fontWeight: "bold",
-            mt: 1,
+            boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+            transition: "background 0.15s",
           }}
         >
           {isExpanded ? (
-            <KeyboardArrowUpIcon sx={{ fontSize: 45 }} />
+            <KeyboardArrowUpIcon sx={{ fontSize: 18 }} />
           ) : (
-            <KeyboardArrowDownIcon sx={{ fontSize: 45 }} />
+            <KeyboardArrowDownIcon sx={{ fontSize: 18 }} />
           )}
         </IconButton>
       )}
-    </Card>
+    </div>
   );
 };

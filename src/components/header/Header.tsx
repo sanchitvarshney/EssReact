@@ -10,7 +10,6 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuItem from "@mui/material/MenuItem";
-// import Badge from "@mui/material/Badge";
 import CustomSearch from "../reuseable/CustomSearch";
 
 import { useMediaQuery } from "@mui/material";
@@ -27,49 +26,39 @@ import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "../../hooks/useToast";
 import { setEmplyeeCode } from "../../slices/authSlices";
 
-
 const pages = ["Products", "Pricing", "Blog"];
 
 function Header() {
   const path = window.location.pathname;
   const { user, searchValueLength } = useAuth();
- const { showToast } = useToast();
-const dispatch = useDispatch();
+  const { showToast } = useToast();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRef = React.useRef(null);
-
   const notificationRef = React.useRef(null);
   const profileRef = React.useRef(null);
+
   const [searchText, setSearchText] = React.useState("");
   const [openSearch, setOpenSearch] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(-1);
   const { toggleDrawerOpen } = useDrawerContext();
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<boolean>(false);
-
   const [isOpenNotification, setIsOpenNotification] = React.useState(false);
 
   const isSmallScreen = useMediaQuery("(max-width:450px)");
   const { empCode } = useSelector((state: any) => state?.auth);
 
-
-  const handleOpenUserMenu = () => {
-    setAnchorElUser(true);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+  const handleOpenUserMenu = () => setAnchorElUser(true);
+  const handleCloseNavMenu = () => setAnchorElNav(null);
 
   React.useEffect(() => {
     if (empCode) {
       //@ts-ignore
       if (empCode === user?.id) {
-         dispatch(setEmplyeeCode({ empCode: "" }));
+        dispatch(setEmplyeeCode({ empCode: "" }));
         showToast("You cannot access your own profile with this method", "error");
-        return
+        return;
       }
       navigate(`/employee/details/${empCode}`);
       setSearchText("");
@@ -79,48 +68,49 @@ const dispatch = useDispatch();
   return (
     <AppBar
       position="static"
+      elevation={0}
       sx={{
         backgroundColor: "#ffffff",
-        paddingTop: 1.5,
-        paddingBottom: 1.5,
-        
+        borderBottom: "1px solid #f1f5f9",
+        py: 0.75,
       }}
     >
-      <Container maxWidth="xl" >
-        <Toolbar disableGutters>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters sx={{ gap: 1 }}>
+
+          {/* Desktop logo */}
+          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2, flexShrink: 0 }}>
             <img
               onClick={() => navigate("/")}
               src={logoImg}
               alt="mscorpres"
-              className="cursor-pointer w-65"
+              className="cursor-pointer w-56"
             />
           </Box>
 
+          {/* Mobile hamburger (non-home pages) */}
           {path === "/" ? null : (
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <Box sx={{ display: { xs: "flex", md: "none" }, flexShrink: 0 }}>
               <IconButton
-                size="large"
-                aria-label="account of current user"
+                size="medium"
+                aria-label="menu"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={toggleDrawerOpen}
-                color="inherit"
+                sx={{
+                  color: "#64748b",
+                  borderRadius: 2,
+                  "&:hover": { bgcolor: "#f1f5f9" },
+                }}
               >
-                <MenuIcon sx={{ color: "#4a4a4aff" }} />
+                <MenuIcon />
               </IconButton>
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
                 keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
+                transformOrigin={{ vertical: "top", horizontal: "left" }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
                 sx={{ display: { xs: "block", md: "none" } }}
@@ -134,23 +124,28 @@ const dispatch = useDispatch();
             </Box>
           )}
 
+          {/* Search bar — grows to fill center */}
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: "flex", md: "flex" },
+              display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              mr: 2,
+              position: "relative",
             }}
           >
             <CustomSearch
               ref={inputRef}
-              width={isSmallScreen ? "20ch" : "60ch"}
-              placeholder={`${
+              width={isSmallScreen ? "18ch" : "58ch"}
+              placeholder={
                 isSmallScreen
                   ? "Search"
                   : "Search by Employee name or Employee code"
-              }`}
+              }
+              bgColor="#f1f5f9"
+              bgOpacity={1}
+              borderRadius={20}
+              textColor="#475569"
               onChange={(e) => {
                 const value = e.target.value;
                 setSearchText(value);
@@ -168,7 +163,6 @@ const dispatch = useDispatch();
                   setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
                   e.preventDefault();
                 } else if (e.key === "Enter") {
-                  // On Enter, select the highlighted item or the first item if none is highlighted
                   if (searchValueLength > 0) {
                     const event = new CustomEvent("selectSearchResult", {
                       detail: { selectedIndex },
@@ -179,8 +173,6 @@ const dispatch = useDispatch();
                   e.preventDefault();
                 }
               }}
-              bgColor="#8c8c8c80"
-              textColor="#8e8b8bff"
               value={searchText}
             />
             {searchText && (
@@ -197,42 +189,50 @@ const dispatch = useDispatch();
             )}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            {/* {!isSmallScreen && ( */}
-            <>
-              <IconButton
-                onClick={() => setIsOpenNotification(true)}
-                sx={{ mr: 2 }}
+          {/* Right actions */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flexShrink: 0 }}>
+
+            {/* Notification */}
+            <IconButton
+              onClick={() => setIsOpenNotification(true)}
+              sx={{
+                p: 1,
+                borderRadius: 2,
+                color: isOpenNotification ? "#2eacb3" : "#64748b",
+                bgcolor: isOpenNotification ? "#e0f7fa" : "transparent",
+                "&:hover": { bgcolor: "#e0f7fa", color: "#2eacb3" },
+                transition: "all 0.2s",
+              }}
+            >
+              <NotificationsIcon
+                ref={notificationRef}
+                sx={{ fontSize: 24 }}
+              />
+            </IconButton>
+
+            {isOpenNotification && (
+              <CustomPopover
+                open={isOpenNotification}
+                close={() => setIsOpenNotification(false)}
+                //@ts-ignore
+                anchorEl={notificationRef}
+                width={400}
+                isCone={true}
+                coneColor="#1e8a8f"
               >
-                {/* <Badge badgeContent={0} color="error" sx={{ p: 0, mr: 2 }}> */}
-                <NotificationsIcon
-                  ref={notificationRef}
-                  sx={{ fontSize: 30, color: "#4a4a4aff" }}
-                />
-                {/* </Badge> */}
-              </IconButton>
+                <NotificationDropDown />
+              </CustomPopover>
+            )}
 
-              {isOpenNotification && (
-                <CustomPopover
-                  open={isOpenNotification}
-                  close={() => setIsOpenNotification(false)}
-                  //@ts-ignore
-                  anchorEl={notificationRef}
-                  width={400}
-                  // height={360}
-                  isCone={true}
-                  coneColor="#1e8a8f"
-                >
-                  <NotificationDropDown />
-                </CustomPopover>
-              )}
-            </>
-            {/* )} */}
-
+            {/* Profile avatar */}
             <IconButton
               onClick={handleOpenUserMenu}
               sx={{
-                p: 0,
+                p: 0.5,
+                borderRadius: "50%",
+                border: "2px solid transparent",
+                "&:hover": { borderColor: "#2eacb3" },
+                transition: "border-color 0.2s",
               }}
             >
               <Avatar
@@ -241,7 +241,7 @@ const dispatch = useDispatch();
                 alt={user?.name}
                 //@ts-ignore
                 src={user?.imgUrl}
-                sx={{ backgroundColor: "#2eacb3" }}
+                sx={{ backgroundColor: "#2eacb3", width: 36, height: 36 }}
               />
             </IconButton>
 
@@ -258,11 +258,11 @@ const dispatch = useDispatch();
               </CustomPopover>
             )}
           </Box>
-          
+
         </Toolbar>
       </Container>
-    
     </AppBar>
   );
 }
+
 export default Header;

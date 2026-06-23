@@ -1,10 +1,10 @@
 import { Tree,  } from "react-organizational-chart";
-// import { Avatar, Card, CardContent } from "@mui/material";
-// import { Chip } from "@mui/material";
-import { IconButton } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { Typography } from "@mui/material";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
 // import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 // import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 // import PeopleIcon from "@mui/icons-material/People";
@@ -47,6 +47,8 @@ const HierarchyChart = () => {
   const [viewMode] = useState<"employee" | "department">("employee");
   const [nodeData, setNodeData] = useState<any>([]);
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+  const chartScrollRef = useRef<HTMLDivElement>(null);
+  const hasCenteredRef = useRef(false);
 
   const toggleNode = (id: string) => {
    
@@ -83,6 +85,16 @@ const HierarchyChart = () => {
       setNodeData(hierarchyData);
     }
   }, [hierarchyData]);
+
+  useEffect(() => {
+    if (nodeData.length === 0 || hasCenteredRef.current) return;
+    const el = chartScrollRef.current;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
+      hasCenteredRef.current = true;
+    });
+  }, [nodeData]);
 
   // const renderDepartmentTree = (node: DepartmentNode): JSX.Element => {
   //   const hasChildren = Boolean(node.children && node.children.length > 0);
@@ -279,141 +291,106 @@ const HierarchyChart = () => {
   };
 
   return (
-    <>
-      <div
-        className="w-full h-15 flex justify-between items-center p-4"
-        style={{
-          // width: "70%",
-          backgroundColor: "transparent",
+    <div className="h-[calc(100vh-90px)] flex flex-col overflow-hidden px-3 py-4 w-full">
 
-          gap: 8,
+      {/* Page header */}
+      <div className="flex items-center gap-2 mb-4 flex-shrink-0">
+        <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
+        <AccountTreeIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
+        <Typography variant="h6" sx={{ fontWeight: 700, color: "#1e293b", fontSize: 18 }}>
+          Organization Chart
+        </Typography>
+      </div>
 
-          zIndex: 99,
-        }}
-      >
-        <div className="flex gap-2">
-            <div key={""} className="flex items-center space-x-2 mb-1">
-                  <div className={`w-3 h-3 rounded-full bg-[#a78bfa]`} />
-                  <span className=" select-none ">Mentor</span>
-                </div>
-                  <div key={""} className="flex items-center space-x-2 mb-1">
-                  <div className={`w-3 h-3 rounded-full bg-[#4ade80]`} />
-                  <span className=" select-none ">Associate</span>
-                </div>
-                  <div key={""} className="flex items-center space-x-2 mb-1">
-                  <div className={`w-3 h-3 rounded-full bg-[#38bdf8]`} />
-                  <span className=" select-none ">Colleague</span>
-                </div>
-                  <div key={""} className="flex items-center space-x-2 mb-1">
-                  <div className={`w-3 h-3 rounded-full bg-[#facc15]`} />
-                  <span className=" select-none ">Self</span>
-                </div>
-          {/* <CustomToolTip title={"Employee Hierarchy"} placement={"bottom"}>
-            <IconButton
-              onClick={() => setViewMode("employee")}
-              size="small"
-              sx={{
-                color: viewMode === "employee" ? "#fff" : "#9ca3af",
-                background: viewMode === "employee" ? "#2eacb3" : "gray",
-                "&:hover": {
-                  backgroundColor:
-                    viewMode === "employee" ? "#2eacb3" : "#374151",
-                },
-                borderRadius: "6px",
-                padding: "8px",
-              }}
+      {/* Toolbar card */}
+      <div className="flex-shrink-0 mb-3 bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-2.5 flex items-center justify-between gap-4">
+
+        {/* Legend */}
+        <div className="flex items-center gap-2 flex-wrap">
+          
+          {[
+          
+            { color: "#38bdf8", label: "Colleague" },
+            { color: "#4ade80", label: "Associate" },
+            { color: "#a78bfa", label: "Mentor" },
+          ].map(({ color, label }) => (
+            <span
+              key={label}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold select-none border"
+              style={{ backgroundColor: `${color}18`, borderColor: `${color}50`, color: "#374151" }}
             >
-              <PeopleIcon sx={{ color: "#fff" }} />
-            </IconButton>
-          </CustomToolTip> */}
-          {/* <CustomToolTip title={"Department Hierarchy"} placement={"bottom"}>
-            <IconButton
-              onClick={() => setViewMode("department")}
-              size="small"
-              sx={{
-                color: viewMode === "department" ? "#fff" : "#9ca3af",
-                background: viewMode === "department" ? "#2eacb3" : "gray",
-                "&:hover": {
-                  backgroundColor:
-                    viewMode === "department" ? "#2eacb3" : "#374151",
-                },
-                borderRadius: "6px",
-                padding: "8px",
-              }}
-            >
-              <BusinessIcon sx={{ color: "#fff" }} />
-            </IconButton>
-          </CustomToolTip> */}
+              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
+              {label}
+            </span>
+          ))}
         </div>
-        <div className="flex gap-2 items-center">
-          <IconButton
-            onClick={() => setZoom((z) => Math.min(z + 0.1, 2))}
-            size="small"
-            sx={{
-              color: "#fff",
-              background: "#000000",
-              "&:hover": {
-                backgroundColor: "#4b5563",
-              },
-            }}
+
+        {/* Zoom controls */}
+        <div className="flex items-center gap-1 bg-gray-50 rounded-xl border border-gray-200 p-1">
+          <button
+            onClick={() => setZoom((z) => Math.max(z - 0.1, 0.3))}
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-600 hover:bg-white hover:text-[#2eacb3] hover:shadow-sm transition-all duration-150"
+            title="Zoom out"
           >
-            <ZoomInIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => setZoom((z) => Math.max(z - 0.1, 0.5))}
-            size="small"
-            sx={{
-              color: "#fff",
-              background: "#000000",
-              "&:hover": {
-                backgroundColor: "#4b5563",
-              },
-            }}
-          >
-            <ZoomOutIcon />
-          </IconButton>
-          <span
-            style={{
-              color: "#000",
-              fontWeight: 500,
-              fontSize: 18,
-              marginLeft: 8,
-            }}
-          >
+            <ZoomOutIcon sx={{ fontSize: 18 }} />
+          </button>
+
+          <span className="w-12 text-center text-xs font-bold text-gray-700 select-none tabular-nums">
             {Math.round(zoom * 100)}%
           </span>
+
+          <button
+            onClick={() => setZoom((z) => Math.min(z + 0.1, 2))}
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-600 hover:bg-white hover:text-[#2eacb3] hover:shadow-sm transition-all duration-150"
+            title="Zoom in"
+          >
+            <ZoomInIcon sx={{ fontSize: 18 }} />
+          </button>
+
+          <div className="w-px h-5 bg-gray-200 mx-0.5" />
+
+          <button
+            onClick={() => setZoom(0.7)}
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-white hover:text-[#2eacb3] hover:shadow-sm transition-all duration-150"
+            title="Reset zoom"
+          >
+            <RestartAltIcon sx={{ fontSize: 18 }} />
+          </button>
         </div>
       </div>
 
-      <div className="overflow-auto p-4 h-[calc(100vh-150px)]  flex  flex-col will-change-transform">
+      {/* Chart scroll area */}
+      <div
+        ref={chartScrollRef}
+        className="flex-1 overflow-auto custom-scrollbar-for-menu bg-white rounded-2xl border border-gray-100 shadow-sm"
+        style={{ minHeight: 0 }}
+      >
         <div
           style={{
-            height: "100%",
+            display: "inline-block",
+            minWidth: "100%",
+            padding: "40px 60px",
             transform: `scale(${zoom})`,
             transformOrigin: "top center",
             transition: "transform 0.2s",
-            marginRight: "300px",
           }}
         >
           <Tree
-            lineWidth={"3px"}
-            lineColor={viewMode === "employee" ? "#444" : "#475569"}
-            lineBorderRadius={"20px"}
+            lineWidth={"2px"}
+            lineColor={"#cbd5e1"}
+            lineBorderRadius={"16px"}
             label={
-              viewMode === "employee"
-                && rootNode && (
-                    <RootEmployeeTree
-                      toggleNode={toggleNode}
-                      expandedNodes={expandedNodes}
-                      node={rootNode}
-                      highlightType={hoveredNodeId === rootNode.id ? "self" : undefined}
-                      onHover={() => setHoveredNodeId(rootNode.id)}
-                      onUnhover={() => setHoveredNodeId(null)}
-                    />
-                  )
-                // : renderDepartmentRoot()
+              viewMode === "employee" && rootNode && (
+                <RootEmployeeTree
+                  toggleNode={toggleNode}
+                  expandedNodes={expandedNodes}
+                  node={rootNode}
+                  highlightType={hoveredNodeId === rootNode.id ? "self" : undefined}
+                  onHover={() => setHoveredNodeId(rootNode.id)}
+                  onUnhover={() => setHoveredNodeId(null)}
+                />
+              )
             }
-          
           >
             {viewMode === "employee" && rootNode && (expandedNodes[rootNodeId] ?? true)
               ? rootNode.children?.map((child: any) =>
@@ -427,7 +404,7 @@ const HierarchyChart = () => {
           </Tree>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

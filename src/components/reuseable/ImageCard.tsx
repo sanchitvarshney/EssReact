@@ -1,13 +1,10 @@
 import {
   Button,
-  Card,
-  CardContent,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Typography,
 } from "@mui/material";
 import { useState, type FC } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +15,6 @@ import imgPerfor from "../../assets/blockimage/bg-performance.png";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import imgtaskbox from "../../assets/blockimage/bw-taskbox.png";
 import imgrecruitment from "../../assets/blockimage/recurt.png";
-
 import React from "react";
 
 type ImageCardProps = {
@@ -27,160 +23,125 @@ type ImageCardProps = {
   path: string;
 };
 
+const COMING_SOON = ["hr policies", "performance", "task box", "recruitment"];
+
+const getBlockedImage = (title: string) => {
+  switch (title.toLowerCase()) {
+    case "hr policies": return blockicon;
+    case "performance": return imgPerfor;
+    case "task box": return imgtaskbox;
+    case "recruitment": return imgrecruitment;
+    default: return blockicon;
+  }
+};
+
 const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
   const navigation = useNavigate();
   const { setIsExpended } = useDrawerContext();
-
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const isComingSoon = COMING_SOON.includes(title.toLowerCase());
+  const isHelpdesk = title.toLowerCase() === "helpdesk";
+  const displayImage = isComingSoon ? getBlockedImage(title) : image;
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleNavigate = (path: string, title: string) => {
-    if (
-      title.toLowerCase() === "hr policies" ||
-      title.toLowerCase() === "performance" ||
-      title.toLowerCase() === "task box" ||
-      title.toLowerCase() === "recruitment"
-    ) {
-      return;
-    }
-    if (title.toLowerCase() === "helpdesk") {
-      handleClickOpen();
-      return;
-    }
+  const handleNavigate = () => {
+    if (isComingSoon) return;
+    if (isHelpdesk) { setOpen(true); return; }
     setIsExpended(false);
     navigation(path);
   };
+
   return (
-    <Card
-      sx={{
-        borderRadius: 0,
-        boxShadow: "none",
-        display: "flex",
-        justifyContent: "center",
-        backgroundColor: "transparent",
-        transition: "transform 0.3s ease-in-out",
-        "&:hover": {
-          transform:
-            title.toLowerCase() === "hr policies" ||
-            title.toLowerCase() === "performance" ||
-            title.toLowerCase() === "task box" ||
-            title.toLowerCase() === "recruitment"
-              ? "none"
-              : "scale(1.05)",
-        },
-        overflow: "visible",
-      }}
-    >
-      <CardContent sx={{ p: 0, justifySelf: "center", overflow: "visible" }}>
+    <div className="relative">
+      <div
+        onClick={handleNavigate}
+        className={`flex flex-col items-center gap-2.5 p-4 rounded-2xl border transition-all duration-200 select-none
+          ${isComingSoon
+            ? "bg-gray-50 border-gray-200 cursor-default"
+            : "bg-white border-gray-100 shadow-sm cursor-pointer hover:shadow-md hover:border-[#2eacb3]/50 hover:-translate-y-0.5 active:scale-[0.97]"
+          }`}
+      >
+        {/* Icon container */}
         <div
-          onClick={() => handleNavigate(path, title)}
-          className="cursor-pointer relative  overflow-visible"
+          className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center flex-shrink-0 ${
+            isComingSoon ? "bg-gray-100" : "bg-[#f0fdfe]"
+          }`}
         >
-          {/* Blurred background */}
-
-          <div
-            className={`flex  h-30 w-40 p-10 sm:p-3 sm:w-30 sm:h-30 md:w-35 md:h-35 lg:w-40 lg:h-40 xl:w-45 xl:h-45 items-center justify-center rounded-2xl ${
-              title.toLowerCase() === "hr policies" ||
-              title.toLowerCase() === "performance" ||
-              title.toLowerCase() === "task box" ||
-              title.toLowerCase() === "recruitment"
-                ? "bg-gray-500/20"
-                : "bg-white border-1 border-[#2eacb3]"
-            }  `}
-          >
-            <img
-              src={
-                title.toLowerCase() === "hr policies"
-                  ? blockicon
-                  : title.toLowerCase() === "performance"
-                  ? imgPerfor
-                  : title.toLowerCase() === "task box"
-                  ? imgtaskbox
-                  : title.toLowerCase() === "recruitment"
-                  ? imgrecruitment
-                  : image
-              }
-              alt={title}
-              className="h-[120px]  w-full object-contain "
-            />
-          </div>
-
-          {/* transition-transform duration-500 hover:rotate-360 */}
-          <Typography
-            variant="subtitle1"
-            sx={{
-              fontWeight: 600,
-              mt: 1,
-              textAlign: "center",
-              fontSize: { xs: "1rem", sm: "1.1rem" },
-            }}
-          >
-            {title}
-          </Typography>
-          {(title.toLowerCase() === "hr policies" ||
-            title.toLowerCase() === "performance" ||
-            title.toLowerCase() === "task box" ||
-            title.toLowerCase() === "recruitment") && (
-            <div className=" absolute top-[-18px]  right-0 z-999 overflow-visible">
-              <CustomTag label="Coming Soon" />
-            </div>
-          )}
+          <img
+            src={displayImage}
+            alt={title}
+            className={`w-9 h-9 sm:w-11 sm:h-11 object-contain ${
+              isComingSoon ? "grayscale opacity-40" : ""
+            }`}
+          />
         </div>
 
-        <React.Fragment>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-            BackdropProps={{
-              sx: {
-                backgroundColor: "rgba(0, 0, 0, 0)",
-                backdropFilter: "blur(5px)",
-                WebkitBackdropFilter: "blur(5px)",
-              },
-            }}
-          >
-            <DialogTitle id="alert-dialog-title">{"Disclaimer"}</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                <b>Please note: </b>By clicking on the "Raise a Ticket" link,
-                you will be redirected from the ESS Portal to a separate support
-                system managed by mscorpres. While both platforms are part of
-                our organization, the Raise Ticket portal operates independently
-                and may have its own terms of use and privacy policies. Please
-                ensure you review those terms before proceeding.
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button color="error" onClick={handleClose}>
-                Disagree
-              </Button>
-              <Button
-                color="success"
-                variant="contained"
-                onClick={() =>
-                  window.open(
-                    "https://support.mscorpres.com/open.php",
-                    "_blank"
-                  )
-                }
-              >
-                Agree&nbsp;
-                <ArrowOutwardIcon fontSize="small" />
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </React.Fragment>
-      </CardContent>
-    </Card>
+        {/* Title */}
+        <p
+          className={`text-[11px] sm:text-xs font-semibold text-center leading-snug ${
+            isComingSoon ? "text-gray-400" : "text-gray-700"
+          }`}
+        >
+          {title}
+        </p>
+
+        {/* Bottom accent line for active items */}
+        {!isComingSoon && (
+          <div className="w-6 h-0.5 rounded-full bg-[#2eacb3] opacity-40" />
+        )}
+      </div>
+
+      {/* Coming soon badge */}
+      {isComingSoon && (
+        <div className="absolute -top-2 -right-2 z-10">
+          <CustomTag label="Coming Soon" />
+        </div>
+      )}
+
+      {/* Helpdesk disclaimer dialog */}
+      <React.Fragment>
+        <Dialog
+          open={open}
+          onClose={() => setOpen(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          BackdropProps={{
+            sx: {
+              backgroundColor: "rgba(0, 0, 0, 0)",
+              backdropFilter: "blur(5px)",
+              WebkitBackdropFilter: "blur(5px)",
+            },
+          }}
+        >
+          <DialogTitle id="alert-dialog-title">Disclaimer</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              <b>Please note: </b>By clicking on the "Raise a Ticket" link, you
+              will be redirected from the ESS Portal to a separate support system
+              managed by mscorpres. While both platforms are part of our
+              organization, the Raise Ticket portal operates independently and may
+              have its own terms of use and privacy policies. Please ensure you
+              review those terms before proceeding.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button color="error" onClick={() => setOpen(false)}>
+              Disagree
+            </Button>
+            <Button
+              color="success"
+              variant="contained"
+              onClick={() =>
+                window.open("https://support.mscorpres.com/open.php", "_blank")
+              }
+            >
+              Agree&nbsp;
+              <ArrowOutwardIcon fontSize="small" />
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
+    </div>
   );
 };
 
