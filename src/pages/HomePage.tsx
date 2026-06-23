@@ -112,10 +112,7 @@ const HomePage = () => {
               "&:hover": { animationPlayState: "paused" },
             }}
           >
-            We're excited to introduce you to the enhanced version of ESS
-            (Employee Self-Service) — redesigned with a fresh look, improved
-            performance, and user-friendly features to make your experience
-            smoother and more efficient than ever before.
+            Welcome to the Employee Self-Service Portal. You can mark attendance, apply for leave, access your payslips, update your profile, and manage your work-related requests — all from a single platform. For any assistance, please reach out to your HR team.
           </Box>
         </Box>
       </div>
