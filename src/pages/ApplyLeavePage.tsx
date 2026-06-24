@@ -369,7 +369,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <CustomTextInput select field={field} label="Select Compensatory Date" options={getLeaveBalanceData?.leaveBalance?.balance} />
+                        <CustomTextInput select field={field} label="Select Compensatory Date" options={getLeaveBalanceData?.compensatoryDates ?? []} />
                       </FormControl>
                       <FormMessage className="text-red-500 mt-1 text-xs" />
                     </FormItem>
