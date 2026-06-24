@@ -9,7 +9,7 @@ import {
 } from "../components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Chip } from "@mui/material";
 import { Textarea } from "../components/ui/textarea";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -17,9 +17,9 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import { Chip } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
-import { CustomButton } from "../components/ui/CustomButton";
 import { useEffect, useRef, useState } from "react";
 
 import CalenderView from "../components/reuseable/CalederView";
@@ -28,7 +28,6 @@ import { Input } from "../components/ui/input";
 import SearchBarComponent from "../components/dropdowns/SearchBarComponent";
 import CustomTextInput from "../components/reuseable/CustomTextInput";
 import CustomModalDatePicker from "../components/reuseable/CustomModalDatePicker";
-import { btnstyle } from "../constants/themeConstant";
 import {
   useApplySLLeaveMutation,
   useGetLeaveBalanceMutation,
@@ -41,12 +40,12 @@ import { useToast } from "../hooks/useToast";
 import ConfirmationModal from "../components/reuseable/ConfirmationModal";
 
 const ApplyLeaveOption = [
-  { value: "EL", label: "Earned Leave" },
-  { value: "SL", label: "Sick/Casual Leave" },
+  { value: "EL",  label: "Earned Leave" },
+  { value: "SL",  label: "Sick / Casual" },
   { value: "WFH", label: "Work From Home" },
-  { value: "OD", label: "On Duty" },
-  { value: "CL", label: "Compensatory Availment" },
-  { value: "ACL", label: "Apply for Compensatory Leave" },
+  { value: "OD",  label: "On Duty" },
+  { value: "CL",  label: "Compensatory" },
+  { value: "ACL", label: "Apply Comp. Leave" },
   { value: "LWP", label: "Leave Without Pay" },
 ];
 
@@ -55,47 +54,41 @@ const schema = z
     wise: z.string().min(1, { message: "Select value is required" }),
     fromSession: z.number().optional(),
     toSession: z.number().optional(),
-    message: z
-      .string()
-      .min(15, { message: "Reason is required please write more" }),
+    message: z.string().min(15, { message: "Reason is required — write at least 15 characters" }),
     fromDate: z.date().optional(),
     toDate: z.date().optional(),
     compensatoryDate: z.string().optional(),
   })
   .refine(
     (data) => {
-      if (data.wise === "ACL") {
-        return data.compensatoryDate && data.compensatoryDate.length > 0;
-      }
+      if (data.wise === "ACL") return data.compensatoryDate && data.compensatoryDate.length > 0;
       return data.fromSession && data.toSession && data.fromDate && data.toDate;
     },
-    {
-      message: "Please fill all required fields based on leave type",
-      path: ["root"],
-    },
+    { message: "Please fill all required fields based on leave type", path: ["root"] },
   );
 
+const SectionLabel = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
+  <div className="flex items-center gap-1.5 mb-2">
+    {icon}
+    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wide">{label}</span>
+  </div>
+);
+
 const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { showToast } = useToast();
   const [searchText, setSearchText] = useState<string>("");
   const [openCalendar, setOpenCalendar] = useState<boolean>(false);
   const [openSearch, setOpenSearch] = useState<boolean>(false);
-  const [addRecipient, setAddRecipient] = useState<boolean>(false);
   const [urlKey, setUrlKey] = useState<string>("");
   const [recipient, setRecipient] = useState<any[]>([]);
   const [isConfirm, setIsConfirm] = useState<boolean>(false);
 
-  const [applySLLeave, { isLoading: applySLLeaveLoading }] =
-    useApplySLLeaveMutation();
-  const [
-    getLeaveBalance,
-    { isLoading: getLeaveBalanceLoading, data: getLeaveBalanceData },
-  ] = useGetLeaveBalanceMutation();
-  const [
-    getLeaveCalculate,
-    { isLoading: getLeaveCalculateLoading, data: getLeaveCalculateData },
-  ] = useGetLeaveCalculateMutation();
+  const [applySLLeave, { isLoading: applySLLeaveLoading }] = useApplySLLeaveMutation();
+  const [getLeaveBalance, { isLoading: getLeaveBalanceLoading, data: getLeaveBalanceData }] =
+    useGetLeaveBalanceMutation();
+  const [getLeaveCalculate, { isLoading: getLeaveCalculateLoading, data: getLeaveCalculateData }] =
+    useGetLeaveCalculateMutation();
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -127,31 +120,26 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
       handleGetUrl(type);
       getLeaveBalance({ type })
         .then((res) => {
-          if (res?.data?.code === 500)
-            showToast(res?.data?.message?.msg, "error");
+          if (res?.data?.code === 500) showToast(res?.data?.message?.msg, "error");
         })
         .catch((err) => {
-          showToast(
-            err?.data?.message?.msg ||
-              err?.message ||
-              "An unexpected error occurred.",
-            "error",
-          );
+          showToast(err?.data?.message?.msg || err?.message || "An unexpected error occurred.", "error");
         });
     }
   }, [type]);
 
   const handleSetRecipient = (value: any) => {
     if (recipient.some((r: any) => r.id === value.id)) {
-      showToast("Recipient already exists", "error");
+      showToast("Recipient already added", "error");
       return;
     }
     if (recipient.length >= 3) {
-      showToast("You can only add up to 3 recipients", "error");
+      showToast("Maximum 3 recipients allowed", "error");
       return;
     }
     setRecipient((prev) => [...prev, value]);
     setSearchText("");
+    setOpenSearch(false);
   };
 
   useEffect(() => {
@@ -164,16 +152,10 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
         leaveType: type,
       })
         .then((res) => {
-          if (res?.data?.code === 500)
-            showToast(res?.data?.message?.msg, "error");
+          if (res?.data?.code === 500) showToast(res?.data?.message?.msg, "error");
         })
         .catch((err) => {
-          showToast(
-            err?.data?.message?.msg ||
-              err?.message ||
-              "An unexpected error occurred.",
-            "error",
-          );
+          showToast(err?.data?.message?.msg || err?.message || "An unexpected error occurred.", "error");
         });
     }
   }, [toDate, startSession, endSession, type, fromDate]);
@@ -214,10 +196,9 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
 
     if (
       type !== "ACL" &&
-      getLeaveCalculateData?.data?.currentBooking >
-        getLeaveBalanceData?.leaveBalance?.balance
+      getLeaveCalculateData?.data?.currentBooking > getLeaveBalanceData?.leaveBalance?.balance
     ) {
-      showToast("You don't have enough leave balance", "error");
+      showToast("Insufficient leave balance", "error");
       return;
     }
 
@@ -234,12 +215,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
         }
       })
       .catch((err) => {
-        showToast(
-          err?.data?.message?.msg ||
-            err?.message ||
-            "An unexpected error occurred.",
-          "error",
-        );
+        showToast(err?.data?.message?.msg || err?.message || "An unexpected error occurred.", "error");
       });
   };
 
@@ -248,118 +224,123 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <>
-      {/* DialogContent is now overflow:hidden flex-col, so h-full works here */}
       <div className="flex flex-col h-full">
-        <div className="flex-1 overflow-y-auto flex flex-col gap-5 p-4 md:p-6">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-5"
-            >
-              {/* Leave type */}
-              <FormField
-                control={form.control}
-                name="wise"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <CustomTextInput
-                        select
-                        field={field}
-                        label="Select Leave Type"
-                        options={ApplyLeaveOption}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-500 mt-1 text-xs" />
-                  </FormItem>
-                )}
-              />
 
-              {/* Balance card — centered below the dropdown */}
+        {/* ── Scrollable body ── */}
+        <div className="flex-1 overflow-y-auto custom-scrollbar-for-menu px-5 py-4 flex flex-col gap-5">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
+
+              {/* ── Leave type chip grid ── */}
+              <div>
+                <SectionLabel
+                  icon={<EventNoteIcon sx={{ fontSize: 14, color: "#94a3b8" }} />}
+                  label="Leave Type"
+                />
+                <FormField
+                  control={form.control}
+                  name="wise"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                          {ApplyLeaveOption.map(({ value, label }, idx) => (
+                            <button
+                              key={value}
+                              type="button"
+                              onClick={() => field.onChange(value)}
+                              className={`px-3 py-2.5 rounded-xl text-xs font-semibold border transition-all text-left ${
+                                idx === ApplyLeaveOption.length - 1 &&
+                                ApplyLeaveOption.length % 2 !== 0
+                                  ? "col-span-2 sm:col-span-1"
+                                  : ""
+                              } ${
+                                field.value === value
+                                  ? "bg-[#2eacb3] text-white border-[#2eacb3] shadow-sm"
+                                  : "bg-gray-50 text-gray-600 border-gray-200 hover:border-[#2eacb3]/50 hover:bg-[#f0fdfe]"
+                              }`}
+                            >
+                              {label}
+                            </button>
+                          ))}
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-red-500 mt-1 text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* ── Balance pill ── */}
               {type && (
-                <div className="flex justify-center">
-                  <div className="flex items-center gap-3 bg-gradient-to-br from-[#e0f7fa] to-[#b2ebf2] rounded-xl px-6 py-3 border border-[#80deea] shadow-sm">
-                    <AccountBalanceWalletIcon
-                      sx={{ color: "#0097a7", fontSize: 24 }}
-                    />
-                    <div>
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-[#0097a7] leading-none mb-0.5">
-                        Available Balance
+                <div className="flex items-center gap-3 bg-gradient-to-r from-[#e0f7fa] to-[#f0fdfe] rounded-2xl px-5 py-3.5 border border-[#2eacb3]/20">
+                  <div className="w-9 h-9 rounded-xl bg-[#2eacb3]/15 flex items-center justify-center flex-shrink-0">
+                    <AccountBalanceWalletIcon sx={{ color: "#0097a7", fontSize: 20 }} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-[#0097a7] leading-none mb-0.5">
+                      Available Balance
+                    </p>
+                    {getLeaveBalanceLoading ? (
+                      <DotLoading />
+                    ) : (
+                      <p className="text-xl font-bold text-[#006064] leading-none">
+                        {balance}
+                        <span className="text-xs font-normal text-[#00838f] ml-1">days</span>
                       </p>
-                      {getLeaveBalanceLoading ? (
-                        <DotLoading />
-                      ) : (
-                        <p className="text-xl font-bold text-[#006064] leading-none">
-                          {balance}
-                          <span className="text-xs font-normal text-[#00838f] ml-1">
-                            days
-                          </span>
-                        </p>
-                      )}
-                    </div>
+                    )}
                   </div>
                 </div>
               )}
 
-              {/* Date / session fields */}
+              {/* ── Dates & Sessions ── */}
               {type !== "ACL" ? (
                 <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="fromDate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <CustomModalDatePicker
-                              field={field}
-                              openTo="day"
-                              view={["year", "month", "day"]}
-                              label="From Date"
-                            />
-                          </FormControl>
-                          <FormMessage className="text-red-500 mt-1 text-xs" />
-                        </FormItem>
-                      )}
+                  <div>
+                    <SectionLabel
+                      icon={<CalendarMonthIcon sx={{ fontSize: 14, color: "#94a3b8" }} />}
+                      label="Date Range"
                     />
-                    <FormField
-                      control={form.control}
-                      name="toDate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <CustomModalDatePicker
-                              field={field}
-                              openTo="day"
-                              view={["year", "month", "day"]}
-                              label="To Date"
-                            />
-                          </FormControl>
-                          <FormMessage className="text-red-500 mt-1 text-xs" />
-                        </FormItem>
-                      )}
-                    />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <FormField
+                        control={form.control}
+                        name="fromDate"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <CustomModalDatePicker field={field} openTo="day" view={["year", "month", "day"]} label="From Date" />
+                            </FormControl>
+                            <FormMessage className="text-red-500 mt-1 text-xs" />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="toDate"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <CustomModalDatePicker field={field} openTo="day" view={["year", "month", "day"]} label="To Date" />
+                            </FormControl>
+                            <FormMessage className="text-red-500 mt-1 text-xs" />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                   </div>
 
                   {getLeaveBalanceLoading ? (
                     <DotLoading />
                   ) : (
                     getLeaveBalanceData && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <FormField
                           control={form.control}
                           name="fromSession"
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
-                                <CustomTextInput
-                                  select
-                                  field={field}
-                                  label="From Session"
-                                  options={
-                                    getLeaveBalanceData?.leaveOptions?.options
-                                  }
-                                />
+                                <CustomTextInput select field={field} label="From Session" options={getLeaveBalanceData?.leaveOptions?.options} />
                               </FormControl>
                               <FormMessage className="text-red-500 mt-1 text-xs" />
                             </FormItem>
@@ -371,14 +352,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
-                                <CustomTextInput
-                                  select
-                                  field={field}
-                                  label="To Session"
-                                  options={
-                                    getLeaveBalanceData?.leaveOptions?.options
-                                  }
-                                />
+                                <CustomTextInput select field={field} label="To Session" options={getLeaveBalanceData?.leaveOptions?.options} />
                               </FormControl>
                               <FormMessage className="text-red-500 mt-1 text-xs" />
                             </FormItem>
@@ -395,12 +369,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <CustomTextInput
-                          select
-                          field={field}
-                          label="Select Compensatory Date"
-                          options={getLeaveBalanceData?.leaveBalance?.balance}
-                        />
+                        <CustomTextInput select field={field} label="Select Compensatory Date" options={getLeaveBalanceData?.leaveBalance?.balance} />
                       </FormControl>
                       <FormMessage className="text-red-500 mt-1 text-xs" />
                     </FormItem>
@@ -408,61 +377,47 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                 />
               )}
 
-              {/* Leave duration card */}
+              {/* ── Duration preview ── */}
               {getLeaveCalculateLoading ? (
                 <DotLoading />
               ) : (
                 currentBooking && (
-                  <div className="rounded-xl border border-[#b2ebf2] overflow-hidden shadow-sm">
+                  <div className="rounded-2xl border border-[#2eacb3]/20 overflow-hidden">
                     <button
                       type="button"
                       onClick={() => setOpenCalendar(!openCalendar)}
-                      className="w-full flex items-center justify-between bg-[#e0f7fa] px-4 py-2.5 hover:bg-[#c8f0f3] transition-colors cursor-pointer"
+                      className="w-full flex items-center justify-between bg-[#e0f7fa] px-4 py-3 hover:bg-[#c8f0f3] transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-2">
-                        <EventNoteIcon
-                          sx={{ color: "#0097a7", fontSize: 18 }}
-                        />
+                        <EventNoteIcon sx={{ color: "#0097a7", fontSize: 16 }} />
                         <span className="text-[#006064] font-semibold text-sm">
-                          Leave duration:{" "}
+                          Duration:{" "}
                           <span className="text-[#2eacb3] font-bold">
-                            {currentBooking}{" "}
-                            {currentBooking === 1 ? "day" : "days"}
+                            {currentBooking} {currentBooking === 1 ? "day" : "days"}
                           </span>
                         </span>
                       </div>
-                      {openCalendar ? (
-                        <KeyboardArrowUpIcon
-                          sx={{ color: "#0097a7", fontSize: 20 }}
-                        />
-                      ) : (
-                        <KeyboardArrowDownIcon
-                          sx={{ color: "#0097a7", fontSize: 20 }}
-                        />
-                      )}
+                      {openCalendar
+                        ? <KeyboardArrowUpIcon sx={{ color: "#0097a7", fontSize: 18 }} />
+                        : <KeyboardArrowDownIcon sx={{ color: "#0097a7", fontSize: 18 }} />}
                     </button>
                     {openCalendar && (
-                      <div className="bg-white p-3 border-t border-[#b2ebf2]">
-                        <CalenderView
-                          startDate={fromDate}
-                          endDate={toDate}
-                          paid={currentBooking}
-                          type={type}
-                        />
+                      <div className="bg-white p-3 border-t border-[#2eacb3]/20">
+                        <CalenderView startDate={fromDate} endDate={toDate} paid={currentBooking} type={type} />
                       </div>
                     )}
                   </div>
                 )
               )}
 
-              {/* Reason */}
+              {/* ── Reason ── */}
               <FormField
                 control={form.control}
                 name="message"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-sm text-gray-700">
-                      Reason <span className="text-red-400">*</span>
+                    <FormLabel className="text-[11px] font-bold text-gray-400 uppercase tracking-wide">
+                      Reason <span className="text-red-400 normal-case">*</span>
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
@@ -470,11 +425,11 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                           maxLength={500}
                           minLength={15}
                           rows={4}
-                          className="border resize-none border-gray-300 text-sm rounded-lg focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3]/20 transition-all min-h-[90px]"
-                          placeholder="Describe your reason (minimum 15 characters)"
+                          className="border resize-none border-gray-200 text-sm rounded-xl bg-gray-50 focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3]/20 transition-all min-h-[90px]"
+                          placeholder="Describe your reason (minimum 15 characters)…"
                           {...field}
                         />
-                        <span className="absolute bottom-2 right-3 text-xs text-gray-400 pointer-events-none">
+                        <span className="absolute bottom-2.5 right-3 text-xs text-gray-300 pointer-events-none tabular-nums">
                           {messageValue.length}/500
                         </span>
                       </div>
@@ -486,107 +441,133 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
             </form>
           </Form>
 
-          {/* CC Recipients — outside form, state-managed */}
-          <div className="border border-gray-200 rounded-xl ">
-            <button
-              type="button"
-              onClick={() => setAddRecipient(!addRecipient)}
-              className="w-full flex items-center rounded-xl justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
-            >
-              <div className="flex items-center gap-2">
-                <PersonAddIcon sx={{ fontSize: 17, color: "#6b7280" }} />
-                <span className="text-sm font-semibold text-gray-600">
-                  CC Recipients
-                </span>
-                {recipient.length > 0 && (
-                  <Chip
-                    label={recipient.length}
-                    size="small"
-                    sx={{
-                      height: 18,
-                      fontSize: 11,
-                      bgcolor: "#2eacb3",
-                      color: "#fff",
-                      fontWeight: 700,
-                    }}
-                  />
-                )}
-              </div>
-              {addRecipient ? (
-                <KeyboardArrowUpIcon sx={{ fontSize: 18, color: "#9ca3af" }} />
-              ) : (
-                <KeyboardArrowDownIcon
-                  sx={{ fontSize: 18, color: "#9ca3af" }}
+          {/* ── CC Recipients — always visible, no accordion ── */}
+          <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
+            {/* Header */}
+            <div className="flex items-center gap-2 mb-3">
+              <PersonAddIcon
+                sx={{ fontSize: 16, color: recipient.length > 0 ? "#2eacb3" : "#94a3b8" }}
+              />
+              <span
+                className={`text-[11px] font-bold uppercase tracking-wide ${
+                  recipient.length > 0 ? "text-[#2eacb3]" : "text-gray-400"
+                }`}
+              >
+                CC Recipients
+              </span>
+              <span className="text-[11px] text-gray-400">(optional · max 3)</span>
+              {recipient.length > 0 && (
+                <Chip
+                  label={`${recipient.length} / 3`}
+                  size="small"
+                  sx={{
+                    height: 18,
+                    fontSize: 10,
+                    fontWeight: 700,
+                    bgcolor: "#e0f7fa",
+                    color: "#0097a7",
+                    border: "1px solid rgba(46,172,179,0.25)",
+                    "& .MuiChip-label": { px: 1 },
+                  }}
                 />
               )}
-            </button>
+            </div>
 
-            {addRecipient && (
-              <div className="px-4 py-3 space-y-3 bg-white border-b border-gray-100 rounded-xl">
+            {/* Added recipient chips */}
+            {recipient.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {recipient.map((value: any, index: number) => (
+                  <Chip
+                    key={index}
+                    label={value?.text}
+                    size="small"
+                    sx={{
+                      bgcolor: "#e0f7fa",
+                      color: "#006064",
+                      fontWeight: 600,
+                      fontSize: 11,
+                      border: "1px solid rgba(46,172,179,0.25)",
+                      "& .MuiChip-deleteIcon": { color: "#0097a7", "&:hover": { color: "#006064" } },
+                    }}
+                    onDelete={() => setRecipient((prev) => prev.filter((_, i) => i !== index))}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Search input or max-reached message */}
+            {recipient.length < 3 ? (
+              <>
                 <Input
                   ref={inputRef}
                   value={searchText}
-                  className="w-full rounded-lg border-gray-300 focus:border-[#2eacb3] focus:ring focus:ring-[#2eacb3]/20 transition-all text-sm"
-                  placeholder="Search and add recipients..."
+                  className="w-full rounded-xl border-gray-200 bg-white focus:border-[#2eacb3] focus:ring focus:ring-[#2eacb3]/20 transition-all text-sm"
+                  placeholder="Search by name or employee code…"
                   onChange={(e) => {
                     setSearchText(e.target.value);
                     setOpenSearch(true);
                   }}
                 />
-                {recipient.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {recipient.map((value: any, index: number) => (
-                      <Chip
-                        key={index}
-                        label={value?.text}
-                        sx={{
-                          bgcolor: "rgba(46, 172, 179, 0.1)",
-                          color: "#006064",
-                          fontWeight: 500,
-                          borderRadius: 2,
-                          fontSize: 13,
-                          border: "1px solid rgba(46,172,179,0.25)",
-                        }}
-                        onDelete={() =>
-                          setRecipient((prev) =>
-                            prev.filter((_, i) => i !== index),
-                          )
-                        }
-                      />
-                    ))}
-                  </div>
-                )}
+                {/* zIndex={1400} ensures results render above Dialog (z-index 1300) */}
                 {searchText && (
                   <SearchBarComponent
                     open={openSearch}
-                    close={() => setOpenSearch(false)}
+                    close={() => { setOpenSearch(false); setSearchText(""); }}
                     searchQuary={searchText}
                     anchorRef={inputRef}
                     selectedIndex={-1}
                     setSelectedIndex={() => {}}
-                    width="300px"
+                    width={
+                      inputRef.current?.offsetWidth
+                        ? `${inputRef.current.offsetWidth}px`
+                        : "460px"
+                    }
                     onSelect={handleSetRecipient}
                     shouldNavigateOnSelect={false}
+                    zIndex={1400}
                   />
                 )}
+              </>
+            ) : (
+              <div className="text-xs text-amber-700 bg-amber-50 border border-amber-100 px-3 py-2 rounded-xl">
+                Maximum 3 CC recipients reached. Remove one to add another.
               </div>
             )}
           </div>
         </div>
 
-        {/* Button always at the bottom — flex-shrink-0 prevents it from being squeezed */}
-        <div className="bg-[#444445] border-t border-gray-600 py-3 flex justify-center flex-shrink-0">
-          <CustomButton
+        {/* ── Sticky footer with Apply button ── */}
+        <div className="flex-shrink-0 border-t border-gray-100 bg-white px-5 py-3.5 flex items-center justify-between gap-3">
+          <p className="text-xs text-gray-400 truncate">
+            {type ? (
+              <>
+                Applying for:{" "}
+                <span className="font-semibold text-gray-700">
+                  {ApplyLeaveOption.find((o) => o.value === type)?.label}
+                </span>
+              </>
+            ) : (
+              "Select a leave type to continue"
+            )}
+          </p>
+          <button
+            type="button"
             onClick={handleConfirmSubmit}
-            className={btnstyle}
-            style={{ marginTop: "0px" }}
+            disabled={applySLLeaveLoading || !type}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-[#2eacb3] to-[#0097a7] hover:from-[#0097a7] hover:to-[#2eacb3] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-sm flex-shrink-0"
           >
             {applySLLeaveLoading ? (
-              <CircularProgress sx={{ color: "#ffffff" }} size={22} />
+              <>
+                <CircularProgress size={14} sx={{ color: "#fff" }} />
+                <span>Submitting…</span>
+              </>
             ) : (
-              "Apply Leave"
+              <>
+                <SendIcon sx={{ fontSize: 15 }} />
+                <span>Apply Leave</span>
+              </>
             )}
-          </CustomButton>
+          </button>
         </div>
       </div>
 
@@ -594,8 +575,8 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
         open={isConfirm}
         close={() => setIsConfirm(false)}
         aggree={onSubmit}
-        title={`Confirm ${type} Application`}
-        description={`Do you want to apply for ${type} request?`}
+        title={`Confirm ${ApplyLeaveOption.find((o) => o.value === type)?.label ?? type}`}
+        description="Please confirm you want to submit this leave request."
       />
     </>
   );
