@@ -1,4 +1,13 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, useParams } from "react-router-dom";
+
+const EmployeeDetailsRoute = () => {
+  const { empCode } = useParams();
+  return (
+    <HierarchyProvider key={empCode}>
+      <EmployeeDetails />
+    </HierarchyProvider>
+  );
+};
 import HolidayPage from "./src/components/HolidayPage";
 import Custom404Page from "./src/pages/Custom404Page";
 import LeavePage from "./src/pages/LeavePage";
@@ -157,11 +166,7 @@ export const route = createBrowserRouter([
           },
           {
             path: "employee/details/:empCode",
-            element: (
-              <HierarchyProvider>
-                <EmployeeDetails />
-              </HierarchyProvider>
-            ),
+            element: <EmployeeDetailsRoute />,
           },
         ],
       },

@@ -10,7 +10,8 @@ interface Props {
   onSelect?: (user: any) => void;
   selectedIndex: number;
   setSelectedIndex: (index: number) => void;
-  shouldNavigateOnSelect?: boolean; // new prop
+  shouldNavigateOnSelect?: boolean;
+  zIndex?: number;
 }
 
 const SearchBarComponent: React.FC<Props> = ({
@@ -22,35 +23,28 @@ const SearchBarComponent: React.FC<Props> = ({
   onSelect,
   selectedIndex,
   setSelectedIndex,
-  shouldNavigateOnSelect = true, // default true
-  
+  shouldNavigateOnSelect = true,
+  zIndex = 999,
 }) => {
   return (
     <Popover
       open={open}
       anchorEl={anchorRef?.current || null}
       onClose={close}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "center",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "center",
-      }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "left" }}
       disableAutoFocus
       disableEnforceFocus
       PaperProps={{
         sx: {
-          mt: "2px",
+          mt: "6px",
           width: width,
-          zIndex: 999,
-          p: 2,
-          transformOrigin: "top",
-          borderRadius: 0,
-          borderBottomLeftRadius: 8,
-          borderBottomRightRadius: 8,
-          display: { xs: "block", md: "block" },
+          zIndex: zIndex,
+          borderRadius: 3,
+          boxShadow: "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)",
+          border: "1px solid #e2e8f0",
+          overflow: "hidden",
+          p: 0,
         },
       }}
     >

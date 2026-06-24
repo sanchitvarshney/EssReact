@@ -9,7 +9,7 @@ type CustomModalDatePickerProps = {
   openTo: string;
   view: any;
   label: string;
-  isDisabled?:boolean
+  isDisabled?: boolean;
 };
 
 const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
@@ -17,7 +17,7 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
   openTo,
   view,
   label,
-  isDisabled = false
+  isDisabled = false,
 }) => {
   const value = field.value ? dayjs(field.value) : null;
 
@@ -28,6 +28,7 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
         {...field}
         openTo={openTo}
         views={view}
+        closeOnSelect
         format={
           Array.isArray(view) &&
           view.length === 2 &&
@@ -36,23 +37,61 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
             ? "MM/YYYY"
             : "DD/MM/YYYY"
         }
-        
         value={value}
         onChange={(date) => {
           const nativeDate = date?.toDate?.();
-
           field.onChange(nativeDate);
         }}
         label={label}
-       disabled={isDisabled}
+        disabled={isDisabled}
         slotProps={{
+          actionBar: {
+            actions: [],
+          },
           layout: {
             sx: {
-              color: "#1565c0",
-              borderRadius: "14px",
-              borderWidth: "0px",
-              borderColor: "red",
-              border: "0px solid",
+              borderRadius: "20px",
+              overflow: "hidden",
+              "& .MuiPickersDay-root": {
+                borderRadius: "10px",
+                fontWeight: 500,
+                "&.Mui-selected": {
+                  backgroundColor: "#2eacb3",
+                  color: "#fff",
+                  fontWeight: 700,
+                  "&:hover": { backgroundColor: "#0097a7" },
+                  "&:focus": { backgroundColor: "#2eacb3" },
+                },
+                "&:not(.Mui-selected):hover": {
+                  backgroundColor: "#e0f7fa",
+                  color: "#006064",
+                },
+                "&.MuiPickersDay-today:not(.Mui-selected)": {
+                  border: "2px solid #2eacb3",
+                  color: "#2eacb3",
+                },
+              },
+              "& .MuiPickersYear-yearButton.Mui-selected": {
+                backgroundColor: "#2eacb3",
+                color: "#fff",
+                "&:hover": { backgroundColor: "#0097a7" },
+              },
+              "& .MuiPickersMonth-monthButton.Mui-selected": {
+                backgroundColor: "#2eacb3",
+                color: "#fff",
+                "&:hover": { backgroundColor: "#0097a7" },
+              },
+              "& .MuiPickersCalendarHeader-switchViewButton": {
+                color: "#2eacb3",
+              },
+              "& .MuiPickersArrowSwitcher-button": {
+                color: "#2eacb3",
+              },
+              "& .MuiDayCalendar-weekDayLabel": {
+                color: "#94a3b8",
+                fontWeight: 600,
+                fontSize: "0.7rem",
+              },
             },
           },
           textField: {
@@ -60,20 +99,37 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
             size: "small",
             sx: {
               "& .MuiOutlinedInput-root": {
-                borderRadius: "4px",
+                borderRadius: "12px",
                 backgroundColor: "#f9fafb",
+                fontSize: "0.875rem",
                 transition: "all 0.2s",
                 "& fieldset": {
-                  borderColor: "#d1d5db",
+                  borderColor: "#e5e7eb",
                 },
                 "&:hover fieldset": {
                   borderColor: "#9ca3af",
                 },
                 "&.Mui-focused fieldset": {
                   borderColor: "#2eacb3",
+                  borderWidth: "2px",
+                },
+                "& .MuiInputAdornment-root .MuiSvgIcon-root": {
+                  fontSize: "1.1rem",
+                  color: "#9ca3af",
+                  transition: "color 0.2s",
+                },
+                "&:hover .MuiInputAdornment-root .MuiSvgIcon-root": {
+                  color: "#2eacb3",
+                },
+                "&.Mui-focused .MuiInputAdornment-root .MuiSvgIcon-root": {
+                  color: "#2eacb3",
                 },
               },
-              "& label.Mui-focused": {
+              "& .MuiInputLabel-root": {
+                color: "#9ca3af",
+                fontSize: "0.875rem",
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
                 color: "#2eacb3",
               },
             },
@@ -85,6 +141,3 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
 };
 
 export default CustomModalDatePicker;
-
-/* Because of the structure of the DesktopDatePicker, the `sx` prop needs to be applied to
-the `layout` slot */

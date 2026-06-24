@@ -1,11 +1,14 @@
-import { Box, Modal } from "@mui/material";
+import { Box, Chip, Modal, Typography } from "@mui/material";
 import { CustomButton } from "../components/ui/CustomButton";
 import LeaveCard from "../components/reuseable/LeaveCard";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import AddIcon from "@mui/icons-material/Add";
+import EventIcon from "@mui/icons-material/Event";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
 
 import { useEffect, useState } from "react";
 import CustomModal from "../components/reuseable/CustomModal";
 import ApplyLeavePage from "./ApplyLeavePage";
-
 import HolidayPage from "../components/HolidayPage";
 import {
   useGetEarnLeaveMutation,
@@ -25,24 +28,27 @@ import wfmimg from "../assets/wfhpng.png";
 import climg from "../assets/climg.png";
 import CustomToolTip from "../components/reuseable/CustomToolTip";
 import { useNavigate } from "react-router-dom";
+import { btnstyle } from "../constants/themeConstant";
 
-const style = {
+const holidayModalStyle = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "80%",
-
   bgcolor: "background.paper",
-
   boxShadow: 24,
-
   overflow: "visible",
 };
 
 const LeavePage = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [leaveData, setLeaveData] = useState<any[]>([]);
+
+  const { user } = useAuth();
+  const { showToast } = useToast();
 
   const [
     getEranLeave,
@@ -56,17 +62,10 @@ const LeavePage = () => {
     getWorkFromHome,
     { data: wfhData, isLoading: wfhLoading, error: wfhError },
   ] = useGetWorkFromHomeMutation();
-  const { user } = useAuth();
-  const { showToast } = useToast();
-  const [leaveData, setLeaveData] = useState<any | undefined>([]);
-
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-
   const [
     getPendingRequest,
     { data: pendingReqData, isLoading: pendingReqLoading, error: pendingError },
   ] = useGetPendingRequestMutation();
-
   const [
     updateElLeave,
     { isLoading: updateElLeaveLoading, isSuccess: updateElLeaveSuccess },
@@ -92,12 +91,11 @@ const LeavePage = () => {
       showToast(
         error?.message ||
           error?.data?.message ||
-          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+          "An unexpected error occurred.",
         "error",
       );
     }
   }, [pendingError]);
-  // const navigate = useNavigate();
 
   useEffect(() => {
     if (eranLeaveError || sickLeaveError || wfhError) {
@@ -114,7 +112,7 @@ const LeavePage = () => {
           wfhError?.message ||
           //@ts-ignore
           wfhError?.data?.message ||
-          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+          "An unexpected error occurred.",
         "error",
       );
     }
@@ -124,13 +122,12 @@ const LeavePage = () => {
     //@ts-ignore
     if (!user?.id) return;
     const currentDate = new Date().toISOString().split("T")[0];
-
     //@ts-ignore
-    getEranLeave({ type: "EL", currentDate, empcode: user?.id });
+    getEranLeave({ type: "EL", currentDate, empcode: user.id });
     //@ts-ignore
-    getSickLeave({ type: "SL", currentDate, empcode: user?.id });
+    getSickLeave({ type: "SL", currentDate, empcode: user.id });
     //@ts-ignore
-    getWorkFromHome({ type: "WFH", currentDate, empcode: user?.id });
+    getWorkFromHome({ type: "WFH", currentDate, empcode: user.id });
   }, [
     //@ts-ignore
     user?.id,
@@ -141,12 +138,11 @@ const LeavePage = () => {
 
   useEffect(() => {
     if (eranLeaveData && sickLeaveData && wfhData) {
-      const result = [
+      setLeaveData([
         {
           type: "Earned Leave",
           img: elimg,
           currentlyAvailable: eranLeaveData?.data?.l_cl_bal,
-
           creditedFromLastMonth: eranLeaveData?.data?.l_op_bal,
           annualAllotment: eranLeaveData?.data?.total_yr_bal,
         },
@@ -167,14 +163,11 @@ const LeavePage = () => {
         {
           type: "Compensatory Leave",
           img: climg,
-          currentlyAvailable:
-            eranLeaveData?.compBal === null ? 0 : eranLeaveData?.compBal,
+          currentlyAvailable: eranLeaveData?.compBal ?? 0,
           creditedFromLastMonth: 0,
           annualAllotment: 0,
         },
-      ];
-
-      setLeaveData(result);
+      ]);
     }
   }, [eranLeaveData, sickLeaveData, wfhData]);
 
@@ -186,132 +179,143 @@ const LeavePage = () => {
         updateWfhLeave().unwrap(),
       ]);
       showToast("Leave updated successfully", "success");
-    } catch (err) {
+    } catch {
       showToast("Error updating leave", "error");
     }
   };
 
+  const isBusy =
+    eranLeaveLoading ||
+    sickLeaveLoading ||
+    wfhLoading ||
+    pendingReqLoading ||
+    updateElLeaveLoading ||
+    updateSlLeaveLoading ||
+    updateWfhLeaveLoading;
+
+  const pendingCount = pendingReqData?.pendingRequests ?? 0;
+
+  const handleNavigatePending = () => {
+    if (isBusy) {
+      showToast("Please wait for the data to load", "error");
+      return;
+    }
+    navigate("/self-service/leave-status");
+  };
+
   return (
-    <div className="w-full px-6 py-3">
-      {/* {eranLeaveLoading ||
-      sickLeaveLoading ||
-      wfhLoading ||
-      pendingReqLoading ||
-      updateElLeaveLoading ||
-      updateSlLeaveLoading ||
-      updateWfhLeaveLoading ? (
-        <LeavePageSkeleton />
-      ) : (
-        <> */}{" "}
-      <div className="flex w-full justify-between items-center flex-wrap gap-2   ">
-        <div className="flex gap-[2px] flex-wrap">
-          <span
-            className="text-md  select-none  font-semibold  hover:underline cursor-pointer  "
-            onClick={() => {
-              if (   
-              eranLeaveLoading ||
-              sickLeaveLoading ||
-              wfhLoading ||
-              pendingReqLoading ||
-              updateElLeaveLoading ||
-              updateSlLeaveLoading ||
-              updateWfhLeaveLoading
-            ) {
-              showToast("Please wait for the data to load", "error");
-                return
-              }
-              navigate("/self-service/leave-status")
-            }}
+    <div className="h-[calc(100vh-90px)] flex flex-col overflow-hidden px-3 py-4 w-full">
+      {/* Page header */}
+      <div className="flex items-center gap-2 mb-4">
+        <div
+          style={{ backgroundColor: "#2eacb3" }}
+          className="w-1 h-7 rounded-full"
+        />
+        <Typography
+          sx={{
+            fontSize: { xs: 16, sm: 19 },
+            fontWeight: 700,
+            color: "#232324",
+          }}
+        >
+          Leave Management
+        </Typography>
+      </div>
+
+      {/* Action bar */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-3 mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          {/* Pending requests link */}
+          <button
+            onClick={handleNavigatePending}
+            className="flex items-center gap-1.5 group w-fit select-none"
           >
-            Pending Requests ({pendingReqData?.pendingRequests ?? 0})
-          </span>
-        </div>
-        <div className="flex gap-[20px] flex-wrap">
-          <CustomButton
-            onClick={() => setOpen(true)}
-            className="bg-[#fff] text-[#000] border-[#000] border-1 rounded-[2px] cursor-pointer hover:bg-[#e0e0e0]"
-            disabled={
-              eranLeaveLoading ||
-              sickLeaveLoading ||
-              wfhLoading ||
-              pendingReqLoading ||
-              updateElLeaveLoading ||
-              updateSlLeaveLoading ||
-              updateWfhLeaveLoading
-            }
-          >
-            LIST OF HOLYDAYS
-          </CustomButton>
-          <CustomButton
-            onClick={() => setIsOpenModal(true)}
-            className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer hover:bg-[#4a4949]"
-                disabled={
-              eranLeaveLoading ||
-              sickLeaveLoading ||
-              wfhLoading ||
-              pendingReqLoading ||
-              updateElLeaveLoading ||
-              updateSlLeaveLoading ||
-              updateWfhLeaveLoading
-            }
-          >
-            APPLY LEAVE
-          </CustomButton>
-          <CustomToolTip
-            title={
-              "You can update your leave starting on the 1st of each month."
-            }
-            placement={"bottom"}
-          >
+            <PendingActionsIcon sx={{ color: "#f59e0b", fontSize: 18 }} />
+            <span className="text-sm font-semibold text-gray-700 group-hover:underline transition-all">
+              Pending Requests
+            </span>
+            <Chip
+              label={pendingCount}
+              size="small"
+              sx={{
+                height: 20,
+                fontSize: 11,
+                fontWeight: 700,
+                bgcolor: pendingCount > 0 ? "#fef3c7" : "#f3f4f6",
+                color: pendingCount > 0 ? "#d97706" : "#6b7280",
+                border: "1px solid",
+                borderColor: pendingCount > 0 ? "#fcd34d" : "#e5e7eb",
+                "& .MuiChip-label": { px: 1 },
+              }}
+            />
+          </button>
+
+          {/* Buttons */}
+          <div className="flex items-center gap-2 flex-wrap">
             <CustomButton
-              onClick={() => refetch()}
-              className=" cursor-pointer bg-[#000] text-[#fff] rounded-[2px] cursor-pointer hover:bg-[#4a4949]"
-                  disabled={
-              eranLeaveLoading ||
-              sickLeaveLoading ||
-              wfhLoading ||
-              pendingReqLoading ||
-              updateElLeaveLoading ||
-              updateSlLeaveLoading ||
-              updateWfhLeaveLoading
-            }
+              onClick={() => setOpen(true)}
+              disabled={isBusy}
+              className="cursor-pointer gap-1.5 px-4 text-sm font-semibold border border-[#2eacb3] text-[#2eacb3] hover:bg-[#e0f7fa] rounded-md transition-all duration-200 bg-transparent"
             >
-              Refresh Leave
+              <EventIcon sx={{ fontSize: 15 }} />
+              Holidays
             </CustomButton>
-          </CustomToolTip>
+
+            <CustomButton
+              onClick={() => setIsOpenModal(true)}
+              disabled={isBusy}
+              className={btnstyle}
+              style={{ marginTop: 0 }}
+            >
+              <AddIcon sx={{ fontSize: 15, marginRight: "3px" }} />
+              Apply Leave
+            </CustomButton>
+
+            <CustomToolTip
+              title="You can update your leave starting on the 1st of each month."
+              placement="bottom"
+            >
+              <CustomButton
+                onClick={refetch}
+                disabled={isBusy}
+                className="cursor-pointer gap-1.5 px-4 text-sm font-semibold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200"
+              >
+                <RefreshIcon sx={{ fontSize: 15 }} />
+                Refresh
+              </CustomButton>
+            </CustomToolTip>
+          </div>
         </div>
       </div>
-      <>
-        {eranLeaveLoading ||
-        sickLeaveLoading ||
-        wfhLoading ||
-        pendingReqLoading ||
-        updateElLeaveLoading ||
-        updateSlLeaveLoading ||
-        updateWfhLeaveLoading ? (
+
+      {/* Leave cards */}
+      <div className="overflow-y-auto custom-scrollbar-for-menu">
+        {isBusy ? (
           <LeavePageSkeleton />
         ) : (
-          <div className="  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4  gap-4  ">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-4">
             {leaveData.map((leave: any) => (
               <LeaveCard
                 key={leave.type}
                 title={leave.type}
                 img={leave.img}
-                currentValue={`${leave.currentlyAvailable} days`}
+                currentValue={leave.currentlyAvailable}
                 credited={`${leave.creditedFromLastMonth} days`}
                 annualAllotment={`${leave.annualAllotment} days`}
               />
             ))}
           </div>
         )}
-      </>
+      </div>
+
       <CustomModal
         open={isOpenModal}
         onClose={() => setIsOpenModal(false)}
-        title={"Apply For Leave"}
+        title="Apply For Leave"
       >
         <ApplyLeavePage onClose={() => setIsOpenModal(false)} />
       </CustomModal>
+
       <Modal
         open={open}
         onClose={() => setOpen(false)}
@@ -325,12 +329,10 @@ const LeavePage = () => {
           },
         }}
       >
-        <Box sx={style}>
+        <Box sx={holidayModalStyle}>
           <HolidayPage openClose={() => setOpen(false)} open={open} />
         </Box>
       </Modal>
-      {/* </>
-      )} */}
     </div>
   );
 };

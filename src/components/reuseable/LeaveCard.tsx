@@ -1,14 +1,9 @@
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import { Divider } from "@mui/material";
 import type { FC } from "react";
-
 
 type LeaveCardPropsType = {
   title: string;
   currentValue: string | number;
-img:any
+  img: any;
   credited: string | number;
   annualAllotment: string | number;
 };
@@ -16,76 +11,79 @@ img:any
 const LeaveCard: FC<LeaveCardPropsType> = ({
   title,
   currentValue,
-img,
+  img,
   credited,
   annualAllotment,
 }) => {
+  const available = parseFloat(String(currentValue)) || 0;
+  const isLow = available < 2;
+  const isMed = available >= 2 && available < 5;
+
+  const accentColor = isLow ? "#ef4444" : isMed ? "#f59e0b" : "#2eacb3";
+  const bgColor = isLow ? "#fef2f2" : isMed ? "#fffbeb" : "#e0f7fa";
+  const badgeBg = isLow ? "#fecaca" : isMed ? "#fde68a" : "#99f6e4";
+  const badgeColor = isLow ? "#b91c1c" : isMed ? "#92400e" : "#0f766e";
+  const badgeText = isLow ? "Low" : isMed ? "Moderate" : "Good";
+
   return (
-    <Card
-      sx={{
-        minWidth: { xs: "100%", sm: 180 },
-        borderRadius: 2,
-        boxShadow: 3,
-      }}
-    >
-      <CardContent>
-       <div className="flex items-center space-x-2">
-        <img src={img} alt="leave" className="w-12" />
-         <Typography
-          variant="h6"
-          component="div"
-          sx={{
-            fontWeight: 600,
-            fontSize: { xs: "1rem", sm: "1.2rem" },
-          }}
-        >
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
+      {/* Card header */}
+      <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100">
+        <img
+          src={img}
+          alt={title}
+          className="w-9 h-9 object-contain flex-shrink-0"
+        />
+        <span className="font-bold text-gray-800 text-sm leading-snug">
           {title}
-        </Typography>
-       </div>
+        </span>
+      </div>
 
-        <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-2 px-5 py-2">
-          <Typography variant="body2" color="text.secondary">
-            Currently Available
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.primary"
-            sx={{ textAlign: "right" }}
+      {/* Available balance — large number */}
+      <div
+        className="flex items-center justify-between px-4 py-4"
+        style={{ backgroundColor: bgColor }}
+      >
+        <div>
+          <p
+            className="text-[10px] font-bold uppercase tracking-wider mb-0.5"
+            style={{ color: accentColor }}
           >
-            {currentValue}
-          </Typography>
+            Available
+          </p>
+          <p
+            className="text-3xl font-bold leading-none"
+            style={{ color: accentColor }}
+          >
+            {available}
+            <span className="text-sm font-normal ml-1.5 opacity-75">days</span>
+          </p>
         </div>
+        <span
+          className="text-[11px] font-bold px-2.5 py-1 rounded-full"
+          style={{ backgroundColor: badgeBg, color: badgeColor }}
+        >
+          {badgeText}
+        </span>
+      </div>
 
-        <Divider sx={{ mt: 2 }} />
-
-        <div className="grid grid-cols-2  mt-2 px-5 py-2">
-          {" "}
-          <Typography variant="body2" color="text.secondary">
-            Credited from last month
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.primary"
-            sx={{ textAlign: "right" }}
-          >
+      {/* Stats */}
+      <div className="px-4 py-3 space-y-2">
+        <div className="flex justify-between items-center">
+          <span className="text-xs text-gray-500">Credited last month</span>
+          <span className="text-xs font-semibold text-gray-700">
             {credited}
-          </Typography>
+          </span>
         </div>
-        <div className="grid grid-cols-2  mt-2 px-5 py-2">
-          {" "}
-          <Typography variant="body2" color="text.secondary">
-            Annual Allotment
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.primary"
-            sx={{ textAlign: "right" }}
-          >
+        <div className="h-px bg-gray-100" />
+        <div className="flex justify-between items-center">
+          <span className="text-xs text-gray-500">Annual Allotment</span>
+          <span className="text-xs font-semibold text-gray-700">
             {annualAllotment}
-          </Typography>
+          </span>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

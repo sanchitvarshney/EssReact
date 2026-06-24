@@ -3,6 +3,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import TrendingDownIcon from "@mui/icons-material/TrendingDown";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { CustomButton } from "../components/ui/CustomButton";
 import {
   Form,
@@ -11,7 +16,6 @@ import {
   FormControl,
   FormMessage,
 } from "../components/ui/form";
-
 import CustomModalDatePicker from "../components/reuseable/CustomModalDatePicker";
 import { btnstyle } from "../constants/themeConstant";
 import {
@@ -19,12 +23,9 @@ import {
   useGetPaySlipMutation,
 } from "../services/payslip";
 import moment from "moment";
-
 import DotLoading from "../components/reuseable/DotLoading";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-
 import { useApiErrorMessage } from "../hooks/useApiErrorMessage";
-import { CircularProgress, Divider } from "@mui/material";
+import { CircularProgress, Chip, Typography } from "@mui/material";
 import { useToast } from "../hooks/useToast";
 
 const schema = z.object({
@@ -39,17 +40,13 @@ const PaySlipPage = () => {
   const [showLoader, setShowLoader] = useState(false);
   const [netSalary, setNetSalary] = useState(0);
   const star = "******";
+
   const [getPaySlip, { isLoading, data, error, isError, isSuccess }] =
     useGetPaySlipMutation();
   const [downloadPaySlip, { isLoading: isDownloadLoading }] =
     useDownloadPaySlipMutation();
 
-  useApiErrorMessage({
-    error,
-    errorMessage: data,
-    isError: isError,
-    isSuccess: isSuccess,
-  });
+  useApiErrorMessage({ error, errorMessage: data, isError, isSuccess });
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -59,20 +56,18 @@ const PaySlipPage = () => {
     },
   });
 
-  const onSubmit = async (data: any) => {
-    const period = moment(data.toDate).format("YYYY-MM");
-
-    getPaySlip({ period: period })
+  const onSubmit = async (values: any) => {
+    const period = moment(values.toDate).format("YYYY-MM");
+    getPaySlip({ period })
       .then((res) => {
-        if (res?.data?.status === "error") {
+        if (res?.data?.status === "error")
           showToast(res?.data?.message, "error");
-        }
       })
       .catch((err) => {
         showToast(
           err?.data?.message?.msg ||
             err?.message ||
-            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
+            "An unexpected error has occurred.",
           "error",
         );
       });
@@ -80,210 +75,262 @@ const PaySlipPage = () => {
 
   useEffect(() => {
     if (data?.total) {
-      const newSalary = data?.total[0]?.earnings - data?.total[0]?.deductions;
-      setNetSalary(newSalary);
+      setNetSalary(data.total[0]?.earnings - data.total[0]?.deductions);
     }
   }, [data?.total]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setShowLoader(false);
-    }, 1200);
+    const t = setTimeout(() => setShowLoader(false), 1200);
+    return () => clearTimeout(t);
   }, [showPayslip]);
 
-  const downloadPDF = (bufferData: any, filename: string = "document.pdf") => {
+  const downloadPDF = (bufferData: any, filename = "document.pdf") => {
     const byteArray = new Uint8Array(bufferData);
-
-    // Create PDF Blob
     const file = new Blob([byteArray], { type: "application/pdf" });
     const url = URL.createObjectURL(file);
-
-    // Trigger download
     const link = document.createElement("a");
     link.href = url;
     link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-
-    // Clean up
     URL.revokeObjectURL(url);
   };
 
   const downloadPayslip = () => {
     const d = form.watch("toDate");
-
     const period = moment(d).format("YYYY-MM");
     downloadPaySlip({ month: period }).then((res) => {
       if (res?.data?.status === "success") {
         downloadPDF(res?.data?.data?.buffer?.data, res?.data?.data?.filename);
       }
-
-      if (res?.data?.status === "error") {
-        showToast(res?.data?.message, "error");
-      }
+      if (res?.data?.status === "error") showToast(res?.data?.message, "error");
     });
   };
 
-  return (
-    <div className=" h-[calc(100vh-90px)] flex flex-col items-center overflow-hidden py-4 ">
-      <div className=" w-full max-w-5xl  rounded-lg  h-full  p-2">
-        <h2 className="text-3xl font-bold mb-3 text-center text-gray-800">
-          Pay Slip
-        </h2>
+  const isBusy = isLoading || showLoader || isDownloadLoading;
+  const period = moment(form.watch("toDate")).format("MMMM YYYY");
 
-        <div className="w-[100%] mx-auto p-2 flex justify-center items-center  mb-4  rounded-lg">
+  return (
+    <div className="h-[calc(100vh-90px)] flex flex-col overflow-hidden px-3  py-4 w-full">
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-4">
+        <div
+          style={{ backgroundColor: "#2eacb3" }}
+          className="w-1 h-7 rounded-full"
+        />
+        <Typography
+          sx={{
+            fontSize: { xs: 16, sm: 19 },
+            fontWeight: 700,
+            color: "#232324",
+          }}
+        >
+          Pay Slip
+        </Typography>
+        {data?.earing && (
+          <Chip
+            label={period}
+            size="small"
+            sx={{
+              backgroundColor: "#e0f7f8",
+              color: "#2eacb3",
+              fontWeight: 600,
+              fontSize: 11,
+              height: 22,
+              ml: 0.5,
+            }}
+          />
+        )}
+      </div>
+
+      {/* Filter Bar */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-3 mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          {/* Left: date + generate */}
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex items-center justify-center gap-3 w-full"
+              className="flex items-center gap-3 flex-wrap"
             >
               <FormField
                 control={form.control}
                 name="toDate"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="flex-shrink-0">
                     <FormControl>
                       <CustomModalDatePicker
                         field={field}
                         view={["year", "month"]}
-                        openTo={"month"}
-                        label={"Select Date"}
-                        isDisabled={isLoading || showLoader || isDownloadLoading}
+                        openTo="month"
+                        label="Select Month"
+                        isDisabled={isBusy}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-                
               />
-              <CustomButton className={btnstyle} type="submit" disabled={isLoading ||showLoader || isDownloadLoading}>
+              <CustomButton
+                className={btnstyle}
+                type="submit"
+                disabled={isBusy}
+              >
+                {isLoading && (
+                  <CircularProgress color="inherit" size={14} sx={{ mr: 1 }} />
+                )}
                 Generate
               </CustomButton>
             </form>
           </Form>
-        </div>
 
+          {/* Right: net salary + actions — visible only after data loads */}
+          {data?.earing && !showLoader && (
+            <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0">
+              <div>
+                <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-widest mb-0.5">
+                  Net Salary
+                </p>
+                <p className="text-base sm:text-lg font-bold text-green-600 leading-tight">
+                  ₹ {showPayslip ? netSalary.toLocaleString("en-IN") : star}
+                </p>
+              </div>
+
+              <div className="flex gap-2">
+                <CustomButton
+                  className={btnstyle}
+                  onClick={() => {
+                    setShowLoader(true);
+                    setShowPayslip(!showPayslip);
+                  }}
+                  disabled={isBusy}
+                >
+                  {showPayslip ? (
+                    <VisibilityOffIcon sx={{ fontSize: 17, mr: 0.5 }} />
+                  ) : (
+                    <VisibilityIcon sx={{ fontSize: 17, mr: 0.5 }} />
+                  )}
+                  <span className="hidden xs:inline">
+                    {showPayslip ? "Hide" : "Show"}
+                  </span>
+                </CustomButton>
+
+                <CustomButton
+                  className={btnstyle}
+                  onClick={downloadPayslip}
+                  disabled={isBusy}
+                >
+                  {isDownloadLoading ? (
+                    <CircularProgress
+                      color="inherit"
+                      size={14}
+                      sx={{ mr: 0.5 }}
+                    />
+                  ) : (
+                    <FileDownloadIcon sx={{ fontSize: 17, mr: 0.5 }} />
+                  )}
+                  <span className="hidden xs:inline">Download</span>
+                </CustomButton>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Content Area */}
+      <div className=" overflow-y-auto custom-scrollbar-for-menu">
         {showLoader || isLoading ? (
-          <div className="w-full h-[53vh] flex justify-center items-center">
-            <DotLoading />{" "}
+          <div className="w-full h-full flex justify-center items-center">
+            <DotLoading />
+          </div>
+        ) : data?.earing ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 pb-2 max-h-[calc(100vh-170px)] ">
+            {/* Earnings Card */}
+            <div className="rounded-2xl border border-green-100 overflow-hidden shadow-sm">
+              <div className="flex items-center gap-2 px-4 py-3 bg-green-50">
+                <TrendingUpIcon sx={{ color: "#16a34a", fontSize: 18 }} />
+                <span className="font-bold text-green-700 text-sm tracking-wide">
+                  Earnings
+                </span>
+              </div>
+              <div className="bg-white">
+                {data.earing.map(
+                  (item: { label: string; value: string }, i: number) => (
+                    <div
+                      key={item.label}
+                      className="flex justify-between items-center px-4 lg:px-6 py-2.5 lg:py-3 border-b border-gray-50"
+                      style={{
+                        backgroundColor: i % 2 === 0 ? "#fff" : "#fafafa",
+                      }}
+                    >
+                      <span className="text-sm lg:text-[15px] text-gray-500">
+                        {item.label}
+                      </span>
+                      <span className="text-sm lg:text-[15px] font-semibold text-gray-800">
+                        ₹ {showPayslip ? item.value : star}
+                      </span>
+                    </div>
+                  ),
+                )}
+              </div>
+              <div className="flex justify-between items-center px-4 lg:px-6 py-3 bg-green-50 border-t border-green-100">
+                <span className="text-sm font-bold text-green-700">
+                  Total Earnings
+                </span>
+                <span className="text-sm font-bold text-green-700">
+                  ₹ {showPayslip ? data.total[0]?.earnings : star}
+                </span>
+              </div>
+            </div>
+
+            {/* Deductions Card */}
+            <div className="rounded-2xl border border-red-100 overflow-hidden shadow-sm">
+              <div className="flex items-center gap-2 px-4 py-3 bg-red-50">
+                <TrendingDownIcon sx={{ color: "#dc2626", fontSize: 18 }} />
+                <span className="font-bold text-red-600 text-sm tracking-wide">
+                  Deductions
+                </span>
+              </div>
+              <div className="bg-white">
+                {data.deduction.map(
+                  (item: { label: string; value: string }, i: number) => (
+                    <div
+                      key={item.label}
+                      className="flex justify-between items-center px-4 lg:px-6 py-2.5 lg:py-3 border-b border-gray-50"
+                      style={{
+                        backgroundColor: i % 2 === 0 ? "#fff" : "#fafafa",
+                      }}
+                    >
+                      <span className="text-sm lg:text-[15px] text-gray-500">
+                        {item.label}
+                      </span>
+                      <span className="text-sm lg:text-[15px] font-semibold text-gray-800">
+                        ₹ {showPayslip ? item.value : star}
+                      </span>
+                    </div>
+                  ),
+                )}
+              </div>
+              <div className="flex justify-between items-center px-4 lg:px-6 py-3 bg-red-50 border-t border-red-100">
+                <span className="text-sm font-bold text-red-600">
+                  Total Deductions
+                </span>
+                <span className="text-sm font-bold text-red-600">
+                  ₹ {showPayslip ? data.total[0]?.deductions : star}
+                </span>
+              </div>
+            </div>
           </div>
         ) : (
-          <div className="w-full relative h-[40vh] sm:h-[45vh] md:h-[55vh] will-change-transform overflow-y-auto">
-            {data?.earing ? (
-              <>
-                <div className=" mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 ">
-                  <div className="bg-green-50 p-4 rounded-lg shadow-md">
-                    <h3 className="text-xl font-semibold mb-4  text-green-700">
-                      Earnings
-                    </h3>
-                    <div className="divide-y">
-                      {data?.earing.map(
-                        (item: { label: string; value: string }) => (
-                          <div
-                            key={item.label}
-                            className="flex justify-between py-2 px-2 text-gray-800"
-                          >
-                            <span>{item.label}</span>
-                            <span>₹ {showPayslip ? item.value : star}</span>
-                          </div>
-                        ),
-                      )}
-                    </div>
-                    <div className="flex justify-between mt-4 pt-4 border-t font-bold text-green-800">
-                      <span>Total Earnings</span>
-                      <span>
-                        ₹ {showPayslip ? data?.total[0]?.earnings : star}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="bg-red-50 rounded-lg p-6 shadow-md">
-                    <h3 className="text-xl font-semibold mb-4 text-red-500">
-                      Deductions
-                    </h3>
-                    <div className="divide-y">
-                      {data?.deduction.map(
-                        (item: { label: string; value: string }) => (
-                          <div
-                            key={item.label}
-                            className="flex justify-between py-2 px-2 text-gray-800"
-                          >
-                            <span>{item.label}</span>
-                            <span>₹ {showPayslip ? item.value : star}</span>
-                          </div>
-                        ),
-                      )}
-                    </div>
-                    <div className="flex  justify-between  pt-4 border-t font-bold text-red-600">
-                      <span>Total Deductions</span>
-                      <span>
-                        ₹ {showPayslip ? data?.total[0]?.deductions : star}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <p className="text-gray-500 w-full text-center my-10 ">
-                Generate last month payslip
-              </p>
-            )}
+          <div className="w-full h-[calc(100vh-300px)] flex flex-col items-center justify-center gap-3">
+            <AccountBalanceWalletIcon
+              sx={{ fontSize: { xs: 40, sm: 52 }, color: "#d1d5db" }}
+            />
+            <p className="text-sm text-gray-400 text-center px-4">
+              Select a month and click Generate to view your payslip
+            </p>
           </div>
         )}
-      </div>
-      <Divider />
-      <div className="sticky   w-full flex flex-row items-center justify-between  space-x-10 px-8 ">
-        <div>
-          {data?.earing && (
-            <>
-              {showLoader ? null : (
-                <>
-                  <div className="text-lg font-semibold text-gray-700">
-                    Net Salary
-                  </div>
-                  <div className="text-[1.2rem] font-bold text-green-600 mb-4">
-                    ₹ {showPayslip ? netSalary : star}
-                  </div>
-                </>
-              )}
-            </>
-          )}
-        </div>
-        <div className="space-x-4 space-y-4">
-          {data?.earing && (
-            <>
-              <CustomButton
-                className={btnstyle}
-                onClick={() => {
-                  setShowLoader(true);
-                  setShowPayslip(!showPayslip);
-                }}
-                disabled={showLoader || isLoading || isDownloadLoading}
-              >
-                <VisibilityIcon
-                  sx={{ color: "#ffffff", fontSize: 20, mr: 1 }}
-                />
-                {showPayslip ? "Hide Payslip" : "Show Payslip"}
-              </CustomButton>
-
-              <CustomButton
-                className={btnstyle}
-                onClick={downloadPayslip}
-                disabled={isDownloadLoading || showLoader || isLoading}
-              >
-                {isDownloadLoading ? (
-                  <CircularProgress color="inherit" size={20} sx={{ mr: 1 }} />
-                ) : (
-                  <FileDownloadIcon
-                    sx={{ color: "#ffffff", fontSize: 20, mr: 1 }}
-                  />
-                )}
-                <span className="text-white">Download</span>
-              </CustomButton>
-            </>
-          )}
-        </div>
       </div>
     </div>
   );

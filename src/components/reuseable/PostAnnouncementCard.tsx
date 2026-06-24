@@ -1,29 +1,21 @@
 import {
   Avatar,
-  Box,
-  Card,
-  CardContent,
   Chip,
-  Divider,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Typography,
-  Paper,
   IconButton,
   Popover,
 } from "@mui/material";
 import EmojiPicker, { EmojiStyle, Theme } from "emoji-picker-react";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import SendIcon from "@mui/icons-material/Send";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import AddCommentIcon from "@mui/icons-material/AddComment";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { memo, useEffect, useState, type FC } from "react";
 
 import VirtualizedCommentList from "./VirtualizedCommentList";
 import { Input } from "../ui/input";
-
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import AddCommentIcon from "@mui/icons-material/AddComment";
 import likeicon from "../../assets/heart.png";
 import {
   useSendCommentMutation,
@@ -36,7 +28,6 @@ interface PostAnnouncementCardProps {
   post: any;
 }
 
-// Utility function to normalize images to an array
 function getImageArray(images: any): string[] {
   if (!images) return [];
   if (Array.isArray(images)) return images;
@@ -58,19 +49,16 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
   const { user } = useAuth();
   const [isCommentView, setIsCommentView] = useState(false);
   const [showInput, setShowInput] = useState(false);
-  const [anchorElComment, setAnchorElComment] = useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElComment, setAnchorElComment] = useState<null | HTMLElement>(null);
   const [anchorElEmoji, setAnchorElEmoji] = useState<null | HTMLElement>(null);
   const [commentText, setCommentText] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const [sendComment, { data: commentData }] = useSendCommentMutation();
-  const [sendLike, { data: likeData,  }] = useSendLikeMutation();
+  const [sendLike, { data: likeData }] = useSendLikeMutation();
 
   const [isLikeView, setIsLikeView] = useState(false);
   const [isLike, setIsLike] = useState(false);
-
   const [anchorElLike, setAnchorElLike] = useState<null | HTMLElement>(null);
 
   const handleOpenCommentView = (event: React.MouseEvent<HTMLElement>) => {
@@ -83,16 +71,11 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
   };
 
   const handleComment = (key: string) => {
-
     if (commentText.trim() === "") {
       showToast("Comment cannot be empty", "error");
       return;
     }
-    const payload = {
-      comment: commentText,
-      post_key: key,
-    };
-
+    const payload = { comment: commentText, post_key: key };
     sendComment(payload)
       .then((res) => {
         if (res?.data?.status === "error") {
@@ -105,25 +88,17 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
         }
       })
       .catch((err) => {
-        
         showToast(err?.data?.message, "error");
       });
   };
 
   const handleLike = (key: string) => {
-      setIsLike(true);
-    const payload = {
-      post_key: key,
-    };
+    setIsLike(true);
+    const payload = { post_key: key };
     sendLike(payload)
       .then((res) => {
         if (res?.data?.status === "error") {
           showToast(res?.data?.message, "error");
-          setCommentText("");
-        }
-        if (res?.data?.status === "success") {
-          showToast(res?.data?.message, "success");
-         
         }
       })
       .catch((err) => {
@@ -131,313 +106,291 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
         showToast(err?.data?.message, "error");
       });
   };
+
   //@ts-ignore
   const userid: any = user?.id;
 
   useEffect(() => {
-    if (!post?.likes || !userid  ) return;
-
+    if (!post?.likes || !userid) return;
     const liked = post.likes.some((like: any) => like?.userId === userid);
-    
     setIsLike(liked);
-  }, [post?.likes, userid,  ]);
+  }, [post?.likes, userid]);
 
   const handleEmojiClick = (emojiData: { emoji: string }) => {
     setCommentText(commentText + emojiData.emoji);
   };
 
-  return (
-    <Card
-      elevation={0}
-      sx={{
-        // maxWidth: "1050px",
-        borderRadius: 3,
-        boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-        background: "#ffffff",
-        border: "1px solid #f0f0f0",
-      }}
-    >
-      <CardContent>
-        <ListItem className="hover:bg-gray-50 flex  justify-start items-start  transition-colors rounded-lg relative">
-          <ListItemAvatar>
-            <Avatar
-              className="text-white font-semibold "
-              sx={{
-                backgroundColor: "#2eacb3",
-                width: 48,
-                height: 48,
-                pointerEvents: "none",
-                userSelect: "none",
-              }}
-              
-            >
-              {post?.authorName.charAt(0)}
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primary={
-              <Typography
-                variant="subtitle1"
-                className="font-medium text-gray-800"
-              >
-                {post?.authorName}
-              </Typography>
-            }
-            secondary={
-              <Typography variant="body2" className="text-gray-600">
-                {post?.authorRole}
-              </Typography>
-            }
-          />
-          <Chip
-            label={post?.timeAgo}
-            size="small"
-            sx={{
-              position: { xs: "absolute", sm: "static" },
-              top: { xs: 8, sm: "auto" },
-              right: { xs: 8, sm: "auto" },
-              ml: { xs: 0, sm: "auto" },
-              backgroundColor: "#e6f4ea",
-              color: "#388e3c",
-              fontWeight: 600,
-            }}
-          />
-        </ListItem>
-        <Divider sx={{ my: 2 }} />
+  const images = getImageArray(post?.images);
+  const imgCount = images.length;
+  const totalLikes = likeData?.data?.total_likes ?? post?.likes?.length ?? 0;
+  const totalComments = commentData?.data?.total_comments ?? post?.comments?.length ?? 0;
 
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      {/* Author header */}
+      <div className="flex items-center gap-3 px-4 py-3">
+        <Avatar
+          sx={{
+            width: 44,
+            height: 44,
+            bgcolor: "#2eacb3",
+            fontWeight: 700,
+            fontSize: 16,
+            pointerEvents: "none",
+            userSelect: "none",
+            flexShrink: 0,
+          }}
+        >
+          {post?.authorName?.charAt(0)}
+        </Avatar>
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-gray-800 text-sm leading-tight truncate">
+            {post?.authorName}
+          </p>
+          <p className="text-xs text-gray-400 mt-0.5 truncate">{post?.authorRole}</p>
+        </div>
+        <Chip
+          label={post?.timeAgo}
+          size="small"
+          sx={{
+            bgcolor: "#dcfce7",
+            color: "#15803d",
+            fontWeight: 600,
+            fontSize: 11,
+            height: 22,
+            flexShrink: 0,
+            "& .MuiChip-label": { px: 1.5 },
+          }}
+        />
+      </div>
+
+      <div className="h-px bg-gray-100" />
+
+      {/* Post body */}
+      <div className="px-4 py-3">
         <Typography
           variant="body1"
-          sx={{
-            lineHeight: 1.6,
-            color: "#2c3e50",
-            mb: 2,
-            border: "none",
-            px: 2,
-          }}
+          sx={{ lineHeight: 1.7, color: "#374151", fontSize: 14 }}
           dangerouslySetInnerHTML={{ __html: post?.description }}
         />
-        {/* {post?.description} */}
-        {/* </Typography> */}
+      </div>
 
-        {getImageArray(post?.images).length > 0 && (
-          <Box mb={3}>
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 2,
-                // px: 2,
-              }}
-            >
-              {getImageArray(post?.images).map((image: any, index: number) => (
-                <Box
-                  key={index}
-                  sx={{
-                    width:
-                      getImageArray(post?.images).length === 1
-                        ? { xs: "100%", sm: "100%" }
-                        : getImageArray(post?.images).length === 2
-                        ? { xs: "100%", sm: "calc(50% - 8px)" }
-                        : getImageArray(post?.images).length === 3
-                        ? { xs: "100%", sm: "calc(33.33% - 8px)" }
-                        : { xs: "calc(50% - 8px)", sm: "calc(25% - 8px)" },
-                    minWidth:
-                      getImageArray(post?.images).length === 1
-                        ? "250px"
-                        : "200px",
-                  }}
-                >
-                  <Paper
-                    elevation={0}
-                    sx={{
-                      borderRadius: 4,
-                      overflow: "hidden",
-                    }}
-                  >
-                    <img
-                      src={image}
-                      alt={`Attachment ${index + 1}`}
-                      style={{
-                        width: "100%",
-                        height:
-                          getImageArray(post?.images).length === 1
-                            ? "300px"
-                            : "200px",
-                        objectFit: "contain",
-                      }}
-                    />
-                  </Paper>
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        )}
-        <div className="flex   justify-between items-center px-2 mt-2">
-          <div className="flex gap-2">
-            <IconButton
-              sx={{
-                "&:hover": {
-                  background: "rgba(52, 159, 195, 0.23)",
-                },
-              }}
-              onClick={() => handleLike(post?.postKey)}
-            >
-              <ThumbUpIcon
-                sx={{ color: isLike ? "green" : "#000", fontSize: 24 }}
-              />
-            </IconButton>
-            <IconButton
-              sx={{
-                "&:hover": {
-                  background: "rgba(52, 159, 195, 0.23)",
-                },
-              }}
-              onClick={() => setShowInput(!showInput)}
-            >
-              <AddCommentIcon sx={{ color: "#000", fontSize: 24 }} />
-            </IconButton>
-          </div>
-          <div className="">
-            {post?.likes?.length > 0 && (
+      {/* Images */}
+      {imgCount > 0 && (
+        <div className="px-4 pb-3">
+          <div className="flex flex-wrap gap-2">
+            {images.map((image, index) => (
               <div
-                className="flex items-center space-x-2 cursor-pointer "
-                onClick={handleOpenLikeView}
+                key={index}
+                style={{
+                  width:
+                    imgCount === 1
+                      ? "100%"
+                      : imgCount === 2
+                      ? "calc(50% - 4px)"
+                      : imgCount === 3
+                      ? "calc(33.33% - 6px)"
+                      : "calc(25% - 6px)",
+                }}
               >
-                <Avatar
-                  src={likeicon}
-                  alt="likes"
-                  variant="square"
-                  sx={{ objectFit: "contain", width: 26, height: 26 }}
+                <img
+                  src={image}
+                  alt={`Attachment ${index + 1}`}
+                  className="w-full rounded-xl object-contain"
+                  style={{ height: imgCount === 1 ? 300 : 200 }}
                 />
-                <span className="select-none text-sm  border-b-1 border-gray-500">{`${
-                  likeData?.data?.total_likes
-                    ? likeData?.data?.total_likes
-                    : post?.likes?.length || 0
-                } Likes`}</span>
               </div>
-            )}
-            {post?.comments?.length > 0 && (
-              <div className=" cursor-pointer" onClick={handleOpenCommentView}>
-                <span className="select-none text-sm border-b-1 border-gray-500">{`${
-                  commentData?.data?.total_comments
-                    ? commentData?.data?.total_comments
-                    : post?.comments?.length || 0
-                } Comments`}</span>
-              </div>
-            )}
+            ))}
           </div>
         </div>
+      )}
 
-        {!showInput && (
-          <>
-            <Divider sx={{ my: 2 }} />
-            <div className="mt-3 flex justify-between">
-              <div className="flex-[0.8] ">
-                <Input
-                  placeholder="Write your comment"
-                  className="rounded-[20px]  "
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton
-                  onClick={(e) => {
-                    setAnchorElEmoji(e.currentTarget);
-                    setShowEmojiPicker(!showEmojiPicker);
-                  }}
-                >
-                  <EmojiEmotionsIcon />
-                </IconButton>
-                <IconButton onClick={() => handleComment(post?.postKey)}>
-                  <SendIcon />
-                </IconButton>
-              </div>
-            </div>
-          </>
-        )}
-      </CardContent>
+      {/* Counts row */}
+      {(totalLikes > 0 || totalComments > 0) && (
+        <>
+          <div className="flex items-center justify-end gap-4 px-4 py-2">
+            {totalLikes > 0 && (
+              <button
+                onClick={handleOpenLikeView}
+                className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                <img src={likeicon} alt="likes" className="w-4 h-4 object-contain" />
+                <span>{totalLikes} Likes</span>
+              </button>
+            )}
+            {totalComments > 0 && (
+              <button
+                onClick={handleOpenCommentView}
+                className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                {totalComments} Comments
+              </button>
+            )}
+          </div>
+        </>
+      )}
 
+      <div className="h-px bg-gray-100 mx-4" />
+
+      {/* Action bar */}
+      <div className="flex items-center gap-1 px-2 py-1.5">
+        <button
+          onClick={() => handleLike(post?.postKey)}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 flex-1 justify-center ${
+            isLike
+              ? "text-green-600 bg-green-50 hover:bg-green-100"
+              : "text-gray-500 hover:bg-gray-50"
+          }`}
+        >
+          <ThumbUpIcon sx={{ fontSize: 18 }} />
+          Like
+        </button>
+        <button
+          onClick={() => setShowInput(!showInput)}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-50 transition-all duration-200 flex-1 justify-center"
+        >
+          <AddCommentIcon sx={{ fontSize: 18 }} />
+          Comment
+        </button>
+      </div>
+
+      {/* Comment input */}
+      {!showInput && (
+        <>
+          <div className="h-px bg-gray-100 mx-4" />
+          <div className="px-4 py-3 flex items-center gap-2">
+            <Input
+              placeholder="Write a comment..."
+              className="flex-1 rounded-full bg-gray-50 border-gray-200 text-sm"
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleComment(post?.postKey);
+              }}
+            />
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                setAnchorElEmoji(e.currentTarget);
+                setShowEmojiPicker(!showEmojiPicker);
+              }}
+              sx={{
+                color: "#9ca3af",
+                "&:hover": { color: "#f59e0b", bgcolor: "#fef9c3" },
+                transition: "all 0.15s",
+              }}
+            >
+              <EmojiEmotionsIcon sx={{ fontSize: 20 }} />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={() => handleComment(post?.postKey)}
+              sx={{
+                color: "#2eacb3",
+                "&:hover": { bgcolor: "#e0f7fa" },
+                transition: "all 0.15s",
+              }}
+            >
+              <SendIcon sx={{ fontSize: 20 }} />
+            </IconButton>
+          </div>
+        </>
+      )}
+
+      {/* Comments popover */}
       <Popover
-        elevation={2}
         open={isCommentView}
-        anchorEl={anchorElComment || null}
+        anchorEl={anchorElComment}
         onClose={() => setIsCommentView(false)}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        transformOrigin={{ vertical: "bottom", horizontal: "left" }}
         disableAutoFocus
         disableEnforceFocus
         PaperProps={{
-          style: {
-            transformOrigin: "bottom",
-            position: "relative",
-            borderRadius: "6px",
-            overflow: "visible",
-            boxShadow: "3px",
-          },
           sx: {
-            mt: 2,
-            width: 400,
-
-            // zIndex: 1600,
+            borderRadius: "16px",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+            width: 380,
+            overflow: "hidden",
           },
         }}
       >
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+          <div className="flex items-center gap-2">
+            <AddCommentIcon sx={{ fontSize: 16, color: "#2eacb3" }} />
+            <span className="font-semibold text-gray-800 text-sm">Comments</span>
+            <span
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+              style={{ backgroundColor: "#e0f7fa", color: "#0097a7" }}
+            >
+              {totalComments}
+            </span>
+          </div>
+          <IconButton
+            size="small"
+            onClick={() => setIsCommentView(false)}
+            sx={{ color: "#9ca3af", "&:hover": { bgcolor: "#f3f4f6" } }}
+          >
+            <CloseIcon sx={{ fontSize: 16 }} />
+          </IconButton>
+        </div>
         <VirtualizedCommentList data={post?.comments} />
       </Popover>
+
+      {/* Likes popover */}
       <Popover
-        elevation={2}
         open={isLikeView}
-        anchorEl={anchorElLike || null}
+        anchorEl={anchorElLike}
         onClose={() => setIsLikeView(false)}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        transformOrigin={{ vertical: "bottom", horizontal: "left" }}
         disableAutoFocus
         disableEnforceFocus
         PaperProps={{
-          style: {
-            transformOrigin: "bottom",
-            position: "relative",
-            borderRadius: "6px",
-            overflow: "visible",
-            boxShadow: "3px",
-          },
           sx: {
-            mt: 2,
-            width: 350,
-
-            // zIndex: 1600,
+            borderRadius: "16px",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+            width: 320,
+            overflow: "hidden",
           },
         }}
       >
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+          <div className="flex items-center gap-2">
+            <img src={likeicon} alt="likes" className="w-4 h-4 object-contain" />
+            <span className="font-semibold text-gray-800 text-sm">Likes</span>
+            <span
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+              style={{ backgroundColor: "#dcfce7", color: "#15803d" }}
+            >
+              {totalLikes}
+            </span>
+          </div>
+          <IconButton
+            size="small"
+            onClick={() => setIsLikeView(false)}
+            sx={{ color: "#9ca3af", "&:hover": { bgcolor: "#f3f4f6" } }}
+          >
+            <CloseIcon sx={{ fontSize: 16 }} />
+          </IconButton>
+        </div>
         <VirtualizedCommentList data={post?.likes} hight={300} />
       </Popover>
 
+      {/* Emoji picker popover */}
       <Popover
         open={showEmojiPicker}
         anchorEl={anchorElEmoji}
         onClose={() => setShowEmojiPicker(false)}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "center" }}
+        PaperProps={{
+          sx: {
+            borderRadius: "16px",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+            overflow: "hidden",
+          },
         }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        sx={{ mt: 0 }}
       >
         <EmojiPicker
           theme={Theme.DARK}
@@ -445,7 +398,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
           onEmojiClick={handleEmojiClick}
         />
       </Popover>
-    </Card>
+    </div>
   );
 };
 

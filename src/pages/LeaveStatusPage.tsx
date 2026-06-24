@@ -1,22 +1,16 @@
 import {
-  Box,
   Table,
   TableBody,
   TableContainer,
   TableHead,
   TableRow,
   Paper,
-  Typography,
   IconButton,
+  Tooltip,
+  Chip,
 } from "@mui/material";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-// import { CustomButton } from "../components/ui/CustomButton";
-// import DescriptionIcon from "@mui/icons-material/Description";
 import UndoIcon from "@mui/icons-material/Undo";
-import PendingIcon from "@mui/icons-material/Pending";
-import UnarchiveIcon from "@mui/icons-material/Unarchive";
-
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import EventBusyIcon from "@mui/icons-material/EventBusy";
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import {
@@ -25,78 +19,94 @@ import {
 } from "../services/Leave";
 import { useAuth } from "../contextapi/AuthContext";
 import { useEffect, useState } from "react";
-
 import { useToast } from "../hooks/useToast";
 import LeaveStatusPageSkeleton from "../skeleton/LeaveStatusPageSkeleton";
 import ConfirmationModal from "../components/reuseable/ConfirmationModal";
-
 import DotLoading from "../components/reuseable/DotLoading";
+import CustomToolTip from "../components/reuseable/CustomToolTip";
 
-// Styled components for better visual appeal
-export const StyledTableCell = styled(TableCell)(({ theme }) => ({
+export const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#232324",
-    color: theme.palette.common.white,
+    backgroundColor: "#f8fafc",
+    color: "#475569",
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: "0.06em",
+    textTransform: "uppercase",
+    padding: "10px 16px",
+    whiteSpace: "nowrap",
+    borderBottom: "2px solid #e2e8f0",
   },
-  [`&.${tableCellClasses.body}`]: {},
-  fontSize: 15,
-  fontWeight: 600,
-  color: "#374151",
-  letterSpacing: 2,
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 13,
+    padding: "12px 16px",
+    color: "#374151",
+    borderBottom: "1px solid #f3f4f6",
+  },
 }));
 
-export const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(even)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
+export const StyledTableRow = styled(TableRow)(() => ({
+  transition: "background-color 0.15s",
+  "&:hover": { backgroundColor: "#f8fafc" },
+  "&:last-child td, &:last-child th": { border: 0 },
 }));
 
 export const getStatus = (status: any) => {
   switch (status) {
     case "APR":
       return (
-        <span className="text-[16px] text-green-700 flex items-center text-center">
-          <CheckBoxIcon sx={{ fontSize: 24 }} className=" mr-1" />
-          Approved
-        </span>
+        <Chip
+          label="Approved"
+          size="small"
+          sx={{ bgcolor: "#dcfce7", color: "#15803d", fontWeight: 700, fontSize: 11, height: 22, "& .MuiChip-icon": { color: "#15803d" } }}
+        />
       );
     case "PEN":
       return (
-        <span className="text-[16px] text-yellow-700">
-          <PendingIcon sx={{ fontSize: 24 }} className="mr-1" />
-          Pending
-        </span>
+        <Chip
+          label="Pending"
+          size="small"
+          sx={{ bgcolor: "#fef9c3", color: "#854d0e", fontWeight: 700, fontSize: 11, height: 22, "& .MuiChip-icon": { color: "#854d0e" } }}
+        />
       );
     case "REJ":
       return (
-        <span className="text-[16px] text-red-700">
-          <ThumbDownIcon sx={{ fontSize: 24 }} className="mr-1" />
-          Rejected
-        </span>
+        <Chip
+          label="Rejected"
+          size="small"
+          sx={{ bgcolor: "#fee2e2", color: "#b91c1c", fontWeight: 700, fontSize: 11, height: 22, "& .MuiChip-icon": { color: "#b91c1c" } }}
+        />
       );
-
     default:
       return (
-        <span className="text-[16px] text-blue-500 ">
-          <UnarchiveIcon sx={{ fontSize: 22 }} className="mr-1" />
-          Withdraw
-        </span>
+        <Chip
+          label="Withdrawn"
+          size="small"
+          sx={{ bgcolor: "#dbeafe", color: "#1d4ed8", fontWeight: 700, fontSize: 11, height: 22, "& .MuiChip-icon": { color: "#1d4ed8" } }}
+        />
       );
   }
 };
+
+const LEAVE_TYPE_COLORS: Record<string, string> = {
+  EL: "#2eacb3", SL: "#f59e0b", WFH: "#8b5cf6",
+  OD: "#3b82f6", CL: "#10b981", ACL: "#ec4899", LWP: "#ef4444",
+};
+
+const getLeaveDot = (type: string) => {
+  const color = Object.entries(LEAVE_TYPE_COLORS).find(([k]) =>
+    type?.toUpperCase().includes(k)
+  )?.[1] ?? "#94a3b8";
+  return <span className="inline-block w-2 h-2 rounded-full mr-1.5 flex-shrink-0" style={{ backgroundColor: color }} />;
+};
+
 const LeaveStatusPage = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
   const [trackId, setTrackId] = useState<string>("");
 
-  const [
-    getLeaveStatus,
-    { data, isLoading: leaveStatusLoading, error: leaveStatusError },
-  ] = useGetLeaveStatusMutation();
+  const [getLeaveStatus, { data, isLoading: leaveStatusLoading, error: leaveStatusError }] =
+    useGetLeaveStatusMutation();
   const [rejectLeave, { isLoading: rejectLeaveLoading, isSuccess }] =
     useRejectLeaveMutation();
 
@@ -113,288 +123,180 @@ const LeaveStatusPage = () => {
     if (leaveStatusError) {
       showToast(
         //@ts-ignore
-        leaveStatusError?.message ||
-          //@ts-ignore
-          leaveStatusError?.data?.message ||
-          "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
-        "error"
+        leaveStatusError?.message || leaveStatusError?.data?.message ||
+          "An unexpected error occurred.",
+        "error",
       );
     }
   }, [leaveStatusError]);
 
   const handleDelete = () => {
     setIsConfirm(false);
-    const payload = {
-      trackid: trackId,
-      status: "PEN",
-      type: "CAN",
-    };
-
-    rejectLeave(payload)
+    rejectLeave({ trackid: trackId, status: "PEN", type: "CAN" })
       .then((res) => {
-      
-        if (res?.data?.status === "success") {
-          showToast(res?.data?.message, "success");
-        }
-        if (res?.data?.status === "error") {
-          showToast(res?.data?.message?.msg, "error");
-        }
+        if (res?.data?.status === "success") showToast(res?.data?.message, "success");
+        if (res?.data?.status === "error") showToast(res?.data?.message?.msg, "error");
       })
       .catch((err) => {
-        showToast(
-          err?.data?.message?.msg ||
-            err?.message ||
-            "We're Sorry An unexpected error has occured. Our technical staff has been automatically notified and will be looking into this with utmost urgency.",
-          "error"
-        );
+        showToast(err?.data?.message?.msg || err?.message || "An unexpected error occurred.", "error");
       });
   };
 
-  if (leaveStatusLoading) {
-    return <LeaveStatusPageSkeleton />;
-  }
+  if (leaveStatusLoading) return <LeaveStatusPageSkeleton />;
+
+  const rows: any[] = data?.data ?? [];
+  const totalCount = data?.totalrequest ?? rows.length;
 
   return (
-    <Box sx={{ width: "100%", p: 2 }}>
-      <div className="w-full flex justify-between items-center p-0 mb-3 ">
-        <Typography sx={{ fontWeight: 600, fontSize: 18 }}>
-          {`Leave Sent (${data?.totalrequest})`}
-        </Typography>
-        {/* <div>
-          <CustomButton className="bg-[#000000] text-white">
-            {" "}
-            <DescriptionIcon className="mr-1" /> Leave Log
-          </CustomButton>
-        </div> */}
+    <div className="h-[calc(100vh-78px)] flex flex-col overflow-hidden px-3 py-4 w-full gap-4">
+
+      {/* ── Page header ── */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
+        <EventBusyIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
+        <span className="text-base sm:text-lg font-bold text-gray-800">Leave Applications</span>
+        <Chip
+          label={totalCount}
+          size="small"
+          sx={{ height: 20, fontSize: 11, fontWeight: 700, bgcolor: "#e0f7fa", color: "#0097a7", "& .MuiChip-label": { px: 1 } }}
+        />
       </div>
 
-      <div>
+      {/* ── Table card ── */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-col flex-1 overflow-hidden">
+
+
         <TableContainer
-          elevation={0}
           component={Paper}
-          sx={{
-            borderRadius: "0px",
-            maxHeight: "78vh",
-            height: "78vh",
-            overflow: "auto",
-            boxShadow: 6,
-            // border: "1px solid #000",
-          }}
+          elevation={0}
+          sx={{ flex: 1, overflow: "auto", borderRadius: 0, boxShadow: "none" }}
+          className="custom-scrollbar-for-menu"
         >
-          <Table
-            sx={{
-              borderCollapse: "separate",
-              borderSpacing: 0,
-              "& th, & td": {
-                borderRight: "1px solid #e0e0e0",
-              },
-              "& tr:last-child td": {
-                borderRight: "1px solid #e0e0e0",
-              },
-            }}
-          >
-            {" "}
-            {/* Add stickyHeader prop */}
-            <TableHead className="bg-gray-200 ">
+          <Table stickyHeader size="small">
+            <TableHead>
               <TableRow>
-                <StyledTableCell
-                  sx={{
-                    position: "sticky",
-                    top: 0,
-                    backgroundColor: "#e5e7eb",
-                    zIndex: 1,
-                  }}
-                >
-                  <b>APPLICATION</b>
-                </StyledTableCell>
-                <StyledTableCell
-                  sx={{
-                    position: "sticky",
-                    top: 0,
-                    backgroundColor: "#e5e7eb",
-                    zIndex: 1,
-                  }}
-                >
-                  <b>FROM DATE - TO DATE</b>
-                </StyledTableCell>
-                <StyledTableCell
-                  sx={{
-                    position: "sticky",
-                    top: 0,
-                    backgroundColor: "#e5e7eb",
-                    zIndex: 1,
-                  }}
-                >
-                  <b>REQUESTED DATE AND TIME</b>
-                </StyledTableCell>
-                <StyledTableCell
-                  sx={{
-                    position: "sticky",
-                    top: 0,
-                    backgroundColor: "#e5e7eb",
-                    zIndex: 1,
-                  }}
-                >
-                  <b>REPORTING TO</b>
-                </StyledTableCell>
-                <StyledTableCell
-                  sx={{
-                    position: "sticky",
-                    top: 0,
-                    backgroundColor: "#e5e7eb",
-                    zIndex: 1,
-                  }}
-                >
-                  <b>STATUS</b>
-                </StyledTableCell>
-                <StyledTableCell
-                  sx={{
-                    position: "sticky",
-                    top: 0,
-                    backgroundColor: "#e5e7eb",
-                    zIndex: 1,
-                  }}
-                >
-                  <b>REMARK</b>
-                </StyledTableCell>
-                <StyledTableCell
-                  sx={{
-                    position: "sticky",
-                    top: 0,
-                    backgroundColor: "#e5e7eb",
-                    zIndex: 1,
-                  }}
-                >
-                  <b>ACTION</b>
-                </StyledTableCell>
+                <StyledTableCell>Leave Type</StyledTableCell>
+                <StyledTableCell>Duration</StyledTableCell>
+                <StyledTableCell>Date Range</StyledTableCell>
+                <StyledTableCell>Requested On</StyledTableCell>
+                <StyledTableCell>Reporting To</StyledTableCell>
+                <StyledTableCell>Status</StyledTableCell>
+                <StyledTableCell>Remark</StyledTableCell>
+                <StyledTableCell align="center">Action</StyledTableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {data?.data?.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={4} align="center">
-                    <Typography variant="body2">No Leave Sent Yet.</Typography>
-                  </TableCell>
-                </TableRow>
-              ) : (
-                data?.data?.map((row: any) => (
-                  <StyledTableRow key={row.trackid}>
-                    <TableCell sx={{ py: 1 }}>
-                      <Box>
-                        <Typography
-                          sx={{
-                            fontWeight: 700,
-                            color: "#1f2937",
-                          }}
-                        >
-                          {row?.leavetype}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            color: "#6b7280",
-                            backgroundColor: "#f3f4f6",
-                            px: 2,
-                            py: 0.5,
-                            borderRadius: "8px",
-                            display: "inline-block",
-                          }}
-                        >
-                          {row?.totalday}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell sx={{ py: 1 }}>
-                      <Box>
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            fontWeight: 600,
-                            color: "#1f2937",
-                            mb: 0.5,
-                          }}
-                        >
-                          {`${row.fromdt} To ${row.todt}`}
-                        </Typography>
-                      </Box>
-                    </TableCell>
 
-                    <TableCell sx={{ py: 1 }}>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          fontWeight: 600,
-                          color: "#1f2937",
-                          mb: 1,
-                        }}
+            <TableBody>
+              {!rows.length ? (
+                <StyledTableRow>
+                  <TableCell colSpan={8} align="center" sx={{ py: 10, borderBottom: 0 }}>
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-14 h-14 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center">
+                        <EventBusyIcon sx={{ fontSize: 28, color: "#d1d5db" }} />
+                      </div>
+                      <div className="text-center">
+                        <p className="text-sm font-semibold text-gray-500">No leave applications yet</p>
+                        <p className="text-xs text-gray-400 mt-0.5">Your submitted leave requests will appear here</p>
+                      </div>
+                    </div>
+                  </TableCell>
+                </StyledTableRow>
+              ) : (
+                rows.map((row: any) => (
+                  <StyledTableRow key={row.trackid}>
+
+                    {/* Leave type */}
+                    <StyledTableCell>
+                      <div className="flex items-center gap-1.5">
+                        {getLeaveDot(row?.leavetype)}
+                        <span className="font-semibold text-gray-800 text-xs whitespace-nowrap">
+                          {row?.leavetype}
+                        </span>
+                      </div>
+                    </StyledTableCell>
+
+                    {/* Duration */}
+                    <StyledTableCell>
+                      <span
+                        className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+                        style={{ backgroundColor: "#e0f7fa", color: "#0097a7" }}
                       >
-                        {row.regdate}
-                      </Typography>
-                      {/* {getStatus(row?.status)} */}
-                    </TableCell>
-                    <TableCell sx={{ py: 1 }}>
-                      <Box>
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            fontWeight: 600,
-                            color: "#1f2937",
-                          }}
-                        >
-                          {row.reportto}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell sx={{ py: 1 }}>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          fontWeight: 600,
-                          color: "#1f2937",
-                          mb: 1,
-                        }}
-                      >
-                        {getStatus(row?.status)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={{ py: 1 }}>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          fontWeight: 600,
-                          color: "#1f2937",
-                          mb: 1,
-                        }}
-                      >
-                        {row?.remark}
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={{ py: 1 }}>
+                        {row?.totalday}
+                      </span>
+                    </StyledTableCell>
+
+                    {/* Date range */}
+                    <StyledTableCell>
+                      <div className="flex items-center gap-1 whitespace-nowrap">
+                        <span className="text-xs font-semibold text-gray-700">{row.fromdt}</span>
+                        <span className="text-gray-300 text-[10px]">→</span>
+                        <span className="text-xs font-semibold text-gray-700">{row.todt}</span>
+                      </div>
+                    </StyledTableCell>
+
+                    {/* Requested on */}
+                    <StyledTableCell>
+                      <span className="text-xs text-gray-600">{row.regdate}</span>
+                    </StyledTableCell>
+
+                    {/* Reporting to */}
+                    <StyledTableCell>
+                      <span className="text-xs font-medium text-gray-700">{row.reportto}</span>
+                    </StyledTableCell>
+
+                    {/* Status */}
+                    <StyledTableCell>{getStatus(row?.status)}</StyledTableCell>
+
+                    {/* Remark */}
+                    <StyledTableCell>
+                      {row?.remark ? (
+                      <CustomToolTip title={row?.remark} placement={"top"}>
+                        <span className="text-xs text-gray-600 max-w-[140px] line-clamp-2">{row.remark}</span>
+                      </CustomToolTip>
+                      ) : (
+                        <span className="text-gray-300 text-xs italic">—</span>
+                      )}
+                    </StyledTableCell>
+
+                    {/* Action */}
+                    <StyledTableCell align="center">
                       {rejectLeaveLoading && trackId === row?.trackid ? (
                         <DotLoading />
                       ) : (
-                        <IconButton
-                          sx={{ color: "gray", "&:hover": { color: "red" } }}
-                          disabled={
+                        <Tooltip
+                          title={
                             row?.status === "APR" || row?.status === "RTN" || row?.status === "REJ"
+                              ? "Cannot withdraw this request"
+                              : "Withdraw request"
                           }
-                          onClick={() => {
-                            setTrackId(row?.trackid);
-                            setIsConfirm(true);
-                          }}
+                          placement="left"
                         >
-                          <UndoIcon
-                            sx={{
-                              fontSize: 26,
-                              color:
-                                row?.status === "APR" || row?.status === "REJ" ||row?.status === "RTN"
-                                  ? "gray"
-                                  : "red",
-                            }}
-                          />
-                        </IconButton>
+                          <span>
+                            <IconButton
+                              size="small"
+                              disabled={
+                                row?.status === "APR" ||
+                                row?.status === "RTN" ||
+                                row?.status === "REJ"
+                              }
+                              onClick={() => {
+                                setTrackId(row?.trackid);
+                                setIsConfirm(true);
+                              }}
+                              sx={{
+                                color: "#9ca3af",
+                                "&:hover": { color: "#ef4444", bgcolor: "#fee2e2" },
+                                "&.Mui-disabled": { opacity: 0.25 },
+                                transition: "all 0.2s",
+                              }}
+                            >
+                              <UndoIcon sx={{ fontSize: 18 }} />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
                       )}
-                    </TableCell>
+                    </StyledTableCell>
+
                   </StyledTableRow>
                 ))
               )}
@@ -402,14 +304,16 @@ const LeaveStatusPage = () => {
           </Table>
         </TableContainer>
       </div>
+
+
       <ConfirmationModal
         open={isConfirm}
         close={() => setIsConfirm(false)}
         aggree={handleDelete}
-        title="Cancel Leave Request"
-        description="Do you want to cancel your submitted leave application?"
+        title="Withdraw Leave Request"
+        description="Are you sure you want to withdraw this leave application? This action cannot be undone."
       />
-    </Box>
+    </div>
   );
 };
 
