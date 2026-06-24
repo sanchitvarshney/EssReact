@@ -16,7 +16,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({ open, maxWidth, isView, d
   return (
     <div
       style={{ maxWidth }}
-      className={`bg-white rounded-2xl border border-gray-100 overflow-hidden ${
+      className={`bg-white min-h-[210px] max-h-[220px] rounded-2xl border border-gray-100 overflow-hidden ${
         !isView ? "shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200" : ""
       }`}
     >
