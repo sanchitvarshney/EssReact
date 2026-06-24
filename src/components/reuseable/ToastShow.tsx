@@ -1,60 +1,10 @@
-// import * as React from "react";
-// import Box from "@mui/material/Box";
-// import Snackbar from "@mui/material/Snackbar";
-// import Slide from "@mui/material/Slide";
-// import type { SlideProps } from "@mui/material/Slide";
-// import { Alert, Typography } from "@mui/material";
-
-// interface ToastShowProps {
-//   isOpen: boolean;
-//   msg: string;
-//   onClose?: () => void;
-//   type: "success" | "error";
-// }
-
-// // Slide direction function
-// function SlideTransition(props: SlideProps) {
-//   return <Slide {...props} direction="up" />;
-// }
-
-// const ToastShow: React.FC<ToastShowProps> = ({
-//   isOpen,
-//   msg,
-//   onClose,
-//   type = "success",
-// }) => {
-//   return (
-//     <Box sx={{ width: 500 }}>
-//       <Snackbar
-//         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-//         open={isOpen}
-//         autoHideDuration={5000}
-//         onClose={onClose}
-//         TransitionComponent={SlideTransition}
-//         key={"bottom" + "center"}
-//       >
-//         {/* <Alert onClose={onClose} severity={type} sx={{ width: "100%" }}>
-//           {msg}
-//         </Alert> */}
-//         <Typography variant="subtitle2" sx={{ color: "white" ,bgcolor:type === "success" ? "success.main" : "error.main", px: 2, py:2}}>{msg}</Typography>
-//       </Snackbar>
-//     </Box>
-//   );
-// };
-
-// export default ToastShow;
-
-
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import Slide from "@mui/material/Slide";
 import type { SlideProps } from "@mui/material/Slide";
-import { Typography } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ErrorIcon from "@mui/icons-material/Error";
-import { keyframes } from "@emotion/react";
-import { Cross2Icon } from "@radix-ui/react-icons";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface ToastShowProps {
   isOpen: boolean;
@@ -63,17 +13,28 @@ interface ToastShowProps {
   type: "success" | "error";
 }
 
-// Slide direction function
 function SlideTransition(props: SlideProps) {
   return <Slide {...props} direction="up" />;
 }
 
-// Animation (scale bounce)
-const bounce = keyframes`
-  0% { transform: scale(0.5); opacity: 0; }
-  50% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(1); }
-`;
+const CONFIG = {
+  success: {
+    icon: CheckCircleOutlineIcon,
+    accent: "#2eacb3",
+    iconBg: "#e0f7fa",
+    iconColor: "#2eacb3",
+    label: "Success",
+  },
+  error: {
+    icon: ErrorOutlineIcon,
+    accent: "#ef4444",
+    iconBg: "#fee2e2",
+    iconColor: "#ef4444",
+    label: "Error",
+  },
+};
+
+const AUTO_HIDE = 5000;
 
 const ToastShow: React.FC<ToastShowProps> = ({
   isOpen,
@@ -81,41 +42,140 @@ const ToastShow: React.FC<ToastShowProps> = ({
   onClose,
   type = "success",
 }) => {
-  const Icon = type === "success" ? CheckCircleIcon : ErrorIcon;
+  const [progress, setProgress] = React.useState(100);
+  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const cfg = CONFIG[type];
+  const Icon = cfg.icon;
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setProgress(100);
+      const step = 100 / (AUTO_HIDE / 100);
+      intervalRef.current = setInterval(() => {
+        setProgress((p) => {
+          if (p <= 0) {
+            clearInterval(intervalRef.current!);
+            return 0;
+          }
+          return p - step;
+        });
+      }, 100);
+    } else {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      setProgress(100);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isOpen]);
 
   return (
-    <Box sx={{ width: 500 }}>
-      <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        open={isOpen}
-        autoHideDuration={5000}
-        onClose={onClose}
-        TransitionComponent={SlideTransition}
-        key={"bottom" + "center"}
+    <Snackbar
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      open={isOpen}
+      autoHideDuration={AUTO_HIDE}
+      onClose={onClose}
+      slots={{ transition: SlideTransition }}
+      key="bottom-center"
+      sx={{ bottom: { xs: 16, sm: 24 } }}
+    >
+      <div
+        style={{
+          minWidth: 320,
+          maxWidth: 420,
+          background: "#fff",
+          borderRadius: 16,
+          boxShadow: "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08)",
+          overflow: "hidden",
+          border: "1px solid #f1f5f9",
+        }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            bgcolor: type === "success" ? "success.main" : "error.main",
-            color: "white",
-            px: 2,
-            py: 1.5,
-            borderRadius: 1,
-          }}
-        >
-          <Icon
-            sx={{
-              mr: 1.5,
-              fontSize: 24,
-              animation: `${bounce} 0.6s ease`,
+        {/* Main content */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px 14px 14px" }}>
+          {/* Accent bar */}
+          <div
+            style={{
+              width: 4,
+              alignSelf: "stretch",
+              borderRadius: 99,
+              backgroundColor: cfg.accent,
+              flexShrink: 0,
             }}
           />
-          <Typography variant="subtitle2">{msg}</Typography>
-           <Cross2Icon className="w-4 h-4 ml-2 cursor-pointer " onClick={onClose} />
-        </Box>
-      </Snackbar>
-    </Box>
+
+          {/* Icon */}
+          <div
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 10,
+              backgroundColor: cfg.iconBg,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <Icon sx={{ fontSize: 20, color: cfg.iconColor }} />
+          </div>
+
+          {/* Text */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: cfg.accent, letterSpacing: "0.04em", textTransform: "uppercase" }}>
+              {cfg.label}
+            </p>
+            <p style={{ margin: "2px 0 0", fontSize: 13, fontWeight: 500, color: "#374151", lineHeight: 1.4, wordBreak: "break-word" }}>
+              {msg}
+            </p>
+          </div>
+
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            style={{
+              flexShrink: 0,
+              width: 28,
+              height: 28,
+              borderRadius: 8,
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#9ca3af",
+              transition: "background 0.15s, color 0.15s",
+              padding: 0,
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.background = "#f3f4f6";
+              (e.currentTarget as HTMLButtonElement).style.color = "#374151";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+              (e.currentTarget as HTMLButtonElement).style.color = "#9ca3af";
+            }}
+          >
+            <CloseIcon sx={{ fontSize: 16 }} />
+          </button>
+        </div>
+
+        {/* Progress bar */}
+        <div style={{ height: 3, backgroundColor: "#f1f5f9" }}>
+          <div
+            style={{
+              height: "100%",
+              width: `${progress}%`,
+              backgroundColor: cfg.accent,
+              borderRadius: "0 99px 99px 0",
+              transition: "width 0.1s linear",
+              opacity: 0.7,
+            }}
+          />
+        </div>
+      </div>
+    </Snackbar>
   );
 };
 
