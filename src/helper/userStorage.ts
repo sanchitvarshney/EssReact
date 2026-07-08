@@ -4,6 +4,7 @@ export type StoredUser = {
   empCode?: string;
   other?: {
     displayAISurvey?: string;
+    assetConfirmation?: string;
   };
   [key: string]: unknown;
 };
@@ -27,6 +28,16 @@ export const getDisplayAISurveyFlag = (
 
 export const shouldDisplayAISurvey = (): boolean =>
   getDisplayAISurveyFlag() === "Y";
+
+export const getAssetConfirmationFlag = (
+  user?: StoredUser | null
+): string | undefined => {
+  const stored = user ?? getStoredUser();
+  return stored?.other?.assetConfirmation;
+};
+
+export const shouldDisplayAssetConfirmation = (): boolean =>
+  getAssetConfirmationFlag() === "Y";
 
 /** Login API may return `other` on the response root, not inside `data`. */
 export const buildStoredUserFromLoginResponse = (
@@ -62,6 +73,23 @@ export const updateStoredUserDisplayAISurvey = (value: string): void => {
     other: {
       ...user.other,
       displayAISurvey: value,
+    },
+  };
+
+  const serialized = JSON.stringify(updated);
+  localStorage.setItem("user", serialized);
+  sessionStorage.setItem("user", serialized);
+};
+
+export const updateStoredUserAssetConfirmation = (value: string): void => {
+  const user = getStoredUser();
+  if (!user) return;
+
+  const updated: StoredUser = {
+    ...user,
+    other: {
+      ...user.other,
+      assetConfirmation: value,
     },
   };
 

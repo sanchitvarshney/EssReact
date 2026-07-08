@@ -9,6 +9,7 @@ import { useAuth } from "../contextapi/AuthContext";
 import { useAuthenticationMutation } from "../services/auth";
 import { consumeReturnToPath } from "../helper/returnTo";
 import { markAiSurveyPendingForLogin } from "../helper/aiSurveyStorage";
+import { markAssetConfirmationPendingForLogin } from "../helper/assetVerificationStorage";
 import { persistLoginUser } from "../helper/userStorage";
 
 const TwoFactorAuthPage = () => {
@@ -114,6 +115,7 @@ const TwoFactorAuthPage = () => {
         showToast(response?.message, "success");
         persistLoginUser(response);
         markAiSurveyPendingForLogin();
+        markAssetConfirmationPendingForLogin();
         signIn();
         navigate(consumeReturnToPath(), { replace: true });
       }

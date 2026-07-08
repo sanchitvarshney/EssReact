@@ -5,6 +5,20 @@ import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Avatar, Typography } from "@mui/material";
 import nointernet from "../assets/no-wifi.png";
+import AISurveyDialog from "../components/reuseable/AISurveyDialog";
+import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
+import AssetVerificationDrawer from "../components/reuseable/AssetVerificationDrawer";
+import {
+  clearAiSurveyPendingForLogin,
+  shouldOpenAiSurveyOnHome,
+  syncAiSurveyStateWithUser,
+} from "../helper/aiSurveyStorage";
+import {
+  clearAssetConfirmationPendingForLogin,
+  shouldOpenAssetConfirmation,
+  syncAssetConfirmationStateWithUser,
+} from "../helper/assetVerificationStorage";
+import { updateStoredUserAssetConfirmation } from "../helper/userStorage";
 
 // props: { children: React.ReactNode }
 function MainLayout() {
@@ -22,6 +36,58 @@ function MainLayout() {
       window.removeEventListener("offline", handleOffline);
     };
   }, []);
+
+  // These mandatory gates are mounted here (not on a single page) so they
+  // show up regardless of which route the user lands/navigates on.
+  const needsAiSurvey = shouldOpenAiSurveyOnHome();
+  const [aiSurveySessionDone, setAiSurveySessionDone] = useState(() => {
+    syncAiSurveyStateWithUser();
+    return !shouldOpenAiSurveyOnHome();
+  });
+  const aiSurveyOpen = needsAiSurvey && !aiSurveySessionDone;
+
+  const needsAssetConfirmation = shouldOpenAssetConfirmation();
+  const [assetConfirmationSessionDone, setAssetConfirmationSessionDone] =
+    useState(() => {
+      syncAssetConfirmationStateWithUser();
+      return !shouldOpenAssetConfirmation();
+    });
+  const assetConfirmationOpen =
+    aiSurveySessionDone && needsAssetConfirmation && !assetConfirmationSessionDone;
+
+  const [showCyberAlert, setShowCyberAlert] = useState(false);
+
+  useEffect(() => {
+    if (!aiSurveySessionDone || !assetConfirmationSessionDone) {
+      setShowCyberAlert(false);
+      return;
+    }
+    setShowCyberAlert(
+      localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true,
+    );
+  }, [aiSurveySessionDone, assetConfirmationSessionDone]);
+
+  const handleCyberAlertConfirm = () => {
+    setShowCyberAlert(false);
+    localStorage.setItem("cyberAlertAcknowledged", "true");
+  };
+
+  const handleAiSurveyDismiss = () => {
+    clearAiSurveyPendingForLogin();
+    setAiSurveySessionDone(true);
+  };
+
+  const handleAiSurveyComplete = () => {
+    clearAiSurveyPendingForLogin();
+    setAiSurveySessionDone(true);
+  };
+
+  const handleAssetConfirmationComplete = () => {
+    clearAssetConfirmationPendingForLogin();
+    updateStoredUserAssetConfirmation("N");
+    setAssetConfirmationSessionDone(true);
+  };
+
   return (
     <Wrapper className="">
       {!isOnline && (
@@ -52,6 +118,27 @@ function MainLayout() {
       {/* <div className="absolute bottom-0 right-4 sm:right-10 z-99">
         <CustomFooter />
       </div> */}
+
+      <AISurveyDialog
+        open={aiSurveyOpen}
+        onClose={handleAiSurveyDismiss}
+        onComplete={handleAiSurveyComplete}
+      />
+      <AssetVerificationDrawer
+        open={assetConfirmationOpen}
+        onComplete={handleAssetConfirmationComplete}
+      />
+      <CyberAlertDialog
+        open={showCyberAlert && !aiSurveyOpen && !assetConfirmationOpen}
+        onOpenChange={(open) => {
+          if (!open) return;
+          setShowCyberAlert(open);
+        }}
+        onConfirm={() => {
+          setShowCyberAlert(false);
+          handleCyberAlertConfirm();
+        }}
+      />
     </Wrapper>
   );
 }

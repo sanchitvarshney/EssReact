@@ -1,4 +1,4 @@
-import  { createContext, useState, type ReactNode } from "react";
+import  { createContext, useCallback, useState, type ReactNode } from "react";
 import ToastShow from "../components/reuseable/ToastShow";
 
 type ToastType = "success" | "error" ;
@@ -14,12 +14,13 @@ export const ToastContext = ({ children }: { children: ReactNode }) => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState<ToastType>("success");
 
-  const showToast = (msg: string, type: ToastType = "success") => {
-   
+  // Stable identity: consumers memoizing on `showToast` (e.g. useCallback deps)
+  // shouldn't get a new function reference on every toast shown app-wide.
+  const showToast = useCallback((msg: string, type: ToastType = "success") => {
     setToastMessage(msg);
     setToastType(type);
     setToastOpen(true);
-  };
+  }, []);
 
   const handleToastClose = () => {
     setToastOpen(false);

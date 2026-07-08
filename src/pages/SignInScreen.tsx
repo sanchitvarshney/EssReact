@@ -15,6 +15,7 @@ import { Typography } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import { consumeReturnToPath } from "../helper/returnTo";
 import { markAiSurveyPendingForLogin } from "../helper/aiSurveyStorage";
+import { markAssetConfirmationPendingForLogin } from "../helper/assetVerificationStorage";
 import { persistLoginUser } from "../helper/userStorage";
 
 const SignInScreen = () => {
@@ -70,6 +71,7 @@ const SignInScreen = () => {
     if (data?.data) {
       persistLoginUser(data);
       markAiSurveyPendingForLogin();
+      markAssetConfirmationPendingForLogin();
       signIn();
       navigation(consumeReturnToPath(), { replace: true });
     }
@@ -137,6 +139,7 @@ const SignInScreen = () => {
       showToast(res?.message, "success");
       persistLoginUser(res);
       markAiSurveyPendingForLogin();
+      markAssetConfirmationPendingForLogin();
       signIn();
       navigation(consumeReturnToPath(), { replace: true });
      } else {

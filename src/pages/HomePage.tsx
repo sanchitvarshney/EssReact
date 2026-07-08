@@ -14,16 +14,7 @@ import { keyframes, useTheme } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import CampaignIcon from "@mui/icons-material/Campaign";
-
-import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
-import AISurveyDialog from "../components/reuseable/AISurveyDialog";
-import { useEffect, useState } from "react";
 import CustomFooter from "../components/reuseable/CustomFooter";
-import {
-  clearAiSurveyPendingForLogin,
-  shouldOpenAiSurveyOnHome,
-  syncAiSurveyStateWithUser,
-} from "../helper/aiSurveyStorage";
 
 const getScrollKeyframes = (fromX: string, toX: string) => keyframes`
   0%   { transform: translateX(${fromX}); }
@@ -37,41 +28,6 @@ const HomePage = () => {
   const fromX = isSmallDevice ? "20%" : isMediamDevice ? "40%" : "90%";
   const toX = isSmallDevice ? "-20%" : isMediamDevice ? "-40%" : "-120%";
   const scroll = getScrollKeyframes(fromX, toX);
-
-  const needsAiSurvey = shouldOpenAiSurveyOnHome();
-
-  const [aiSurveySessionDone, setAiSurveySessionDone] = useState(() => {
-    syncAiSurveyStateWithUser();
-    return !shouldOpenAiSurveyOnHome();
-  });
-  const [showCyberAlert, setShowCyberAlert] = useState(false);
-
-  const aiSurveyOpen = needsAiSurvey && !aiSurveySessionDone;
-
-  useEffect(() => {
-    if (!aiSurveySessionDone) {
-      setShowCyberAlert(false);
-      return;
-    }
-    setShowCyberAlert(
-      localStorage.getItem("cyberAlertAcknowledged") === "true" ? false : true,
-    );
-  }, [aiSurveySessionDone]);
-
-  const handleCyberAlertConfirm = () => {
-    setShowCyberAlert(false);
-    localStorage.setItem("cyberAlertAcknowledged", "true");
-  };
-
-  const handleAiSurveyDismiss = () => {
-    clearAiSurveyPendingForLogin();
-    setAiSurveySessionDone(true);
-  };
-
-  const handleAiSurveyComplete = () => {
-    clearAiSurveyPendingForLogin();
-    setAiSurveySessionDone(true);
-  };
 
   return (
     <div className="w-full h-[calc(100vh-78px)] flex flex-col overflow-y-auto will-change-transform">
@@ -189,23 +145,6 @@ const HomePage = () => {
       </div>
 
       <CustomFooter />
-
-      <AISurveyDialog
-        open={aiSurveyOpen}
-        onClose={handleAiSurveyDismiss}
-        onComplete={handleAiSurveyComplete}
-      />
-      <CyberAlertDialog
-        open={showCyberAlert && aiSurveySessionDone && !aiSurveyOpen}
-        onOpenChange={(open) => {
-          if (!open) return;
-          setShowCyberAlert(open);
-        }}
-        onConfirm={() => {
-          setShowCyberAlert(false);
-          handleCyberAlertConfirm();
-        }}
-      />
     </div>
   );
 };
