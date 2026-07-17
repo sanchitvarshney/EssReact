@@ -1,16 +1,16 @@
 import { Avatar, Chip } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import type { FC } from "react";
+import { memo, type FC } from "react";
 
 interface LeaveGrantCardPropsType {
-  open?: any;
+  onOpen?: (data: any) => void;
   maxWidth: any;
   isView: boolean;
   data: any;
 }
 
-const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({ open, maxWidth, isView, data }) => {
+const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({ onOpen, maxWidth, isView, data }) => {
   const days = data?.totalday || data?.totalDuration;
 
   return (
@@ -96,7 +96,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({ open, maxWidth, isView, d
         {/* View button — list mode only */}
         {!isView && (
           <button
-            onClick={open}
+            onClick={() => onOpen?.(data)}
             className="mt-3 w-full py-2 rounded-xl text-xs font-bold text-[#2eacb3] bg-[#e0f7fa] hover:bg-[#2eacb3] hover:text-white transition-all duration-200 cursor-pointer"
           >
             View Details
@@ -107,4 +107,4 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({ open, maxWidth, isView, d
   );
 };
 
-export default LeaveGrantCard;
+export default memo(LeaveGrantCard);

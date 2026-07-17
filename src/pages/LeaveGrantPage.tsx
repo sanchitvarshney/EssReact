@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DocView from "../components/reuseable/DocView";
 import LeaveGrantCard from "../components/reuseable/LeaveGrantCard";
 import { CircularProgress, IconButton } from "@mui/material";
@@ -40,6 +40,7 @@ const LeaveGrantPage = () => {
   const [pendingAction, setPendingAction] = useState<
     "approve" | "reject" | null
   >(null);
+  const [leaveList, setLeaveList] = useState<any[]>([]);
 
   const [getLeaveList, { data: leaveGrantData, isLoading: leaveGrantLoading }] =
     useGetLeaveListMutation();
@@ -49,25 +50,40 @@ const LeaveGrantPage = () => {
   ] = useGetleaveGrantDetailsMutation();
   const [
     approvalGrantLeave,
-    { isLoading: rejectGrantLeaveLoading, isSuccess },
+    { isLoading: rejectGrantLeaveLoading },
   ] = useApprovalGrantLeaveMutation();
 
   useEffect(() => {
     getLeaveList();
-  }, [isSuccess]);
+  }, []);
 
-  const fetchGrantDetails = (data: any) => {
-    getleaveGrantDetails({
-      empcode: data?.empcode,
-      leavetype: data?.leavetype,
-      status: data?.status,
-      trackid: data?.trackid,
-    });
-  };
+  useEffect(() => {
+    if (leaveGrantData?.data) setLeaveList(leaveGrantData.data);
+  }, [leaveGrantData]);
+
+  const fetchGrantDetails = useCallback(
+    (data: any) => {
+      getleaveGrantDetails({
+        empcode: data?.empcode,
+        leavetype: data?.leavetype,
+        status: data?.status,
+        trackid: data?.trackid,
+      });
+    },
+    [getleaveGrantDetails],
+  );
+
+  const handleOpenDetails = useCallback(
+    (item: any) => {
+      setView(true);
+      fetchGrantDetails(item);
+    },
+    [fetchGrantDetails],
+  );
 
   const handleReject = (data: any, type: "approve" | "reject") => {
     if(type === "reject") setIsRejected(false);
-  
+
     setPendingAction(type);
     approvalGrantLeave({
       url: type === "approve" ? "LeaveApprove" : "LeaveReject",
@@ -88,6 +104,9 @@ const LeaveGrantPage = () => {
         // setIsRejected(false);
         setReason("");
         setView(false);
+        setLeaveList((prev) =>
+          prev.filter((item) => item?.trackid !== data?.trackid),
+        );
       })
       .catch((err) => {
         setPendingAction(null);
@@ -111,31 +130,27 @@ const LeaveGrantPage = () => {
         <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
         <EventNoteIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
         <span className="text-lg font-bold text-gray-800">Leave Requests</span>
-        {leaveGrantData?.totalrequest != null && (
+        {leaveList.length > 0 && (
           <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f7fa] text-[#2eacb3] border border-[#2eacb3]/20">
-            {leaveGrantData.totalrequest} total
+            {leaveList.length} total
           </span>
         )}
       </div>
 
       {/* Grid */}
-      {leaveGrantData?.data?.length === 0 ||
-      leaveGrantData?.status === "error" ? (
+      {leaveList.length === 0 || leaveGrantData?.status === "error" ? (
         <div className="flex-1 flex items-center justify-center">
           <EmptyData />
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto custom-scrollbar-for-menu grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 content-start py-1 pr-1">
-          {leaveGrantData?.data?.map((item: any) => (
+          {leaveList.map((item: any) => (
             <LeaveGrantCard
               key={item?.trackid}
               data={item}
               maxWidth="100%"
               isView={false}
-              open={() => {
-                setView(true);
-                fetchGrantDetails(item);
-              }}
+              onOpen={handleOpenDetails}
             />
           ))}
         </div>
