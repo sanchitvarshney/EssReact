@@ -66,6 +66,8 @@ const LeaveGrantPage = () => {
   };
 
   const handleReject = (data: any, type: "approve" | "reject") => {
+    if(type === "reject") setIsRejected(false);
+  
     setPendingAction(type);
     approvalGrantLeave({
       url: type === "approve" ? "LeaveApprove" : "LeaveReject",
@@ -83,7 +85,7 @@ const LeaveGrantPage = () => {
           return;
         }
         showToast(res?.data?.message, "success");
-        setIsRejected(false);
+        // setIsRejected(false);
         setReason("");
         setView(false);
       })
