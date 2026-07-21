@@ -13,6 +13,7 @@ import {
   clearAiSurveyStorageForUser,
   syncAiSurveyStateWithUser,
 } from "../helper/aiSurveyStorage";
+import { clearAssetConfirmationPendingForLogin } from "../helper/assetVerificationStorage";
 
 
 interface AuthContextType {
@@ -89,6 +90,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     clearAiSurveyPendingForLogin();
     if (empCode) clearAiSurveyStorageForUser(empCode);
+    clearAssetConfirmationPendingForLogin();
 
     localStorage.removeItem("user");
     sessionStorage.removeItem("user");

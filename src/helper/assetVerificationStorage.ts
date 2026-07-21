@@ -43,14 +43,17 @@ const LOGIN_PENDING_KEY = `${PREFIX}_showAfterLogin`;
 export const markAssetConfirmationPendingForLogin = (): void => {
   syncAssetConfirmationStateWithUser();
   if (!shouldDisplayAssetConfirmation()) return;
-  sessionStorage.setItem(LOGIN_PENDING_KEY, "true");
+  // localStorage (not sessionStorage): this flag must survive the user
+  // closing the browser tab, otherwise the mandatory drawer silently
+  // stops reappearing even though verification was never completed.
+  localStorage.setItem(LOGIN_PENDING_KEY, "true");
 };
 
 export const isAssetConfirmationPendingForLogin = (): boolean =>
-  sessionStorage.getItem(LOGIN_PENDING_KEY) === "true";
+  localStorage.getItem(LOGIN_PENDING_KEY) === "true";
 
 export const clearAssetConfirmationPendingForLogin = (): void => {
-  sessionStorage.removeItem(LOGIN_PENDING_KEY);
+  localStorage.removeItem(LOGIN_PENDING_KEY);
 };
 
 export const shouldOpenAssetConfirmation = (): boolean => {
