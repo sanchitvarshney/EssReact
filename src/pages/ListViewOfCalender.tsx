@@ -109,6 +109,8 @@ const CalendarListView = ({
             <TableRow>
               <StyledTableCell>Date</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell>
+              <StyledTableCell>In Time</StyledTableCell>
+              <StyledTableCell>Out Time</StyledTableCell>
               <StyledTableCell>Total Time</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -169,6 +171,36 @@ const CalendarListView = ({
                       </span>
                     ) : (
                       <span className="text-gray-300 text-xs">—</span>
+                    )}
+                  </TableCell>
+                    {/* Total time */}
+                  <TableCell
+                    sx={{
+                      py: 1.25,
+                      px: 2,
+                      fontSize: 13,
+                      color: "#475569",
+                      fontFamily: "monospace",
+                    }}
+                  >
+                    {/* @ts-ignore */}
+                    {event?.in_time || (
+                      <span className="text-gray-300">—</span>
+                    )}
+                  </TableCell>
+                    {/* Total time */}
+                  <TableCell
+                    sx={{
+                      py: 1.25,
+                      px: 2,
+                      fontSize: 13,
+                      color: "#475569",
+                      fontFamily: "monospace",
+                    }}
+                  >
+                    {/* @ts-ignore */}
+                    {event?.out_time || (
+                      <span className="text-gray-300">—</span>
                     )}
                   </TableCell>
 
