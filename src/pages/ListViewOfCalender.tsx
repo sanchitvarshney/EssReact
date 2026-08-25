@@ -12,6 +12,12 @@ import { styled } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { useMemo } from "react";
 
+const formatTimeOnly = (value?: string) => {
+  if (!value) return "";
+  const parsed = moment(value, "DD-MM-YYYY HH:mm:ss");
+  return parsed.isValid() ? parsed.format("hh:mm A") : value;
+};
+
 const getStatusStyle = (key: string) => {
   switch (key?.toLowerCase()) {
     case "p":
@@ -65,6 +71,9 @@ const CalendarListView = ({
         end: Date | null;
         status: string;
         startTime: string;
+        in_time: string;
+        out_time: string;
+        total_time: string;
       };
     }[] = [];
 
@@ -77,7 +86,16 @@ const CalendarListView = ({
       );
       days.push({
         date: day.clone(),
-        event: matched || { title: "N/A", start: null, end: null, status: "", startTime: "" },
+        event: matched || {
+          title: "N/A",
+          start: null,
+          end: null,
+          status: "",
+          startTime: "",
+          in_time: "",
+          out_time: "",
+          total_time: "",
+        },
       });
     }
 
@@ -183,8 +201,9 @@ const CalendarListView = ({
                       fontFamily: "monospace",
                     }}
                   >
-                    {/* @ts-ignore */}
-                    {event?.in_time || (
+                    {event.in_time ? (
+                      formatTimeOnly(event.in_time)
+                    ) : (
                       <span className="text-gray-300">—</span>
                     )}
                   </TableCell>
@@ -198,8 +217,9 @@ const CalendarListView = ({
                       fontFamily: "monospace",
                     }}
                   >
-                    {/* @ts-ignore */}
-                    {event?.out_time || (
+                    {event.out_time ? (
+                      formatTimeOnly(event.out_time)
+                    ) : (
                       <span className="text-gray-300">—</span>
                     )}
                   </TableCell>
@@ -214,8 +234,7 @@ const CalendarListView = ({
                       fontFamily: "monospace",
                     }}
                   >
-                    {/* @ts-ignore */}
-                    {event?.total_time || (
+                    {event.total_time || (
                       <span className="text-gray-300">—</span>
                     )}
                   </TableCell>

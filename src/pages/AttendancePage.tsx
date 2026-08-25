@@ -87,7 +87,15 @@ const AttendancePage = () => {
         const start = new Date(item.start);
         const end = new Date(start);
         end.setHours(end.getHours() + 1);
-        return { title: item.title, start, end, status: item.title, total_time: item.total_time };
+        return {
+          title: item.title,
+          start,
+          end,
+          status: item.title,
+          total_time: item.total_time,
+          in_time: item.in_time,
+          out_time: item.out_time,
+        };
       });
       setFormattedEvents(parsedEvents);
     }
