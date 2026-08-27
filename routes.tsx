@@ -43,6 +43,7 @@ import FallBackUi from "./src/pages/errorBoundary/FallBackUi";
 // import { lazy, Suspense } from "react";
 // import AppLoader from "./src/pages/AppLoader";
 import MainLayout from "./src/layouts/MainLayout";
+import GatepassRequestPage from "./src/pages/GatepassRequestPage";
 // const MainLayout = lazy(() => import("./src/layouts/MainLayout"));
 // import logo from "./src/assets/img/hrms_mscorpres_logo.png";
 
@@ -171,6 +172,10 @@ export const route = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/gp/int/emp",
+    element: <GatepassRequestPage />,
   },
   {
     path: "/sign-in",
