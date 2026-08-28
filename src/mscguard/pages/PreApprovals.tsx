@@ -9,6 +9,7 @@ import { DatePickerField, TimePickerField } from "../components/DatePickerField"
 import { LoadingState } from "../components/AsyncState";
 import { useToast } from "../components/ToastProvider";
 import { createPreApproved, searchPreApproved, type CreatePreApprovedInput } from "../services/mscguardPreApproved";
+import { lookupEmployeeByCode, type EmployeeLookupResult } from "../services/mscguardEmployees";
 import type { PreApprovedVisitor } from "../types/mscguardTypes";
 import { McGuardApiError } from "../services/mscguardApi";
 
@@ -95,12 +96,44 @@ function CreatePreApprovalModal({ onClose, onCreated }: { onClose: () => void; o
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState<{ visitorName: string; otp: string; emailSent: boolean } | null>(null);
 
+  // "Person to Meet" is a company employee — resolved by emp code rather
+  // than free-typed, so name/department can't be mistyped or mismatched.
+  const [meetEmpCode, setMeetEmpCode] = useState("");
+  const [empLookup, setEmpLookup] = useState<
+    { status: "idle" } | { status: "loading" } | { status: "found"; data: EmployeeLookupResult } | { status: "not-found" }
+  >({ status: "idle" });
+
   function set<K extends keyof CreatePreApprovedInput>(key: K, value: string) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
+  async function resolveEmpCode() {
+    const code = meetEmpCode.trim();
+    if (!code) {
+      setEmpLookup({ status: "idle" });
+      set("personToMeet", "");
+      set("deptName", "");
+      return;
+    }
+    setEmpLookup({ status: "loading" });
+    try {
+      const emp = await lookupEmployeeByCode(code);
+      setEmpLookup({ status: "found", data: emp });
+      set("personToMeet", emp.fullName);
+      set("deptName", emp.department || "");
+    } catch {
+      setEmpLookup({ status: "not-found" });
+      set("personToMeet", "");
+      set("deptName", "");
+    }
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (empLookup.status !== "found") {
+      toast.error("Enter a valid employee code for Person to Meet first.");
+      return;
+    }
     setSaving(true);
     try {
       const result = await createPreApproved(form);
@@ -147,12 +180,39 @@ function CreatePreApprovalModal({ onClose, onCreated }: { onClose: () => void; o
           <FieldWrap label="Purpose" required>
             <TextInput required value={form.purpose} onChange={(e) => set("purpose", e.target.value)} />
           </FieldWrap>
-          <FieldWrap label="Person to Meet" required>
-            <TextInput required value={form.personToMeet} onChange={(e) => set("personToMeet", e.target.value)} />
+          <FieldWrap label="Person to Meet — Emp Code" required>
+            <TextInput
+              required
+              value={meetEmpCode}
+              onChange={(e) => {
+                setMeetEmpCode(e.target.value);
+                setEmpLookup({ status: "idle" });
+              }}
+              onBlur={resolveEmpCode}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  resolveEmpCode();
+                }
+              }}
+              placeholder="e.g. MS0014"
+            />
           </FieldWrap>
-          <FieldWrap label="Department" required>
-            <TextInput required value={form.deptName} onChange={(e) => set("deptName", e.target.value)} />
-          </FieldWrap>
+          <div className="sm:col-span-2 -mt-2 mb-3">
+            {empLookup.status === "loading" && <p className="text-xs text-gray-500">Looking up employee…</p>}
+            {empLookup.status === "not-found" && (
+              <p className="text-xs text-red-600 font-medium">Employee code not found.</p>
+            )}
+            {empLookup.status === "found" && (
+              <div className="text-xs bg-emerald-50 border border-emerald-200 rounded-md px-3 py-2 grid sm:grid-cols-2 gap-x-4 gap-y-1">
+                <span><span className="text-gray-500">Name:</span> <span className="font-medium text-gray-800">{empLookup.data.fullName}</span></span>
+                <span><span className="text-gray-500">Department:</span> <span className="font-medium text-gray-800">{empLookup.data.department || "—"}</span></span>
+                <span><span className="text-gray-500">Designation:</span> <span className="font-medium text-gray-800">{empLookup.data.designation || "—"}</span></span>
+                <span><span className="text-gray-500">Email:</span> <span className="font-medium text-gray-800">{empLookup.data.email || "—"}</span></span>
+                <span><span className="text-gray-500">Mobile:</span> <span className="font-medium text-gray-800">{empLookup.data.phone || "—"}</span></span>
+              </div>
+            )}
+          </div>
           <FieldWrap label="Approved By" required>
             <TextInput required value={form.approvedByName} onChange={(e) => set("approvedByName", e.target.value)} />
           </FieldWrap>
