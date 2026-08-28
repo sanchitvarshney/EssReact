@@ -199,7 +199,7 @@ export const route = createBrowserRouter([
     element: <VisitorInvitePage />,
   },
   {
-    path: "/int/gp/self",
+    path: "/gp/int/self",
     element: <VisitorSelfRegisterEntryPage />,
   },
   {
