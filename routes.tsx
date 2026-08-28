@@ -44,6 +44,21 @@ import FallBackUi from "./src/pages/errorBoundary/FallBackUi";
 // import AppLoader from "./src/pages/AppLoader";
 import MainLayout from "./src/layouts/MainLayout";
 import GatepassRequestPage from "./src/pages/GatepassRequestPage";
+import Login from "./src/mscguard/pages/Login";
+import Dashboard from "./src/mscguard/pages/Dashboard";
+import GatepassApprovals from "./src/mscguard/pages/GatepassApprovals";
+import MaterialApprovals from "./src/mscguard/pages/MaterialApprovals";
+import PreApprovals from "./src/mscguard/pages/PreApprovals";
+import Attendance from "./src/mscguard/pages/Attendance";
+import EmployeeCodes from "./src/mscguard/pages/EmployeeCodes";
+import EmpHierarchy from "./src/mscguard/pages/EmpHierarchy";
+import Analytics from "./src/mscguard/pages/Analytics";
+import AdvancedSearch from "./src/mscguard/pages/AdvancedSearch";
+import Reports from "./src/mscguard/pages/Reports";
+import Guards from "./src/mscguard/pages/Guards";
+import McGuardSettings from "./src/mscguard/pages/Settings";
+import McGuardLayout from "./src/mscguard/layouts/McGuardLayout";
+import McGuardProtected from "./src/mscguard/routes/McGuardProtected";
 // const MainLayout = lazy(() => import("./src/layouts/MainLayout"));
 // import logo from "./src/assets/img/hrms_mscorpres_logo.png";
 
@@ -176,6 +191,32 @@ export const route = createBrowserRouter([
   {
     path: "/gp/int/emp",
     element: <GatepassRequestPage />,
+  },
+  {
+    path: "/gp/sp/login",
+    element: <Login />,
+  },
+  {
+    path: "/gp/sp",
+    element: (
+      <McGuardProtected>
+        <McGuardLayout />
+      </McGuardProtected>
+    ),
+    children: [
+      { index: true, element: <Dashboard /> },
+      { path: "gatepass", element: <GatepassApprovals /> },
+      { path: "material", element: <MaterialApprovals /> },
+      { path: "pre-approved", element: <PreApprovals /> },
+      { path: "attendance", element: <Attendance /> },
+      { path: "employee-codes", element: <EmployeeCodes /> },
+      { path: "hierarchy", element: <EmpHierarchy /> },
+      { path: "analytics", element: <Analytics /> },
+      { path: "search", element: <AdvancedSearch /> },
+      { path: "reports", element: <Reports /> },
+      { path: "guards", element: <Guards /> },
+      { path: "settings", element: <McGuardSettings /> },
+    ],
   },
   {
     path: "/sign-in",
