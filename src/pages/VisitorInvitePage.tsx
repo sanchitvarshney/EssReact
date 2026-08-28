@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -123,11 +123,10 @@ const VisitorInvitePage = () => {
   const [vehicleNo, setVehicleNo] = useState("");
   const [homeAddress, setHomeAddress] = useState("");
 
-  // Step 2 — optional identity proof
+  // Step 2 — optional identity proof: the visitor only SAYS which document
+  // they'll bring — no photo is taken here. The guard verifies the actual
+  // document and captures its photo at the gate (see PreRegReviewScreen.kt).
   const [idType, setIdType] = useState("");
-  const [idDocBase64, setIdDocBase64] = useState<string | null>(null);
-  const [idDocFileName, setIdDocFileName] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -187,21 +186,6 @@ const VisitorInvitePage = () => {
     (nameLocked || visitorName.trim().length > 0) && (mobileLocked || mobileNumber.trim().length > 0);
   const step2Ready = purpose.trim().length > 0 && personToMeet.trim().length > 0;
 
-  const handleIdDocChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setIdDocFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = () => setIdDocBase64(reader.result as string);
-    reader.readAsDataURL(file);
-  };
-
-  const clearIdDoc = () => {
-    setIdDocFileName(null);
-    setIdDocBase64(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
-
   const handleSubmit = async () => {
     if (!token || !step1Ready || !step2Ready) return;
     setSubmitting(true);
@@ -217,7 +201,6 @@ const VisitorInvitePage = () => {
         purpose,
         personToMeet: personToMeet.trim(),
         idType: idType || undefined,
-        idDocumentBase64: idDocBase64 || undefined,
       });
       setVisitRef(result.visitRef);
       setStep("success");
@@ -413,35 +396,17 @@ const VisitorInvitePage = () => {
                 Identity Proof (optional)
               </p>
               <p className="text-[11px] text-[#999] mb-3 leading-snug">
-                Speeds up verification at the gate — you can skip this.
+                Just tell us which one you'll bring — no need to upload anything here.
               </p>
-              <div className="mb-3">
-                <PillToggle options={ID_TYPE_OPTIONS} value={idType} onChange={setIdType} />
-              </div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                capture="environment"
-                className="hidden"
-                onChange={handleIdDocChange}
-              />
-              {idDocFileName ? (
-                <div className="flex items-center justify-between px-3 py-2.5 rounded-md bg-[#f0faf9] border-[1.5px] border-[#cdeceb]">
-                  <span className="text-[12.5px] text-[#111] font-medium truncate mr-2">✓ {idDocFileName}</span>
-                  <button type="button" onClick={clearIdDoc} className="text-[12px] font-bold text-[#a8362b] flex-shrink-0">
-                    Remove
-                  </button>
+              <PillToggle options={ID_TYPE_OPTIONS} value={idType} onChange={setIdType} />
+              {idType && (
+                <div className="mt-3 flex gap-2 px-3 py-2.5 rounded-md bg-[#fff8e6] border-[1.5px] border-[#f3e0a8]">
+                  <span className="text-[14px] flex-shrink-0">⚠️</span>
+                  <span className="text-[11.5px] text-[#7a5c00] leading-snug">
+                    Please bring your <span className="font-bold">{idType}</span> with you — the guard will
+                    verify it and capture its photo at the gate.
+                  </span>
                 </div>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="w-full py-3 rounded-md text-[13px] font-semibold border-[1.5px] border-dashed"
-                  style={{ borderColor: "#cdeceb", color: ACCENT }}
-                >
-                  📷 Upload ID Photo
-                </button>
               )}
             </div>
           </div>
@@ -468,7 +433,6 @@ const VisitorInvitePage = () => {
             <ReviewRow label="Vehicle No." value={vehicleNo || "—"} />
             <ReviewRow label="Address" value={homeAddress || "—"} />
             {idType && <ReviewRow label="ID Type" value={idType} />}
-            {idDocFileName && <ReviewRow label="ID Photo" value="Uploaded ✓" />}
           </div>
         )}
       </div>

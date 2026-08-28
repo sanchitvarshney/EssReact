@@ -35,9 +35,12 @@ export interface SubmitPreregPayload {
   vehicleNo?: string;
   purpose: string;
   personToMeet: string;
-  /** Optional KYC — one of "Voter ID" | "Passport" | "Aadhar" | "Driving Licence" | "PAN". */
+  /**
+   * Optional — one of "Voter ID" | "Passport" | "Aadhar" | "Driving Licence" | "PAN".
+   * Just what the visitor says they'll bring; no photo is uploaded here —
+   * the guard verifies the actual document and captures its photo at the gate.
+   */
   idType?: string;
-  idDocumentBase64?: string;
 }
 
 class VisitorInviteApiError extends Error {
