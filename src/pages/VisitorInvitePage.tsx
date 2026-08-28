@@ -88,12 +88,12 @@ function formatMMSS(totalSeconds: number): string {
   return `${m}:${String(r).padStart(2, "0")}`;
 }
 
-// step 1 = your details · 2 = visit details · 3 = review & submit
+// step 1 = your details · 2 = visit details · 3 = identity proof + review & submit
 type Step = 1 | 2 | 3 | "success";
 const STEP_LABELS: Record<number, string> = {
   1: "Your Details",
   2: "Visit Details",
-  3: "Review & Submit",
+  3: "Identity & Review",
 };
 
 const VisitorInvitePage = () => {
@@ -373,7 +373,16 @@ const VisitorInvitePage = () => {
 
             <div className="mb-5">
               <label className={labelClass}>Purpose of Visit *</label>
-              <PillToggle options={PURPOSE_OPTIONS} value={purpose} onChange={setPurpose} />
+              <select
+                className={`${inputClass} bg-transparent`}
+                value={purpose}
+                onChange={(e) => setPurpose(e.target.value)}
+              >
+                <option value="" disabled>Select purpose</option>
+                {PURPOSE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
             </div>
             <div className="mb-5">
               <label className={labelClass}>Person to Meet *</label>
@@ -390,8 +399,21 @@ const VisitorInvitePage = () => {
               <label className={labelClass}>Address (optional)</label>
               <input className={inputClass} maxLength={120} placeholder="City / address" value={homeAddress} onChange={(e) => setHomeAddress(e.target.value)} />
             </div>
+          </div>
+        )}
 
-            <div className="mt-8 pt-5 border-t border-[#f0f0f0]">
+        {loadState === "loaded" && step === 3 && (
+          <div>
+            <h1 className="text-[19px] font-extrabold text-[#111] mb-1.5 leading-tight">Identity &amp; review</h1>
+            <p className="text-[13px] text-[#767676] leading-relaxed mb-1">
+              Tell us which ID you'll bring, then check everything before sending it in.
+            </p>
+
+            {submitError && (
+              <div className="text-[13px] mt-4 px-3 py-2.5 rounded-md bg-[#fdeeea] text-[#a8362b]">{submitError}</div>
+            )}
+
+            <div className="mt-6">
               <p className="text-[11.5px] font-bold text-[#1a1a2e] uppercase tracking-wide mb-1">
                 Identity Proof (optional)
               </p>
@@ -409,17 +431,6 @@ const VisitorInvitePage = () => {
                 </div>
               )}
             </div>
-          </div>
-        )}
-
-        {loadState === "loaded" && step === 3 && (
-          <div>
-            <h1 className="text-[19px] font-extrabold text-[#111] mb-1.5 leading-tight">Review &amp; submit</h1>
-            <p className="text-[13px] text-[#767676] leading-relaxed mb-1">Check everything before sending it in.</p>
-
-            {submitError && (
-              <div className="text-[13px] mt-4 px-3 py-2.5 rounded-md bg-[#fdeeea] text-[#a8362b]">{submitError}</div>
-            )}
 
             <p className="text-[11.5px] font-bold text-[#1a1a2e] uppercase tracking-wide mt-6 mb-3">Your Details</p>
             <ReviewRow label="Name" value={visitorName} />
