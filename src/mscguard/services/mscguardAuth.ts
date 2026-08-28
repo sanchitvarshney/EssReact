@@ -6,7 +6,20 @@
 
 import type { ApiEnvelope, McGuardSession } from "../types/mscguardTypes";
 
-const BASE_URL = import.meta.env.VITE_GATEPASS_API_BASE_URL;
+// Defensive normalization: if VITE_GATEPASS_API_BASE_URL is ever set without
+// a scheme (e.g. "vms.mscapi.live" instead of "https://vms.mscapi.live" —
+// happened once in prod), fetch() silently treats it as a RELATIVE path and
+// resolves it against the current page's own origin+path instead of the
+// real API host (e.g. "https://ess.mscorpres.com/gp/sp/vms.mscapi.live/...").
+// Always force a scheme here so that failure mode can't happen again,
+// regardless of how the env var ends up set at deploy time.
+function normalizeBaseUrl(raw: string | undefined): string {
+  const value = (raw || "").trim().replace(/\/+$/, "");
+  if (!value) return "";
+  return /^https?:\/\//i.test(value) ? value : `https://${value}`;
+}
+
+const BASE_URL = normalizeBaseUrl(import.meta.env.VITE_GATEPASS_API_BASE_URL);
 const SESSION_KEY = "mscguard_session";
 
 export class McGuardAuthError extends Error {}
