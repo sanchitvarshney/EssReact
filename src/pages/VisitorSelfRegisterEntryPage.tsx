@@ -6,7 +6,7 @@ import {
   SelfRegisterApiError,
   type SelfRegisterMode,
 } from "../services/visitorSelfRegisterApi";
-import { formatEmailInput, isValidEmail, formatMobileInput, isValidMobile } from "../utils/inputFormatters";
+import { formatEmailInput, isValidEmail, formatMobileInput, isValidMobile, emailGuard, mobileGuard } from "../utils/inputFormatters";
 
 // Same brand tokens as GatepassRequestPage.tsx (/gp/int/emp) and
 // VisitorInvitePage.tsx (/gp/int/invite/:token) — this is the third page in
@@ -122,6 +122,7 @@ const VisitorSelfRegisterEntryPage = () => {
                   value={value}
                   onChange={(e) => setValue(formatEmailInput(e.target.value))}
                   maxLength={80}
+                  {...emailGuard}
                 />
               </div>
             ) : (
@@ -133,6 +134,7 @@ const VisitorSelfRegisterEntryPage = () => {
                   value={value}
                   onChange={(e) => setValue(formatMobileInput(e.target.value))}
                   maxLength={10}
+                  {...mobileGuard}
                 />
                 <p className="text-[11px] text-[#999] mt-2 leading-snug">
                   Works only if you've visited before — the link goes to the email already on file.

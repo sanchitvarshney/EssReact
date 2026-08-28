@@ -18,6 +18,12 @@ import {
   formatAddressInput,
   formatMobileInput,
   isValidMobile,
+  nameGuard,
+  companyGuard,
+  emailGuard,
+  vehicleGuard,
+  addressGuard,
+  mobileGuard,
 } from "../utils/inputFormatters";
 
 // Same brand tokens as GatepassRequestPage.tsx (/gp/int/emp) — this page is
@@ -348,6 +354,7 @@ const VisitorInvitePage = () => {
                 value={visitorName}
                 disabled={nameLocked}
                 onChange={(e) => setVisitorName(formatNameInput(e.target.value))}
+                {...nameGuard}
               />
             </div>
             <div className="mb-5">
@@ -359,6 +366,7 @@ const VisitorInvitePage = () => {
                 value={mobileNumber}
                 disabled={mobileLocked}
                 onChange={(e) => setMobileNumber(formatMobileInput(e.target.value))}
+                {...mobileGuard}
               />
               {!mobileLocked && mobileNumber.length > 0 && !isValidMobile(mobileNumber) && (
                 <p className="text-[11px] text-[#a8362b] mt-1.5">10 digits, starting with 6-9.</p>
@@ -374,6 +382,7 @@ const VisitorInvitePage = () => {
                 value={emailAddress}
                 disabled={emailLocked}
                 onChange={(e) => setEmailAddress(formatEmailInput(e.target.value))}
+                {...emailGuard}
               />
               {!emailLocked && emailAddress.length > 0 && !isValidEmail(emailAddress) && (
                 <p className="text-[11px] text-[#a8362b] mt-1.5">Enter a valid email address.</p>
@@ -387,6 +396,7 @@ const VisitorInvitePage = () => {
                 placeholder="Your company"
                 value={companyName}
                 onChange={(e) => setCompanyName(formatCompanyInput(e.target.value))}
+                {...companyGuard}
               />
             </div>
           </div>
@@ -412,18 +422,18 @@ const VisitorInvitePage = () => {
             </div>
             <div className="mb-5">
               <label className={labelClass}>Person to Meet *</label>
-              <input className={inputClass} maxLength={60} placeholder="Name of contact" value={personToMeet} onChange={(e) => setPersonToMeet(formatNameInput(e.target.value))} />
+              <input className={inputClass} maxLength={60} placeholder="Name of contact" value={personToMeet} onChange={(e) => setPersonToMeet(formatNameInput(e.target.value))} {...nameGuard} />
               <p className="text-[11px] text-[#999] mt-1.5 leading-snug">
                 The guard will confirm the exact contact at the gate.
               </p>
             </div>
             <div className="mb-5">
               <label className={labelClass}>Vehicle Number (optional)</label>
-              <input className={inputClass} maxLength={12} placeholder="If arriving by vehicle" value={vehicleNo} onChange={(e) => setVehicleNo(formatVehicleInput(e.target.value))} />
+              <input className={inputClass} maxLength={12} placeholder="If arriving by vehicle" value={vehicleNo} onChange={(e) => setVehicleNo(formatVehicleInput(e.target.value))} {...vehicleGuard} />
             </div>
             <div className="mb-5">
               <label className={labelClass}>Address (optional)</label>
-              <input className={inputClass} maxLength={120} placeholder="City / address" value={homeAddress} onChange={(e) => setHomeAddress(formatAddressInput(e.target.value))} />
+              <input className={inputClass} maxLength={120} placeholder="City / address" value={homeAddress} onChange={(e) => setHomeAddress(formatAddressInput(e.target.value))} {...addressGuard} />
             </div>
           </div>
         )}
