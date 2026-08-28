@@ -166,7 +166,7 @@ const VisitorInvitePage = () => {
     return (
       <div className="h-screen w-full flex items-center justify-center px-6 bg-white">
         <p className="text-red-600 text-center text-base font-semibold">
-          This page is only available on mobile and tablet devices. Please open it on your phone or tablet.
+          This page is only available on mobile and tablet devices.<br/>Please open it on your phone or tablet.
         </p>
       </div>
     );
@@ -210,7 +210,8 @@ const VisitorInvitePage = () => {
           <div className="h-full flex flex-col items-center justify-center text-center">
             <div className="text-5xl mb-4">⚠️</div>
             <h1 className="text-[19px] font-extrabold text-[#111] mb-2">Link Unavailable</h1>
-            <p className="text-[13px] text-[#767676] leading-relaxed">{loadError}</p>
+            <p className="text-[13px] text-[#767676] leading-relaxed">It might have expired or been used already.<br/>Please contact the guard at the gate.</p>
+            {/* <p className="text-[13px] text-[#767676] leading-relaxed">{loadError}</p> */}
           </div>
         )}
 
