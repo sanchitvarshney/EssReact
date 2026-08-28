@@ -12,6 +12,14 @@ import { createPreApproved, searchPreApproved, type CreatePreApprovedInput } fro
 import { lookupEmployeeByCode, type EmployeeLookupResult } from "../services/mscguardEmployees";
 import type { PreApprovedVisitor } from "../types/mscguardTypes";
 import { McGuardApiError } from "../services/mscguardApi";
+import {
+  formatNameInput,
+  formatCompanyInput,
+  formatEmailInput,
+  isValidEmail,
+  formatMobileInput,
+  isValidMobile,
+} from "../../utils/inputFormatters";
 
 export default function PreApprovals() {
   const [query, setQuery] = useState("");
@@ -134,6 +142,14 @@ function CreatePreApprovalModal({ onClose, onCreated }: { onClose: () => void; o
       toast.error("Enter a valid employee code for Person to Meet first.");
       return;
     }
+    if (!isValidMobile(form.mobile)) {
+      toast.error("Enter a valid 10-digit mobile number (starting 6-9).");
+      return;
+    }
+    if (form.email && !isValidEmail(form.email)) {
+      toast.error("Enter a valid email address.");
+      return;
+    }
     setSaving(true);
     try {
       const result = await createPreApproved(form);
@@ -166,16 +182,21 @@ function CreatePreApprovalModal({ onClose, onCreated }: { onClose: () => void; o
       <form onSubmit={handleSubmit}>
         <div className="grid sm:grid-cols-2 gap-x-6">
           <FieldWrap label="Visitor Name" required>
-            <TextInput required value={form.visitorName} onChange={(e) => set("visitorName", e.target.value)} />
+            <TextInput required value={form.visitorName} onChange={(e) => set("visitorName", formatNameInput(e.target.value))} />
           </FieldWrap>
           <FieldWrap label="Mobile" required>
-            <TextInput required value={form.mobile} onChange={(e) => set("mobile", e.target.value)} />
+            <TextInput
+              required
+              value={form.mobile}
+              onChange={(e) => set("mobile", formatMobileInput(e.target.value))}
+              maxLength={10}
+            />
           </FieldWrap>
           <FieldWrap label="Email">
-            <TextInput type="email" value={form.email} onChange={(e) => set("email", e.target.value)} />
+            <TextInput type="email" value={form.email} onChange={(e) => set("email", formatEmailInput(e.target.value))} />
           </FieldWrap>
           <FieldWrap label="Company">
-            <TextInput value={form.company} onChange={(e) => set("company", e.target.value)} />
+            <TextInput value={form.company} onChange={(e) => set("company", formatCompanyInput(e.target.value))} />
           </FieldWrap>
           <FieldWrap label="Purpose" required>
             <TextInput required value={form.purpose} onChange={(e) => set("purpose", e.target.value)} />
@@ -214,7 +235,7 @@ function CreatePreApprovalModal({ onClose, onCreated }: { onClose: () => void; o
             )}
           </div>
           <FieldWrap label="Approved By" required>
-            <TextInput required value={form.approvedByName} onChange={(e) => set("approvedByName", e.target.value)} />
+            <TextInput required value={form.approvedByName} onChange={(e) => set("approvedByName", formatNameInput(e.target.value))} />
           </FieldWrap>
           <FieldWrap label="Expected Date" required>
             <DatePickerField value={form.expectedDate} onChange={(v) => set("expectedDate", v)} />

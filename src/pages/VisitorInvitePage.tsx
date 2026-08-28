@@ -9,6 +9,16 @@ import {
   VisitorInviteApiError,
   type PreregEntry,
 } from "../services/visitorInviteApi";
+import {
+  formatNameInput,
+  formatCompanyInput,
+  formatEmailInput,
+  isValidEmail,
+  formatVehicleInput,
+  formatAddressInput,
+  formatMobileInput,
+  isValidMobile,
+} from "../utils/inputFormatters";
 
 // Same brand tokens as GatepassRequestPage.tsx (/gp/int/emp) — this page is
 // its sibling under /gp/int/invite, so it reads as one family rather than
@@ -182,8 +192,12 @@ const VisitorInvitePage = () => {
     return () => clearTimeout(t);
   }, [loadState, step, secondsLeft]);
 
+  // Locked fields (guard-supplied) are trusted as-is — format/charset
+  // validation only applies to what the visitor actually typed themselves.
   const step1Ready =
-    (nameLocked || visitorName.trim().length > 0) && (mobileLocked || mobileNumber.trim().length > 0);
+    (nameLocked || visitorName.trim().length > 0) &&
+    (mobileLocked || isValidMobile(mobileNumber)) &&
+    (emailLocked || emailAddress.trim().length === 0 || isValidEmail(emailAddress));
   const step2Ready = purpose.trim().length > 0 && personToMeet.trim().length > 0;
 
   const handleSubmit = async () => {
@@ -333,19 +347,22 @@ const VisitorInvitePage = () => {
                 placeholder="Your full name"
                 value={visitorName}
                 disabled={nameLocked}
-                onChange={(e) => setVisitorName(e.target.value)}
+                onChange={(e) => setVisitorName(formatNameInput(e.target.value))}
               />
             </div>
             <div className="mb-5">
               <label className={labelClass}>Mobile Number *</label>
               <input
                 className={inputClass}
-                maxLength={15}
+                maxLength={10}
                 placeholder="10-digit mobile"
                 value={mobileNumber}
                 disabled={mobileLocked}
-                onChange={(e) => setMobileNumber(e.target.value)}
+                onChange={(e) => setMobileNumber(formatMobileInput(e.target.value))}
               />
+              {!mobileLocked && mobileNumber.length > 0 && !isValidMobile(mobileNumber) && (
+                <p className="text-[11px] text-[#a8362b] mt-1.5">10 digits, starting with 6-9.</p>
+              )}
             </div>
             <div className="mb-5">
               <label className={labelClass}>Email (optional)</label>
@@ -356,12 +373,21 @@ const VisitorInvitePage = () => {
                 placeholder="email@example.com"
                 value={emailAddress}
                 disabled={emailLocked}
-                onChange={(e) => setEmailAddress(e.target.value)}
+                onChange={(e) => setEmailAddress(formatEmailInput(e.target.value))}
               />
+              {!emailLocked && emailAddress.length > 0 && !isValidEmail(emailAddress) && (
+                <p className="text-[11px] text-[#a8362b] mt-1.5">Enter a valid email address.</p>
+              )}
             </div>
             <div className="mb-5">
               <label className={labelClass}>Company (optional)</label>
-              <input className={inputClass} maxLength={80} placeholder="Your company" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
+              <input
+                className={inputClass}
+                maxLength={80}
+                placeholder="Your company"
+                value={companyName}
+                onChange={(e) => setCompanyName(formatCompanyInput(e.target.value))}
+              />
             </div>
           </div>
         )}
@@ -386,18 +412,18 @@ const VisitorInvitePage = () => {
             </div>
             <div className="mb-5">
               <label className={labelClass}>Person to Meet *</label>
-              <input className={inputClass} maxLength={60} placeholder="Name of contact" value={personToMeet} onChange={(e) => setPersonToMeet(e.target.value)} />
+              <input className={inputClass} maxLength={60} placeholder="Name of contact" value={personToMeet} onChange={(e) => setPersonToMeet(formatNameInput(e.target.value))} />
               <p className="text-[11px] text-[#999] mt-1.5 leading-snug">
                 The guard will confirm the exact contact at the gate.
               </p>
             </div>
             <div className="mb-5">
               <label className={labelClass}>Vehicle Number (optional)</label>
-              <input className={inputClass} maxLength={20} placeholder="If arriving by vehicle" value={vehicleNo} onChange={(e) => setVehicleNo(e.target.value)} />
+              <input className={inputClass} maxLength={12} placeholder="If arriving by vehicle" value={vehicleNo} onChange={(e) => setVehicleNo(formatVehicleInput(e.target.value))} />
             </div>
             <div className="mb-5">
               <label className={labelClass}>Address (optional)</label>
-              <input className={inputClass} maxLength={120} placeholder="City / address" value={homeAddress} onChange={(e) => setHomeAddress(e.target.value)} />
+              <input className={inputClass} maxLength={120} placeholder="City / address" value={homeAddress} onChange={(e) => setHomeAddress(formatAddressInput(e.target.value))} />
             </div>
           </div>
         )}

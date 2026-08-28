@@ -6,6 +6,7 @@ import {
   SelfRegisterApiError,
   type SelfRegisterMode,
 } from "../services/visitorSelfRegisterApi";
+import { formatEmailInput, isValidEmail, formatMobileInput, isValidMobile } from "../utils/inputFormatters";
 
 // Same brand tokens as GatepassRequestPage.tsx (/gp/int/emp) and
 // VisitorInvitePage.tsx (/gp/int/invite/:token) — this is the third page in
@@ -52,8 +53,7 @@ const VisitorSelfRegisterEntryPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const ready =
-    mode === "email" ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()) : /^\d{7,15}$/.test(value.trim());
+  const ready = mode === "email" ? isValidEmail(value) : isValidMobile(value);
 
   const handleSubmit = async () => {
     if (!ready) return;
@@ -120,7 +120,7 @@ const VisitorSelfRegisterEntryPage = () => {
                   className={inputClass}
                   placeholder="you@example.com"
                   value={value}
-                  onChange={(e) => setValue(e.target.value)}
+                  onChange={(e) => setValue(formatEmailInput(e.target.value))}
                   maxLength={80}
                 />
               </div>
@@ -131,8 +131,8 @@ const VisitorSelfRegisterEntryPage = () => {
                   className={inputClass}
                   placeholder="10-digit mobile"
                   value={value}
-                  onChange={(e) => setValue(e.target.value.replace(/\D/g, ""))}
-                  maxLength={15}
+                  onChange={(e) => setValue(formatMobileInput(e.target.value))}
+                  maxLength={10}
                 />
                 <p className="text-[11px] text-[#999] mt-2 leading-snug">
                   Works only if you've visited before — the link goes to the email already on file.
