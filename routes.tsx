@@ -44,6 +44,7 @@ import FallBackUi from "./src/pages/errorBoundary/FallBackUi";
 // import AppLoader from "./src/pages/AppLoader";
 import MainLayout from "./src/layouts/MainLayout";
 import GatepassRequestPage from "./src/pages/GatepassRequestPage";
+import VisitorInvitePage from "./src/pages/VisitorInvitePage";
 import Login from "./src/mscguard/pages/Login";
 import Dashboard from "./src/mscguard/pages/Dashboard";
 import GatepassApprovals from "./src/mscguard/pages/GatepassApprovals";
@@ -191,6 +192,10 @@ export const route = createBrowserRouter([
   {
     path: "/gp/int/emp",
     element: <GatepassRequestPage />,
+  },
+  {
+    path: "/gp/int/invite/:token",
+    element: <VisitorInvitePage />,
   },
   {
     path: "/gp/sp/login",

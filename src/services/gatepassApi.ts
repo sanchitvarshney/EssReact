@@ -1,4 +1,13 @@
-const BASE_URL = import.meta.env.VITE_GATEPASS_API_BASE_URL;
+// Same defensive normalization as visitorInviteApi.ts/mscguardAuth.ts — see
+// those for why: a scheme-less env value gets silently treated as a
+// relative path by fetch() instead of the real API host.
+function normalizeBaseUrl(raw: string | undefined): string {
+  const value = (raw || "").trim().replace(/\/+$/, "");
+  if (!value) return "";
+  return /^https?:\/\//i.test(value) ? value : `https://${value}`;
+}
+
+const BASE_URL = normalizeBaseUrl(import.meta.env.VITE_GATEPASS_API_BASE_URL);
 
 export interface ApproverInfo {
   name: string;
