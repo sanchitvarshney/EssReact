@@ -16,6 +16,14 @@ export interface PreregEntry {
   visitorName: string;
   mobile: string;
   email: string;
+  // Whichever of these the guard supplied when sending the invite is
+  // authoritative — the web form must not let it be edited.
+  nameLocked: boolean;
+  mobileLocked: boolean;
+  emailLocked: boolean;
+  // Seconds left in the 5-minute fill window, counted from the FIRST time
+  // this entry was fetched (a page refresh does not reset it — server-enforced).
+  secondsRemaining: number;
 }
 
 export interface SubmitPreregPayload {
@@ -27,7 +35,9 @@ export interface SubmitPreregPayload {
   vehicleNo?: string;
   purpose: string;
   personToMeet: string;
-  deptName: string;
+  /** Optional KYC — one of "Voter ID" | "Passport" | "Aadhar" | "Driving Licence" | "PAN". */
+  idType?: string;
+  idDocumentBase64?: string;
 }
 
 class VisitorInviteApiError extends Error {
