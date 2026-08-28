@@ -20,6 +20,7 @@ export interface EmployeeLookupData {
   empCode: string;
   empName: string;
   department: string;
+  designation: string;
   email: string;
   mobile: string;
   final: {
@@ -72,6 +73,8 @@ async function parseJsonOrThrow(res: Response) {
   return body;
 }
 
+/** @param dob "DD-MM" (day-month only, zero-padded) — HRMS never stores/returns
+ *  a year for DOB, removed on their side for the employee's privacy. */
 export async function lookupEmployee(
   empCode: string,
   dob: string

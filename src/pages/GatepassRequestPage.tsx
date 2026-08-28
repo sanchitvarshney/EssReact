@@ -23,8 +23,9 @@ const PRIMARY = "#018c85";
 const ACCENT = "#2eacb3";
 const ACCENT_DISABLED = "#a8d9db";
 
-const EARLIEST_DOB = dayjs("1975-01-01");
-const LATEST_DOB = dayjs().subtract(18, "year"); // must be 18+
+// No EARLIEST_DOB/LATEST_DOB (18+) bound anymore — HRMS's dob field is
+// day-month only (no year, removed for privacy), so an age gate can't be
+// enforced from it at all.
 
 const inputClass =
   "underline-input w-full border-0 border-b-[1.5px] border-[#e2e2e2] px-0.5 py-2 text-base bg-transparent text-[#111] focus:outline-none focus:border-b-[#2eacb3] disabled:text-[#555]";
@@ -54,6 +55,11 @@ const datePickerSlotProps = {
   },
 };
 
+// Placeholder year used only to give day/month pickers a valid Dayjs object
+// to render — never sent anywhere, never compared. Not a leap year, so Feb
+// 29 isn't selectable here; DOB is day-month-only anyway (see dayMonthOnly).
+const DUMMY_YEAR = 2001;
+
 function AppDatePicker({
   label,
   value,
@@ -61,6 +67,7 @@ function AppDatePicker({
   minDate,
   maxDate,
   openTo = "day",
+  dayMonthOnly = false,
 }: {
   label: string;
   value: string;
@@ -68,18 +75,33 @@ function AppDatePicker({
   minDate?: Dayjs;
   maxDate?: Dayjs;
   openTo?: "day" | "month" | "year";
+  // When true: value/onChange exchange "DD-MM" (no year) instead of
+  // "YYYY-MM-DD" — for HRMS's DOB field, which never stores/returns a year
+  // (removed for the employee's privacy; verification is day+month only).
+  dayMonthOnly?: boolean;
 }) {
+  const parsedValue = dayMonthOnly
+    ? value && /^\d{2}-\d{2}$/.test(value)
+      ? dayjs(`${DUMMY_YEAR}-${value.split("-")[1]}-${value.split("-")[0]}`)
+      : null
+    : value
+    ? dayjs(value)
+    : null;
+
   return (
     <MobileDatePicker
       label={label}
-      value={value ? dayjs(value) : null}
-      onChange={(d) => onChange(d && d.isValid() ? d.format("YYYY-MM-DD") : "")}
+      value={parsedValue}
+      onChange={(d) => {
+        if (!d || !d.isValid()) return onChange("");
+        onChange(dayMonthOnly ? d.format("DD-MM") : d.format("YYYY-MM-DD"));
+      }}
       minDate={minDate}
       maxDate={maxDate}
       openTo={openTo}
-      views={["year", "month", "day"]}
+      views={dayMonthOnly ? ["month", "day"] : ["year", "month", "day"]}
       closeOnSelect
-      format="DD/MM/YYYY"
+      format={dayMonthOnly ? "DD/MM" : "DD/MM/YYYY"}
       slotProps={datePickerSlotProps}
     />
   );
@@ -441,14 +463,13 @@ const GatepassRequestPage = () => {
                 />
               </div>
               <div className="mb-5">
-                <label className={labelClass}>Date of Birth</label>
+                <label className={labelClass}>Date of Birth (Day &amp; Month)</label>
                 <AppDatePicker
                   label=""
                   value={dob}
                   onChange={setDob}
-                  minDate={EARLIEST_DOB}
-                  maxDate={LATEST_DOB}
-                  openTo="year"
+                  openTo="month"
+                  dayMonthOnly
                 />
               </div>
 
@@ -473,6 +494,10 @@ const GatepassRequestPage = () => {
               <div className="mb-5">
                 <label className={labelClass}>Full Name</label>
                 <input className={inputClass} value={lookupData.empName} disabled />
+              </div>
+              <div className="mb-5">
+                <label className={labelClass}>Designation</label>
+                <input className={inputClass} value={lookupData.designation || "—"} disabled />
               </div>
 
               <p className={sectionLabelClass}>Approval Chain</p>
@@ -620,6 +645,7 @@ const GatepassRequestPage = () => {
               <p className={sectionLabelClass}>Employee</p>
               <ReviewRow label="Name" value={lookupData.empName} />
               <ReviewRow label="Code" value={lookupData.empCode} />
+              <ReviewRow label="Designation" value={lookupData.designation || "—"} />
               <ReviewRow label="Department" value={lookupData.department || "—"} />
 
               <p className={sectionLabelClass}>Approval Chain</p>
