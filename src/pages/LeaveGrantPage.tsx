@@ -97,11 +97,11 @@ const LeaveGrantPage = () => {
       .then((res: any) => {
         setPendingAction(null);
         if (res?.status === "error") {
-          showToast(res?.data?.message, "error");
+          showToast(res?.data?.message?.msg ?? res?.data?.message, "error");
           return;
         }
-        showToast(res?.data?.message, "success");
-        // setIsRejected(false);
+        showToast( res?.data?.message?.msg ?? res?.data?.message, "success");
+        // setIsRejected(false); 
         setReason("");
         setView(false);
         setLeaveList((prev) =>
