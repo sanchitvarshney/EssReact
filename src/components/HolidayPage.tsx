@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import HolidayPageSkeleton from "../skeleton/HolidayPageSkeleton";
-import EmptyData from "./reuseable/EmptyData";
+import ComingSoon from "./reuseable/ComingSoon";
 
 const getDay = (date: string) => {
   dayjs.extend(weekday);
@@ -112,21 +112,41 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
           <Tabs
             value={selectedYear}
             onChange={(_e, val) => setSelectedYear(val)}
-            TabIndicatorProps={{
-              style: { backgroundColor: "#2eacb3", height: 3, borderRadius: 2 },
-            }}
             textColor="inherit"
             sx={{
               minHeight: 36,
+
               "& .MuiTab-root": {
                 minHeight: 36,
                 py: 0,
+                px: 1.5,
                 fontSize: 13,
                 fontWeight: 600,
                 color: "#888",
                 textTransform: "none",
+                position: "relative",
               },
-              "& .Mui-selected": { color: "#2eacb3" },
+
+              "& .MuiTab-root.Mui-selected": {
+                color: "#2eacb3",
+              },
+
+              "& .MuiTab-root.Mui-selected::after": {
+                content: '""',
+                position: "absolute",
+                bottom: 0,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: 20,
+                height: 3,
+                borderRadius: 2,
+                backgroundColor: "#2eacb3",
+              },
+
+              // Hide MUI's default indicator
+              "& .MuiTabs-indicator": {
+                display: "none",
+              },
             }}
           >
             {years.map((year) => (
@@ -141,12 +161,13 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
           )}
         </div>
       </div>
+      {/* <Divider sx={{ borderColor: "#02b0a9",  mb: 1, }} /> */}
 
       {/* Content */}
       {isLoading ? (
         <HolidayPageSkeleton />
       ) : filtered.length === 0 ? (
-        <EmptyData />
+        <ComingSoon />
       ) : (
         <TableContainer
           component={Paper}
