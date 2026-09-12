@@ -51,6 +51,7 @@ interface HolidayProps {
 const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
   const { showToast } = useToast();
   const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [ishandleLoading, setIshandleLoading] = useState(false);
   const [getHolidaysList, { data, isLoading, error }] =
     useGetHolidaysListMutation();
 
@@ -73,6 +74,16 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
     return (data as any[]).filter((row) => row.title?.toLowerCase());
   }, [data]);
 
+  const handleChange = (year: number) => {
+   setIshandleLoading(true);
+   Promise.resolve().then(() => {
+    setTimeout(() => {
+      setSelectedYear(year);
+      setIshandleLoading(false);
+    }, 800);
+   });
+  }
+
   return (
     <Box
       sx={{
@@ -92,7 +103,7 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
           <Typography sx={{ fontSize: 19, fontWeight: 700, color: "#232324" }}>
             Holiday Calendar
           </Typography>
-          {!isLoading && data && (
+          {((!isLoading && data || ishandleLoading)) && (
             <Chip
               label={`${filtered.length} holidays`}
               size="small"
@@ -111,7 +122,7 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
         <div className="flex items-center gap-2">
           <Tabs
             value={selectedYear}
-            onChange={(_e, val) => setSelectedYear(val)}
+            onChange={(_e, val) => handleChange(val)}
             textColor="inherit"
             sx={{
               minHeight: 36,
@@ -164,7 +175,7 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
       {/* <Divider sx={{ borderColor: "#02b0a9",  mb: 1, }} /> */}
 
       {/* Content */}
-      {isLoading ? (
+      {isLoading || ishandleLoading ? (
         <HolidayPageSkeleton />
       ) : filtered.length === 0 ? (
         <ComingSoon />
