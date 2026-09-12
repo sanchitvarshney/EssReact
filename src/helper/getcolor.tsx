@@ -14,13 +14,13 @@ export const getStatusStyle = (title: string) => {
           textColor: "text-red-800",
           borderColor: "border-red-300",
         };
-      case "work from home":
-      case "wfh":
-        return {
-          bgColor: "bg-blue-100",
-          textColor: "text-blue-800",
-          borderColor: "border-blue-300",
-        };
+      // case "work from home":
+      // case "hld":
+      //   return {
+      //     bgColor: "bg-blue-100",
+      //     textColor: "text-blue-800",
+      //     borderColor: "border-blue-300",
+      //   };
     
       case "mis":
         return {
@@ -34,8 +34,8 @@ export const getStatusStyle = (title: string) => {
           textColor: "text-teal-600",
           borderColor: "border-teal-300",
         };
-      case "p/sl":
-      case "sick leave":
+      case "sl":
+      case "el":
         return {
           bgColor: "bg-orange-100",
           textColor: "text-orange-800",
@@ -47,13 +47,13 @@ export const getStatusStyle = (title: string) => {
           textColor: "text-gray-800",
           borderColor: "border-gray-300",
         };
-      case "el":
-      case "earned leave":
-        return {
-          bgColor: "bg-indigo-100",
-          textColor: "text-indigo-800",
-          borderColor: "border-indigo-300",
-        };
+      // case "el":
+      // case "earned leave":
+      //   return {
+      //     bgColor: "bg-indigo-100",
+      //     textColor: "text-indigo-800",
+      //     borderColor: "border-indigo-300",
+      //   };
 
       case "weekly off":
       case "off":
@@ -62,9 +62,16 @@ export const getStatusStyle = (title: string) => {
           textColor: "text-gray-800",
           borderColor: "border-gray-300",
         };
+    
+      case "wo":
+        return {
+          // bgColor: "bg-gray-100",
+          textColor: "text-gray-800",
+          borderColor: "border-gray-300",
+        };
       default:
         return {
-          // bgColor: "bg-red-100",
+          bgColor: "bg-gray-100",
           textColor: "text-gray-900",
           borderColor: "border-gray-300",
         };

@@ -4,12 +4,12 @@ const CalenderEvent = ({ event }: { event: any }) => {
   const statusStyle = getStatusStyle(event.title);
 
   return (
-    <div className={`flex flex-col p-2 w-full overflow-auto `}>
+    <div className={`flex flex-col ${statusStyle.bgColor} p-2 w-full overflow-auto `}>
       <div
         className={`flex items-center justify-center   ${statusStyle.textColor} `}
       >
         <span
-          className={`text-sm font-bold uppercase p-1 ${statusStyle.bgColor} `}
+          className={`text-sm  rounded-4xl text-center w-100 font-bold uppercase p-2 ${statusStyle.bgColor} `}
         >
           {event.title}
         </span>
@@ -21,7 +21,7 @@ const CalenderEvent = ({ event }: { event: any }) => {
               {helperFun.formatTimeRange(event.start, event.end)}
             </span> */}
             <span className="text-md mt-1 text-gray-900 break-all">
-              {event.total_time}
+              {(event.total_time  ? event.total_time : "—")}
             </span>
           </div>
         )}
