@@ -4,7 +4,7 @@ const EmptyData = ({
   width,
   height,
   title = "No Data Found",
-  subtitle = "There's nothing to display here yet.",
+  subtitle = "",
 }: {
   width?: string;
   height?: string;
