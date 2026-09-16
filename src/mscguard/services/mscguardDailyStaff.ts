@@ -21,7 +21,7 @@ export async function fetchAttendance(filters: AttendanceFilters): Promise<Atten
   if (filters.search) params.set("search", filters.search);
   const qs = params.toString();
   const data = await mscGuardGet<{ records: AttendanceRecord[] }>(
-    `/api/admin/daily-staff/attendance${qs ? `?${qs}` : ""}`
+    `/gate-pass/admin/daily-staff/attendance${qs ? `?${qs}` : ""}`
   );
   return data.records;
 }
@@ -39,7 +39,7 @@ export async function fetchStaffList(filters: StaffListFilters = {}): Promise<{ 
   if (filters.department) params.set("department", filters.department);
   params.set("limit", String(filters.limit ?? 50));
   params.set("offset", String(filters.offset ?? 0));
-  return mscGuardGet(`/api/daily-staff/list?${params.toString()}`);
+  return mscGuardGet(`/gate-pass/daily-staff/list?${params.toString()}`);
 }
 
 export interface CreateStaffInput {
@@ -54,9 +54,9 @@ export function createStaff(input: CreateStaffInput): Promise<{ ref: string; pas
 }
 
 export function toggleStaff(ref: string): Promise<{ ref: string; isActive: boolean }> {
-  return mscGuardPost(`/api/admin/daily-staff/${encodeURIComponent(ref)}/toggle`);
+  return mscGuardPost(`/gate-pass/admin/daily-staff/${encodeURIComponent(ref)}/toggle`);
 }
 
 export function resetStaffPasscode(ref: string): Promise<{ ref: string; passcode: string }> {
-  return mscGuardPost(`/api/admin/daily-staff/${encodeURIComponent(ref)}/reset-passcode`);
+  return mscGuardPost(`/gate-pass/admin/daily-staff/${encodeURIComponent(ref)}/reset-passcode`);
 }

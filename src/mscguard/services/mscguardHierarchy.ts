@@ -21,7 +21,7 @@ export async function fetchHierarchyDetail(
   empCode: string
 ): Promise<{ employee: EmployeeBasic; levels: MaterialChainLevel[] }> {
   const data = await mscGuardGet<{ employee: EmployeeBasic; levels: RawHierarchyLevel[] }>(
-    `/api/admin/emp-hierarchy/${encodeURIComponent(empCode)}`
+    `/gate-pass/admin/emp-hierarchy/${encodeURIComponent(empCode)}`
   );
   return {
     employee: data.employee,
@@ -45,15 +45,15 @@ export function saveHierarchy(empCode: string, levels: MaterialChainLevel[]): Pr
     email: lv.email,
     mobile: lv.mobile,
   }));
-  return mscGuardPut(`/api/admin/emp-hierarchy/${encodeURIComponent(empCode)}`, { levels: payload });
+  return mscGuardPut(`/gate-pass/admin/emp-hierarchy/${encodeURIComponent(empCode)}`, { levels: payload });
 }
 
 export function deleteHierarchy(empCode: string): Promise<{ empCode: string }> {
-  return mscGuardDelete(`/api/admin/emp-hierarchy/${encodeURIComponent(empCode)}`);
+  return mscGuardDelete(`/gate-pass/admin/emp-hierarchy/${encodeURIComponent(empCode)}`);
 }
 
 export async function searchEmployees(search: string): Promise<EmployeeSearchResult[]> {
-  const data = await mscGuardGet<EmployeeSearchResult[]>(`/api/employees/search?search=${encodeURIComponent(search)}`);
+  const data = await mscGuardGet<EmployeeSearchResult[]>(`/gate-pass/employees/search?search=${encodeURIComponent(search)}`);
   return data;
 }
 
@@ -72,7 +72,7 @@ export interface EmployeeLookupResult {
  *  match anything, so callers can just leave the form blank on a miss. */
 export async function lookupEmployeeByCode(code: string): Promise<EmployeeLookupResult | null> {
   try {
-    return await mscGuardGet<EmployeeLookupResult>(`/api/employees/${encodeURIComponent(code)}`);
+    return await mscGuardGet<EmployeeLookupResult>(`/gate-pass/employees/${encodeURIComponent(code)}`);
   } catch {
     return null;
   }

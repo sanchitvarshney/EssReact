@@ -11,7 +11,7 @@ export function fetchDashboardSummary(from?: number, to?: number): Promise<Dashb
   if (from) params.set("from", String(from));
   if (to) params.set("to", String(to));
   const qs = params.toString();
-  return mscGuardGet<DashboardSummaryData>(`/api/admin/reports/summary${qs ? `?${qs}` : ""}`);
+  return mscGuardGet<DashboardSummaryData>(`/gate-pass/admin/reports/summary${qs ? `?${qs}` : ""}`);
 }
 
 /** GET /api/admin/pending — unified pending list across gatepass/material/return-inward. */

@@ -16,5 +16,5 @@ export interface EmployeeLookupResult {
 }
 
 export function lookupEmployeeByCode(code: string): Promise<EmployeeLookupResult> {
-  return mscGuardGet<EmployeeLookupResult>(`/api/employees/${encodeURIComponent(code)}`);
+  return mscGuardGet<EmployeeLookupResult>(`/gate-pass/employees/${encodeURIComponent(code)}`);
 }

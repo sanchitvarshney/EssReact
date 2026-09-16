@@ -80,7 +80,7 @@ export async function lookupEmployee(
   dob: string
 ): Promise<EmployeeLookupData> {
   const res = await fetch(
-    `${BASE_URL}/gatepass/employee-lookup?empCode=${encodeURIComponent(
+    `${BASE_URL}/gate-pass/gatepass/employee-lookup?empCode=${encodeURIComponent(
       empCode
     )}&dob=${encodeURIComponent(dob)}`,
     { headers: { Accept: "application/json" } }
@@ -90,7 +90,7 @@ export async function lookupEmployee(
 }
 
 export async function getTlOptions(): Promise<TlOption[]> {
-  const res = await fetch(`${BASE_URL}/gatepass/tl-options`, {
+  const res = await fetch(`${BASE_URL}/gate-pass/gatepass/tl-options`, {
     headers: { Accept: "application/json" },
   });
   const body = await parseJsonOrThrow(res);
@@ -100,7 +100,7 @@ export async function getTlOptions(): Promise<TlOption[]> {
 export async function submitEmployeeGatepass(
   payload: SubmitGatepassPayload
 ): Promise<{ gpRef: string }> {
-  const res = await fetch(`${BASE_URL}/gatepass/new/employee`, {
+  const res = await fetch(`${BASE_URL}/gate-pass/gatepass/submit/employee`, {
     method: "POST",
     headers: {
       Accept: "application/json",

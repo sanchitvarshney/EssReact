@@ -25,7 +25,7 @@ export async function requestSelfRegisterLink(
   mode: SelfRegisterMode,
   value: string
 ): Promise<string> {
-  const res = await fetch(`${BASE_URL}/api/visitors/self-register-link`, {
+  const res = await fetch(`${BASE_URL}/gate-pass/visitors/self-register-link`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify(mode === "email" ? { mode, email: value } : { mode, mobile: value }),

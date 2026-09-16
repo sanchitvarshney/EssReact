@@ -1,8 +1,9 @@
 // Auth for the MsCGuard admin web app. Reuses the GatePass backend's existing
-// generic POST /api/auth/login (same one the Android app uses) — no separate
-// login endpoint exists or is needed. Access is restricted to Admin/HR roles
-// here in the client, and again server-side by every /api/admin & /api/hr
-// route's own auth(['Admin','HR']) middleware.
+// generic POST /gate-pass/auth/login (same one the Android app uses) — no
+// separate login endpoint exists or is needed. Access is restricted to
+// Admin/HR roles here in the client, and again server-side by every
+// /gate-pass/admin & /gate-pass/hr route's own gpAuth(['Admin','HR'])
+// middleware.
 
 import type { ApiEnvelope, McGuardSession } from "../types/mscguardTypes";
 
@@ -35,7 +36,7 @@ interface LoginResponseData {
 }
 
 export async function loginMscGuard(username: string, password: string): Promise<McGuardSession> {
-  const res = await fetch(`${BASE_URL}/api/auth/login`, {
+  const res = await fetch(`${BASE_URL}/gate-pass/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify({ username, password }),

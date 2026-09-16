@@ -63,7 +63,7 @@ async function parseJsonOrThrow(res: Response) {
 }
 
 export async function fetchPreregEntry(token: string): Promise<PreregEntry> {
-  const res = await fetch(`${BASE_URL}/api/visitors/invite/${encodeURIComponent(token)}`, {
+  const res = await fetch(`${BASE_URL}/gate-pass/visitors/invite/${encodeURIComponent(token)}`, {
     headers: { Accept: "application/json" },
   });
   const body = await parseJsonOrThrow(res);
@@ -74,7 +74,7 @@ export async function submitPreregistration(
   token: string,
   payload: SubmitPreregPayload
 ): Promise<{ visitRef: string; visitorName: string }> {
-  const res = await fetch(`${BASE_URL}/api/visitors/invite/${encodeURIComponent(token)}`, {
+  const res = await fetch(`${BASE_URL}/gate-pass/visitors/invite/${encodeURIComponent(token)}`, {
     method: "POST",
     headers: {
       Accept: "application/json",

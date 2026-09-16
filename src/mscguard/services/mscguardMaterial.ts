@@ -7,11 +7,11 @@ export async function fetchMaterialEntries(): Promise<MaterialEntry[]> {
 }
 
 export function reassignMaterialEntry(entryRef: string, name: string, email: string): Promise<unknown> {
-  return mscGuardPost(`/api/hr/material-in/${encodeURIComponent(entryRef)}/reassign`, { name, email });
+  return mscGuardPost(`/gate-pass/hr/material-in/${encodeURIComponent(entryRef)}/reassign`, { name, email });
 }
 
 export function resendMaterialEntry(entryRef: string): Promise<unknown> {
-  return mscGuardPost(`/api/hr/material-in/${encodeURIComponent(entryRef)}/resend`);
+  return mscGuardPost(`/gate-pass/hr/material-in/${encodeURIComponent(entryRef)}/resend`);
 }
 
 export async function fetchMaterialChains(): Promise<MaterialChain[]> {
@@ -20,7 +20,7 @@ export async function fetchMaterialChains(): Promise<MaterialChain[]> {
 }
 
 export function fetchMaterialChain(id: number): Promise<{ chain: MaterialChain; levels: MaterialChainLevel[] }> {
-  return mscGuardGet(`/api/admin/material-chains/${id}`);
+  return mscGuardGet(`/gate-pass/admin/material-chains/${id}`);
 }
 
 export interface MaterialChainInput {
@@ -38,9 +38,9 @@ export function createMaterialChain(input: MaterialChainInput): Promise<{ id: nu
 }
 
 export function updateMaterialChain(id: number, input: MaterialChainInput): Promise<{ id: number }> {
-  return mscGuardPut(`/api/admin/material-chains/${id}`, input);
+  return mscGuardPut(`/gate-pass/admin/material-chains/${id}`, input);
 }
 
 export function deleteMaterialChain(id: number): Promise<{ id: number }> {
-  return mscGuardDelete(`/api/admin/material-chains/${id}`);
+  return mscGuardDelete(`/gate-pass/admin/material-chains/${id}`);
 }

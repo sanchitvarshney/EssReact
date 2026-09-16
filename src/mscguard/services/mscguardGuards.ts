@@ -3,11 +3,11 @@ import type { Guard, GuardActivityEvent } from "../types/mscguardTypes";
 
 export function fetchGuards(search = ""): Promise<Guard[]> {
   const qs = search ? `?search=${encodeURIComponent(search)}` : "";
-  return mscGuardGet<{ guards: Guard[] }>(`/api/admin/guards${qs}`).then((d) => d.guards);
+  return mscGuardGet<{ guards: Guard[] }>(`/gate-pass/admin/guards${qs}`).then((d) => d.guards);
 }
 
 export function fetchGuard(userCode: string): Promise<Guard> {
-  return mscGuardGet<Guard>(`/api/admin/guards/${encodeURIComponent(userCode)}`);
+  return mscGuardGet<Guard>(`/gate-pass/admin/guards/${encodeURIComponent(userCode)}`);
 }
 
 export interface RegisterGuardInput {
@@ -33,27 +33,27 @@ export interface UpdateGuardInput {
 }
 
 export function updateGuard(userCode: string, input: UpdateGuardInput): Promise<Guard> {
-  return mscGuardPut<Guard>(`/api/admin/guards/${encodeURIComponent(userCode)}`, input);
+  return mscGuardPut<Guard>(`/gate-pass/admin/guards/${encodeURIComponent(userCode)}`, input);
 }
 
 export function resetGuardPassword(userCode: string, newPassword: string): Promise<{ userCode: string }> {
-  return mscGuardPost(`/api/admin/guards/${encodeURIComponent(userCode)}/reset-password`, { newPassword });
+  return mscGuardPost(`/gate-pass/admin/guards/${encodeURIComponent(userCode)}/reset-password`, { newPassword });
 }
 
 export function blockGuard(userCode: string): Promise<{ userCode: string; isActive: boolean }> {
-  return mscGuardPost(`/api/admin/guards/${encodeURIComponent(userCode)}/block`);
+  return mscGuardPost(`/gate-pass/admin/guards/${encodeURIComponent(userCode)}/block`);
 }
 
 export function unblockGuard(userCode: string): Promise<{ userCode: string; isActive: boolean }> {
-  return mscGuardPost(`/api/admin/guards/${encodeURIComponent(userCode)}/unblock`);
+  return mscGuardPost(`/gate-pass/admin/guards/${encodeURIComponent(userCode)}/unblock`);
 }
 
 export function forceLogoutGuard(userCode: string): Promise<{ userCode: string }> {
-  return mscGuardPost(`/api/admin/guards/${encodeURIComponent(userCode)}/force-logout`);
+  return mscGuardPost(`/gate-pass/admin/guards/${encodeURIComponent(userCode)}/force-logout`);
 }
 
 export function fetchGuardActivity(userCode: string): Promise<GuardActivityEvent[]> {
-  return mscGuardGet<{ events: GuardActivityEvent[] }>(`/api/admin/guards/${encodeURIComponent(userCode)}/activity`).then(
+  return mscGuardGet<{ events: GuardActivityEvent[] }>(`/gate-pass/admin/guards/${encodeURIComponent(userCode)}/activity`).then(
     (d) => d.events
   );
 }

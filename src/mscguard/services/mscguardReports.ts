@@ -19,13 +19,13 @@ function buildQuery(filters: ReportRowFilters): string {
 }
 
 export async function fetchReportRows(filters: ReportRowFilters): Promise<{ rows: ReportRow[]; totalRows: number }> {
-  return mscGuardGet(`/api/admin/reports/rows${buildQuery(filters)}`);
+  return mscGuardGet(`/gate-pass/admin/reports/rows${buildQuery(filters)}`);
 }
 
 export function downloadReportCsv(filters: Omit<ReportRowFilters, "q">): Promise<void> {
-  return mscGuardDownload(`/api/admin/reports/export.csv${buildQuery(filters)}`, `gatepass-report-${Date.now()}.csv`);
+  return mscGuardDownload(`/gate-pass/admin/reports/export.csv${buildQuery(filters)}`, `gatepass-report-${Date.now()}.csv`);
 }
 
 export function downloadReportPdf(filters: Omit<ReportRowFilters, "q">): Promise<void> {
-  return mscGuardDownload(`/api/admin/reports/export.pdf${buildQuery(filters)}`, `gatepass-report-${Date.now()}.pdf`);
+  return mscGuardDownload(`/gate-pass/admin/reports/export.pdf${buildQuery(filters)}`, `gatepass-report-${Date.now()}.pdf`);
 }

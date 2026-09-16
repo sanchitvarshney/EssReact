@@ -3,7 +3,7 @@ import type { PreApprovedVisitor } from "../types/mscguardTypes";
 
 export async function searchPreApproved(search: string): Promise<PreApprovedVisitor[]> {
   const data = await mscGuardGet<{ visitors: PreApprovedVisitor[] }>(
-    `/api/admin/pre-approved?search=${encodeURIComponent(search)}`
+    `/gate-pass/admin/pre-approved?search=${encodeURIComponent(search)}`
   );
   return data.visitors;
 }
