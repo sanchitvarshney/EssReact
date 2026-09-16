@@ -133,9 +133,9 @@ const NoticeboardCard: React.FC = () => {
               color="text.secondary"
               sx={{ mb: 1.25, textAlign: "center", lineHeight: 1.7 }}
             >
-              We're excited to introduce a refreshed look and improved
-              experience on the ESS portal. We hope it helps you navigate more
-              easily and get things done faster.
+              🎉 We've also launched the new ESS
+              app on the Play Store, packed with many new features — we hope
+              it helps you navigate more easily and get things done faster.
             </Typography>
 
             <Stack

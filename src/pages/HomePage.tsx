@@ -78,10 +78,10 @@ const HomePage = () => {
               "&:hover": { animationPlayState: "paused" },
             }}
           >
-            We're excited to introduce you to the enhanced version of ESS
-            (Employee Self-Service) — redesigned with a fresh look, improved
-            performance, and user-friendly features to make your experience
-            smoother and more efficient than ever before.
+            We're excited to introduce you to the enhanced version of the App
+            — redesigned with a fresh look, improved performance, and
+            user-friendly features to make your experience smoother and more
+            efficient than ever before.
           </Box>
         </Box>
       </div>
