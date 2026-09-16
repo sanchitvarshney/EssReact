@@ -43,13 +43,13 @@ export async function fetchStaffList(filters: StaffListFilters = {}): Promise<{ 
 }
 
 export interface CreateStaffInput {
-  name: string;
-  mobile: string;
-  email?: string;
-  department: string;
+  empCode: string;
 }
 
-export function createStaff(input: CreateStaffInput): Promise<{ ref: string; passcode: string }> {
+/** Enables an existing real-HRMS employee for the Daily Staff passcode
+ *  check-in flow — the backend looks the employee up in tbl_emp_basic
+ *  and copies name/mobile/department from there, so no manual entry. */
+export function createStaff(input: CreateStaffInput): Promise<{ ref: string; name: string; passcode: string }> {
   return mscGuardPost("/gate-pass/admin/daily-staff", input);
 }
 

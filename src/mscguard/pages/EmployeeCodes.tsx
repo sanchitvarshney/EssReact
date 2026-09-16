@@ -4,19 +4,14 @@ import SearchInput from "../components/SearchInput";
 import DataTable, { type DataTableColumn } from "../components/DataTable";
 import Modal from "../components/Modal";
 import EmployeeInfoModal from "../components/EmployeeInfoModal";
-import { FieldWrap, TextInput, PrimaryButton, SecondaryButton } from "../components/FormControls";
-import { ErrorState } from "../components/AsyncState";
+import { PrimaryButton } from "../components/FormControls";
+import { ErrorState, LoadingState } from "../components/AsyncState";
 import { TableSkeleton } from "../components/Skeleton";
 import Pagination, { usePagination } from "../components/Pagination";
 import { useToast } from "../components/ToastProvider";
-import {
-  createStaff,
-  fetchStaffList,
-  resetStaffPasscode,
-  toggleStaff,
-  type CreateStaffInput,
-} from "../services/mscguardDailyStaff";
-import type { DailyStaffListItem } from "../types/mscguardTypes";
+import { createStaff, fetchStaffList, resetStaffPasscode, toggleStaff } from "../services/mscguardDailyStaff";
+import { searchEmployees } from "../services/mscguardHierarchy";
+import type { DailyStaffListItem, EmployeeSearchResult } from "../types/mscguardTypes";
 import { McGuardApiError } from "../services/mscguardApi";
 
 export default function EmployeeCodes() {
@@ -168,53 +163,75 @@ export default function EmployeeCodes() {
   );
 }
 
+/** Picks a real HRMS employee (tbl_emp_basic, same search used by the
+ *  Hierarchy page) and enables them for the Daily Staff passcode flow —
+ *  no manual name/mobile/department entry, the backend copies those from
+ *  HRMS. Replaces the earlier free-text "Add Daily Staff" form. */
 function CreateStaffModal({
   onClose,
   onCreated,
 }: {
   onClose: () => void;
-  onCreated: (result: { ref: string; passcode: string }) => void;
+  onCreated: (result: { ref: string; name: string; passcode: string }) => void;
 }) {
   const toast = useToast();
-  const [form, setForm] = useState<CreateStaffInput>({ name: "", mobile: "", email: "", department: "" });
-  const [saving, setSaving] = useState(false);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<EmployeeSearchResult[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [savingCode, setSavingCode] = useState<string | null>(null);
 
-  function set<K extends keyof CreateStaffInput>(key: K, value: string) {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  }
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
+    const handle = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        setResults(await searchEmployees(query.trim()));
+      } finally {
+        setIsSearching(false);
+      }
+    }, 350);
+    return () => clearTimeout(handle);
+  }, [query]);
 
-  async function handleSave() {
-    setSaving(true);
+  async function handlePick(empCode: string) {
+    setSavingCode(empCode);
     try {
-      const result = await createStaff(form);
-      toast.success("Staff created.");
+      const result = await createStaff({ empCode });
+      toast.success("Staff enabled for passcode check-in.");
       onCreated(result);
     } catch (err) {
       toast.error(err instanceof McGuardApiError ? err.message : "Something went wrong. Please try again.");
-    } finally {
-      setSaving(false);
+      setSavingCode(null);
     }
   }
 
   return (
-    <Modal title="Add Daily Staff" onClose={onClose}>
-      <FieldWrap label="Name" required>
-        <TextInput value={form.name} onChange={(e) => set("name", e.target.value)} />
-      </FieldWrap>
-      <FieldWrap label="Mobile" required>
-        <TextInput value={form.mobile} onChange={(e) => set("mobile", e.target.value)} />
-      </FieldWrap>
-      <FieldWrap label="Email">
-        <TextInput type="email" value={form.email} onChange={(e) => set("email", e.target.value)} />
-      </FieldWrap>
-      <FieldWrap label="Department" required>
-        <TextInput value={form.department} onChange={(e) => set("department", e.target.value)} />
-      </FieldWrap>
-      <div className="flex justify-end gap-2 mt-2">
-        <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <PrimaryButton onClick={handleSave} disabled={!form.name || !form.mobile || !form.department || saving}>
-          {saving ? "Creating…" : "Create"}
-        </PrimaryButton>
+    <Modal title="Add Daily Staff" onClose={onClose} widthClass="max-w-md">
+      <div className="text-sm text-gray-500 mb-3">
+        Search a real employee by name or employee code — they'll be enabled for passcode-based gate check-in.
+      </div>
+      <SearchInput value={query} onChange={setQuery} placeholder="Search by name or employee code" />
+      <div className="mt-4 max-h-72 overflow-y-auto flex flex-col gap-1">
+        {isSearching && <LoadingState label="Searching…" />}
+        {!isSearching &&
+          results.map((r) => (
+            <button
+              key={r.employeeCode}
+              type="button"
+              disabled={savingCode !== null}
+              onClick={() => handlePick(r.employeeCode)}
+              className="text-left px-3 py-2 rounded-md hover:bg-gray-100 transition-colors disabled:opacity-50"
+            >
+              <div className="text-gray-800 text-sm font-medium">{r.fullName}</div>
+              <div className="text-xs text-gray-500">
+                {r.employeeCode} · {r.department || "—"}
+                {savingCode === r.employeeCode ? " · Enabling…" : ""}
+              </div>
+            </button>
+          ))}
       </div>
     </Modal>
   );
