@@ -2,7 +2,7 @@ import { mscGuardGet, mscGuardPut, mscGuardDelete } from "./mscguardApi";
 import type { EmployeeBasic, EmployeeSearchResult, HierarchyEmployee, MaterialChainLevel } from "../types/mscguardTypes";
 
 export async function fetchHierarchyEmployees(): Promise<HierarchyEmployee[]> {
-  const data = await mscGuardGet<{ employees: HierarchyEmployee[] }>("/api/admin/emp-hierarchy");
+  const data = await mscGuardGet<{ employees: HierarchyEmployee[] }>("/gate-pass/admin/emp-hierarchy");
   return data.employees;
 }
 

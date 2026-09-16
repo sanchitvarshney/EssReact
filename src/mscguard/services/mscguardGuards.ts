@@ -21,7 +21,7 @@ export interface RegisterGuardInput {
 }
 
 export function registerGuard(input: RegisterGuardInput): Promise<Guard> {
-  return mscGuardPost<Guard>("/api/admin/guards", input);
+  return mscGuardPost<Guard>("/gate-pass/admin/guards", input);
 }
 
 export interface UpdateGuardInput {

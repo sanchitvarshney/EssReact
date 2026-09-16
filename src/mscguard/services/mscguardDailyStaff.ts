@@ -2,7 +2,7 @@ import { mscGuardGet, mscGuardPost } from "./mscguardApi";
 import type { AttendanceRecord, DailyStaffListItem } from "../types/mscguardTypes";
 
 export async function fetchDepartments(): Promise<string[]> {
-  const data = await mscGuardGet<{ departments: string[] }>("/api/admin/daily-staff/departments");
+  const data = await mscGuardGet<{ departments: string[] }>("/gate-pass/admin/daily-staff/departments");
   return data.departments;
 }
 
@@ -50,7 +50,7 @@ export interface CreateStaffInput {
 }
 
 export function createStaff(input: CreateStaffInput): Promise<{ ref: string; passcode: string }> {
-  return mscGuardPost("/api/admin/daily-staff", input);
+  return mscGuardPost("/gate-pass/admin/daily-staff", input);
 }
 
 export function toggleStaff(ref: string): Promise<{ ref: string; isActive: boolean }> {

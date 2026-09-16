@@ -16,6 +16,6 @@ export function fetchDashboardSummary(from?: number, to?: number): Promise<Dashb
 
 /** GET /api/admin/pending — unified pending list across gatepass/material/return-inward. */
 export async function fetchPendingList(): Promise<PendingRow[]> {
-  const data = await mscGuardGet<{ rows: PendingRow[] }>("/api/admin/pending");
+  const data = await mscGuardGet<{ rows: PendingRow[] }>("/gate-pass/admin/pending");
   return data.rows;
 }

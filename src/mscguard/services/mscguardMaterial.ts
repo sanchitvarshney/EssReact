@@ -2,7 +2,7 @@ import { mscGuardGet, mscGuardPost, mscGuardPut, mscGuardDelete } from "./mscgua
 import type { MaterialChain, MaterialChainLevel, MaterialEntry } from "../types/mscguardTypes";
 
 export async function fetchMaterialEntries(): Promise<MaterialEntry[]> {
-  const data = await mscGuardGet<{ entries: MaterialEntry[] }>("/api/material-entries");
+  const data = await mscGuardGet<{ entries: MaterialEntry[] }>("/gate-pass/material-entries");
   return data.entries;
 }
 
@@ -15,7 +15,7 @@ export function resendMaterialEntry(entryRef: string): Promise<unknown> {
 }
 
 export async function fetchMaterialChains(): Promise<MaterialChain[]> {
-  const data = await mscGuardGet<{ chains: MaterialChain[] }>("/api/admin/material-chains");
+  const data = await mscGuardGet<{ chains: MaterialChain[] }>("/gate-pass/admin/material-chains");
   return data.chains;
 }
 
@@ -34,7 +34,7 @@ export interface MaterialChainInput {
 }
 
 export function createMaterialChain(input: MaterialChainInput): Promise<{ id: number }> {
-  return mscGuardPost("/api/admin/material-chains", input);
+  return mscGuardPost("/gate-pass/admin/material-chains", input);
 }
 
 export function updateMaterialChain(id: number, input: MaterialChainInput): Promise<{ id: number }> {

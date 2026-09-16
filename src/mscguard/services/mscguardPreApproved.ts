@@ -25,5 +25,5 @@ export interface CreatePreApprovedInput {
 export function createPreApproved(
   input: CreatePreApprovedInput
 ): Promise<{ ref: string; visitorName: string; otp: string; emailSent: boolean }> {
-  return mscGuardPost("/api/admin/pre-approved", input);
+  return mscGuardPost("/gate-pass/admin/pre-approved", input);
 }
