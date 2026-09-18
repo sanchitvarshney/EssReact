@@ -1,8 +1,8 @@
 import { Avatar, Card, CardContent, Chip, IconButton } from "@mui/material";
 import { customColor } from "../../../constants/themeConstant";
-import { tagColors } from "../../../pages/HierarchyChart";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { tagColors } from "../../../helper/getcolor";
 type DepartmentCardProps = {
   name: string;
   title: string;
