@@ -25,12 +25,12 @@ export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
     highlightType === "self"
       ? "#facc15"
       : highlightType === "colleague"
-      ? "#38bdf8"
-      : highlightType === "child"
-      ? "#4ade80"
-      : highlightType === "ancestor"
-      ? "#a78bfa"
-      : "#2eacb3";
+        ? "#38bdf8"
+        : highlightType === "child"
+          ? "#4ade80"
+          : highlightType === "ancestor"
+            ? "#a78bfa"
+            : "#2eacb3";
 
   const isHighlighted = Boolean(highlightType);
 
@@ -63,7 +63,7 @@ export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
             alignItems: "center",
             gap: 10,
             padding: "20px 20px 30px",
-              borderRadius: 20,
+            borderRadius: 20,
           }}
         >
           {/* Avatar with premium badge */}
@@ -102,14 +102,24 @@ export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
               }}
             >
               <WorkspacePremiumIcon
-                sx={{ fontSize: 12, color: highlightType === "self" ? "#000" : "#fff" }}
+                sx={{
+                  fontSize: 12,
+                  color: highlightType === "self" ? "#000" : "#fff",
+                }}
               />
             </div>
           </div>
 
           {/* Name & title */}
           <div style={{ textAlign: "center" }}>
-            <div style={{ fontWeight: 700, fontSize: 15, color: "#1e293b", lineHeight: 1.3 }}>
+            <div
+              style={{
+                fontWeight: 700,
+                fontSize: 15,
+                color: "#1e293b",
+                lineHeight: 1.3,
+              }}
+            >
               {node?.name || "Employee"}
             </div>
             {node?.title && (
@@ -154,7 +164,7 @@ export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
               transition: "background 0.15s",
             }}
           >
-            {expandedNodes[node.id] ?? true ? (
+            {(expandedNodes[node.id] ?? true) ? (
               <KeyboardArrowUpIcon sx={{ fontSize: 20 }} />
             ) : (
               <KeyboardArrowDownIcon sx={{ fontSize: 20 }} />

@@ -173,4 +173,14 @@ export const getStatusStyle = (title: string) => {
     }
   };
 
+
+  export const tagColors: Record<string, string> = {
+    Leadership: "#60a5fa",
+    Design: "#fbbf24",
+    Development: "#86efac",
+    Legal: "#a78bfa",
+    HR: "#f87171",
+    Product: "#f59e0b",
+  };
+
  

@@ -40,6 +40,7 @@ export const EmployeeTree: FC<EmployeeTreeProps> = ({
           highlightType={highlightType}
           onMouseEnter={onHover}
           onMouseLeave={onUnhover}
+          
         />
       }
       key={node.id}

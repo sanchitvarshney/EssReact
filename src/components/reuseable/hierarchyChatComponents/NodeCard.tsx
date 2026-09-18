@@ -42,7 +42,7 @@ export const NodeCard = ({
   const isHighlighted = Boolean(highlightType);
 
   return (
-    <div
+    <span
       style={{
         position: "relative",
         background: "#fff",
@@ -58,6 +58,10 @@ export const NodeCard = ({
         margin: "auto",
         transition: "border 0.2s, box-shadow 0.2s",
       }}
+          onDoubleClick={(e) => {
+         e.stopPropagation();
+          console.log("Root node clicked")
+        }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -177,6 +181,6 @@ export const NodeCard = ({
           )}
         </IconButton>
       )}
-    </div>
+    </span>
   );
 };

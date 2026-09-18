@@ -23,7 +23,7 @@ type ImageCardProps = {
   path: string;
 };
 
-const COMING_SOON = ["hr policies", "performance", "task box", "recruitment"];
+const COMING_SOON = ["hr policies", "task box", "recruitment"];
 
 const getBlockedImage = (title: string) => {
   switch (title.toLowerCase()) {
