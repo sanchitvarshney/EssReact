@@ -17,7 +17,7 @@ const RatingWindowBanner = ({ targetMonth }: RatingWindowBannerProps) => (
       Rating window is closed
     </Typography>
     <Typography sx={{ fontSize: 13, color: "#6b7280", maxWidth: 360, textAlign: "center" }}>
-      You can submit your KRA rating from the 25th of the month through the 3rd of the
+      You can submit your KRA rating from the 25th of the month through the 30th of
       following month{targetMonth ? ` — the next window covers ${targetMonth}` : ""}.
     </Typography>
   </div>

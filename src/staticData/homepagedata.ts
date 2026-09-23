@@ -48,7 +48,7 @@ export const homeData: homeMenuTypes[] = [
   { id: "holiday", title: "Holidays and Events", icon: calendar, path: "/calendar" },
   {
     id: "performance",
-    title: "Performance",
+    title: "My KRA",
     icon: performance,
     path: "/performance",
   },
