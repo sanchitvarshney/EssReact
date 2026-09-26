@@ -264,6 +264,8 @@ const SignInScreen = () => {
               }}
               shape="pill"
               text="continue_with"
+              // Browser-native FedCM dialog ("Continue to ... with google.com") instead of a separate popup window.
+              use_fedcm_for_button
               width={String(Math.max(200, Math.min(340, window.innerWidth - 96)))}
             />
           )}
