@@ -107,7 +107,8 @@ const TeamAttendancePage = () => {
   }, [data, filter, query]);
 
   const shiftDay = (n: number) => setDate(dayjs(date).add(n, "day").format("YYYY-MM-DD"));
-  const openEmployee = (m: TeamAttendanceMember) => navigate(`/employee/details/${m.emp_code}`);
+  // A person's full month (opens on the month of the day being viewed); their profile is one click away from there.
+  const openEmployee = (m: TeamAttendanceMember) => navigate(`/team-attendance/${m.emp_code}?month=${date.slice(0, 7)}`);
   const dateLabel = dayjs(date).format("dddd, DD MMM YYYY");
   const first = !data && isLoading;
 

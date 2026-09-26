@@ -24,6 +24,14 @@ export interface TeamAttendanceData {
   members: TeamAttendanceMember[];
 }
 
+/** One team member's month, in the same shape the employee's own Attendance page builds its views from. */
+export interface TeamMemberMonth {
+  emp: { emp_code: string; name: string; photo: string | null; direct: boolean; level: number };
+  month: string;
+  events: { title: string; start: string | null; in_time: string; out_time: string; total_time: string }[];
+  stats: { total_present: number; total_misspunch: number; srtCount: number; lateCount: number };
+}
+
 const teamAttendanceApi = baseApiInstance.injectEndpoints({
   endpoints: (builder) => ({
     getTeamAttendance: builder.mutation<any, string | void>({
@@ -33,8 +41,15 @@ const teamAttendanceApi = baseApiInstance.injectEndpoints({
         params: date ? { date } : {},
       }),
     }),
+    getTeamMemberMonth: builder.mutation<any, { empCode: string; month: string }>({
+      query: ({ empCode, month }) => ({
+        url: "/team-attendance/member",
+        method: "GET",
+        params: { emp_code: empCode, month },
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetTeamAttendanceMutation } = teamAttendanceApi;
+export const { useGetTeamAttendanceMutation, useGetTeamMemberMonthMutation } = teamAttendanceApi;
