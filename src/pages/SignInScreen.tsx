@@ -47,16 +47,6 @@ const SignInScreen = () => {
     setShowPassword((prev) => !prev);
   };
 
-  // useEffect(() => {
-  
-
-  //   if (dataGoogle?.data) {
-  //     localStorage.setItem("user", JSON.stringify(dataGoogle.data));
-  //     sessionStorage.setItem("user", JSON.stringify(dataGoogle.data));
-  //     signIn();
-  //     navigation("/");
-  //   }
-  // }, [dataGoogle]);
 
   useEffect(() => {
     if (data?.isTwoStep) {

@@ -26,7 +26,7 @@ export interface PreregEntry {
   secondsRemaining: number;
 }
 
-export interface SubmitPreregPayload {
+interface SubmitPreregPayload {
   visitorName: string;
   mobileNumber: string;
   emailAddress?: string;

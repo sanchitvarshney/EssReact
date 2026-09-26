@@ -1,5 +1,4 @@
 import HomeIcon from '@mui/icons-material/Home';
-// import SyncIcon from '@mui/icons-material/Sync';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';

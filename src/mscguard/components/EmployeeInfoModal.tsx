@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import Modal from "./Modal";
 import { FormSkeleton } from "./Skeleton";
 
-export interface EmployeeInfoField {
+interface EmployeeInfoField {
   label: string;
   value: ReactNode;
 }

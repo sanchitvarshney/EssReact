@@ -381,21 +381,6 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
           bgcolor: "background.paper",
         }}
       >
-        {/* <Button
-          variant="outlined"
-          onClick={handleDismiss}
-          disabled={isLoadingState || isSaving}
-          sx={{
-            borderColor: "#00a0a0",
-            color: "#00a0a0",
-            "&:hover": {
-              borderColor: "#279aa0",
-              bgcolor: "rgba(0,160,160, 0.06)",
-            },
-          }}
-        >
-          Skip for now
-        </Button> */}
         <Button
           onClick={handleSubmit}
           disabled={isLoadingState || isSaving || isError}

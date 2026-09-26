@@ -13,11 +13,6 @@ const PolicyPage = () => {
       </Typography>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full lg:grid-cols-5 xl:grid-cols-3 gap-8 px-4  mx-auto ">
         <PolicyCard  open={()=>setViewDoc(true)}/>
-        {/* <PolicyCard />
-        <PolicyCard />
-        <PolicyCard />
-        <PolicyCard />
-        <PolicyCard /> */}
       </div>
       </div>
       {viewDoc && <DocView open={viewDoc} close={()=> setViewDoc(false) } ><h1>Doc View</h1></DocView>}

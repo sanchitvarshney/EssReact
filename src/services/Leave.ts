@@ -49,14 +49,6 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => response.data.events,
     }),
-    getPendingRequest: builder.mutation({
-      query: () => ({
-        url: "/leave/pendingRequests",
-        method: "GET",
-       
-      }),
-      transformResponse: (response: any) => response.data,
-    }),
     applySLLeave: builder.mutation({
       query: (credentials) => ({
         url: `/leave/${credentials.url}`,
@@ -170,7 +162,6 @@ export const {
   useGetSickLeaveMutation,
   useGetWorkFromHomeMutation,
   useGetHolidaysListMutation,
-  useGetPendingRequestMutation,
   useApplySLLeaveMutation,
   useRejectLeaveMutation,
   useFetchEmployeeMutation,

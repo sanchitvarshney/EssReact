@@ -53,7 +53,6 @@ const CalenderView: FC<CalenderViewPropsType> = ({
     countSundays();
   }, [fromDate, toDate]);
 
-  // const defaultClassNames = getDefaultClassNames();
 
   return (
     <div className=" p-3 border rounded shadow flex flex-col justify-center items-center bg-white flex relative ">

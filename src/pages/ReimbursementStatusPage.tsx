@@ -156,7 +156,6 @@ const ReimbursementStatusPage = () => {
                 height: "74vh",
                 overflow: "auto",
                 boxShadow: 6,
-                // border: "1px solid #000",
               }}
             >
               <Table

@@ -67,7 +67,6 @@ const WFHPage = () => {
                       <FormControl>
                         <Select
                           onValueChange={() => {
-                            // setWise(value);
                           }}
                           defaultValue={""}
                         >
@@ -108,8 +107,6 @@ const WFHPage = () => {
                             <TimePicker
                               className="border-none"
                               onChange={() => {
-                                // Example: set value in form
-                                // setInvoiceDate(newValue ? newValue.format("DD-MM-YYYY HH:mm") : undefined);
                               }}
                               format="HH:mm"
                               slotProps={{
@@ -167,8 +164,6 @@ const WFHPage = () => {
                             <TimePicker
                               className="border-none"
                               onChange={() => {
-                                // Example: set value in form
-                                // setInvoiceDate(newValue ? newValue.format("DD-MM-YYYY HH:mm") : undefined);
                               }}
                               format="HH:mm"
                               slotProps={{

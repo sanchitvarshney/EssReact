@@ -5,20 +5,9 @@ import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
-// import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-// import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-// import PeopleIcon from "@mui/icons-material/People";
-// import BusinessIcon from "@mui/icons-material/Business";
 
 import type { JSX } from "react";
 
-// import {
-//   departmentData,
-//   type DepartmentNode,
-// } from "../dummydata/HierarchyData";
-// import CustomToolTip from "../components/reuseable/CustomToolTip";
-// import { customColor } from "../constants/themeConstant";
-// import { DepartmentCard } from "../components/reuseable/hierarchyChatComponents/DepartmentCard";
 
 import { RootEmployeeTree } from "../components/reuseable/hierarchyChatComponents/RootEmployeeTree";
 import { EmployeeTree } from "../components/reuseable/hierarchyChatComponents/EmployeeTree";

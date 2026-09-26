@@ -46,7 +46,6 @@ const SignOutModal: React.FC<SignOutModalProps> = ({
   return (
     <Dialog
       open={openSign}
-      // onClose={close}
       BackdropProps={{
         sx: {
           backgroundColor: "rgba(0, 0, 0, 0)",
@@ -65,7 +64,6 @@ const SignOutModal: React.FC<SignOutModalProps> = ({
           background: "linear-gradient(to bottom , #faffb7ff, #fefff4ff)",
         },
       }}
-      // className=" bg-gradient-to-br from-[#d7f1f3] to-[#d7f1f3]"
     >
       <Avatar
         src=""
@@ -75,7 +73,6 @@ const SignOutModal: React.FC<SignOutModalProps> = ({
           position: "absolute",
           top: -40,
           left: "calc(50% - 40px)",
-          // border: "3px solid #ffb476ff",
           backgroundColor: "#ebd93cff",
         }}
       />

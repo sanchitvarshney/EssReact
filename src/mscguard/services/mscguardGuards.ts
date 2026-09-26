@@ -10,7 +10,7 @@ export function fetchGuard(userCode: string): Promise<Guard> {
   return mscGuardGet<Guard>(`/gate-pass/admin/guards/${encodeURIComponent(userCode)}`);
 }
 
-export interface RegisterGuardInput {
+interface RegisterGuardInput {
   username: string;
   password: string;
   fullName: string;
@@ -24,7 +24,7 @@ export function registerGuard(input: RegisterGuardInput): Promise<Guard> {
   return mscGuardPost<Guard>("/gate-pass/admin/guards", input);
 }
 
-export interface UpdateGuardInput {
+interface UpdateGuardInput {
   fullName?: string;
   email?: string;
   mobile?: string;

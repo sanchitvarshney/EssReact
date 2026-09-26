@@ -6,7 +6,7 @@ export async function fetchDepartments(): Promise<string[]> {
   return data.departments;
 }
 
-export interface AttendanceFilters {
+interface AttendanceFilters {
   date?: string;
   staffRef?: string;
   department?: string;
@@ -26,7 +26,7 @@ export async function fetchAttendance(filters: AttendanceFilters): Promise<Atten
   return data.records;
 }
 
-export interface StaffListFilters {
+interface StaffListFilters {
   search?: string;
   department?: string;
   limit?: number;
@@ -42,7 +42,7 @@ export async function fetchStaffList(filters: StaffListFilters = {}): Promise<{ 
   return mscGuardGet(`/gate-pass/daily-staff/list?${params.toString()}`);
 }
 
-export interface CreateStaffInput {
+interface CreateStaffInput {
   empCode: string;
 }
 

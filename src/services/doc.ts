@@ -1,4 +1,3 @@
-// src/services/auth/authApi.ts
 
 import { baseApiInstance } from "./baseApiInstance";
 
@@ -8,7 +7,6 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       query: () => ({
         url: "/sop/view",
         method: "POST",
-        // body: credentials,
       }),
     }),
       getPeripheral: builder.mutation<any, void>({

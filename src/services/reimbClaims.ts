@@ -16,9 +16,6 @@ const reimbClaimsApi = baseApiInstance.injectEndpoints({
     withdrawClaim: builder.mutation<any, string>({
       query: (claimRefId) => ({ url: `/reimb/withdraw/${claimRefId}`, method: "DELETE" }),
     }),
-    getClaimReceipts: builder.mutation<any, number>({
-      query: (id) => ({ url: `/reimb/${id}/attachments`, method: "GET" }),
-    }),
     getClaimReceipt: builder.mutation<any, { id: number; index: number }>({
       query: ({ id, index }) => ({ url: `/reimb/${id}/attachments/${index}`, method: "GET" }),
     }),
@@ -31,6 +28,5 @@ export const {
   useSubmitClaimMutation,
   useGetMyClaimsMutation,
   useWithdrawClaimMutation,
-  useGetClaimReceiptsMutation,
   useGetClaimReceiptMutation,
 } = reimbClaimsApi;

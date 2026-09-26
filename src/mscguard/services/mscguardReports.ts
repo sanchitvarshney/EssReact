@@ -1,7 +1,7 @@
 import { mscGuardGet, mscGuardDownload } from "./mscguardApi";
 import type { ReportRow } from "../types/mscguardTypes";
 
-export interface ReportRowFilters {
+interface ReportRowFilters {
   type?: string;
   from?: number;
   to?: number;

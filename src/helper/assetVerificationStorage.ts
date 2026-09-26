@@ -15,8 +15,6 @@ const getEmpCode = (): string | null => {
 const storageKey = (suffix: string, empCode: string) =>
   `${PREFIX}_${suffix}_${empCode}`;
 
-export const getAssetConfirmationEmpCode = (): string | null => getEmpCode();
-
 /** Keep local flags aligned with API `assetConfirmation` on the stored user. */
 export const syncAssetConfirmationStateWithUser = (): void => {
   const empCode = getEmpCode();
@@ -35,7 +33,7 @@ export const syncAssetConfirmationStateWithUser = (): void => {
   }
 };
 
-export const shouldShowAssetConfirmation = (): boolean =>
+const shouldShowAssetConfirmation = (): boolean =>
   shouldDisplayAssetConfirmation();
 
 const LOGIN_PENDING_KEY = `${PREFIX}_showAfterLogin`;
@@ -49,7 +47,7 @@ export const markAssetConfirmationPendingForLogin = (): void => {
   localStorage.setItem(LOGIN_PENDING_KEY, "true");
 };
 
-export const isAssetConfirmationPendingForLogin = (): boolean =>
+const isAssetConfirmationPendingForLogin = (): boolean =>
   localStorage.getItem(LOGIN_PENDING_KEY) === "true";
 
 export const clearAssetConfirmationPendingForLogin = (): void => {
@@ -59,12 +57,4 @@ export const clearAssetConfirmationPendingForLogin = (): void => {
 export const shouldOpenAssetConfirmation = (): boolean => {
   syncAssetConfirmationStateWithUser();
   return shouldShowAssetConfirmation() && isAssetConfirmationPendingForLogin();
-};
-
-export const clearAssetConfirmationStorageForUser = (
-  empCode?: string
-): void => {
-  const code = empCode ?? getEmpCode();
-  if (!code) return;
-  localStorage.removeItem(storageKey("completed", code));
 };

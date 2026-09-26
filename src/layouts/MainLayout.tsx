@@ -21,7 +21,6 @@ import {
 } from "../helper/assetVerificationStorage";
 import { updateStoredUserAssetConfirmation } from "../helper/userStorage";
 
-// props: { children: React.ReactNode }
 function MainLayout() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
@@ -119,9 +118,6 @@ function MainLayout() {
           </main>
         </div>
       </div>
-      {/* <div className="absolute bottom-0 right-4 sm:right-10 z-99">
-        <CustomFooter />
-      </div> */}
 
       <AISurveyDialog
         open={aiSurveyOpen}

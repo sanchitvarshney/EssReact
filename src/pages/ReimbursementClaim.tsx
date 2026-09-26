@@ -1,4 +1,3 @@
-// import React, { useState } from 'react';
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -151,9 +150,6 @@ const ReimbursementClaim = () => {
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 bg-gradient-to-r from-[#00a0a0] to-[#007f86] bg-clip-text text-transparent">
                 Reimbursement Claim
               </h2>
-              {/* <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-                Submit your expense details below to request a reimbursement. Please ensure all information is accurate and complete.
-              </p> */}
             </div>
 
             {/* Basic Information Card */}

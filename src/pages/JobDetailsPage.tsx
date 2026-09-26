@@ -19,8 +19,6 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import BusinessIcon from "@mui/icons-material/Business";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-// import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-// import ShareIcon from "@mui/icons-material/Share";
 
 const jobData = {
   title: "Frontend Developer",
@@ -103,7 +101,6 @@ function JobDetailsPage({onClose}:{onClose:()=>void}) {
         </Box>
 
         <Grid container spacing={3}>
-          {/* <Grid item xs={12} lg={8}> */}
           <Paper
             elevation={0}
             sx={{

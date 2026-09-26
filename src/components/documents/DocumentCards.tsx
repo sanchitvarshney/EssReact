@@ -7,13 +7,13 @@ import ImageIcon from "@mui/icons-material/Image";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import CustomToolTip from "../reuseable/CustomToolTip";
 
-export const FILE_CFG: Record<string, { color: string; bg: string; label: string; Icon: any }> = {
+const FILE_CFG: Record<string, { color: string; bg: string; label: string; Icon: any }> = {
   pdf: { color: "#e5484d", bg: "#fdecec", label: "PDF", Icon: PictureAsPdfIcon },
   img: { color: "#2f7de1", bg: "#e8f1fd", label: "Image", Icon: ImageIcon },
   other: { color: "#64748b", bg: "#eef1f4", label: "File", Icon: InsertDriveFileIcon },
 };
 
-export const cfgOf = (type?: string) => FILE_CFG[type ?? ""] ?? FILE_CFG.other;
+const cfgOf = (type?: string) => FILE_CFG[type ?? ""] ?? FILE_CFG.other;
 
 const DATE_FORMATS = ["DD-MM-YYYY HH:mm:ss", "YYYY-MM-DD HH:mm:ss", "DD-MM-YYYY hh:mm A", "DD MMM YYYY", "DD-MM-YYYY", moment.ISO_8601];
 

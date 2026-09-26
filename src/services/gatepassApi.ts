@@ -37,7 +37,7 @@ export interface TlOption {
   email: string;
 }
 
-export interface SubmitGatepassPayload {
+interface SubmitGatepassPayload {
   employee_code: string;
   employee_name: string;
   department: string;

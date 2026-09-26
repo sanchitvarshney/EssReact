@@ -87,10 +87,6 @@ const CreateTicketPage = () => {
                 Ticket Summary
               </Typography>
             </div>
-            {/* <Input
-              placeholder="Brief description of your issue..."
-              className="w-70 sm:w-1/2 p-4 text-lg border-2 border-gray-200 rounded-md focus:border-[#00a0a0] focus:ring-2 focus:ring-[#00a0a0] transition-all duration-200"
-            /> */}
             <div className="w-100">
               <CustomTextInput field={undefined} label={"Enter Ticket Summary"} />
             </div>

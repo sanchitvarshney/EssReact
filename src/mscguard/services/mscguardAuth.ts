@@ -63,7 +63,7 @@ export async function loginMscGuard(username: string, password: string): Promise
   return session;
 }
 
-export function saveMscGuardSession(session: McGuardSession): void {
+function saveMscGuardSession(session: McGuardSession): void {
   localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 }
 

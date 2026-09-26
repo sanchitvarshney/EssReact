@@ -2,7 +2,7 @@ import { baseApiInstance } from "./baseApiInstance";
 
 // A host pre-approving a visitor (ESS's own backend, session auth). Not to be confused with
 // services/visitorInviteApi.ts / visitorSelfRegisterApi.ts, which are the visitor-facing public pages.
-export interface CreatePreApprovalPayload {
+interface CreatePreApprovalPayload {
   visitorName: string;
   mobile: string;
   email?: string;

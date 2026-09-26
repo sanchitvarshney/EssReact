@@ -30,16 +30,6 @@ const NotificationDropDown = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {/* <Button
-              size="small"
-              sx={{
-                color: "#ffffff",
-                fontSize: "12px",
-                "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
-              }}
-            >
-              Mark all as read
-            </Button> */}
           </div>
         </div>
       </div>

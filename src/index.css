@@ -42,13 +42,3 @@
 .no-connector > .oc-children::before {
   display: none !important;
 }
-
-/* Dashboard theme for ag-grid tables */
-.ag-theme-quartz {
-  --ag-active-color: #00a0a0;
-  --ag-header-background-color: #f0fbfb;
-  --ag-row-hover-color: #f0fbfb;
-  --ag-selected-row-background-color: #e0f6f6;
-  --ag-border-radius: 12px;
-  --ag-font-family: "Google Sans", sans-serif;
-}
