@@ -26,8 +26,8 @@ const MonthPulse = ({ stats, events }: Props) => {
   const rate = worked > 0 ? Math.round((counts.present / worked) * 100) : 0;
 
   return (
-    <section className="bg-white rounded-3xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] p-5 flex flex-col gap-4">
-      <div className="flex flex-col gap-3">
+    <section className="bg-white rounded-3xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] p-5 flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-8">
+      <div className="flex flex-col gap-3 lg:w-[280px] lg:flex-shrink-0">
         <div>
           <p className="text-[11px] uppercase tracking-widest text-gray-400">This month</p>
           <p className="text-2xl font-bold text-gray-800 leading-tight">
@@ -44,9 +44,9 @@ const MonthPulse = ({ stats, events }: Props) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 flex-1 min-w-0">
         {TILES.map(({ key, label, color, bg }) => (
-          <div key={key} className="rounded-2xl px-2 py-3 text-center last:odd:col-span-2 xl:last:col-span-2" style={{ backgroundColor: bg }}>
+          <div key={key} className="rounded-2xl px-2 py-3 text-center" style={{ backgroundColor: bg }}>
             <p className="text-lg font-bold tabular-nums leading-none" style={{ color }}>
               {(counts as any)[key]}
             </p>

@@ -64,7 +64,7 @@ const AttendanceMonthGrid = ({ date, events }: Props) => {
   };
 
   return (
-    <div className="att-fc bg-white rounded-3xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] p-3 sm:p-4">
+    <div className="att-fc att-fc-head-accent bg-white rounded-3xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] p-3 sm:p-4">
       <FullCalendar
         ref={calRef}
         plugins={[dayGridPlugin]}

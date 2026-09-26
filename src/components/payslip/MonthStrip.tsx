@@ -10,6 +10,8 @@ type Props = {
   disabled?: boolean;
 };
 
+const PAYSLIP_DAY = 10;
+
 const MonthStrip = ({ selected, year, onYearChange, onSelect, disabled }: Props) => {
   const now = moment();
 
@@ -19,6 +21,7 @@ const MonthStrip = ({ selected, year, onYearChange, onSelect, disabled }: Props)
         <div>
           <p className="text-[11px] uppercase tracking-widest text-gray-400">Pay period</p>
           <p className="text-sm font-semibold text-gray-800">Choose a month to open its payslip</p>
+          <p className="text-[11px] text-gray-400 mt-0.5">A month's payslip is available from the 10th of the next month.</p>
         </div>
         <div className="flex items-center gap-1 bg-[#f0fbfb] rounded-2xl p-1">
           <button
@@ -43,12 +46,14 @@ const MonthStrip = ({ selected, year, onYearChange, onSelect, disabled }: Props)
       <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-2">
         {Array.from({ length: 12 }, (_, i) => {
           const m = moment({ year, month: i, day: 1 });
-          const future = m.isAfter(now, "month");
+          // A month's payslip is published on the 10th of the following month.
+          const future = now.isBefore(m.clone().add(1, "month").date(PAYSLIP_DAY), "day");
           const active = !!selected && selected.isSame(m, "month");
           return (
             <button
               key={i}
               disabled={disabled || future}
+              title={future ? "Available from the 10th of next month" : undefined}
               onClick={() => onSelect(m)}
               className={`py-2.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer disabled:cursor-not-allowed ${
                 active

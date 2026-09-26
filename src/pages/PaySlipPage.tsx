@@ -62,7 +62,7 @@ const PaySlipPage = () => {
   const deductions = toNumber(data?.total?.[0]?.deductions);
 
   return (
-    <div className="h-full overflow-y-auto custom-scrollbar-for-menu px-3 py-4 flex flex-col gap-4">
+    <div className="h-full overflow-y-auto custom-scrollbar-for-menu px-3 py-4 flex flex-col gap-4 [&>*]:flex-shrink-0">
       <MonthStrip
         selected={selected}
         year={year}

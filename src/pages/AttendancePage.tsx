@@ -108,11 +108,12 @@ const AttendancePage = () => {
         {/* Left: today + month pulse (stacked vertically) */}
         <div className="flex flex-col gap-4 xl:sticky xl:top-0">
           <TodayHero value={shiftDetails} date={date} />
-          <MonthPulse stats={shifts} events={formattedEvents} />
         </div>
 
-        {/* Right: toolbar, legend and calendar / list / graph */}
+        {/* Right: month pulse, toolbar, legend and calendar / list / graph */}
         <div className="flex flex-col gap-4 min-w-0">
+          <MonthPulse stats={shifts} events={formattedEvents} />
+
       {/* Toolbar: month switcher + view toggle */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         {tabvalue !== "graph" ? (
@@ -164,7 +165,7 @@ const AttendancePage = () => {
 
       {/* Legend */}
       {tabvalue !== "graph" && (
-        <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar-for-menu pb-0.5 -mt-1">
+        <div className="flex items-center justify-center flex-wrap gap-2 -mt-1">
           {dotColor.map((item, index) => (
             <div
               key={index}

@@ -1,3 +1,4 @@
+import LeaveTabs from "../components/leave/LeaveTabs";
 import { useCallback, useEffect, useState } from "react";
 import DocView from "../components/reuseable/DocView";
 import LeaveGrantCard from "../components/reuseable/LeaveGrantCard";
@@ -125,6 +126,9 @@ const LeaveGrantPage = () => {
 
   return (
     <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full">
+      <div className="mb-3 flex-shrink-0">
+        <LeaveTabs />
+      </div>
       {/* Page header */}
       <div className="flex items-center gap-2 mb-3 flex-shrink-0">
         <div className="w-1 h-7 rounded-full bg-[#00a0a0]" />

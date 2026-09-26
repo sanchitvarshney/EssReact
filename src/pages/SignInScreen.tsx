@@ -274,7 +274,7 @@ const SignInScreen = () => {
               }}
               shape="pill"
               text="continue_with"
-              width="340"
+              width={String(Math.max(200, Math.min(340, window.innerWidth - 96)))}
             />
           )}
         </div>

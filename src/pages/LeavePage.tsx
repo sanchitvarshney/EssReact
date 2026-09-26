@@ -1,18 +1,15 @@
-import { Box, Chip, Modal, Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import { CustomButton } from "../components/ui/CustomButton";
 import LeaveCard from "../components/reuseable/LeaveCard";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
-import EventIcon from "@mui/icons-material/Event";
-import PendingActionsIcon from "@mui/icons-material/PendingActions";
 
 import { useEffect, useState } from "react";
 import CustomModal from "../components/reuseable/CustomModal";
 import ApplyLeavePage from "./ApplyLeavePage";
-import HolidayPage from "../components/HolidayPage";
+import LeaveTabs from "../components/leave/LeaveTabs";
 import {
   useGetEarnLeaveMutation,
-  useGetPendingRequestMutation,
   useGetSickLeaveMutation,
   useGetWorkFromHomeMutation,
   useUpdateElLeaveMutation,
@@ -27,23 +24,9 @@ import slimg from "../assets/slimg.png";
 import wfmimg from "../assets/wfhpng.png";
 import climg from "../assets/climg.png";
 import CustomToolTip from "../components/reuseable/CustomToolTip";
-import { useNavigate } from "react-router-dom";
 import { btnstyle } from "../constants/themeConstant";
 
-const holidayModalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "80%",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  overflow: "visible",
-};
-
 const LeavePage = () => {
-  const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [leaveData, setLeaveData] = useState<any[]>([]);
 
@@ -63,10 +46,6 @@ const LeavePage = () => {
     { data: wfhData, isLoading: wfhLoading, error: wfhError },
   ] = useGetWorkFromHomeMutation();
   const [
-    getPendingRequest,
-    { data: pendingReqData, isLoading: pendingReqLoading, error: pendingError },
-  ] = useGetPendingRequestMutation();
-  const [
     updateElLeave,
     { isLoading: updateElLeaveLoading, isSuccess: updateElLeaveSuccess },
   ] = useUpdateElLeaveMutation();
@@ -78,24 +57,6 @@ const LeavePage = () => {
     updateWfhLeave,
     { isLoading: updateWfhLeaveLoading, isSuccess: updateWfhLeaveSuccess },
   ] = useUpdateWfhLeaveMutation();
-
-  useEffect(() => {
-    if (!user) return;
-    //@ts-ignore
-    getPendingRequest().unwrap();
-  }, [user, updateElLeaveSuccess, updateSlLeaveSuccess, updateWfhLeaveSuccess]);
-
-  useEffect(() => {
-    if (pendingError) {
-      const error = eranLeaveError as any;
-      showToast(
-        error?.message ||
-          error?.data?.message ||
-          "An unexpected error occurred.",
-        "error",
-      );
-    }
-  }, [pendingError]);
 
   useEffect(() => {
     if (eranLeaveError || sickLeaveError || wfhError) {
@@ -188,103 +149,66 @@ const LeavePage = () => {
     eranLeaveLoading ||
     sickLeaveLoading ||
     wfhLoading ||
-    pendingReqLoading ||
     updateElLeaveLoading ||
     updateSlLeaveLoading ||
     updateWfhLeaveLoading;
 
-  const pendingCount = pendingReqData?.pendingRequests ?? 0;
-
-  const handleNavigatePending = () => {
-    if (isBusy) {
-      showToast("Please wait for the data to load", "error");
-      return;
-    }
-    navigate("/self-service/leave-status");
-  };
-
   return (
     <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full">
-      {/* Page header */}
-      <div className="flex items-center gap-2 mb-4">
-        <div
-          style={{ backgroundColor: "#00a0a0" }}
-          className="w-1 h-7 rounded-full"
-        />
-        <Typography
-          sx={{
-            fontSize: { xs: 16, sm: 19 },
-            fontWeight: 700,
-            color: "#232324",
-          }}
-        >
-          Leave Management
-        </Typography>
+      <div className="mb-3 flex-shrink-0">
+        <LeaveTabs />
       </div>
-
-      {/* Action bar */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-3 mb-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          {/* Pending requests link */}
-          <button
-            onClick={handleNavigatePending}
-            className="flex items-center gap-1.5 group w-fit select-none"
+      {/* Page header: title on the left, actions on the right */}
+      <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
+        <div className="flex items-center gap-2">
+          <div
+            style={{ backgroundColor: "#00a0a0" }}
+            className="w-1 h-7 rounded-full"
+          />
+          <Typography
+            sx={{
+              fontSize: { xs: 16, sm: 19 },
+              fontWeight: 700,
+              color: "#232324",
+            }}
           >
-            <PendingActionsIcon sx={{ color: "#f59e0b", fontSize: 18 }} />
-            <span className="text-sm font-semibold text-gray-700 group-hover:underline transition-all">
-              Pending Requests
-            </span>
-            <Chip
-              label={pendingCount}
-              size="small"
-              sx={{
-                height: 20,
-                fontSize: 11,
-                fontWeight: 700,
-                bgcolor: pendingCount > 0 ? "#fef3c7" : "#f3f4f6",
-                color: pendingCount > 0 ? "#d97706" : "#6b7280",
-                border: "1px solid",
-                borderColor: pendingCount > 0 ? "#fcd34d" : "#e5e7eb",
-                "& .MuiChip-label": { px: 1 },
-              }}
-            />
-          </button>
+            Leave Management
+          </Typography>
+        </div>
 
-          {/* Buttons */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <CustomButton
-              onClick={() => setOpen(true)}
-              disabled={isBusy}
-              className="cursor-pointer gap-1.5 px-4 text-sm font-semibold border border-[#00a0a0] text-[#00a0a0] hover:bg-[#e0f6f6] rounded-md transition-all duration-200 bg-transparent"
-            >
-              <EventIcon sx={{ fontSize: 15 }} />
-              Holidays
-            </CustomButton>
+        <div className="flex items-center gap-2">
+          <CustomButton
+            onClick={() => setIsOpenModal(true)}
+            disabled={isBusy}
+            className={btnstyle}
+            style={{ marginTop: 0 }}
+          >
+            <AddIcon sx={{ fontSize: 15, marginRight: "3px" }} />
+            Apply Leave
+          </CustomButton>
 
-            <CustomButton
-              onClick={() => setIsOpenModal(true)}
-              disabled={isBusy}
-              className={btnstyle}
-              style={{ marginTop: 0 }}
-            >
-              <AddIcon sx={{ fontSize: 15, marginRight: "3px" }} />
-              Apply Leave
-            </CustomButton>
-
-            <CustomToolTip
-              title="You can update your leave starting on the 1st of each month."
-              placement="bottom"
-            >
-              <CustomButton
+          <CustomToolTip
+            title="Refresh leave balance (you can update your leave starting on the 1st of each month)."
+            placement="bottom"
+          >
+            <span>
+              <IconButton
                 onClick={refetch}
                 disabled={isBusy}
-                className="cursor-pointer gap-1.5 px-4 text-sm font-semibold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200"
+                aria-label="Refresh leave balance"
+                sx={{
+                  width: 40,
+                  height: 40,
+                  color: "#007f86",
+                  bgcolor: "#e0f6f6",
+                  "&:hover": { bgcolor: "#cdeaea" },
+                  "&.Mui-disabled": { opacity: 0.5 },
+                }}
               >
-                <RefreshIcon sx={{ fontSize: 15 }} />
-                Refresh
-              </CustomButton>
-            </CustomToolTip>
-          </div>
+                <RefreshIcon sx={{ fontSize: 20 }} />
+              </IconButton>
+            </span>
+          </CustomToolTip>
         </div>
       </div>
 
@@ -316,23 +240,6 @@ const LeavePage = () => {
         <ApplyLeavePage onClose={() => setIsOpenModal(false)} />
       </CustomModal>
 
-      <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        BackdropProps={{
-          sx: {
-            backgroundColor: "rgba(0, 0, 0, 0)",
-            backdropFilter: "blur(5px)",
-            WebkitBackdropFilter: "blur(5px)",
-          },
-        }}
-      >
-        <Box sx={holidayModalStyle}>
-          <HolidayPage openClose={() => setOpen(false)} open={open} />
-        </Box>
-      </Modal>
     </div>
   );
 };

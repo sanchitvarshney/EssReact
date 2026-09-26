@@ -24,11 +24,11 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #9ca3af;
+  color: #333333;
   text-decoration: none;
 }
 .att-fc .fc-col-header-cell.fc-day-sun .fc-col-header-cell-cushion {
-  color: #f87171;
+  color: #ff2727;
 }
 .att-fc .fc-daygrid-day {
   border-radius: 14px;
@@ -86,4 +86,20 @@
     min-height: 64px;
     padding: 2px;
   }
+}
+
+/* Attendance month view: yellow weekday header row */
+.att-fc-head-accent .fc-col-header-cell {
+  background: #e9cd00;
+}
+.att-fc-head-accent .fc-col-header-cell:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.att-fc-head-accent .fc-col-header-cell:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+.att-fc-head-accent .fc-col-header-cell.fc-day-sun .fc-col-header-cell-cushion {
+  color: #b91c1c;
 }
