@@ -6,6 +6,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";
+import EventUpcomingIcon from "@mui/icons-material/Upcoming";
+import HistoryIcon from "@mui/icons-material/History";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useGetHolidaysListMutation } from "../services/Leave";
 import { useToast } from "../hooks/useToast";
 import HolidayPageSkeleton from "../skeleton/HolidayPageSkeleton";
@@ -20,11 +23,139 @@ interface HolidayProps {
   open?: boolean;
 }
 
+type SectionProps = {
+  title: string;
+  subtitle: string;
+  count: number;
+  tone: "upcoming" | "elapsed";
+  items: any[];
+  emptyText: string;
+  onPick: (d: moment.Moment) => void;
+  collapsible?: boolean;
+  open?: boolean;
+  onToggle?: () => void;
+};
+
+const relative = (d: moment.Moment) => {
+  const diff = d.clone().startOf("day").diff(moment().startOf("day"), "days");
+  if (diff === 0) return "Today";
+  if (diff === 1) return "Tomorrow";
+  if (diff > 1) return `in ${diff} days`;
+  if (diff === -1) return "Yesterday";
+  return `${Math.abs(diff)} days ago`;
+};
+
+const HolidaySection = ({
+  title,
+  subtitle,
+  count,
+  tone,
+  items,
+  emptyText,
+  onPick,
+  collapsible,
+  open = true,
+  onToggle,
+}: SectionProps) => {
+  const upcoming = tone === "upcoming";
+  const accent = upcoming ? "#00a0a0" : "#94a3b8";
+
+  return (
+    <section className="bg-white rounded-3xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] overflow-hidden">
+      <button
+        type="button"
+        onClick={collapsible ? onToggle : undefined}
+        className={`w-full flex items-center justify-between gap-3 px-5 py-4 text-left ${collapsible ? "cursor-pointer hover:bg-gray-50" : "cursor-default"}`}
+        style={{ borderBottom: open ? "1px solid #f3f4f6" : "none" }}
+      >
+        <div className="flex items-center gap-3">
+          <span
+            className="w-9 h-9 rounded-xl flex items-center justify-center"
+            style={{ backgroundColor: upcoming ? "#e0f6f6" : "#f1f5f9", color: accent }}
+          >
+            {upcoming ? <EventUpcomingIcon sx={{ fontSize: 19 }} /> : <HistoryIcon sx={{ fontSize: 19 }} />}
+          </span>
+          <div>
+            <p className="text-sm font-bold text-gray-800 leading-tight">{title}</p>
+            <p className="text-[11px] text-gray-400">{subtitle}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <span
+            className="text-[11px] font-bold px-2.5 py-1 rounded-full"
+            style={{ backgroundColor: upcoming ? "#e0f6f6" : "#f1f5f9", color: upcoming ? "#007f86" : "#64748b" }}
+          >
+            {count}
+          </span>
+          {collapsible && (
+            <ExpandMoreIcon
+              sx={{ fontSize: 20, color: "#9ca3af", transform: open ? "rotate(180deg)" : "none", transition: "transform .2s" }}
+            />
+          )}
+        </div>
+      </button>
+
+      {open && (
+        <div className="p-3 max-h-[360px] overflow-y-auto custom-scrollbar-for-menu">
+          {items.length === 0 ? (
+            <p className="text-xs text-gray-400 text-center py-6">{emptyText}</p>
+          ) : (
+            <div className="space-y-2">
+              {items.map((h) => {
+                const d = moment(h.start);
+                const today = d.isSame(moment(), "day");
+                const weekend = d.day() === 0 || d.day() === 6;
+                return (
+                  <button
+                    key={h.id}
+                    onClick={() => onPick(d)}
+                    className={`w-full flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-left transition-colors cursor-pointer hover:border-[#00a0a0] ${
+                      today ? "border-[#00a0a0] bg-[#f0fbfb]" : "border-gray-100 bg-white"
+                    } ${upcoming ? "" : "opacity-70"}`}
+                  >
+                    <span
+                      className="w-12 h-12 rounded-xl flex flex-col items-center justify-center flex-shrink-0 text-white"
+                      style={{ background: upcoming ? "linear-gradient(135deg, #00a0a0, #007f86)" : "#cbd5d5" }}
+                    >
+                      <span className="text-base font-bold leading-none">{d.format("DD")}</span>
+                      <span className="text-[9px] uppercase tracking-wide mt-0.5">{d.format("MMM")}</span>
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-semibold text-gray-800 truncate">{h.title}</span>
+                      <span className="block text-[11px] text-gray-400">
+                        {d.format("dddd")}
+                        {weekend && " · weekend"}
+                      </span>
+                    </span>
+                    <span
+                      className="text-[10px] font-bold rounded-full px-2.5 py-1 whitespace-nowrap flex-shrink-0"
+                      style={
+                        today
+                          ? { backgroundColor: "#00a0a0", color: "#fff" }
+                          : upcoming
+                            ? { backgroundColor: "#e0f6f6", color: "#007f86" }
+                            : { backgroundColor: "#f1f5f9", color: "#64748b" }
+                      }
+                    >
+                      {relative(d)}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+    </section>
+  );
+};
+
 const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
   const { showToast } = useToast();
   const calRef = useRef<FullCalendar>(null);
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [calMonth, setCalMonth] = useState(moment());
+  const [showElapsed, setShowElapsed] = useState(false);
   const [getHolidaysList, { data, isLoading, error }] = useGetHolidaysListMutation();
 
   useEffect(() => {
@@ -52,19 +183,17 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
     [data],
   );
 
-  const grouped = useMemo(() => {
-    const map = new Map<string, any[]>();
-    holidays.forEach((h) => {
-      const key = moment(h.start).format("YYYY-MM");
-      map.set(key, [...(map.get(key) ?? []), h]);
-    });
-    return [...map.entries()];
-  }, [holidays]);
-
-  const next = useMemo(
-    () => holidays.find((h) => !moment(h.start).isBefore(moment(), "day")),
+  // Today counts as upcoming; everything before today has elapsed.
+  const upcoming = useMemo(
+    () => holidays.filter((h) => !moment(h.start).isBefore(moment(), "day")),
     [holidays],
   );
+  const elapsed = useMemo(
+    () => holidays.filter((h) => moment(h.start).isBefore(moment(), "day")).reverse(),
+    [holidays],
+  );
+
+  const next = upcoming[0];
   const daysToNext = next ? moment(next.start).startOf("day").diff(moment().startOf("day"), "days") : null;
 
   const fcEvents = useMemo(
@@ -201,59 +330,29 @@ const HolidayPage: FC<HolidayProps> = ({ openClose, open = false }) => {
             />
           </div>
 
-          {/* Timeline */}
-          <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] p-4">
-            <p className="text-sm font-bold text-gray-800 mb-3">All holidays · {selectedYear}</p>
-            <div className="space-y-5 max-h-[640px] overflow-y-auto custom-scrollbar-for-menu pr-1">
-              {grouped.map(([key, items]) => (
-                <div key={key}>
-                  <p className="text-[11px] uppercase tracking-widest text-gray-400 mb-2">
-                    {moment(key, "YYYY-MM").format("MMMM")}
-                  </p>
-                  <div className="space-y-2">
-                    {items.map((h) => {
-                      const d = moment(h.start);
-                      const past = d.isBefore(moment(), "day");
-                      const today = d.isSame(moment(), "day");
-                      const weekend = d.day() === 0 || d.day() === 6;
-                      return (
-                        <button
-                          key={h.id}
-                          onClick={() => setCalMonth(d.clone())}
-                          className={`w-full flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-left transition-colors cursor-pointer hover:border-[#00a0a0] ${
-                            today ? "border-[#00a0a0] bg-[#f0fbfb]" : "border-gray-100 bg-white"
-                          } ${past ? "opacity-55" : ""}`}
-                        >
-                          <span
-                            className="w-12 h-12 rounded-xl flex flex-col items-center justify-center flex-shrink-0 text-white"
-                            style={{
-                              background: past
-                                ? "#cbd5d5"
-                                : "linear-gradient(135deg, #00a0a0, #007f86)",
-                            }}
-                          >
-                            <span className="text-base font-bold leading-none">{d.format("DD")}</span>
-                            <span className="text-[9px] uppercase tracking-wide mt-0.5">{d.format("MMM")}</span>
-                          </span>
-                          <span className="min-w-0 flex-1">
-                            <span className="block text-sm font-semibold text-gray-800 truncate">{h.title}</span>
-                            <span className="block text-[11px] text-gray-400">
-                              {d.format("dddd")}
-                              {weekend && " · weekend"}
-                            </span>
-                          </span>
-                          {today && (
-                            <span className="text-[10px] font-bold text-white bg-[#00a0a0] rounded-full px-2 py-0.5">
-                              Today
-                            </span>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-            </div>
+          {/* Upcoming / Elapsed */}
+          <div className="flex flex-col gap-4">
+            <HolidaySection
+              title="Upcoming"
+              subtitle="Still to come"
+              count={upcoming.length}
+              tone="upcoming"
+              items={upcoming}
+              emptyText={`No more holidays left in ${selectedYear}.`}
+              onPick={(d) => setCalMonth(d.clone())}
+            />
+            <HolidaySection
+              title="Elapsed"
+              subtitle="Already gone by"
+              count={elapsed.length}
+              tone="elapsed"
+              items={elapsed}
+              emptyText="No holidays have passed yet."
+              collapsible
+              open={showElapsed}
+              onToggle={() => setShowElapsed((v) => !v)}
+              onPick={(d) => setCalMonth(d.clone())}
+            />
           </div>
         </div>
       )}

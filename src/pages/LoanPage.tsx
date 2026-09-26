@@ -44,13 +44,13 @@ const LoanPage = () => {
   return (
     <div className="h-full flex flex-col overflow-y-auto px-3 py-4 w-full gap-4">
       <div className="flex items-center gap-2 flex-shrink-0">
-        <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
-        <PaymentsIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
+        <div className="w-1 h-7 rounded-full bg-[#00a0a0]" />
+        <PaymentsIcon sx={{ fontSize: 20, color: "#00a0a0" }} />
         <span className="text-lg font-bold text-gray-800">Loan &amp; Salary Advance</span>
       </div>
 
       {first ? (
-        <Box className="w-full flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#2eacb3" }} /></Box>
+        <Box className="w-full flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#00a0a0" }} /></Box>
       ) : (
         <>
           {snap && (
@@ -88,7 +88,7 @@ const LoanPage = () => {
                     <Button
                       variant="contained" disabled={!t.enabled || !t.eligible}
                       onClick={() => setApplyFor(t)}
-                      sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" } }}
+                      sx={{ bgcolor: "#00a0a0", "&:hover": { bgcolor: "#007f86" } }}
                     >
                       Apply
                     </Button>
@@ -101,7 +101,7 @@ const LoanPage = () => {
           <div className="flex-shrink-0">
             <p className="text-sm font-bold text-gray-700 mb-2">My requests</p>
             {loadingLoans && loans.length === 0 ? (
-              <div className="flex justify-center py-6"><CircularProgress size={22} sx={{ color: "#2eacb3" }} /></div>
+              <div className="flex justify-center py-6"><CircularProgress size={22} sx={{ color: "#00a0a0" }} /></div>
             ) : loans.length === 0 ? (
               <EmptyData title="No requests yet" subtitle="Loans and advances you apply for will show up here." />
             ) : (
@@ -111,7 +111,7 @@ const LoanPage = () => {
                   return (
                     <div
                       key={l.id} onClick={() => setOpenId(l.id)}
-                      className="bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md hover:border-[#2eacb3]/40 transition-all cursor-pointer p-4 flex flex-col gap-1.5"
+                      className="bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md hover:border-[#00a0a0]/40 transition-all cursor-pointer p-4 flex flex-col gap-1.5"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">

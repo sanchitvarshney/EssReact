@@ -95,7 +95,7 @@ const ReimbursementPage = () => {
           <button
             key={i}
             onClick={(e) => { e.stopPropagation(); openReceipt(c, i); }}
-            className="flex items-center gap-1 px-2 py-0.5 rounded-full border border-gray-200 text-[11px] text-gray-600 hover:border-[#2eacb3] hover:text-[#007f86] cursor-pointer"
+            className="flex items-center gap-1 px-2 py-0.5 rounded-full border border-gray-200 text-[11px] text-gray-600 hover:border-[#00a0a0] hover:text-[#007f86] cursor-pointer"
           >
             <AttachFileIcon sx={{ fontSize: 12 }} /> Receipt {i + 1}
           </button>
@@ -107,16 +107,16 @@ const ReimbursementPage = () => {
     <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full">
       <div className="flex items-center justify-between gap-2 mb-3 flex-shrink-0 flex-wrap">
         <div className="flex items-center gap-2">
-          <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
-          <ReceiptLongIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
+          <div className="w-1 h-7 rounded-full bg-[#00a0a0]" />
+          <ReceiptLongIcon sx={{ fontSize: 20, color: "#00a0a0" }} />
           <span className="text-lg font-bold text-gray-800">Reimbursement</span>
           {total > 0 && (
-            <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f7fa] text-[#2eacb3] border border-[#2eacb3]/20">
+            <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f6f6] text-[#00a0a0] border border-[#00a0a0]/20">
               {total} claim{total === 1 ? "" : "s"}
             </span>
           )}
         </div>
-        <Button variant="contained" startIcon={<AddIcon />} sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" } }} onClick={() => setShowNew(true)}>
+        <Button variant="contained" startIcon={<AddIcon />} sx={{ bgcolor: "#00a0a0", "&:hover": { bgcolor: "#007f86" } }} onClick={() => setShowNew(true)}>
           New claim
         </Button>
       </div>
@@ -136,17 +136,17 @@ const ReimbursementPage = () => {
           ))}
         </div>
         <div className="flex items-center gap-1 border border-gray-200 rounded-lg p-0.5">
-          <IconButton size="small" onClick={() => setView("card")} sx={{ bgcolor: view === "card" ? "#2eacb31a" : "transparent" }}>
-            <GridViewIcon fontSize="small" sx={{ color: view === "card" ? "#2eacb3" : "#9ca3af" }} />
+          <IconButton size="small" onClick={() => setView("card")} sx={{ bgcolor: view === "card" ? "#00a0a01a" : "transparent" }}>
+            <GridViewIcon fontSize="small" sx={{ color: view === "card" ? "#00a0a0" : "#9ca3af" }} />
           </IconButton>
-          <IconButton size="small" onClick={() => setView("table")} sx={{ bgcolor: view === "table" ? "#2eacb31a" : "transparent" }}>
-            <ViewListIcon fontSize="small" sx={{ color: view === "table" ? "#2eacb3" : "#9ca3af" }} />
+          <IconButton size="small" onClick={() => setView("table")} sx={{ bgcolor: view === "table" ? "#00a0a01a" : "transparent" }}>
+            <ViewListIcon fontSize="small" sx={{ color: view === "table" ? "#00a0a0" : "#9ca3af" }} />
           </IconButton>
         </div>
       </div>
 
       {isLoading && items.length === 0 ? (
-        <Box className="w-full flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#2eacb3" }} /></Box>
+        <Box className="w-full flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#00a0a0" }} /></Box>
       ) : items.length === 0 ? (
         <div className="flex-1 flex items-center justify-center"><EmptyData title="No claims yet" subtitle="Claims you submit will show up here." /></div>
       ) : (

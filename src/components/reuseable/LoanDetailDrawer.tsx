@@ -51,7 +51,7 @@ const LoanDetailDrawer = ({ loanId, onClose, onChanged }: { loanId: number; onCl
       </div>
 
       {!loan ? (
-        <div className="flex-1 flex items-center justify-center">{isLoading ? <CircularProgress sx={{ color: "#2eacb3" }} /> : null}</div>
+        <div className="flex-1 flex items-center justify-center">{isLoading ? <CircularProgress sx={{ color: "#00a0a0" }} /> : null}</div>
       ) : (
         <>
           <div className="flex items-center justify-between">
@@ -96,7 +96,7 @@ const LoanDetailDrawer = ({ loanId, onClose, onChanged }: { loanId: number; onCl
               <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">History</p>
               <div className="flex flex-col gap-2">
                 {data.timeline.map((t: any, i: number) => (
-                  <div key={i} className="text-sm border-l-2 border-[#2eacb3]/40 pl-3">
+                  <div key={i} className="text-sm border-l-2 border-[#00a0a0]/40 pl-3">
                     <p className="font-medium text-gray-800">{String(t.action).replace(/_/g, " ").toLowerCase().replace(/^\w/, (c: string) => c.toUpperCase())}</p>
                     <p className="text-xs text-gray-400">{t.actor_name} · {dateLabel(t.at)}</p>
                     {t.remark && <p className="text-xs text-gray-600 mt-0.5">{t.remark}</p>}

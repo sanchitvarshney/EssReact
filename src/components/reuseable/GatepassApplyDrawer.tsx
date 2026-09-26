@@ -86,10 +86,10 @@ const GatepassApplyDrawer = ({ onClose, onApplied }: { onClose: () => void; onAp
       </div>
 
       {loadingOpts && !opts ? (
-        <div className="flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#2eacb3" }} /></div>
+        <div className="flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#00a0a0" }} /></div>
       ) : !opts ? null : (
         <>
-          <div className="text-xs text-gray-600 bg-[#f0fdfe] border border-[#2eacb3]/20 rounded-xl px-3 py-2.5 leading-relaxed">
+          <div className="text-xs text-gray-600 bg-[#f0fdfe] border border-[#00a0a0]/20 rounded-xl px-3 py-2.5 leading-relaxed">
             <p className="font-semibold text-gray-800">{opts.employee.empName} · {opts.employee.empCode}</p>
             <p>{[opts.employee.designation, opts.employee.department].filter(Boolean).join(" · ")}</p>
             <p className="mt-1">
@@ -155,7 +155,7 @@ const GatepassApplyDrawer = ({ onClose, onApplied }: { onClose: () => void; onAp
           />
 
           <label className="flex items-start gap-2.5 cursor-pointer">
-            <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="w-4 h-4 mt-0.5 flex-shrink-0 accent-[#2eacb3]" />
+            <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="w-4 h-4 mt-0.5 flex-shrink-0 accent-[#00a0a0]" />
             <span className="text-[12px] text-gray-500 leading-relaxed">
               I have read the company's rules book and I am aware of the charges and penalties for a late return, and that other
               issues may arise. The above information is correct to the best of my knowledge.
@@ -164,7 +164,7 @@ const GatepassApplyDrawer = ({ onClose, onApplied }: { onClose: () => void; onAp
 
           <Button
             variant="contained" disabled={applying || !chainReady} onClick={handleSubmit}
-            sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" } }}
+            sx={{ bgcolor: "#00a0a0", "&:hover": { bgcolor: "#007f86" } }}
           >
             {applying ? <CircularProgress size={20} sx={{ color: "#fff" }} /> : "Send for approval"}
           </Button>

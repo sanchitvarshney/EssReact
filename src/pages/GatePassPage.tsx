@@ -56,22 +56,22 @@ const GatePassPage = () => {
     <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full">
       <div className="flex items-center justify-between gap-2 mb-3 flex-shrink-0 flex-wrap">
         <div className="flex items-center gap-2">
-          <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
-          <ConfirmationNumberIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
+          <div className="w-1 h-7 rounded-full bg-[#00a0a0]" />
+          <ConfirmationNumberIcon sx={{ fontSize: 20, color: "#00a0a0" }} />
           <span className="text-lg font-bold text-gray-800">Gate Pass</span>
           {items.length > 0 && (
-            <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f7fa] text-[#2eacb3] border border-[#2eacb3]/20">
+            <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f6f6] text-[#00a0a0] border border-[#00a0a0]/20">
               {items.length} pass{items.length === 1 ? "" : "es"}
             </span>
           )}
         </div>
-        <Button variant="contained" startIcon={<AddIcon />} sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" } }} onClick={() => setShowNew(true)}>
+        <Button variant="contained" startIcon={<AddIcon />} sx={{ bgcolor: "#00a0a0", "&:hover": { bgcolor: "#007f86" } }} onClick={() => setShowNew(true)}>
           New gate pass
         </Button>
       </div>
 
       {isLoading && items.length === 0 ? (
-        <Box className="w-full flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#2eacb3" }} /></Box>
+        <Box className="w-full flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#00a0a0" }} /></Box>
       ) : items.length === 0 ? (
         <div className="flex-1 flex items-center justify-center"><EmptyData title="No gate passes yet" subtitle="Gate passes you raise will show up here." /></div>
       ) : (

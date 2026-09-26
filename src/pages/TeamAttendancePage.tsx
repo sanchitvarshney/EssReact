@@ -1,20 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  Avatar,
-  Box,
-  Chip,
-  CircularProgress,
-  IconButton,
-  InputAdornment,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, CircularProgress, IconButton, TableCell, TableRow, Table, TableBody, TableContainer, TableHead } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import GroupsIcon from "@mui/icons-material/Groups";
 import GridViewIcon from "@mui/icons-material/GridView";
@@ -22,6 +7,9 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
 import moment from "moment";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -75,7 +63,49 @@ const StatusPill = ({ code }: { code: string }) => {
 const initials = (name: string) =>
   name.trim().split(/\s+/).slice(0, 2).map((p) => p[0]?.toUpperCase() ?? "").join("") || "?";
 
-const relation = (m: TeamAttendanceMember) => (m.direct ? "Direct report" : `Level ${m.level}`);
+const levelTitle = (level: number) => (level <= 1 ? "Direct reports" : `Level ${level}`);
+const levelHint = (level: number) =>
+  level <= 1 ? "People who report to you" : level === 2 ? "Report to your direct reports" : `${level - 1} levels below you`;
+
+const MemberCard = ({ m, onOpen }: { m: TeamAttendanceMember; onOpen: () => void }) => {
+  const color = GROUP_COLOR[m.group];
+  return (
+    <button
+      onClick={onOpen}
+      className="group text-left bg-white rounded-2xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] p-3.5 flex items-center gap-3 hover:shadow-md hover:border-[#00a0a0]/50 transition-all cursor-pointer"
+    >
+      <Avatar
+        src={m.photo || undefined}
+        sx={{
+          width: 46,
+          height: 46,
+          bgcolor: `${color}1f`,
+          color,
+          fontWeight: 700,
+          fontSize: 15,
+          boxShadow: `0 0 0 2.5px #fff, 0 0 0 4.5px ${color}`,
+        }}
+      >
+        {initials(m.name)}
+      </Avatar>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-bold text-gray-800 truncate">{m.name}</p>
+        <p className="text-[11px] text-gray-400 truncate">{m.emp_code}</p>
+        <p className="text-[11px] text-gray-500 tabular-nums mt-0.5 truncate">
+          {m.in_time || m.out_time ? (
+            <>
+              {timeOnly(m.in_time) || "--"} → {timeOnly(m.out_time) || "--"}
+              {m.total_time ? ` · ${m.total_time}` : ""}
+            </>
+          ) : (
+            <span className="text-gray-300">No punches</span>
+          )}
+        </p>
+      </div>
+      <StatusPill code={m.code} />
+    </button>
+  );
+};
 
 const TeamAttendancePage = () => {
   const navigate = useNavigate();
@@ -85,6 +115,7 @@ const TeamAttendancePage = () => {
   const [view, setView] = useState<"card" | "table">("card");
   const [filter, setFilter] = useState<TeamAttendanceGroup | "all">("all");
   const [query, setQuery] = useState("");
+  const [collapsed, setCollapsed] = useState<Record<number, boolean>>({});
   const [data, setData] = useState<TeamAttendanceData | null>(null);
   const [getTeamAttendance, { isLoading }] = useGetTeamAttendanceMutation();
 
@@ -106,52 +137,106 @@ const TeamAttendancePage = () => {
     );
   }, [data, filter, query]);
 
+  // Nested by reporting level: direct reports first, then the people below them.
+  const levels = useMemo(() => {
+    const map = new Map<number, TeamAttendanceMember[]>();
+    shown.forEach((m) => {
+      const lvl = m.direct ? 1 : Math.max(2, m.level || 2);
+      map.set(lvl, [...(map.get(lvl) ?? []), m]);
+    });
+    return [...map.entries()].sort((a, b) => a[0] - b[0]);
+  }, [shown]);
+
   const shiftDay = (n: number) => setDate(dayjs(date).add(n, "day").format("YYYY-MM-DD"));
   // A person's full month (opens on the month of the day being viewed); their profile is one click away from there.
   const openEmployee = (m: TeamAttendanceMember) => navigate(`/team-attendance/${m.emp_code}?month=${date.slice(0, 7)}`);
-  const dateLabel = dayjs(date).format("dddd, DD MMM YYYY");
   const first = !data && isLoading;
+  const toggleLevel = (lvl: number) => setCollapsed((c) => ({ ...c, [lvl]: !c[lvl] }));
+  const allCollapsed = levels.length > 0 && levels.every(([lvl]) => collapsed[lvl]);
+
+  const levelSummary = (members: TeamAttendanceMember[]) =>
+    GROUPS.map((g) => ({ ...g, count: members.filter((m) => m.group === g.key).length })).filter((g) => g.count > 0);
 
   return (
-    <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full">
-      <div className="flex items-center justify-between gap-2 mb-3 flex-shrink-0 flex-wrap">
-        <div className="flex items-center gap-2">
-          <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
-          <GroupsIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
-          <span className="text-lg font-bold text-gray-800">Team Attendance</span>
-          {data?.is_manager && (
-            <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f7fa] text-[#2eacb3] border border-[#2eacb3]/20">
-              {data.team_size} people
+    <div className="h-full overflow-y-auto custom-scrollbar-for-menu px-3 py-4 flex flex-col gap-4 [&>*]:flex-shrink-0">
+      {/* Hero */}
+      <section
+        className="relative overflow-hidden rounded-3xl text-white px-5 sm:px-6 py-5"
+        style={{ background: "linear-gradient(120deg, #0f2f3a 0%, #0b5563 50%, #00a0a0 100%)" }}
+      >
+        <div className="pointer-events-none absolute -right-14 -top-20 w-56 h-56 rounded-full border-[24px] border-white/5" />
+        <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <span className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center flex-shrink-0">
+              <GroupsIcon sx={{ fontSize: 26 }} />
             </span>
-          )}
+            <div>
+              <p className="text-xl font-bold leading-tight">Team Attendance</p>
+              <p className="text-sm text-white/70">
+                {dayjs(date).format("dddd, DD MMM YYYY")}
+                {data?.is_manager && <span className="ml-2 text-white/90 font-semibold">· {data.team_size} people</span>}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center bg-white rounded-2xl p-1 gap-1 shadow-lg self-start lg:self-auto text-gray-700">
+            <IconButton size="small" onClick={() => shiftDay(-1)} title="Previous day"><ChevronLeftIcon fontSize="small" /></IconButton>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <MobileDatePicker
+                value={dayjs(date)}
+                maxDate={dayjs()}
+                onAccept={(v) => v && setDate(v.format("YYYY-MM-DD"))}
+                format="ddd, DD MMM YYYY"
+                slotProps={{
+                  textField: { size: "small", variant: "standard", InputProps: { disableUnderline: true }, sx: { width: 200, "& input": { textAlign: "center", fontWeight: 700, fontSize: 13, cursor: "pointer" } } },
+                }}
+              />
+            </LocalizationProvider>
+            <IconButton size="small" onClick={() => shiftDay(1)} disabled={date >= today} title="Next day"><ChevronRightIcon fontSize="small" /></IconButton>
+            <button
+              onClick={() => setDate(today)}
+              disabled={date === today}
+              className="px-3 h-8 rounded-xl text-xs font-semibold text-[#007f86] bg-[#e0f6f6] hover:brightness-95 transition cursor-pointer disabled:opacity-40 disabled:cursor-default"
+            >
+              Today
+            </button>
+          </div>
         </div>
 
-        <div className="flex items-center bg-white border border-gray-100 shadow-sm rounded-2xl p-1 gap-1">
-          <IconButton size="small" onClick={() => shiftDay(-1)} title="Previous day"><ChevronLeftIcon fontSize="small" /></IconButton>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <MobileDatePicker
-              value={dayjs(date)}
-              maxDate={dayjs()}
-              onAccept={(v) => v && setDate(v.format("YYYY-MM-DD"))}
-              format="ddd, DD MMM YYYY"
-              slotProps={{
-                textField: { size: "small", variant: "standard", InputProps: { disableUnderline: true }, sx: { width: 150, "& input": { textAlign: "center", fontWeight: 700, fontSize: 13, cursor: "pointer" } } },
-              }}
-            />
-          </LocalizationProvider>
-          <IconButton size="small" onClick={() => shiftDay(1)} disabled={date >= today} title="Next day"><ChevronRightIcon fontSize="small" /></IconButton>
-          <button
-            onClick={() => setDate(today)}
-            disabled={date === today}
-            className="px-3 h-8 rounded-xl text-xs font-semibold text-[#007f86] bg-[#e0f6f6] hover:brightness-95 transition cursor-pointer disabled:opacity-40 disabled:cursor-default"
-          >
-            Today
-          </button>
-        </div>
-      </div>
+        {/* Summary tiles double as filters */}
+        {data?.is_manager && (
+          <div className="relative mt-5 flex gap-2 overflow-x-auto pb-0.5 custom-scrollbar-for-menu">
+            <button
+              onClick={() => setFilter("all")}
+              className={`flex-shrink-0 rounded-2xl px-4 py-2.5 text-left transition-all cursor-pointer border ${
+                filter === "all" ? "bg-white text-[#007f86] border-white shadow-lg" : "bg-white/10 border-white/10 hover:bg-white/20"
+              }`}
+            >
+              <p className="text-xl font-bold leading-none tabular-nums">{data.team_size}</p>
+              <p className={`text-[10px] uppercase tracking-wider mt-1 ${filter === "all" ? "text-[#007f86]/70" : "text-white/60"}`}>Everyone</p>
+            </button>
+            {GROUPS.filter((g) => data.summary[g.key] > 0).map((g) => {
+              const on = filter === g.key;
+              return (
+                <button
+                  key={g.key}
+                  onClick={() => setFilter(on ? "all" : g.key)}
+                  className={`flex-shrink-0 rounded-2xl px-4 py-2.5 text-left transition-all cursor-pointer border ${
+                    on ? "bg-white shadow-lg border-white" : "bg-white/10 border-white/10 hover:bg-white/20"
+                  }`}
+                  style={on ? { color: g.color } : undefined}
+                >
+                  <p className="text-xl font-bold leading-none tabular-nums">{data.summary[g.key]}</p>
+                  <p className={`text-[10px] uppercase tracking-wider mt-1 whitespace-nowrap ${on ? "opacity-70" : "text-white/60"}`}>{g.label}</p>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </section>
 
       {first ? (
-        <Box className="w-full flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#2eacb3" }} /></Box>
+        <Box className="w-full flex-1 min-h-[240px] flex items-center justify-center"><CircularProgress sx={{ color: "#00a0a0" }} /></Box>
       ) : !data ? (
         <div className="flex-1 flex items-center justify-center"><EmptyData title="Could not load" subtitle="Please try again in a moment." /></div>
       ) : !data.is_manager ? (
@@ -160,109 +245,158 @@ const TeamAttendancePage = () => {
         </div>
       ) : (
         <>
-          <Typography variant="caption" sx={{ color: "#6b7280", mb: 1 }} className="flex-shrink-0">{dateLabel}</Typography>
-
-          <div className="flex items-center gap-2 mb-3 flex-wrap flex-shrink-0">
-            <Chip
-              label={`All · ${data.team_size}`}
-              onClick={() => setFilter("all")}
-              sx={{ fontWeight: 700, bgcolor: filter === "all" ? "#2eacb3" : "#e0f7fa", color: filter === "all" ? "#fff" : "#2eacb3", "&:hover": { bgcolor: filter === "all" ? "#1e8a8f" : "#c8eef2" } }}
-            />
-            {GROUPS.filter((g) => data.summary[g.key] > 0).map((g) => (
-              <Chip
-                key={g.key}
-                label={`${g.label} · ${data.summary[g.key]}`}
-                onClick={() => setFilter(filter === g.key ? "all" : g.key)}
-                sx={{ fontWeight: 700, bgcolor: filter === g.key ? g.color : `${g.color}1a`, color: filter === g.key ? "#fff" : g.color, "&:hover": { bgcolor: filter === g.key ? g.color : `${g.color}30` } }}
+          {/* Toolbar */}
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-center gap-2 bg-white rounded-2xl border border-gray-100 shadow-sm pl-3.5 pr-2 h-10 w-full sm:w-[320px]">
+              <SearchIcon sx={{ color: "#00a0a0", fontSize: 19 }} />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search name or employee code"
+                className="flex-1 min-w-0 bg-transparent outline-none text-sm text-gray-700 placeholder:text-gray-400"
               />
-            ))}
-          </div>
-
-          <div className="flex items-center justify-between gap-2 mb-3 flex-wrap flex-shrink-0">
-            <TextField
-              size="small"
-              placeholder="Search name or employee code"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              sx={{ width: { xs: "100%", sm: 300 } }}
-              InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon fontSize="small" /></InputAdornment> }}
-            />
-            <div className="flex items-center gap-1 border border-gray-200 rounded-lg p-0.5">
-              <IconButton size="small" onClick={() => setView("card")} sx={{ bgcolor: view === "card" ? "#2eacb31a" : "transparent" }}>
-                <GridViewIcon fontSize="small" sx={{ color: view === "card" ? "#2eacb3" : "#9ca3af" }} />
-              </IconButton>
-              <IconButton size="small" onClick={() => setView("table")} sx={{ bgcolor: view === "table" ? "#2eacb31a" : "transparent" }}>
-                <ViewListIcon fontSize="small" sx={{ color: view === "table" ? "#2eacb3" : "#9ca3af" }} />
-              </IconButton>
+              {query && (
+                <button onClick={() => setQuery("")} aria-label="Clear search" className="w-6 h-6 rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-100 cursor-pointer">
+                  <CloseIcon sx={{ fontSize: 15 }} />
+                </button>
+              )}
             </div>
-          </div>
 
-          {isLoading && <div className="h-0.5 bg-[#2eacb3]/30 mb-1 flex-shrink-0 animate-pulse" />}
-
-          {shown.length === 0 ? (
-            <div className="flex-1 flex items-center justify-center"><EmptyData title="Nobody here" subtitle="No one in your team matches this filter." /></div>
-          ) : view === "card" ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 w-full flex-1 overflow-y-auto p-2 content-start">
-              {shown.map((m) => (
-                <div
-                  key={m.emp_code}
-                  onClick={() => openEmployee(m)}
-                  className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 flex items-center gap-3 cursor-pointer hover:shadow-md hover:border-[#2eacb3]/40 transition-all"
+            <div className="flex items-center gap-2">
+              {levels.length > 1 && (
+                <button
+                  onClick={() => setCollapsed(allCollapsed ? {} : Object.fromEntries(levels.map(([l]) => [l, true])))}
+                  className="h-10 px-3.5 rounded-2xl bg-white border border-gray-100 shadow-sm text-xs font-semibold text-gray-600 hover:text-[#007f86] cursor-pointer"
                 >
-                  <Avatar src={m.photo || undefined} sx={{ width: 44, height: 44, bgcolor: `${GROUP_COLOR[m.group]}1f`, color: GROUP_COLOR[m.group], fontWeight: 700, fontSize: 15 }}>
-                    {initials(m.name)}
-                  </Avatar>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-bold text-gray-800 truncate">{m.name}</p>
-                    <p className="text-[11px] text-gray-400 truncate">{m.emp_code} · {relation(m)}</p>
-                    {(m.in_time || m.out_time) && (
-                      <p className="text-[11px] text-gray-500 tabular-nums mt-0.5">
-                        {timeOnly(m.in_time) || "--"} → {timeOnly(m.out_time) || "--"}
-                        {m.total_time ? ` · ${m.total_time}` : ""}
-                      </p>
-                    )}
-                  </div>
-                  <StatusPill code={m.code} />
-                </div>
-              ))}
+                  {allCollapsed ? "Expand all" : "Collapse all"}
+                </button>
+              )}
+              <div className="flex items-center bg-white border border-gray-100 shadow-sm rounded-2xl p-1 gap-0.5">
+                {(
+                  [
+                    { id: "card", icon: GridViewIcon, label: "Cards" },
+                    { id: "table", icon: ViewListIcon, label: "Table" },
+                  ] as const
+                ).map(({ id, icon: Icon, label }) => (
+                  <button
+                    key={id}
+                    onClick={() => setView(id)}
+                    title={label}
+                    aria-label={`${label} view`}
+                    className={`w-9 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                      view === id ? "text-white bg-gradient-to-r from-[#00a0a0] to-[#007f86] shadow-sm" : "text-gray-400 hover:bg-gray-50"
+                    }`}
+                  >
+                    <Icon sx={{ fontSize: 18 }} />
+                  </button>
+                ))}
+              </div>
             </div>
+          </div>
+
+          {isLoading && <div className="h-0.5 bg-[#00a0a0]/30 -mt-2 animate-pulse rounded-full" />}
+
+          {levels.length === 0 ? (
+            <div className="py-10"><EmptyData title="Nobody here" subtitle="No one in your team matches this filter." /></div>
           ) : (
-            <TableContainer sx={{ flex: 1, overflow: "auto", borderRadius: 2, border: "1px solid #f3f4f6" }}>
-              <Table stickyHeader size="small">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell>Employee</StyledTableCell>
-                    <StyledTableCell>Status</StyledTableCell>
-                    <StyledTableCell>In</StyledTableCell>
-                    <StyledTableCell>Out</StyledTableCell>
-                    <StyledTableCell>Hours</StyledTableCell>
-                    <StyledTableCell>Reports</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {shown.map((m) => (
-                    <StyledTableRow key={m.emp_code} onClick={() => openEmployee(m)} sx={{ cursor: "pointer", "&:hover": { backgroundColor: "#f9fafb" } }}>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Avatar src={m.photo || undefined} sx={{ width: 28, height: 28, fontSize: 11, bgcolor: `${GROUP_COLOR[m.group]}1f`, color: GROUP_COLOR[m.group], fontWeight: 700 }}>
-                            {initials(m.name)}
-                          </Avatar>
-                          <div>
-                            <Typography variant="body2" sx={{ fontWeight: 600, color: "#1f2937" }}>{m.name}</Typography>
-                            <Typography variant="caption" sx={{ color: "#9ca3af" }}>{m.emp_code}</Typography>
-                          </div>
+            <div className="flex flex-col gap-5 pb-2">
+              {levels.map(([lvl, members]) => {
+                const closed = !!collapsed[lvl];
+                const nested = lvl > 1;
+                return (
+                  <section
+                    key={lvl}
+                    className="relative"
+                    style={nested ? { marginLeft: Math.min(lvl - 1, 3) * 20 } : undefined}
+                  >
+                    {nested && <span className="absolute -left-4 top-0 bottom-3 w-px bg-[#00a0a0]/25" />}
+
+                    <button
+                      onClick={() => toggleLevel(lvl)}
+                      className="w-full flex items-center justify-between gap-3 text-left mb-3 cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span
+                          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-white"
+                          style={{ background: "linear-gradient(135deg, #00a0a0, #007f86)" }}
+                        >
+                          {nested ? <SubdirectoryArrowRightIcon sx={{ fontSize: 19 }} /> : <GroupsIcon sx={{ fontSize: 19 }} />}
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-gray-800 leading-tight">
+                            {levelTitle(lvl)}
+                            <span className="ml-2 text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#e0f6f6] text-[#007f86]">{members.length}</span>
+                          </p>
+                          <p className="text-[11px] text-gray-400">{levelHint(lvl)}</p>
                         </div>
-                      </TableCell>
-                      <TableCell><StatusPill code={m.code} /></TableCell>
-                      <TableCell className="tabular-nums">{timeOnly(m.in_time) || "--"}</TableCell>
-                      <TableCell className="tabular-nums">{timeOnly(m.out_time) || "--"}</TableCell>
-                      <TableCell className="tabular-nums">{m.total_time || "--"}</TableCell>
-                      <TableCell>{relation(m)}</TableCell>
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <div className="hidden sm:flex items-center gap-1.5">
+                          {levelSummary(members).map((g) => (
+                            <span
+                              key={g.key}
+                              title={g.label}
+                              className="text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+                              style={{ backgroundColor: `${g.color}1a`, color: g.color }}
+                            >
+                              {g.count} {g.label}
+                            </span>
+                          ))}
+                        </div>
+                        <ExpandMoreIcon
+                          sx={{ fontSize: 22, color: "#9ca3af", transform: closed ? "rotate(-90deg)" : "none", transition: "transform .2s" }}
+                        />
+                      </div>
+                    </button>
+
+                    {!closed &&
+                      (view === "card" ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
+                          {members.map((m) => (
+                            <MemberCard key={m.emp_code} m={m} onOpen={() => openEmployee(m)} />
+                          ))}
+                        </div>
+                      ) : (
+                        <TableContainer sx={{ borderRadius: 3, border: "1px solid #f1f5f9", bgcolor: "#fff" }}>
+                          <Table size="small">
+                            <TableHead>
+                              <TableRow>
+                                <StyledTableCell>Employee</StyledTableCell>
+                                <StyledTableCell>Status</StyledTableCell>
+                                <StyledTableCell>In</StyledTableCell>
+                                <StyledTableCell>Out</StyledTableCell>
+                                <StyledTableCell>Hours</StyledTableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {members.map((m) => (
+                                <StyledTableRow key={m.emp_code} onClick={() => openEmployee(m)} sx={{ cursor: "pointer" }}>
+                                  <TableCell>
+                                    <div className="flex items-center gap-2.5">
+                                      <Avatar src={m.photo || undefined} sx={{ width: 30, height: 30, fontSize: 11, bgcolor: `${GROUP_COLOR[m.group]}1f`, color: GROUP_COLOR[m.group], fontWeight: 700 }}>
+                                        {initials(m.name)}
+                                      </Avatar>
+                                      <div>
+                                        <p className="text-sm font-semibold text-gray-800 leading-tight">{m.name}</p>
+                                        <p className="text-[11px] text-gray-400">{m.emp_code}</p>
+                                      </div>
+                                    </div>
+                                  </TableCell>
+                                  <TableCell><StatusPill code={m.code} /></TableCell>
+                                  <TableCell className="tabular-nums">{timeOnly(m.in_time) || "--"}</TableCell>
+                                  <TableCell className="tabular-nums">{timeOnly(m.out_time) || "--"}</TableCell>
+                                  <TableCell className="tabular-nums">{m.total_time || "--"}</TableCell>
+                                </StyledTableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      ))}
+                  </section>
+                );
+              })}
+            </div>
           )}
         </>
       )}

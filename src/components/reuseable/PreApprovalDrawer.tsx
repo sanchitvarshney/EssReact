@@ -28,7 +28,8 @@ const PreApprovalDrawer = ({ onClose, onCreated }: { onClose: () => void; onCrea
   const [company, setCompany] = useState("");
   const [purpose, setPurpose] = useState("");
   const [expectedDate, setExpectedDate] = useState<Dayjs>(dayjs());
-  const [expectedTime, setExpectedTime] = useState<Dayjs | null>(null);
+  // Default to "now" so the pre-approval is valid as soon as the form opens.
+  const [expectedTime, setExpectedTime] = useState<Dayjs | null>(() => dayjs());
   const [remarks, setRemarks] = useState("");
   const [created, setCreated] = useState<{ ref: string; otp: string; visitorName: string; emailSent: boolean; whatsappSent: boolean; date: string; time: string } | null>(null);
 
@@ -36,6 +37,8 @@ const PreApprovalDrawer = ({ onClose, onCreated }: { onClose: () => void; onCrea
 
   const timeTooEarly = (date: Dayjs, time: Dayjs) =>
     date.hour(time.hour()).minute(time.minute()).second(0).isBefore(dayjs().subtract(PAST_TOLERANCE_MINUTES, "minute"));
+
+  const tooEarly = !!expectedTime && timeTooEarly(expectedDate, expectedTime);
 
   const handleSubmit = async () => {
     if (!visitorName.trim()) return showToast("Enter the visitor's name", "error");
@@ -70,13 +73,13 @@ const PreApprovalDrawer = ({ onClose, onCreated }: { onClose: () => void; onCrea
           <IconButton size="small" onClick={onClose}><CloseIcon fontSize="small" /></IconButton>
         </div>
         <div className="flex flex-col items-center text-center gap-2 py-4">
-          <CheckCircleIcon sx={{ fontSize: 48, color: "#2eacb3" }} />
+          <CheckCircleIcon sx={{ fontSize: 48, color: "#00a0a0" }} />
           <p className="text-sm text-gray-600">
             {created.emailSent ? "The OTP has been emailed to the visitor. " : "Share this OTP with your visitor for gate entry. "}
             {created.whatsappSent ? "It was also sent on WhatsApp. " : ""}
           </p>
           <p className="text-xs text-gray-400">Reference {created.ref}</p>
-          <div className="w-full rounded-2xl bg-[#2eacb3]/10 py-5 text-4xl font-black tracking-[0.4em] text-[#007f86] pl-[0.4em]">{created.otp}</div>
+          <div className="w-full rounded-2xl bg-[#00a0a0]/10 py-5 text-4xl font-black tracking-[0.4em] text-[#007f86] pl-[0.4em]">{created.otp}</div>
           <Button
             startIcon={<ContentCopyIcon />} size="small" variant="outlined"
             onClick={async () => {
@@ -87,7 +90,7 @@ const PreApprovalDrawer = ({ onClose, onCreated }: { onClose: () => void; onCrea
             Copy message for the visitor
           </Button>
         </div>
-        <Button variant="contained" onClick={onClose} sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" } }}>Done</Button>
+        <Button variant="contained" onClick={onClose} sx={{ bgcolor: "#00a0a0", "&:hover": { bgcolor: "#007f86" } }}>Done</Button>
       </div>
     );
   }
@@ -113,14 +116,21 @@ const PreApprovalDrawer = ({ onClose, onCreated }: { onClose: () => void; onCrea
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <div className="flex gap-3">
           <MobileDatePicker
-            label="Expected date *" value={expectedDate} minDate={dayjs()}
+            label="Expected date *" value={expectedDate} minDate={dayjs()} format="DD-MM-YYYY"
             onChange={(v) => v && setExpectedDate(v)}
             slotProps={{ textField: { size: "small", fullWidth: true } }}
           />
           <MobileTimePicker
             label="Expected time *" value={expectedTime}
             onChange={(v) => setExpectedTime(v)}
-            slotProps={{ textField: { size: "small", fullWidth: true } }}
+            slotProps={{
+              textField: {
+                size: "small",
+                fullWidth: true,
+                error: tooEarly,
+                helperText: tooEarly ? "Pick a time from now onwards" : undefined,
+              },
+            }}
           />
         </div>
       </LocalizationProvider>
@@ -133,7 +143,7 @@ const PreApprovalDrawer = ({ onClose, onCreated }: { onClose: () => void; onCrea
 
       <Button
         variant="contained" disabled={isLoading} onClick={handleSubmit}
-        sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" } }}
+        sx={{ bgcolor: "#00a0a0", "&:hover": { bgcolor: "#007f86" } }}
       >
         {isLoading ? <CircularProgress size={20} sx={{ color: "#fff" }} /> : "Create pre-approval"}
       </Button>

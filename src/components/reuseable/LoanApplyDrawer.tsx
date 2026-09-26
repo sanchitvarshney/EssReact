@@ -58,7 +58,7 @@ const LoanApplyDrawer = ({
         <IconButton size="small" onClick={onClose}><CloseIcon fontSize="small" /></IconButton>
       </div>
 
-      <div className="text-xs text-gray-500 bg-[#f0fdfe] border border-[#2eacb3]/20 rounded-xl px-3 py-2">
+      <div className="text-xs text-gray-500 bg-[#f0fdfe] border border-[#00a0a0]/20 rounded-xl px-3 py-2">
         You can request {rupees(type.min_amount)} to {rupees(type.max_amount)} over up to {type.max_tenure_months} month
         {type.max_tenure_months === 1 ? "" : "s"}.
       </div>
@@ -87,7 +87,7 @@ const LoanApplyDrawer = ({
       {previewing && !preview ? (
         <div className="flex items-center gap-2 text-xs text-gray-400"><CircularProgress size={14} /> Working out your EMI…</div>
       ) : preview ? (
-        <div className={`rounded-xl border px-4 py-3 text-sm ${preview.valid ? "border-[#2eacb3]/30 bg-[#f0fdfe]" : "border-red-200 bg-red-50"}`}>
+        <div className={`rounded-xl border px-4 py-3 text-sm ${preview.valid ? "border-[#00a0a0]/30 bg-[#f0fdfe]" : "border-red-200 bg-red-50"}`}>
           {preview.errors?.length ? (
             <ul className="list-disc pl-4 text-red-700 text-xs space-y-1">
               {preview.errors.map((e: string) => <li key={e}>{e}</li>)}
@@ -106,7 +106,7 @@ const LoanApplyDrawer = ({
 
       <Button
         variant="contained" disabled={applying || !preview?.valid} onClick={handleApply}
-        sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" }, mt: 1 }}
+        sx={{ bgcolor: "#00a0a0", "&:hover": { bgcolor: "#007f86" }, mt: 1 }}
       >
         {applying ? <CircularProgress size={20} sx={{ color: "#fff" }} /> : "Submit request"}
       </Button>

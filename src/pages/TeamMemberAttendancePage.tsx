@@ -12,6 +12,7 @@ import MonthPulse from "../components/attendance/MonthPulse";
 import AttendanceMonthGrid from "../components/attendance/AttendanceMonthGrid";
 import CalendarListView from "./ListViewOfCalender";
 import EmptyData from "../components/reuseable/EmptyData";
+import EmployeeInfoDrawer from "../components/team/EmployeeInfoDrawer";
 import { dotColor } from "../staticData/headerofattendance";
 import { useToast } from "../hooks/useToast";
 import { useGetTeamMemberMonthMutation, type TeamMemberMonth } from "../services/teamAttendance";
@@ -36,6 +37,7 @@ const TeamMemberAttendancePage = () => {
   const [view, setView] = useState<"calendar" | "listview">("calendar");
   const [data, setData] = useState<TeamMemberMonth | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [infoOpen, setInfoOpen] = useState(false);
   const [getMonth, { isLoading }] = useGetTeamMemberMonthMutation();
 
   useEffect(() => {
@@ -83,7 +85,7 @@ const TeamMemberAttendancePage = () => {
           >
             <ArrowBackIcon sx={{ fontSize: 18 }} />
           </button>
-          <Avatar src={emp?.photo || undefined} sx={{ width: 40, height: 40, bgcolor: "#2eacb31f", color: "#007f86", fontWeight: 700 }}>
+          <Avatar src={emp?.photo || undefined} sx={{ width: 40, height: 40, bgcolor: "#00a0a01f", color: "#007f86", fontWeight: 700 }}>
             {emp ? initials(emp.name) : ""}
           </Avatar>
           <div className="min-w-0">
@@ -92,7 +94,7 @@ const TeamMemberAttendancePage = () => {
           </div>
         </div>
         <button
-          onClick={() => navigate(`/employee/details/${empCode}`)}
+          onClick={() => setInfoOpen(true)}
           className="flex items-center gap-1.5 px-3 h-9 rounded-xl bg-white border border-gray-100 shadow-sm text-xs font-semibold text-gray-600 hover:text-[#007f86] cursor-pointer"
         >
           <PersonOutlineIcon sx={{ fontSize: 16 }} /> View profile
@@ -121,7 +123,7 @@ const TeamMemberAttendancePage = () => {
               >
                 This month
               </button>
-              {isLoading && <CircularProgress size={16} sx={{ color: "#2eacb3", mx: 1 }} />}
+              {isLoading && <CircularProgress size={16} sx={{ color: "#00a0a0", mx: 1 }} />}
             </div>
 
             <div className="flex items-center bg-white border border-gray-100 shadow-sm rounded-2xl p-1 gap-0.5">
@@ -155,6 +157,8 @@ const TeamMemberAttendancePage = () => {
           </div>
         </>
       )}
+
+      <EmployeeInfoDrawer open={infoOpen} empCode={empCode} onClose={() => setInfoOpen(false)} />
     </div>
   );
 };

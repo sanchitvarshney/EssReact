@@ -80,15 +80,15 @@ const PreApprovalPage = () => {
     <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full">
       <div className="flex items-center justify-between gap-2 mb-3 flex-shrink-0 flex-wrap">
         <div className="flex items-center gap-2">
-          <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
-          <ConfirmationNumberIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
+          <div className="w-1 h-7 rounded-full bg-[#00a0a0]" />
+          <ConfirmationNumberIcon sx={{ fontSize: 20, color: "#00a0a0" }} />
           <span className="text-lg font-bold text-gray-800">Gate Pass</span>
           <span className="text-xs text-gray-400 hidden sm:inline">Pre-approve visitors coming to meet you</span>
           {total > 0 && (
-            <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f7fa] text-[#2eacb3] border border-[#2eacb3]/20">{total}</span>
+            <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f6f6] text-[#00a0a0] border border-[#00a0a0]/20">{total}</span>
           )}
         </div>
-        <Button variant="contained" startIcon={<AddIcon />} sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" } }} onClick={() => setShowNew(true)}>
+        <Button variant="contained" startIcon={<AddIcon />} sx={{ bgcolor: "#00a0a0", "&:hover": { bgcolor: "#007f86" } }} onClick={() => setShowNew(true)}>
           Pre-approve a visitor
         </Button>
       </div>
@@ -108,7 +108,7 @@ const PreApprovalPage = () => {
       </div>
 
       {isLoading && items.length === 0 ? (
-        <Box className="w-full flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#2eacb3" }} /></Box>
+        <Box className="w-full flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#00a0a0" }} /></Box>
       ) : shown.length === 0 ? (
         <div className="flex-1 flex items-center justify-center">
           <EmptyData
@@ -142,7 +142,7 @@ const PreApprovalPage = () => {
                   </div>
 
                   {i.otp && (
-                    <div className="flex items-center justify-between rounded-xl bg-[#2eacb3]/10 px-3 py-2">
+                    <div className="flex items-center justify-between rounded-xl bg-[#00a0a0]/10 px-3 py-2">
                       <span className="text-xl font-black tracking-[0.3em] text-[#007f86]">{i.otp}</span>
                       <Button size="small" startIcon={<ContentCopyIcon sx={{ fontSize: 14 }} />} onClick={() => copyMessage(i, i.otp)}>Copy message</Button>
                     </div>
@@ -190,7 +190,7 @@ const PreApprovalPage = () => {
           <p className="text-sm text-gray-600 mb-3">
             {regen?.visitorName}'s invitation now runs from now for 2 hours. The OTP was sent to them where possible — you can also share it yourself.
           </p>
-          <div className="rounded-2xl bg-[#2eacb3]/10 py-4 text-center text-3xl font-black tracking-[0.4em] text-[#007f86] pl-[0.4em]">{regen?.otp}</div>
+          <div className="rounded-2xl bg-[#00a0a0]/10 py-4 text-center text-3xl font-black tracking-[0.4em] text-[#007f86] pl-[0.4em]">{regen?.otp}</div>
         </DialogContent>
         <DialogActions>
           <Button
@@ -199,7 +199,7 @@ const PreApprovalPage = () => {
           >
             Copy message
           </Button>
-          <Button variant="contained" onClick={() => setRegen(null)} sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" } }}>Done</Button>
+          <Button variant="contained" onClick={() => setRegen(null)} sx={{ bgcolor: "#00a0a0", "&:hover": { bgcolor: "#007f86" } }}>Done</Button>
         </DialogActions>
       </Dialog>
     </div>

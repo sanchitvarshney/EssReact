@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles";
+import "@mui/x-date-pickers/themeAugmentation";
 
 
 export const theme = createTheme({
@@ -6,6 +7,10 @@ export const theme = createTheme({
     fontFamily: "'Google Sans', sans-serif",
   },
   components: {
+    // App-wide date input format: DD-MM-YYYY (pickers default to the US MM/DD/YYYY otherwise).
+    MuiDatePicker: { defaultProps: { format: "DD-MM-YYYY" } },
+    MuiDesktopDatePicker: { defaultProps: { format: "DD-MM-YYYY" } },
+    MuiMobileDatePicker: { defaultProps: { format: "DD-MM-YYYY" } },
     MuiTextField: {
       styleOverrides: {
         root: {

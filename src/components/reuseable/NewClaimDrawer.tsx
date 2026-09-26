@@ -126,7 +126,7 @@ const NewClaimDrawer = ({ onClose, onSubmitted }: { onClose: () => void; onSubmi
 
       <Button
         variant="contained" disabled={submitting} onClick={handleSubmit}
-        sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" }, mt: 1 }}
+        sx={{ bgcolor: "#00a0a0", "&:hover": { bgcolor: "#007f86" }, mt: 1 }}
       >
         {submitting ? <CircularProgress size={20} sx={{ color: "#fff" }} /> : "Submit claim"}
       </Button>
