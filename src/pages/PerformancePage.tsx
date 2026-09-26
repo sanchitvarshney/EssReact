@@ -81,7 +81,7 @@ if (isNetworkError || !isAuthorized) {
         <CustomButton
           onClick={handleSave}
           disabled={saving || !data.window.open}
-          className="cursor-pointer bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] text-white"
+          className="cursor-pointer bg-gradient-to-r from-[#00a0a0] to-[#007f86] hover:from-[#007f86] hover:to-[#00a0a0] text-white"
         >
           {saving ? "Saving..." : "Save"}
         </CustomButton>
@@ -110,7 +110,7 @@ const PerformancePage = () => {
 
   if (windowLoading) {
     return (
-      <Box className="h-[calc(100vh-80px)] flex items-center justify-center">
+      <Box className="h-full flex items-center justify-center">
         <Typography sx={{ color: "#6b7280", fontSize: 14 }}>Checking rating window…</Typography>
       </Box>
     );
@@ -118,7 +118,7 @@ const PerformancePage = () => {
 
   if (windowError || !window_) {
     return (
-      <Box className="h-[calc(100vh-80px)] flex items-center justify-center">
+      <Box className="h-full flex items-center justify-center">
         <Typography sx={{ color: "#ef4444", fontSize: 14, fontWeight: 600 }}>
           Could not reach the server. Please try again.
         </Typography>
@@ -128,14 +128,14 @@ const PerformancePage = () => {
 
   if (!window_.open) {
     return (
-      <Box className="h-[calc(100vh-80px)] overflow-hidden p-4 flex flex-col">
+      <Box className="h-full overflow-hidden p-4 flex flex-col">
         <RatingWindowBanner targetMonth={window_.targetMonth} />
       </Box>
     );
   }
 
   return (
-    <Box className="h-[calc(100vh-80px)] overflow-hidden p-4 flex flex-col gap-4">
+    <Box className="h-full overflow-hidden p-4 flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Typography sx={{ fontSize: 20, fontWeight: 700, color: "#1f2937" }}>
           KRA Monthly Rating

@@ -42,7 +42,7 @@ const AnnouncementList: FC<AnnouncementListProps> = React.memo(
             ref={ref}
             className="h-10 w-full flex justify-center items-center"
           >
-            <CircularProgress sx={{ color: "#2eacb3" }} />
+            <CircularProgress sx={{ color: "#00a0a0" }} />
           </div>
         )}
       </div>

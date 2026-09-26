@@ -3,7 +3,7 @@ import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
   typography: {
-    fontFamily: "MsCorpres EmberFont, sans-serif",
+    fontFamily: "'Google Sans', sans-serif",
   },
   components: {
     MuiTextField: {
@@ -113,18 +113,18 @@ export const theme = createTheme({
     MuiAccordionSummary: {
       styleOverrides: {
         root: {
-          fontFamily: "MsCorpres EmberFont, sans-serif",
+          fontFamily: "'Google Sans', sans-serif",
           fontSize: "14px",
         },
         content: {
-          fontFamily: "MsCorpres EmberFont, sans-serif",
+          fontFamily: "'Google Sans', sans-serif",
         },
       },
     },
     MuiAccordionDetails: {
       styleOverrides: {
         root: {
-          fontFamily: "MsCorpres EmberFont, sans-serif",
+          fontFamily: "'Google Sans', sans-serif",
           fontSize: "13px",
         },
       },
@@ -132,16 +132,16 @@ export const theme = createTheme({
     MuiAccordion: {
       styleOverrides: {
         root: {
-          fontFamily: "MsCorpres EmberFont, sans-serif",
+          fontFamily: "'Google Sans', sans-serif",
         },
       },
     },
   },
   palette: {
     primary: {
-      light: "#22d3ee", // Light teal
-      main: "#0891b2", // Main teal
-      dark: "#0e7490", // Dark teal
+      light: "#4fd1c5", // Light indigo
+      main: "#00a0a0", // Main indigo (dashboard theme)
+      dark: "#007f86", // Dark indigo
       contrastText: "#fff",
     },
     secondary: {

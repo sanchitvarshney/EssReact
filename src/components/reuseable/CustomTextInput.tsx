@@ -48,7 +48,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
             borderColor: "#9ca3af",
           },
           "&.Mui-focused fieldset": {
-            borderColor: "#2eacb3",
+            borderColor: "#00a0a0",
             borderWidth: "2px",
           },
         },
@@ -57,7 +57,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           fontSize: "0.875rem",
         },
         "& .MuiInputLabel-root.Mui-focused": {
-          color: "#2eacb3",
+          color: "#00a0a0",
         },
         "& .MuiSelect-icon": {
           color: "#9ca3af",

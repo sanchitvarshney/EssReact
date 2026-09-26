@@ -5,6 +5,7 @@ import {
   IconButton,
   Typography,
   Box,
+  Avatar,
 } from "@mui/material";
 import { useState, type FC } from "react";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -12,7 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CreateNewPostPage from "../../pages/CreateNewPostPage";
-import CustomTextInput from "../reuseable/CustomTextInput";
+import { useAuth } from "../../contextapi/AuthContext";
 
 const postOption = [
   { label: "All Posts", value: "all" },
@@ -37,50 +38,53 @@ const PostHeader: FC<PostHeaderProps> = ({
 }) => {
   const [isNewPost, setIsNewPost] = useState<boolean>(false);
 
+  const { user } = useAuth();
+  const u: any = user ?? {};
+  const active = postFilter || "all";
+
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-      <div className="flex items-start gap-3">
-        {/* Filter */}
-        <div className="flex flex-col gap-1.5 flex-shrink-0">
-          <div className="flex items-center gap-1.5">
-            <FilterListIcon sx={{ fontSize: 13, color: "#9ca3af" }} />
-            <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
-              Filter
-            </span>
-          </div>
-          <div className="w-36">
-            <CustomTextInput
-              field={{
-                value: postFilter,
-                onChange: (e: any) => setFilter(e),
+    <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] p-4">
+      {/* Composer */}
+      <div className="flex items-center gap-3">
+        <Avatar src={u.imgUrl} alt={u.name} sx={{ width: 42, height: 42, bgcolor: "#00a0a0" }}>
+          {u.name?.charAt(0)}
+        </Avatar>
+        <button
+          onClick={() => setIsNewPost(true)}
+          className="flex-1 text-left text-sm text-gray-400 bg-[#f1f7f7] hover:bg-[#e0f6f6] hover:text-[#007f86] transition-colors rounded-full px-5 py-3 cursor-pointer"
+        >
+          Share something with the team, {u.name?.split(" ")[0] || "there"}…
+        </button>
+        <button
+          onClick={() => setIsNewPost(true)}
+          aria-label="Create post"
+          className="hidden sm:flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-[#00a0a0] to-[#007f86] shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+        >
+          <EditNoteIcon sx={{ fontSize: 16 }} /> Post
+        </button>
+      </div>
+
+      {/* Filter chips */}
+      <div className="flex items-center gap-2 mt-4 overflow-x-auto custom-scrollbar-for-menu pb-1">
+        <FilterListIcon sx={{ fontSize: 16, color: "#9ca3af", flexShrink: 0 }} />
+        {postOption.map(({ label, value }) => {
+          const on = active === value;
+          return (
+            <button
+              key={value}
+              onClick={() => {
+                if (!on) setFilter(value);
               }}
-              // label="All Posts"
-              select={true}
-              options={postOption}
-            />
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="w-px self-stretch bg-gray-100 mx-1" />
-
-        {/* Compose area */}
-        <div className="flex-1 flex flex-col gap-1.5">
-          <div className="flex items-center gap-1.5">
-            <EditNoteIcon sx={{ fontSize: 13, color: "#9ca3af" }} />
-            <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
-              Create Post
-            </span>
-          </div>
-          <div
-            className="border border-dashed border-gray-200 rounded-xl px-3 py-2.5 cursor-text hover:border-[#2eacb3] hover:bg-[#f0fdfe] transition-all duration-200 group"
-            onClick={() => setIsNewPost(true)}
-          >
-            <p className="text-sm text-gray-400 group-hover:text-gray-500 leading-relaxed select-none">
-              Write what's in your mind, beneficial for others...
-            </p>
-          </div>
-        </div>
+              className={`flex-shrink-0 text-[11px] font-semibold px-3 py-1.5 rounded-full transition-colors cursor-pointer ${
+                on
+                  ? "text-white bg-gradient-to-r from-[#00a0a0] to-[#007f86] shadow-sm"
+                  : "text-gray-500 bg-gray-50 hover:bg-[#e0f6f6] hover:text-[#007f86]"
+              }`}
+            >
+              {label}
+            </button>
+          );
+        })}
       </div>
 
       <Dialog
@@ -111,7 +115,7 @@ const PostHeader: FC<PostHeaderProps> = ({
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <AssignmentIcon sx={{ color: "#2eacb3" }} />
+            <AssignmentIcon sx={{ color: "#00a0a0" }} />
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
               Create Post
             </Typography>

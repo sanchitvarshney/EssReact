@@ -42,7 +42,7 @@ const NotificationContent: FC<NotificationContentPropsType> = ({
         };
       default:
         return {
-          bg: 'from-blue-50 to-cyan-50',
+          bg: 'from-blue-50 to-teal-50',
           border: 'border-blue-200',
           icon: 'bg-blue-100 text-blue-600',
           dot: 'bg-blue-500'

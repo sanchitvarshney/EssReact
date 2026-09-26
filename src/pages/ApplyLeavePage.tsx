@@ -256,8 +256,8 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                                   : ""
                               } ${
                                 field.value === value
-                                  ? "bg-[#2eacb3] text-white border-[#2eacb3] shadow-sm"
-                                  : "bg-gray-50 text-gray-600 border-gray-200 hover:border-[#2eacb3]/50 hover:bg-[#f0fdfe]"
+                                  ? "bg-[#00a0a0] text-white border-[#00a0a0] shadow-sm"
+                                  : "bg-gray-50 text-gray-600 border-gray-200 hover:border-[#00a0a0]/50 hover:bg-[#f0fbfb]"
                               }`}
                             >
                               {label}
@@ -273,12 +273,12 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
 
               {/* ── Balance pill ── */}
               {type && (
-                <div className="flex items-center gap-3 bg-gradient-to-r from-[#e0f7fa] to-[#f0fdfe] rounded-2xl px-5 py-3.5 border border-[#2eacb3]/20">
-                  <div className="w-9 h-9 rounded-xl bg-[#2eacb3]/15 flex items-center justify-center flex-shrink-0">
-                    <AccountBalanceWalletIcon sx={{ color: "#0097a7", fontSize: 20 }} />
+                <div className="flex items-center gap-3 bg-gradient-to-r from-[#e0f6f6] to-[#f0fbfb] rounded-2xl px-5 py-3.5 border border-[#00a0a0]/20">
+                  <div className="w-9 h-9 rounded-xl bg-[#00a0a0]/15 flex items-center justify-center flex-shrink-0">
+                    <AccountBalanceWalletIcon sx={{ color: "#007f86", fontSize: 20 }} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-[#0097a7] leading-none mb-0.5">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-[#007f86] leading-none mb-0.5">
                       Available Balance
                     </p>
                     {getLeaveBalanceLoading ? (
@@ -382,27 +382,27 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                 <DotLoading />
               ) : (
                 currentBooking && (
-                  <div className="rounded-2xl border border-[#2eacb3]/20 overflow-hidden">
+                  <div className="rounded-2xl border border-[#00a0a0]/20 overflow-hidden">
                     <button
                       type="button"
                       onClick={() => setOpenCalendar(!openCalendar)}
-                      className="w-full flex items-center justify-between bg-[#e0f7fa] px-4 py-3 hover:bg-[#c8f0f3] transition-colors cursor-pointer"
+                      className="w-full flex items-center justify-between bg-[#e0f6f6] px-4 py-3 hover:bg-[#c8f0f3] transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-2">
-                        <EventNoteIcon sx={{ color: "#0097a7", fontSize: 16 }} />
+                        <EventNoteIcon sx={{ color: "#007f86", fontSize: 16 }} />
                         <span className="text-[#006064] font-semibold text-sm">
                           Duration:{" "}
-                          <span className="text-[#2eacb3] font-bold">
+                          <span className="text-[#00a0a0] font-bold">
                             {currentBooking} {currentBooking === 1 ? "day" : "days"}
                           </span>
                         </span>
                       </div>
                       {openCalendar
-                        ? <KeyboardArrowUpIcon sx={{ color: "#0097a7", fontSize: 18 }} />
-                        : <KeyboardArrowDownIcon sx={{ color: "#0097a7", fontSize: 18 }} />}
+                        ? <KeyboardArrowUpIcon sx={{ color: "#007f86", fontSize: 18 }} />
+                        : <KeyboardArrowDownIcon sx={{ color: "#007f86", fontSize: 18 }} />}
                     </button>
                     {openCalendar && (
-                      <div className="bg-white p-3 border-t border-[#2eacb3]/20">
+                      <div className="bg-white p-3 border-t border-[#00a0a0]/20">
                         <CalenderView startDate={fromDate} endDate={toDate} paid={currentBooking} type={type} />
                       </div>
                     )}
@@ -425,7 +425,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                           maxLength={500}
                           minLength={15}
                           rows={4}
-                          className="border resize-none border-gray-200 text-sm rounded-xl bg-gray-50 focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3]/20 transition-all min-h-[90px]"
+                          className="border resize-none border-gray-200 text-sm rounded-xl bg-gray-50 focus:border-[#00a0a0] focus:ring-2 focus:ring-[#00a0a0]/20 transition-all min-h-[90px]"
                           placeholder="Describe your reason (minimum 15 characters)…"
                           {...field}
                         />
@@ -446,11 +446,11 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
             {/* Header */}
             <div className="flex items-center gap-2 mb-3">
               <PersonAddIcon
-                sx={{ fontSize: 16, color: recipient.length > 0 ? "#2eacb3" : "#94a3b8" }}
+                sx={{ fontSize: 16, color: recipient.length > 0 ? "#00a0a0" : "#94a3b8" }}
               />
               <span
                 className={`text-[11px] font-bold uppercase tracking-wide ${
-                  recipient.length > 0 ? "text-[#2eacb3]" : "text-gray-400"
+                  recipient.length > 0 ? "text-[#00a0a0]" : "text-gray-400"
                 }`}
               >
                 CC Recipients
@@ -464,9 +464,9 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                     height: 18,
                     fontSize: 10,
                     fontWeight: 700,
-                    bgcolor: "#e0f7fa",
-                    color: "#0097a7",
-                    border: "1px solid rgba(46,172,179,0.25)",
+                    bgcolor: "#e0f6f6",
+                    color: "#007f86",
+                    border: "1px solid rgba(0,160,160,0.25)",
                     "& .MuiChip-label": { px: 1 },
                   }}
                 />
@@ -482,12 +482,12 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                     label={value?.text}
                     size="small"
                     sx={{
-                      bgcolor: "#e0f7fa",
+                      bgcolor: "#e0f6f6",
                       color: "#006064",
                       fontWeight: 600,
                       fontSize: 11,
-                      border: "1px solid rgba(46,172,179,0.25)",
-                      "& .MuiChip-deleteIcon": { color: "#0097a7", "&:hover": { color: "#006064" } },
+                      border: "1px solid rgba(0,160,160,0.25)",
+                      "& .MuiChip-deleteIcon": { color: "#007f86", "&:hover": { color: "#006064" } },
                     }}
                     onDelete={() => setRecipient((prev) => prev.filter((_, i) => i !== index))}
                   />
@@ -501,7 +501,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                 <Input
                   ref={inputRef}
                   value={searchText}
-                  className="w-full rounded-xl border-gray-200 bg-white focus:border-[#2eacb3] focus:ring focus:ring-[#2eacb3]/20 transition-all text-sm"
+                  className="w-full rounded-xl border-gray-200 bg-white focus:border-[#00a0a0] focus:ring focus:ring-[#00a0a0]/20 transition-all text-sm"
                   placeholder="Search by name or employee code…"
                   onChange={(e) => {
                     setSearchText(e.target.value);
@@ -554,7 +554,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
             type="button"
             onClick={handleConfirmSubmit}
             disabled={applySLLeaveLoading || !type}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-[#2eacb3] to-[#0097a7] hover:from-[#0097a7] hover:to-[#2eacb3] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-sm flex-shrink-0"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-[#00a0a0] to-[#007f86] hover:from-[#007f86] hover:to-[#00a0a0] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-sm flex-shrink-0"
           >
             {applySLLeaveLoading ? (
               <>

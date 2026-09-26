@@ -20,9 +20,9 @@ function SlideTransition(props: SlideProps) {
 const CONFIG = {
   success: {
     icon: CheckCircleOutlineIcon,
-    accent: "#2eacb3",
-    iconBg: "#e0f7fa",
-    iconColor: "#2eacb3",
+    accent: "#00a0a0",
+    iconBg: "#e0f6f6",
+    iconColor: "#00a0a0",
     label: "Success",
   },
   error: {

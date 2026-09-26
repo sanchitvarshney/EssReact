@@ -1,7 +1,5 @@
-import { Typography } from "@mui/material";
 import { useInView } from "react-intersection-observer";
 
-import MilestonesAndEventsCard from "../components/MilestonesAndEventsCard";
 import PostHeader from "../components/header/PostHeader";
 import {  useCallback, useEffect, useState } from "react";
 import {
@@ -13,16 +11,15 @@ import AnnouncementPageSkeleton from "../skeleton/AnnouncementPageSkeleton";
 import { useToast } from "../hooks/useToast";
 
 import { useLeaveListMutation } from "../services/Leave";
-import AbsenceListPage from "../components/AbsenceListPage";
 
 import { useLazyGetVibeQuery, useCreatePostMutation } from "../services/vibe";
 
 import AnnouncementList from "../components/AnnouncementList";
+import CelebrationsPanel from "../components/vibe/CelebrationsPanel";
 
 const AnnouncementPage = () => {
   const { showToast } = useToast();
   const [postFilter, setPostFilter] = useState<string>("all");
-  const [expandedPanel, setExpandedPanel] = useState("birthdays");
 
   const [
     getDOBList,
@@ -152,9 +149,6 @@ const AnnouncementPage = () => {
     }
   }, [inView, hasMore, loadingPosts]);
 
-  const handlePanelChange = useCallback((panel: string) => {
-    setExpandedPanel((prev) => (prev === panel ? "" : panel));
-  }, []);
   const handleSetFilter = useCallback((filter: string) => {
     setPostFilter((prev) => (prev === filter ? "" : filter));
   }, []);
@@ -207,65 +201,25 @@ const AnnouncementPage = () => {
       {dobLoading || waLoading || hireLoading || leaveLoading || vibeLoading ? (
         <AnnouncementPageSkeleton />
       ) : (
-        <div className="h-[calc(100vh-78px)] flex flex-col overflow-hidden px-3 py-4 w-full">
-          {/* Page header */}
-          <div className="flex items-center gap-2 mb-4">
-            <div
-              style={{ backgroundColor: "#2eacb3" }}
-              className="w-1 h-7 rounded-full"
-            />
-            <Typography
-              sx={{
-                fontSize: { xs: 16, sm: 19 },
-                fontWeight: 700,
-                color: "#232324",
-              }}
-            >
-              Team Feed
-            </Typography>
-          </div>
-
-          {/* Two-column grid */}
-          <div className="flex-1 overflow-hidden grid grid-cols-1 sm:grid-cols-[2fr_1fr] lg:grid-cols-[3fr_1fr] gap-4">
-            {/* Left: post feed */}
-            <div className="flex flex-col h-full overflow-hidden">
-              <div className="flex-shrink-0 mb-3">
-                <PostHeader
-                  setFilter={handleSetFilter}
-                  postFilter={postFilter}
-                  onCreatePost={handleCreatePost}
-                />
-              </div>
-              <div className="flex-1 overflow-y-auto custom-scrollbar-for-menu">
-                <AnnouncementList posts={posts} hasMore={hasMore} ref={ref} />
-              </div>
+        <div className="h-full overflow-y-auto custom-scrollbar-for-menu px-3 py-4">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] gap-4 items-start">
+            {/* Feed */}
+            <div className="flex flex-col gap-4 min-w-0">
+              <PostHeader
+                setFilter={handleSetFilter}
+                postFilter={postFilter}
+                onCreatePost={handleCreatePost}
+              />
+              <AnnouncementList posts={posts} hasMore={hasMore} ref={ref} />
             </div>
 
-            {/* Right: sidebar */}
-            <div className="hidden sm:flex flex-col h-full overflow-y-auto custom-scrollbar-for-menu gap-3 pr-1">
-              <MilestonesAndEventsCard
-                title="Current Month's Birthdays"
-                data={dobData}
-                expanded={expandedPanel === "birthdays"}
-                onChange={() => handlePanelChange("birthdays")}
-              />
-              <MilestonesAndEventsCard
-                title="Anniversaries"
-                data={waList}
-                expanded={expandedPanel === "anniversary"}
-                onChange={() => handlePanelChange("anniversary")}
-              />
-              <MilestonesAndEventsCard
-                title="New Hires"
-                data={hireData}
-                expanded={expandedPanel === "newhires"}
-                onChange={() => handlePanelChange("newhires")}
-              />
-              <AbsenceListPage
-                title="Today's Absences"
-                data={leaveData?.data}
-                expanded={expandedPanel === "absence"}
-                onChange={() => handlePanelChange("absence")}
+            {/* People & celebrations */}
+            <div className="lg:sticky lg:top-0 min-w-0">
+              <CelebrationsPanel
+                birthdays={dobData}
+                anniversaries={waList}
+                hires={hireData}
+                absences={leaveData?.data}
               />
             </div>
           </div>

@@ -124,14 +124,14 @@ const LeaveGrantPage = () => {
   const details = leaveGrantDetailsData?.data;
 
   return (
-    <div className="h-[calc(100vh-78px)] flex flex-col overflow-hidden px-3 py-4 w-full">
+    <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full">
       {/* Page header */}
       <div className="flex items-center gap-2 mb-3 flex-shrink-0">
-        <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
-        <EventNoteIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
+        <div className="w-1 h-7 rounded-full bg-[#00a0a0]" />
+        <EventNoteIcon sx={{ fontSize: 20, color: "#00a0a0" }} />
         <span className="text-lg font-bold text-gray-800">Leave Requests</span>
         {leaveList.length > 0 && (
-          <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f7fa] text-[#2eacb3] border border-[#2eacb3]/20">
+          <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f6f6] text-[#00a0a0] border border-[#00a0a0]/20">
             {leaveList.length} total
           </span>
         )}
@@ -173,8 +173,8 @@ const LeaveGrantPage = () => {
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 flex-shrink-0">
               <div className="flex items-center gap-2">
-                <div className="w-1 h-5 rounded-full bg-[#2eacb3]" />
-                <EventNoteIcon sx={{ fontSize: 16, color: "#2eacb3" }} />
+                <div className="w-1 h-5 rounded-full bg-[#00a0a0]" />
+                <EventNoteIcon sx={{ fontSize: 16, color: "#00a0a0" }} />
                 <span className="text-sm font-bold text-gray-800">
                   Leave Grant Details
                 </span>
@@ -201,13 +201,13 @@ const LeaveGrantPage = () => {
                 <div className="flex flex-col gap-0.5">
                   <div className="flex items-center gap-1 mb-0.5">
                     <AccountBalanceWalletIcon
-                      sx={{ fontSize: 12, color: "#2eacb3" }}
+                      sx={{ fontSize: 12, color: "#00a0a0" }}
                     />
                     <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">
                       Leave Balance
                     </span>
                   </div>
-                  <span className="text-lg font-bold text-[#2eacb3]">
+                  <span className="text-lg font-bold text-[#00a0a0]">
                     {details?.leavebalance ?? "—"}
                   </span>
                 </div>
@@ -262,7 +262,7 @@ const LeaveGrantPage = () => {
               {/* Session table */}
               <div className="mt-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-1 h-4 rounded-full bg-[#2eacb3]" />
+                  <div className="w-1 h-4 rounded-full bg-[#00a0a0]" />
                   <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">
                     Breakup
                   </span>
@@ -274,7 +274,7 @@ const LeaveGrantPage = () => {
             {/* Footer: rejection textarea + action buttons */}
             <div className="flex-shrink-0 border-t border-gray-100 px-5 py-4 bg-white">
               <Textarea
-                className="w-full border border-gray-200 text-sm rounded-xl bg-gray-50 focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3]/30 transition-all resize-none mb-3"
+                className="w-full border border-gray-200 text-sm rounded-xl bg-gray-50 focus:border-[#00a0a0] focus:ring-2 focus:ring-[#00a0a0]/30 transition-all resize-none mb-3"
                 placeholder="Add a note or rejection reason (optional)…"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}

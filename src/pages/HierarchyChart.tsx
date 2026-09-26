@@ -145,12 +145,12 @@ const HierarchyChart = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-78px)] flex flex-col overflow-hidden px-3 py-4 w-full">
+    <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full">
 
       {/* Page header */}
       <div className="flex items-center gap-2 mb-4 flex-shrink-0">
-        <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
-        <AccountTreeIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
+        <div className="w-1 h-7 rounded-full bg-[#00a0a0]" />
+        <AccountTreeIcon sx={{ fontSize: 20, color: "#00a0a0" }} />
         <Typography variant="h6" sx={{ fontWeight: 700, color: "#1e293b", fontSize: 18 }}>
           Organization Chart
         </Typography>
@@ -183,7 +183,7 @@ const HierarchyChart = () => {
         <div className="flex items-center gap-1 bg-gray-50 rounded-xl border border-gray-200 p-1">
           <button
             onClick={() => setZoom((z) => Math.max(z - 0.1, 0.3))}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-600 hover:bg-white hover:text-[#2eacb3] hover:shadow-sm transition-all duration-150"
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-600 hover:bg-white hover:text-[#00a0a0] hover:shadow-sm transition-all duration-150"
             title="Zoom out"
           >
             <ZoomOutIcon sx={{ fontSize: 18 }} />
@@ -195,7 +195,7 @@ const HierarchyChart = () => {
 
           <button
             onClick={() => setZoom((z) => Math.min(z + 0.1, 2))}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-600 hover:bg-white hover:text-[#2eacb3] hover:shadow-sm transition-all duration-150"
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-600 hover:bg-white hover:text-[#00a0a0] hover:shadow-sm transition-all duration-150"
             title="Zoom in"
           >
             <ZoomInIcon sx={{ fontSize: 18 }} />
@@ -205,7 +205,7 @@ const HierarchyChart = () => {
 
           <button
             onClick={() => setZoom(0.7)}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-white hover:text-[#2eacb3] hover:shadow-sm transition-all duration-150"
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-white hover:text-[#00a0a0] hover:shadow-sm transition-all duration-150"
             title="Reset zoom"
           >
             <RestartAltIcon sx={{ fontSize: 18 }} />

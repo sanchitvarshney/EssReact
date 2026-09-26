@@ -21,7 +21,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({ onOpen, maxWidth, isView,
       }`}
     >
       {/* Top accent */}
-      <div className="h-1 bg-gradient-to-r from-[#2eacb3] to-[#00d4e4]" />
+      <div className="h-1 bg-gradient-to-r from-[#00a0a0] to-[#4fd1c5]" />
 
       <div className="p-4">
         {/* Duration + "ago" chip */}
@@ -31,7 +31,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({ onOpen, maxWidth, isView,
             <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">
               Duration
             </span>
-            <span className="text-sm font-bold text-[#2eacb3]">{days}</span>
+            <span className="text-sm font-bold text-[#00a0a0]">{days}</span>
           </div>
           <Chip
             label={data?.regago}
@@ -56,8 +56,8 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({ onOpen, maxWidth, isView,
             sx={{
               width: isView ? 52 : 44,
               height: isView ? 52 : 44,
-              border: "2.5px solid #e0f7fa",
-              backgroundColor: "#2eacb3",
+              border: "2.5px solid #e0f6f6",
+              backgroundColor: "#00a0a0",
               pointerEvents: "none",
               userSelect: "none",
               fontSize: 16,
@@ -69,7 +69,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({ onOpen, maxWidth, isView,
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 flex-wrap">
               <span className="text-sm font-bold text-gray-800 truncate">{data?.empname}</span>
-              <span className="text-[10px] font-mono font-semibold text-[#0097a7] bg-[#e0f7fa] px-1.5 py-0.5 rounded-md">
+              <span className="text-[10px] font-mono font-semibold text-[#007f86] bg-[#e0f6f6] px-1.5 py-0.5 rounded-md">
                 {data?.empcode}
               </span>
             </div>
@@ -84,7 +84,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({ onOpen, maxWidth, isView,
         {/* Leave type + date */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-[#2eacb3] flex-shrink-0" />
+            <div className="w-2 h-2 rounded-full bg-[#00a0a0] flex-shrink-0" />
             <span className="text-xs font-semibold text-gray-600">{data?.leavetype} Leave</span>
           </div>
           <div className="flex items-center gap-1 text-gray-400">
@@ -97,7 +97,7 @@ const LeaveGrantCard: FC<LeaveGrantCardPropsType> = ({ onOpen, maxWidth, isView,
         {!isView && (
           <button
             onClick={() => onOpen?.(data)}
-            className="mt-3 w-full py-2 rounded-xl text-xs font-bold text-[#2eacb3] bg-[#e0f7fa] hover:bg-[#2eacb3] hover:text-white transition-all duration-200 cursor-pointer"
+            className="mt-3 w-full py-2 rounded-xl text-xs font-bold text-[#00a0a0] bg-[#e0f6f6] hover:bg-[#00a0a0] hover:text-white transition-all duration-200 cursor-pointer"
           >
             View Details
           </button>

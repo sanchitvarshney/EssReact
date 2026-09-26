@@ -117,7 +117,7 @@ const KraRatingTable = ({
               <Fragment key={category.id}>
                 <TableRow>
                   <StyledTableCell colSpan={6} sx={{ backgroundColor: "#f8fafc" }}>
-                    <Typography sx={{ fontWeight: 700, fontSize: "0.8rem", color: "#1e8a8f" }}>
+                    <Typography sx={{ fontWeight: 700, fontSize: "0.8rem", color: "#007f86" }}>
                       {category.title}
                     </Typography>
                   </StyledTableCell>

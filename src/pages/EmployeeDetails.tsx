@@ -56,7 +56,7 @@ const InfoField = ({
 /* ── Section header ── */
 const SectionHead = ({ icon, title }: { icon: React.ReactNode; title: string }) => (
   <div className="flex items-center gap-2 px-5 py-3.5 border-b border-gray-50">
-    <div className="w-1 h-5 rounded-full bg-[#2eacb3]" />
+    <div className="w-1 h-5 rounded-full bg-[#00a0a0]" />
     {icon}
     <span className="text-sm font-bold text-gray-800">{title}</span>
   </div>
@@ -81,7 +81,7 @@ const EmployeeDetails = () => {
   }, [data]);
 
   return (
-    <div className="w-full h-[calc(100vh-78px)] overflow-y-auto custom-scrollbar-for-menu px-0 py-0">
+    <div className="w-full h-full overflow-y-auto custom-scrollbar-for-menu px-0 py-0">
       {isLoading ? (
         <EmployeeProfilePageSkeleton />
       ) : (
@@ -90,7 +90,7 @@ const EmployeeDetails = () => {
           {/* ── Profile banner card ── */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             {/* Cover strip */}
-            <div className="relative h-24 sm:h-28 bg-gradient-to-r from-[#2eacb3] to-[#0097a7] overflow-hidden">
+            <div className="relative h-24 sm:h-28 bg-gradient-to-r from-[#00a0a0] to-[#007f86] overflow-hidden">
               <div className="absolute -right-4 -top-6 w-28 h-28 rounded-full bg-white/10" />
               <div className="absolute right-20 top-4 w-14 h-14 rounded-full bg-white/10" />
               {/* Badge logo */}
@@ -111,8 +111,8 @@ const EmployeeDetails = () => {
                     width: 80,
                     height: 80,
                     border: "4px solid #fff",
-                    boxShadow: "0 4px 20px rgba(46,172,179,0.3)",
-                    backgroundColor: "#2eacb3",
+                    boxShadow: "0 4px 20px rgba(0,160,160,0.3)",
+                    backgroundColor: "#00a0a0",
                     pointerEvents: "none",
                     userSelect: "none",
                     fontSize: 28,
@@ -127,7 +127,7 @@ const EmployeeDetails = () => {
                   <span className="text-xl font-bold text-gray-800">
                     {data?.personalInfo?.empName}
                   </span>
-                  <span className="text-[11px] font-mono font-semibold text-[#0097a7] bg-[#e0f7fa] px-2.5 py-0.5 rounded-full border border-[#2eacb3]/20">
+                  <span className="text-[11px] font-mono font-semibold text-[#007f86] bg-[#e0f6f6] px-2.5 py-0.5 rounded-full border border-[#00a0a0]/20">
                     {data?.personalInfo?.empCode}
                   </span>
                 </div>
@@ -138,7 +138,7 @@ const EmployeeDetails = () => {
                     </span>
                   )}
                   {data?.officeInfo?.department && (
-                    <span className="text-xs font-semibold text-[#0097a7] bg-[#e0f7fa] px-2.5 py-0.5 rounded-full">
+                    <span className="text-xs font-semibold text-[#007f86] bg-[#e0f6f6] px-2.5 py-0.5 rounded-full">
                       {data.officeInfo.department}
                     </span>
                   )}
@@ -150,7 +150,7 @@ const EmployeeDetails = () => {
           {/* ── Basic Information ── */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <SectionHead
-              icon={<BadgeIcon sx={{ fontSize: 16, color: "#2eacb3" }} />}
+              icon={<BadgeIcon sx={{ fontSize: 16, color: "#00a0a0" }} />}
               title="Basic Information"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-5 p-5">
@@ -173,7 +173,7 @@ const EmployeeDetails = () => {
 
             {/* Report To */}
             <div className="flex items-center gap-2 mx-5 mt-1 mb-2">
-              <div className="w-2 h-2 rounded-full bg-[#2eacb3]/50" />
+              <div className="w-2 h-2 rounded-full bg-[#00a0a0]/50" />
               <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wide">
                 Report To
               </span>
@@ -194,7 +194,7 @@ const EmployeeDetails = () => {
           {/* ── Company Information ── */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <SectionHead
-              icon={<BusinessIcon sx={{ fontSize: 16, color: "#2eacb3" }} />}
+              icon={<BusinessIcon sx={{ fontSize: 16, color: "#00a0a0" }} />}
               title="Company Information"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-5 p-5">
@@ -213,7 +213,7 @@ const EmployeeDetails = () => {
           {/* ── Hierarchy ── */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <SectionHead
-              icon={<AccountTreeIcon sx={{ fontSize: 16, color: "#2eacb3" }} />}
+              icon={<AccountTreeIcon sx={{ fontSize: 16, color: "#00a0a0" }} />}
               title="Hierarchy"
             />
             <div className="w-full overflow-x-auto custom-scrollbar-for-menu p-4">

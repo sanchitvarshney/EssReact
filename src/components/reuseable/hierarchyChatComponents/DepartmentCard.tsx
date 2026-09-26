@@ -58,7 +58,7 @@ export const DepartmentCard = ({
           width: 48,
           height: 48,
           border: "2px solid #444",
-          backgroundColor: "#2eacb3",
+          backgroundColor: "#00a0a0",
                      pointerEvents: "none",
                       userSelect: "none",
         }}

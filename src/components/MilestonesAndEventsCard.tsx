@@ -31,7 +31,7 @@ const MilestonesAndEventsCard: React.FC<MilestonesAndEventsCardProps> = ({
           {count > 0 && (
             <span
               className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-              style={{ backgroundColor: "#e0f7fa", color: "#0097a7" }}
+              style={{ backgroundColor: "#e0f6f6", color: "#007f86" }}
             >
               {count}
             </span>
@@ -67,7 +67,7 @@ const MilestonesAndEventsCard: React.FC<MilestonesAndEventsCardProps> = ({
                     sx={{
                       width: 36,
                       height: 36,
-                      backgroundColor: "#2eacb3",
+                      backgroundColor: "#00a0a0",
                       fontSize: 14,
                       fontWeight: 700,
                       flexShrink: 0,
@@ -87,7 +87,7 @@ const MilestonesAndEventsCard: React.FC<MilestonesAndEventsCardProps> = ({
                       </span>
                       <span
                         className="text-[11px] font-semibold flex-shrink-0"
-                        style={{ color: "#2eacb3" }}
+                        style={{ color: "#00a0a0" }}
                       >
                         {milestone.date}
                       </span>

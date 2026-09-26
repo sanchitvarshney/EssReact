@@ -133,7 +133,7 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
           sx={{
             width: 44,
             height: 44,
-            bgcolor: "#2eacb3",
+            bgcolor: "#00a0a0",
             fontWeight: 700,
             fontSize: 16,
             pointerEvents: "none",
@@ -286,8 +286,8 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
               size="small"
               onClick={() => handleComment(post?.postKey)}
               sx={{
-                color: "#2eacb3",
-                "&:hover": { bgcolor: "#e0f7fa" },
+                color: "#00a0a0",
+                "&:hover": { bgcolor: "#e0f6f6" },
                 transition: "all 0.15s",
               }}
             >
@@ -317,11 +317,11 @@ const PostAnnouncementCard: FC<PostAnnouncementCardProps> = ({ post }) => {
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
           <div className="flex items-center gap-2">
-            <AddCommentIcon sx={{ fontSize: 16, color: "#2eacb3" }} />
+            <AddCommentIcon sx={{ fontSize: 16, color: "#00a0a0" }} />
             <span className="font-semibold text-gray-800 text-sm">Comments</span>
             <span
               className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-              style={{ backgroundColor: "#e0f7fa", color: "#0097a7" }}
+              style={{ backgroundColor: "#e0f6f6", color: "#007f86" }}
             >
               {totalComments}
             </span>

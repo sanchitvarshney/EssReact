@@ -37,7 +37,7 @@ export const NodeCard = ({
       ? "#4ade80"
       : highlightType === "ancestor"
       ? "#a78bfa"
-      : "#2eacb3";
+      : "#00a0a0";
 
   const isHighlighted = Boolean(highlightType);
 
@@ -72,7 +72,7 @@ export const NodeCard = ({
           borderRadius: "14px 14px 0 0",
           background: isHighlighted
             ? accentColor
-            : "linear-gradient(90deg, #2eacb3, #00d4e4)",
+            : "linear-gradient(90deg, #00a0a0, #4fd1c5)",
         }}
       />
 
@@ -92,7 +92,7 @@ export const NodeCard = ({
             width: 54,
             height: 54,
             border: `3px solid ${accentColor}`,
-            bgcolor: "#2eacb3",
+            bgcolor: "#00a0a0",
             fontWeight: 700,
             fontSize: 20,
             flexShrink: 0,
@@ -140,8 +140,8 @@ export const NodeCard = ({
                 fontWeight: 600,
                 padding: "2px 8px",
                 borderRadius: 999,
-                backgroundColor: isHighlighted ? `${accentColor}20` : "#e0f7fa",
-                color: isHighlighted ? accentColor : "#0097a7",
+                backgroundColor: isHighlighted ? `${accentColor}20` : "#e0f6f6",
+                color: isHighlighted ? accentColor : "#007f86",
                 maxWidth: "100%",
                 whiteSpace: "nowrap",
                 overflow: "hidden",

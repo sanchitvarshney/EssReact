@@ -177,7 +177,7 @@ export default function CreateNewPostPage({
       <div className="flex items-center gap-3">
         <Avatar
           src={imgUrl}
-          sx={{ width: 42, height: 42, bgcolor: "#2eacb3", fontWeight: 700, pointerEvents: "none", userSelect: "none" }}
+          sx={{ width: 42, height: 42, bgcolor: "#00a0a0", fontWeight: 700, pointerEvents: "none", userSelect: "none" }}
         >
           {name?.charAt(0)}
         </Avatar>
@@ -207,7 +207,7 @@ export default function CreateNewPostPage({
           value={caption}
           onChange={(e) => setCaption(e.target.value.slice(0, MAX_CAPTION))}
           rows={5}
-          className="w-full px-3 py-3 border border-gray-200 rounded-xl resize-none text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2eacb3]/30 focus:border-[#2eacb3] transition-all duration-200 leading-relaxed"
+          className="w-full px-3 py-3 border border-gray-200 rounded-xl resize-none text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#00a0a0]/30 focus:border-[#00a0a0] transition-all duration-200 leading-relaxed"
           placeholder="Share something helpful, inspiring, or exciting with your team..."
         />
 
@@ -223,7 +223,7 @@ export default function CreateNewPostPage({
             <Tooltip key={type} title={label} placement="top">
               <button
                 onClick={() => applyFormat(type)}
-                className="p-1.5 rounded-lg border border-gray-200 text-gray-500 hover:border-[#2eacb3] hover:text-[#2eacb3] hover:bg-[#f0fdfe] transition-all duration-150"
+                className="p-1.5 rounded-lg border border-gray-200 text-gray-500 hover:border-[#00a0a0] hover:text-[#00a0a0] hover:bg-[#f0fbfb] transition-all duration-150"
               >
                 {icon}
               </button>
@@ -267,7 +267,7 @@ export default function CreateNewPostPage({
           ))}
 
           {imageFiles.length < 2 && (
-            <label className="w-24 h-24 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center cursor-pointer text-gray-400 hover:border-[#2eacb3] hover:text-[#2eacb3] hover:bg-[#f0fdfe] transition-all duration-200 gap-1">
+            <label className="w-24 h-24 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center cursor-pointer text-gray-400 hover:border-[#00a0a0] hover:text-[#00a0a0] hover:bg-[#f0fbfb] transition-all duration-200 gap-1">
               <AddPhotoAlternateIcon sx={{ fontSize: 22 }} />
               <span className="text-[10px] font-medium">Add photo</span>
               <input

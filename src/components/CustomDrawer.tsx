@@ -29,7 +29,7 @@ export default function CustomDrawer() {
           alt={user?.name}
           //@ts-ignore
           src={user?.imgUrl}
-          sx={{ width: 80, height: 80, backgroundColor: "#2eacb3",           pointerEvents: "none",
+          sx={{ width: 80, height: 80, backgroundColor: "#00a0a0",           pointerEvents: "none",
                       userSelect: "none", }}
         />
         <h2 className="mt-2 break-words max-w-full text-[1.3rem] font-semibold ">

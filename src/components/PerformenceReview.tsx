@@ -8,7 +8,7 @@ const PerformenceReview = () => {
           label={"1M"}
           sx={{
             px: 2,
-            border: "1px solid  #2eacb3",
+            border: "1px solid  #00a0a0",
             bgcolor: "rgba(52, 159, 195, 0.07)",
             color: "#000",
             fontWeight: 500,
@@ -22,7 +22,7 @@ const PerformenceReview = () => {
           label={"3M"}
           sx={{
             px: 2,
-            border: "1px solid  #2eacb3",
+            border: "1px solid  #00a0a0",
             bgcolor: "rgba(52, 159, 195, 0.07)",
             color: "#000",
             fontWeight: 500,
@@ -36,7 +36,7 @@ const PerformenceReview = () => {
           label={"6M"}
           sx={{
             px: 2,
-            border: "1px solid  #2eacb3",
+            border: "1px solid  #00a0a0",
             bgcolor: "rgba(52, 159, 195, 0.07)",
             color: "#000",
             fontWeight: 500,
@@ -50,7 +50,7 @@ const PerformenceReview = () => {
           label={"1Y"}
           sx={{
             px: 2,
-            border: "1px solid  #2eacb3",
+            border: "1px solid  #00a0a0",
             bgcolor: "rgba(52, 159, 195, 0.07)",
             color: "#000",
             fontWeight: 500,

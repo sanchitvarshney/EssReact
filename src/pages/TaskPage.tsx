@@ -1,27 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
   Chip,
   CircularProgress,
   Drawer,
-  IconButton,
-  MenuItem,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Tab,
-  Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import ViewKanbanOutlinedIcon from "@mui/icons-material/ViewKanbanOutlined";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import EmptyData from "../components/reuseable/EmptyData";
 import TaskCard from "../components/reuseable/TaskCard";
 import CreateTaskDrawer from "../components/reuseable/CreateTaskDrawer";
@@ -43,16 +43,16 @@ const FILTERS = [
   { value: "closed", label: "Closed" },
 ];
 
-const MetricTile = ({ label, value, color, onClick }: { label: string; value: number; color: string; onClick: () => void }) => (
-  <div onClick={onClick} className="flex-1 min-w-[90px] rounded-xl p-3 cursor-pointer border border-gray-100 hover:shadow-sm transition-shadow" style={{ background: `${color}12` }}>
-    <Typography variant="caption" sx={{ color, fontWeight: 700 }}>{label}</Typography>
-    <Typography variant="h6" sx={{ color, fontWeight: 700 }}>{value}</Typography>
-  </div>
-);
+const BOARD_COLUMNS = [
+  { id: "todo", label: "To do", color: "#607d8b", statuses: ["Assigned", "Reopened"] },
+  { id: "doing", label: "In progress", color: "#1e88e5", statuses: ["InProgress", "Forwarded"] },
+  { id: "waiting", label: "Waiting", color: "#8e24aa", statuses: ["Completed", "PendingApproval"] },
+  { id: "done", label: "Closed", color: "#2e7d32", statuses: ["Closed", "FinalClosed", "Withdrawn", "Surrendered"] },
+];
 
 const TaskPage = () => {
   const [tab, setTab] = useState(0); 
-  const [view, setView] = useState<"card" | "table">("card");
+  const [view, setView] = useState<"board" | "card" | "table">("board");
   const [filter, setFilter] = useState("");
   const [tasks, setTasks] = useState<any[]>([]);
   const [metrics, setMetrics] = useState<any>(null);
@@ -77,69 +77,192 @@ const TaskPage = () => {
 
   useEffect(() => { load(); }, [tab, filter, reloadTick]);
 
-  const openList = (f: string) => setFilter(f);
+  const groups = useMemo(() => {
+    const pick = (statuses: string[]) => tasks.filter((t) => statuses.includes(t.status));
+    return BOARD_COLUMNS.map((col) => ({ ...col, items: pick(col.statuses) }));
+  }, [tasks]);
+
+  const tiles = [
+    { key: "active", label: "Open", value: (metrics?.assigned || 0) + (metrics?.in_progress || 0), color: "#1e88e5", icon: PlayCircleOutlineIcon },
+    { key: "overdue", label: "Overdue", value: metrics?.overdue || 0, color: "#e53935", icon: ErrorOutlineIcon },
+    { key: "waiting", label: "Waiting", value: metrics?.pending_approval || 0, color: "#8e24aa", icon: HourglassEmptyIcon },
+    { key: "closed", label: "Closed", value: metrics?.closed || 0, color: "#2e7d32", icon: TaskAltIcon },
+  ];
+
+  const views = [
+    { id: "board", label: "Board", icon: ViewKanbanOutlinedIcon },
+    { id: "card", label: "Cards", icon: GridViewIcon },
+    { id: "table", label: "Table", icon: ViewListIcon },
+  ] as const;
 
   return (
-    <div className="h-[calc(100vh-78px)] flex flex-col overflow-hidden px-3 py-4 w-full">
-      {/* Page header - same left-aligned accent-bar style as every other module page */}
-      <div className="flex items-center justify-between gap-2 mb-3 flex-shrink-0 flex-wrap">
-        <div className="flex items-center gap-2">
-          <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
-          <AssignmentIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
-          <span className="text-lg font-bold text-gray-800">Task Box</span>
-          {tasks.length > 0 && (
-            <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f7fa] text-[#2eacb3] border border-[#2eacb3]/20">
-              {tasks.length} total
+    <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full gap-3">
+      {/* Hero */}
+      <section
+        className="relative overflow-hidden rounded-3xl text-white p-5 sm:p-6 flex-shrink-0"
+        style={{ background: "linear-gradient(120deg, #0f2f3a 0%, #0b5563 50%, #00a0a0 100%)" }}
+      >
+        <div className="pointer-events-none absolute -right-14 -top-20 w-60 h-60 rounded-full border-[26px] border-white/5" />
+        <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <span className="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center flex-shrink-0">
+              <AssignmentIcon sx={{ fontSize: 28 }} />
             </span>
-          )}
-        </div>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" } }}
-          onClick={() => setShowCreate(true)}
-        >
-          Assign a Task
-        </Button>
-      </div>
+            <div>
+              <p className="text-[11px] uppercase tracking-widest text-white/60">Work on your plate</p>
+              <p className="text-xl sm:text-2xl font-bold leading-tight">Task Box</p>
+              <p className="text-sm text-white/70">
+                {byMe ? "Tasks you have assigned to others" : "Tasks assigned to you"} · {tasks.length} shown
+              </p>
+            </div>
+          </div>
 
-      <div className="flex items-center justify-between gap-2 mb-2 flex-wrap flex-shrink-0">
-        <Tabs value={tab} onChange={(_, v) => { setTab(v); setFilter(""); }} sx={{ minHeight: 36 }}>
-          <Tab label="My Tasks" sx={{ minHeight: 36, textTransform: "none", fontWeight: 600 }} />
-          <Tab label="Assigned by Me" sx={{ minHeight: 36, textTransform: "none", fontWeight: 600 }} />
-        </Tabs>
-        <div className="flex items-center gap-1 border border-gray-200 rounded-lg p-0.5">
-          <IconButton size="small" onClick={() => setView("card")} sx={{ bgcolor: view === "card" ? "#2eacb31a" : "transparent" }}>
-            <GridViewIcon fontSize="small" sx={{ color: view === "card" ? "#2eacb3" : "#9ca3af" }} />
-          </IconButton>
-          <IconButton size="small" onClick={() => setView("table")} sx={{ bgcolor: view === "table" ? "#2eacb31a" : "transparent" }}>
-            <ViewListIcon fontSize="small" sx={{ color: view === "table" ? "#2eacb3" : "#9ca3af" }} />
-          </IconButton>
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center bg-white/15 rounded-2xl p-1 gap-0.5">
+              {["My Tasks", "Assigned by Me"].map((label, idx) => (
+                <button
+                  key={label}
+                  onClick={() => {
+                    setTab(idx);
+                    setFilter("");
+                  }}
+                  className={`px-4 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
+                    tab === idx ? "bg-white text-[#007f86] shadow" : "text-white/80 hover:bg-white/10"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowCreate(true)}
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white text-[#007f86] text-sm font-semibold shadow-lg hover:bg-teal-50 transition-colors cursor-pointer"
+            >
+              <AddIcon sx={{ fontSize: 18 }} /> Assign a task
+            </button>
+          </div>
         </div>
-      </div>
+      </section>
 
+      {/* Metric tiles (click to filter) */}
       {metrics && (
-        <div className="flex gap-2 mb-3 flex-wrap flex-shrink-0">
-          <MetricTile label="Open" value={(metrics.assigned || 0) + (metrics.in_progress || 0)} color="#1e88e5" onClick={() => openList("active")} />
-          <MetricTile label="Overdue" value={metrics.overdue || 0} color="#e53935" onClick={() => openList("overdue")} />
-          <MetricTile label="Waiting" value={metrics.pending_approval || 0} color="#8e24aa" onClick={() => openList("waiting")} />
-          <MetricTile label="Closed" value={metrics.closed || 0} color="#2e7d32" onClick={() => openList("closed")} />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 flex-shrink-0">
+          {tiles.map(({ key, label, value, color, icon: Icon }) => {
+            const on = filter === key;
+            return (
+              <button
+                key={key}
+                onClick={() => setFilter(on ? "" : key)}
+                className="flex items-center gap-3 bg-white rounded-2xl border p-3.5 text-left transition-all cursor-pointer hover:shadow-md"
+                style={{
+                  borderColor: on ? color : "#f3f4f6",
+                  boxShadow: on ? `0 0 0 2px ${color}33` : undefined,
+                }}
+              >
+                <span
+                  className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: `${color}14`, color }}
+                >
+                  <Icon sx={{ fontSize: 22 }} />
+                </span>
+                <span>
+                  <span className="block text-2xl font-bold leading-none tabular-nums" style={{ color }}>
+                    {value}
+                  </span>
+                  <span className="block text-[11px] font-medium text-gray-500 mt-1">{label}</span>
+                </span>
+              </button>
+            );
+          })}
         </div>
       )}
 
-      <div className="mb-3 w-full sm:w-56 flex-shrink-0">
-        <TextField select size="small" fullWidth label="Filter" value={filter} onChange={(e) => setFilter(e.target.value)}>
-          {FILTERS.map((f) => <MenuItem key={f.value} value={f.value}>{f.label}</MenuItem>)}
-        </TextField>
+      {/* Filter chips + view switch */}
+      <div className="flex items-center justify-between gap-3 flex-wrap flex-shrink-0">
+        <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar-for-menu">
+          {FILTERS.map((f) => {
+            const on = filter === f.value;
+            return (
+              <button
+                key={f.value || "all"}
+                onClick={() => setFilter(f.value)}
+                className={`flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors cursor-pointer ${
+                  on
+                    ? "text-white bg-gradient-to-r from-[#00a0a0] to-[#007f86] shadow-sm"
+                    : "bg-white border border-gray-100 text-gray-500 hover:text-[#007f86] hover:border-[#00a0a0]"
+                }`}
+              >
+                {f.label}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="flex items-center bg-white border border-gray-100 shadow-sm rounded-2xl p-1 gap-0.5">
+          {views.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              onClick={() => setView(id)}
+              title={label}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                view === id
+                  ? "text-white bg-gradient-to-r from-[#00a0a0] to-[#007f86] shadow-sm"
+                  : "text-gray-500 hover:bg-gray-50"
+              }`}
+            >
+              <Icon sx={{ fontSize: 16 }} />
+              <span className="hidden sm:inline">{label}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
+      {/* Content */}
       {loading ? (
-        <Box className="w-full flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#2eacb3" }} /></Box>
+        <Box className="w-full flex-1 flex items-center justify-center">
+          <CircularProgress sx={{ color: "#00a0a0" }} />
+        </Box>
       ) : tasks.length === 0 ? (
-        <div className="flex-1 flex items-center justify-center"><EmptyData title="No tasks here" subtitle={byMe ? "Tasks you assigned will show up here." : "Tasks assigned to you will show up here."} /></div>
+        <div className="flex-1 flex items-center justify-center">
+          <EmptyData
+            title="No tasks here"
+            subtitle={byMe ? "Tasks you assigned will show up here." : "Tasks assigned to you will show up here."}
+          />
+        </div>
+      ) : view === "board" ? (
+        <div className="flex-1 min-h-0 flex gap-3 overflow-x-auto custom-scrollbar-for-menu pb-1">
+          {groups.map((col) => (
+            <div
+              key={col.id}
+              className="w-[300px] flex-shrink-0 xl:flex-1 xl:min-w-[260px] flex flex-col rounded-3xl bg-white/70 border border-gray-100 min-h-0"
+            >
+              <div className="flex items-center justify-between px-4 py-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: col.color }} />
+                  <span className="text-sm font-bold text-gray-700">{col.label}</span>
+                </div>
+                <span
+                  className="text-[11px] font-bold px-2 py-0.5 rounded-full"
+                  style={{ backgroundColor: `${col.color}18`, color: col.color }}
+                >
+                  {col.items.length}
+                </span>
+              </div>
+              <div className="flex-1 overflow-y-auto custom-scrollbar-for-menu px-3 pb-3 flex flex-col gap-2.5">
+                {col.items.length === 0 ? (
+                  <p className="text-xs text-gray-300 text-center py-8">Nothing here</p>
+                ) : (
+                  col.items.map((t) => <TaskCard key={t.id} task={t} onClick={() => setSelectedId(t.id)} />)
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       ) : view === "card" ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full flex-1 overflow-y-auto p-2 content-start">
-          {tasks.map((t) => <TaskCard key={t.id} task={t} onClick={() => setSelectedId(t.id)} />)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full flex-1 overflow-y-auto p-1 content-start custom-scrollbar-for-menu">
+          {tasks.map((t) => (
+            <TaskCard key={t.id} task={t} onClick={() => setSelectedId(t.id)} />
+          ))}
         </div>
       ) : (
         <TableContainer sx={{ flex: 1, overflow: "auto", borderRadius: 2, border: "1px solid #f3f4f6" }}>

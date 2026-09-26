@@ -109,7 +109,7 @@ const CalendarListView = ({
               return (
                 <StyledTableRow
                   key={date.format("YYYY-MM-DD")}
-                  sx={isToday ? { bgcolor: "#f0fdfe !important" } : {}}
+                  sx={isToday ? { bgcolor: "#f0fbfb !important" } : {}}
                 >
                   {/* Date cell */}
                   <TableCell
@@ -119,7 +119,7 @@ const CalendarListView = ({
                       fontSize: 13,
                       fontWeight: isToday ? 700 : 500,
                       color: isToday
-                        ? "#2eacb3"
+                        ? "#00a0a0"
                         : isSunday
                         ? "#ef4444"
                         : "#374151",
@@ -130,7 +130,7 @@ const CalendarListView = ({
                     {isToday && (
                       <span
                         className="ml-2 text-[10px] font-bold px-1.5 py-0.5 rounded-full"
-                        style={{ backgroundColor: "#e0f7fa", color: "#0097a7" }}
+                        style={{ backgroundColor: "#e0f6f6", color: "#007f86" }}
                       >
                         Today
                       </span>
@@ -220,7 +220,7 @@ export default CalendarListView;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#2eacb3",
+    backgroundColor: "#00a0a0",
     color: theme.palette.common.white,
     fontSize: 13,
     fontWeight: 600,
@@ -239,7 +239,7 @@ const StyledTableRow = styled(TableRow)(() => ({
     backgroundColor: "#fafafa",
   },
   "&:hover": {
-    backgroundColor: "#f0fdfe !important",
+    backgroundColor: "#f0fbfb !important",
     transition: "background-color 0.15s",
   },
 }));

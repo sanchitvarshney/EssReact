@@ -1,0 +1,89 @@
+/* FullCalendar skin for the attendance month view (scoped to .att-fc) */
+.att-fc .fc {
+  --fc-border-color: #eef2f2;
+  --fc-today-bg-color: transparent;
+  --fc-event-border-color: transparent;
+  --fc-event-bg-color: transparent;
+  --fc-non-business-color: transparent;
+  font-family: inherit;
+}
+.att-fc .fc-theme-standard td,
+.att-fc .fc-theme-standard th,
+.att-fc .fc-theme-standard .fc-scrollgrid {
+  border-color: #eef2f2;
+}
+.att-fc .fc-scrollgrid {
+  border: none;
+}
+.att-fc .fc-col-header-cell {
+  border: none;
+  padding: 6px 0 10px;
+}
+.att-fc .fc-col-header-cell-cushion {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  text-decoration: none;
+}
+.att-fc .fc-col-header-cell.fc-day-sun .fc-col-header-cell-cushion {
+  color: #f87171;
+}
+.att-fc .fc-daygrid-day {
+  border-radius: 14px;
+}
+.att-fc .fc-daygrid-day-frame {
+  min-height: 104px;
+  padding: 4px 6px;
+}
+.att-fc .fc-daygrid-day-top {
+  flex-direction: row;
+}
+.att-fc .fc-daygrid-day-events {
+  margin: 0;
+  min-height: 0;
+}
+.att-fc .fc-daygrid-event-harness {
+  margin: 0 !important;
+}
+.att-fc .fc-daygrid-event {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+.att-fc .fc-bg-event {
+  opacity: 1;
+  border-radius: 12px;
+  margin: 2px;
+}
+.att-fc .fc-day-disabled {
+  background: transparent;
+}
+.att-fc .fc-day-today {
+  background: transparent !important;
+}
+.att-fc .fc-day-today .att-fc-daynum {
+  background: linear-gradient(135deg, #00a0a0, #007f86);
+  color: #fff;
+}
+.att-fc .att-fc-daynum {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #374151;
+}
+.att-fc .fc-day-sun:not(.fc-day-today) .att-fc-daynum {
+  color: #ef4444;
+}
+@media (max-width: 640px) {
+  .att-fc .fc-daygrid-day-frame {
+    min-height: 64px;
+    padding: 2px;
+  }
+}

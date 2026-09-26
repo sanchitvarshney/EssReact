@@ -1,7 +1,7 @@
 import { Skeleton } from "@mui/material";
 
 const LeaveStatusPageSkeleton = () => (
-  <div className="h-[calc(100vh-78px)] flex flex-col overflow-hidden px-3 py-4 w-full gap-4">
+  <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full gap-4">
 
     {/* ── Page header ── */}
     <div className="flex items-center gap-2 flex-shrink-0">

@@ -51,7 +51,7 @@ const ProfileDropDown = ({ close }: { close: any }) => {
   };
 
   return (
-    <div className="w-full p-4 border-t-4 border-[#1e8a8f]">
+    <div className="w-full p-4 border-t-4 border-[#007f86]">
       <List
         sx={{
           display: "flex",

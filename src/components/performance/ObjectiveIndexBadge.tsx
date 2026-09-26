@@ -10,8 +10,8 @@ const ObjectiveIndexBadge = memo(({ index }: { index: number }) => (
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "#e0f7fa",
-      color: "#0097a7",
+      backgroundColor: "#e0f6f6",
+      color: "#007f86",
       fontSize: 12,
       fontWeight: 700,
     }}

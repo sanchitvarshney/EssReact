@@ -18,9 +18,9 @@ const percentageSx = {
     fontWeight: 600,
     transition: "box-shadow 0.15s",
     "& fieldset": { borderColor: "#e5e7eb" },
-    "&:hover fieldset": { borderColor: "#2eacb3" },
-    "&.Mui-focused": { boxShadow: "0 0 0 3px rgba(46,172,179,0.15)" },
-    "&.Mui-focused fieldset": { borderColor: "#2eacb3", borderWidth: "1.5px" },
+    "&:hover fieldset": { borderColor: "#00a0a0" },
+    "&.Mui-focused": { boxShadow: "0 0 0 3px rgba(0,160,160,0.15)" },
+    "&.Mui-focused fieldset": { borderColor: "#00a0a0", borderWidth: "1.5px" },
   },
   "& input": { textAlign: "center", padding: "8.5px 0" },
 };
@@ -33,8 +33,8 @@ const remarksSx = {
     transition: "box-shadow 0.15s",
     "& fieldset": { borderColor: "#e5e7eb" },
     "&:hover fieldset": { borderColor: "#9ca3af" },
-    "&.Mui-focused": { boxShadow: "0 0 0 3px rgba(46,172,179,0.15)" },
-    "&.Mui-focused fieldset": { borderColor: "#2eacb3", borderWidth: "1.5px" },
+    "&.Mui-focused": { boxShadow: "0 0 0 3px rgba(0,160,160,0.15)" },
+    "&.Mui-focused fieldset": { borderColor: "#00a0a0", borderWidth: "1.5px" },
   },
 };
 

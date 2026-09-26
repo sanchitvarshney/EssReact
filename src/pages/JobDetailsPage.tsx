@@ -121,7 +121,7 @@ function JobDetailsPage({onClose}:{onClose:()=>void}) {
                   sx={{
                     width: 60,
                     height: 60,
-                    bgcolor: "#2eacb3",
+                    bgcolor: "#00a0a0",
                     mr: 2,
                                pointerEvents: "none",
                       userSelect: "none",
@@ -136,7 +136,7 @@ function JobDetailsPage({onClose}:{onClose:()=>void}) {
                     sx={{
                       fontSize: { xs: "1.75rem", md: "2.125rem" },
                       background:
-                        "linear-gradient(135deg, #2eacb3 0%,rgb(62, 154, 159) 100%)",
+                        "linear-gradient(135deg, #00a0a0 0%,#007f86 100%)",
                       backgroundClip: "text",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
@@ -248,7 +248,7 @@ function JobDetailsPage({onClose}:{onClose:()=>void}) {
                         width: 8,
                         height: 8,
                         borderRadius: "50%",
-                        bgcolor: "#2eacb3",
+                        bgcolor: "#00a0a0",
                         mt: 1,
                         mr: 2,
                         flexShrink: 0,
@@ -298,7 +298,7 @@ function JobDetailsPage({onClose}:{onClose:()=>void}) {
                         width: 8,
                         height: 8,
                         borderRadius: "50%",
-                        bgcolor: "#2eacb3",
+                        bgcolor: "#00a0a0",
                         mt: 1,
                         mr: 2,
                         flexShrink: 0,
@@ -442,7 +442,7 @@ function JobDetailsPage({onClose}:{onClose:()=>void}) {
                           width: 6,
                           height: 6,
                           borderRadius: "50%",
-                          bgcolor: "#2eacb3",
+                          bgcolor: "#00a0a0",
                           mr: 2,
                         }}
                       />

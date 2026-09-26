@@ -23,8 +23,8 @@ interface TaskListObjectiveRowProps {
 }
 
 const addButtonSx = {
-  border: "1.5px solid #2eacb3",
-  color: "#1e8a8f",
+  border: "1.5px solid #00a0a0",
+  color: "#007f86",
   borderRadius: "999px",
   px: 2,
   py: 0.6,
@@ -32,7 +32,7 @@ const addButtonSx = {
   fontSize: "0.8rem",
   backgroundColor: "#fff",
   transition: "background-color 0.15s",
-  "&:hover": { backgroundColor: "rgba(46,172,179,0.1)" },
+  "&:hover": { backgroundColor: "rgba(0,160,160,0.1)" },
 };
 
 const TaskListObjectiveRow = memo(

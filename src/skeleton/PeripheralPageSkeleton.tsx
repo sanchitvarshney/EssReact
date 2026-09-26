@@ -2,7 +2,7 @@ import { Skeleton } from "@mui/material";
 
 const PeripheralPageSkeleton = () => {
   return (
-    <div className="h-[calc(100vh-90px)] flex flex-col overflow-hidden px-3 py-4 w-full">
+    <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full">
 
       {/* Page header */}
       <div className="flex items-center gap-2 mb-3 flex-shrink-0">
@@ -53,7 +53,7 @@ const PeripheralPageSkeleton = () => {
         {/* Right: details card */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-col overflow-hidden min-h-0">
           {/* Gradient top bar */}
-          <div className="h-1 rounded-t-2xl bg-gradient-to-r from-[#b2ebf2] to-[#e0f7fa]" />
+          <div className="h-1 rounded-t-2xl bg-gradient-to-r from-[#cdeaea] to-[#e0f6f6]" />
 
           <div className="p-5 flex flex-col gap-5">
             {/* Title block */}

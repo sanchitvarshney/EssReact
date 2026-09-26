@@ -204,11 +204,11 @@ const LeavePage = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-90px)] flex flex-col overflow-hidden px-3 py-4 w-full">
+    <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full">
       {/* Page header */}
       <div className="flex items-center gap-2 mb-4">
         <div
-          style={{ backgroundColor: "#2eacb3" }}
+          style={{ backgroundColor: "#00a0a0" }}
           className="w-1 h-7 rounded-full"
         />
         <Typography
@@ -255,7 +255,7 @@ const LeavePage = () => {
             <CustomButton
               onClick={() => setOpen(true)}
               disabled={isBusy}
-              className="cursor-pointer gap-1.5 px-4 text-sm font-semibold border border-[#2eacb3] text-[#2eacb3] hover:bg-[#e0f7fa] rounded-md transition-all duration-200 bg-transparent"
+              className="cursor-pointer gap-1.5 px-4 text-sm font-semibold border border-[#00a0a0] text-[#00a0a0] hover:bg-[#e0f6f6] rounded-md transition-all duration-200 bg-transparent"
             >
               <EventIcon sx={{ fontSize: 15 }} />
               Holidays

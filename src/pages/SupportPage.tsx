@@ -3,8 +3,8 @@ import help from "../assets/help.png";
 
 const SupportPage = () => {
   return (
-    <div className="w-full p-4 flex flex-col justify-center items-center">
-      <div className=" sm:w-200 flex flex-col justify-center items-center h-[70vh] overflow-y-auto gap-y-5 will-change-transform">
+    <div className="w-full h-full p-4">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] h-full flex flex-col justify-center items-center overflow-y-auto gap-y-5 p-6 will-change-transform">
         <Avatar
           src={help}
           sx={{ width: { xs: 150, md: 250 }, height: { xs: 150, md: 250 },           pointerEvents: "none",

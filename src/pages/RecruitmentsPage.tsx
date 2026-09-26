@@ -50,7 +50,7 @@ const RecruitmentsPage = () => {
   const [view, setView] = useState(false);
     const [detailsView, setDetailsView] = useState(false);
   return (
-    <div className="h-[calc(100vh-100px)] flex flex-col items-center py-8 px-4 will-change-transform overflow-y-auto">
+    <div className="h-full flex flex-col items-center py-8 px-4 will-change-transform overflow-y-auto">
       <div className="flex flex-col items-center mb-8">
         <Avatar src={recruitmentIcon} sx={{ width: 80, height: 80, mb: 2,           pointerEvents: "none",
                       userSelect: "none", }} />
@@ -88,10 +88,10 @@ const RecruitmentsPage = () => {
                 </Box>
               </div>
               <div className="space-y-2 space-x-2">
-                <CustomButton onClick={() => setDetailsView(true)} className="bg-[#2eacb3] text-white  cursor-pointer">
+                <CustomButton onClick={() => setDetailsView(true)} className="bg-[#00a0a0] text-white  cursor-pointer">
                   View
                 </CustomButton>
-                <CustomButton onClick={()=>setView(true)} className="bg-[#2eacb3] text-white cursor-pointer">
+                <CustomButton onClick={()=>setView(true)} className="bg-[#00a0a0] text-white cursor-pointer">
                   Reffer
                 </CustomButton>
               </div>

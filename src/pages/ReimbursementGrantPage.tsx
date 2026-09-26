@@ -44,8 +44,8 @@ const ReimbursementGrantPage = () => {
   };
 
   return (
-    <div className="w-full py-4 flex  flex-col h-[calc(100vh-100px)]">
-      <Typography variant="h4" className="font-bold text-center mb-6 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] bg-clip-text text-transparent">
+    <div className="w-full py-4 flex  flex-col h-full">
+      <Typography variant="h4" className="font-bold text-center mb-6 bg-gradient-to-r from-[#00a0a0] to-[#007f86] bg-clip-text text-transparent">
         Reimbursement Grant
       </Typography>
    {reimbursements.length === 0 ? (<EmptyData />): (

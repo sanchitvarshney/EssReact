@@ -89,7 +89,7 @@ export const getStatus = (status: any) => {
 };
 
 const LEAVE_TYPE_COLORS: Record<string, string> = {
-  EL: "#2eacb3", SL: "#f59e0b", WFH: "#8b5cf6",
+  EL: "#00a0a0", SL: "#f59e0b", WFH: "#8b5cf6",
   OD: "#3b82f6", CL: "#10b981", ACL: "#ec4899", LWP: "#ef4444",
 };
 
@@ -148,17 +148,17 @@ const LeaveStatusPage = () => {
   const totalCount = data?.totalrequest ?? rows.length;
 
   return (
-    <div className="h-[calc(100vh-78px)] flex flex-col overflow-hidden px-3 py-4 w-full gap-4">
+    <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full gap-4">
 
       {/* ── Page header ── */}
       <div className="flex items-center gap-2 flex-shrink-0">
-        <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
-        <EventBusyIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
+        <div className="w-1 h-7 rounded-full bg-[#00a0a0]" />
+        <EventBusyIcon sx={{ fontSize: 20, color: "#00a0a0" }} />
         <span className="text-base sm:text-lg font-bold text-gray-800">Leave Applications</span>
         <Chip
           label={totalCount}
           size="small"
-          sx={{ height: 20, fontSize: 11, fontWeight: 700, bgcolor: "#e0f7fa", color: "#0097a7", "& .MuiChip-label": { px: 1 } }}
+          sx={{ height: 20, fontSize: 11, fontWeight: 700, bgcolor: "#e0f6f6", color: "#007f86", "& .MuiChip-label": { px: 1 } }}
         />
       </div>
 
@@ -219,7 +219,7 @@ const LeaveStatusPage = () => {
                     <StyledTableCell>
                       <span
                         className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
-                        style={{ backgroundColor: "#e0f7fa", color: "#0097a7" }}
+                        style={{ backgroundColor: "#e0f6f6", color: "#007f86" }}
                       >
                         {row?.totalday}
                       </span>

@@ -119,7 +119,7 @@ const ReimbursementStatusPage = () => {
     return <ReimbursementStatusPageSkeleton />;
   }
   return (
-    <div className="w-full h-[calc(100vh-90px)] bg-gradient-to-br from-[#f0f7fa] to-[#e0f2f1] p-4 will-change-transform overflow-y-auto">
+    <div className="w-full h-full p-4 will-change-transform overflow-y-auto">
       <div className="  mx-auto">
         <div className="flex justify-between items-center mb-4">
           <div className="flex  items-center ">
@@ -358,7 +358,7 @@ const ReimbursementStatusPage = () => {
             width: "100%",
             mx: "auto",
 
-            background: "linear-gradient(135deg, #f0f7fa 0%, #e0f2f1 100%)",
+            background: "linear-gradient(135deg, #f1f7f7 0%, #e0f6f6 100%)",
           }}
         >
           <Box
@@ -473,7 +473,7 @@ const ReimbursementStatusPage = () => {
             width: "100%",
             mx: "auto",
 
-            background: "linear-gradient(135deg, #f0f7fa 0%, #e0f2f1 100%)",
+            background: "linear-gradient(135deg, #f1f7f7 0%, #e0f6f6 100%)",
           }}
         >
           <Box

@@ -12,7 +12,7 @@ const NotificationDropDown = () => {
   return (
     <div className="w-full  bg-white rounded-[6px] shadow-2xl  overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] p-4 text-white">
+      <div className="bg-gradient-to-r from-[#00a0a0] to-[#007f86] p-4 text-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">

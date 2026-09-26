@@ -19,7 +19,7 @@ const OfficeAbsenceComponent = ({}) => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       
         <div className="flex items-center gap-3 min-w-[150px]">
-          <Avatar src="" alt="name" className="w-10 h-10" sx={{backgroundColor:"#2eacb3",           pointerEvents: "none",
+          <Avatar src="" alt="name" className="w-10 h-10" sx={{backgroundColor:"#00a0a0",           pointerEvents: "none",
                       userSelect: "none",}} />
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-gray-900">Name</span>

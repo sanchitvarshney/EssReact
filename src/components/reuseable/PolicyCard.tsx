@@ -44,7 +44,7 @@ const PolicyCard: React.FC<PolicyCardPropsType> = ({
         label={"All Poilices"}
         size="small"
         sx={{
-          background: "#2eacb3",
+          background: "#00a0a0",
           color: "#fff",
           fontWeight: 600,
           fontSize: 12,
