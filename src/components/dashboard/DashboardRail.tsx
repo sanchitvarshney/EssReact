@@ -19,7 +19,6 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { useAuth } from "../../contextapi/AuthContext";
-import { useMyCompany } from "../../hooks/useMyCompany";
 
 export const DASH_PRIMARY = "#00a0a0";
 
@@ -65,7 +64,6 @@ const DashboardRail = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { user } = useAuth();
-  const { company, branch } = useMyCompany();
   const u: any = user ?? {};
   // Open by default on every load; the toggle only collapses it for the current session.
   const [expanded, setExpanded] = useState(true);
@@ -112,12 +110,8 @@ const DashboardRail = () => {
         <img src="/msc-48x48.png" alt="mscorpres" className="w-9 h-9 rounded-full flex-shrink-0" />
         {expanded && (
           <span className="min-w-0 leading-tight">
-            <span className="block text-sm font-bold text-gray-800 truncate" title={company}>
-              {company || "ESS Portal"}
-            </span>
-            <span className="block text-[11px] text-gray-400 truncate" title={branch}>
-              {branch || "Employee Self Service"}
-            </span>
+            <span className="block text-sm font-bold text-gray-800 truncate">ESS Portal</span>
+            <span className="block text-[10px] uppercase tracking-widest text-gray-400 truncate">Employee Self Service</span>
           </span>
         )}
       </button>

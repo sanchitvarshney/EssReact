@@ -98,7 +98,7 @@ function Header({ variant = "default" }: { variant?: "default" | "dashboard" }) 
                 {company || "ESS Portal"}
               </Typography>
               <Typography noWrap sx={{ fontSize: 11, opacity: 0.8, maxWidth: { xs: 140, sm: 320 } }}>
-                {branch || "Employee Self Service"}
+                {`Branch: ${branch || "Employee Self Service"}`}
               </Typography>
             </Box>
           ) : (
