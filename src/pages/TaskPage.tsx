@@ -388,7 +388,7 @@ const TaskPage = () => {
             </TableHead>
             <TableBody>
               {tasks.map((t) => (
-                <StyledTableRow key={t.id} sx={{ "&:hover": { backgroundColor: "#f9fafb" } }}>
+                <StyledTableRow key={t.id}>
                   <TableCell>
                     <Typography variant="body2" sx={{ fontWeight: 600, color: "#1f2937" }}>{t.title}</Typography>
                     {t.status === "Forwarded" && t.current_assignee_name && (

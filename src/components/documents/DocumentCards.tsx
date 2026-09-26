@@ -69,7 +69,7 @@ export const RecentCard = ({ row, onView, onDownload }: { row: any } & Actions) 
   return (
     <button
       onClick={open}
-      className="group text-left flex items-center gap-3 w-full bg-white rounded-2xl border border-gray-100 px-3.5 py-3 hover:border-[#00a0a0] hover:shadow-md transition-all cursor-pointer"
+      className="group text-left flex items-center gap-3 w-full bg-white rounded-2xl border border-gray-100 px-3.5 py-3 hover:border-[#00a0a0] hover:shadow-md row-hover cursor-pointer"
     >
       <FileTile row={row} size={44} />
       <span className="min-w-0 flex-1">
@@ -92,7 +92,7 @@ export const DocRow = ({ row, onView, onDownload }: { row: any } & Actions) => {
   const fresh = isNewDoc(row);
 
   return (
-    <div className="group grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[minmax(0,2.4fr)_90px_150px_90px_96px] items-center gap-x-4 px-5 py-3 border-b border-gray-50 last:border-0 hover:bg-[#f6fbfb] transition-colors">
+    <div className="group grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[minmax(0,2.4fr)_90px_150px_90px_96px] items-center gap-x-4 px-5 py-3 border-b border-gray-50 last:border-0 row-hover">
       {/* Name */}
       <div className="flex items-center gap-3 min-w-0">
         <FileTile row={row} />

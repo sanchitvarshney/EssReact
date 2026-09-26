@@ -41,7 +41,7 @@ const AssetTableRow = memo(function AssetTableRow({
   const showRemarks = confirmed === false;
 
   return (
-    <tr className="border-b border-gray-50 last:border-b-0 hover:bg-gray-50/60 transition-colors align-top">
+    <tr className="border-b border-gray-50 last:border-b-0 row-hover align-top">
       <td className="px-4 py-3">
         <button
           onClick={() => onView(asset)}

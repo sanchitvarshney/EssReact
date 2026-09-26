@@ -65,7 +65,7 @@ const HolidaySection = ({
       <button
         type="button"
         onClick={collapsible ? onToggle : undefined}
-        className={`w-full flex items-center justify-between gap-3 px-5 py-4 text-left ${collapsible ? "cursor-pointer hover:bg-gray-50" : "cursor-default"}`}
+        className={`w-full flex items-center justify-between gap-3 px-5 py-4 text-left ${collapsible ? "cursor-pointer row-hover" : "cursor-default"}`}
         style={{ borderBottom: open ? "1px solid #f3f4f6" : "none" }}
       >
         <div className="flex items-center gap-3">
@@ -109,7 +109,7 @@ const HolidaySection = ({
                   <button
                     key={h.id}
                     onClick={() => onPick(d)}
-                    className={`w-full flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-left transition-colors cursor-pointer hover:border-[#00a0a0] ${
+                    className={`w-full flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-left row-hover cursor-pointer hover:border-[#00a0a0] ${
                       today ? "border-[#00a0a0] bg-[#f0fbfb]" : "border-gray-100 bg-white"
                     } ${upcoming ? "" : "opacity-70"}`}
                   >

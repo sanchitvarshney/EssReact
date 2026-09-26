@@ -72,7 +72,7 @@ const MemberCard = ({ m, onOpen }: { m: TeamAttendanceMember; onOpen: () => void
   return (
     <button
       onClick={onOpen}
-      className="group text-left bg-white rounded-2xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] p-3.5 flex items-center gap-3 hover:shadow-md hover:border-[#00a0a0]/50 transition-all cursor-pointer"
+      className="group text-left bg-white rounded-2xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] p-3.5 flex items-center gap-3 hover:shadow-md hover:border-[#00a0a0]/50 row-hover cursor-pointer"
     >
       <Avatar
         src={m.photo || undefined}

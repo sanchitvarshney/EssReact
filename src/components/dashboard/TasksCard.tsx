@@ -32,7 +32,7 @@ const TasksCard = () => {
         </button>
       }
     >
-      <div className="max-h-[230px] overflow-y-auto custom-scrollbar-for-menu divide-y divide-gray-50">
+      <div className="max-h-[230px] overflow-y-auto custom-scrollbar-for-menu divide-y divide-gray-50 px-2 -mx-2">
         {isLoading ? (
           <p className="text-xs text-gray-400 py-8 text-center">Loading tasks…</p>
         ) : tasks.length === 0 ? (
@@ -47,7 +47,7 @@ const TasksCard = () => {
               <button
                 key={t.id}
                 onClick={() => navigate("/task-box")}
-                className="w-full grid grid-cols-[auto_1fr_auto] gap-x-3 gap-y-0.5 py-2.5 text-left cursor-pointer hover:bg-gray-50"
+                className="w-full grid grid-cols-[auto_1fr_auto] gap-x-3 gap-y-0.5 py-2.5 px-2 -mx-2 rounded-xl text-left cursor-pointer row-hover"
               >
                 <span className="text-[11px] font-medium text-gray-400">#{t.id}</span>
                 <span className="text-xs text-gray-800 truncate">{t.title}</span>

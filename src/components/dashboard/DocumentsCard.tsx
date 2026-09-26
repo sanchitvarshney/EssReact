@@ -51,7 +51,7 @@ const DocumentsCard = () => {
         </button>
       }
     >
-      <div className="max-h-[230px] overflow-y-auto custom-scrollbar-for-menu space-y-1">
+      <div className="max-h-[230px] overflow-y-auto custom-scrollbar-for-menu space-y-1 px-2 -mx-2">
         {isLoading ? (
           <p className="text-xs text-gray-400 py-8 text-center">Loading documents…</p>
         ) : docs.length === 0 ? (
@@ -63,7 +63,7 @@ const DocumentsCard = () => {
               <button
                 key={d.path || i}
                 onClick={() => (d.file_type === "other" ? window.open(d.path, "_blank") : openWindow(d.path))}
-                className="w-full flex items-center gap-3 px-1 py-2 rounded-lg hover:bg-gray-50 text-left cursor-pointer"
+                className="w-full flex items-center gap-3 px-2 -mx-2 py-2 rounded-xl row-hover text-left cursor-pointer"
               >
                 <span
                   className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"

@@ -11,6 +11,12 @@ export const theme = createTheme({
     MuiDatePicker: { defaultProps: { format: "DD-MM-YYYY" } },
     MuiDesktopDatePicker: { defaultProps: { format: "DD-MM-YYYY" } },
     MuiMobileDatePicker: { defaultProps: { format: "DD-MM-YYYY" } },
+    // Same row hover colour as the .row-hover utility (see index.css).
+    MuiTableRow: {
+      styleOverrides: {
+        hover: { "&:hover": { backgroundColor: "var(--row-hover-bg)" } },
+      },
+    },
     MuiTextField: {
       styleOverrides: {
         root: {

@@ -40,7 +40,7 @@ export const StyledTableCell = styled(TableCell)(() => ({
 
 export const StyledTableRow = styled(TableRow)(() => ({
   transition: "background-color 0.15s",
-  "&:hover": { backgroundColor: "#f8fafc" },
+  "&:hover": { backgroundColor: "var(--row-hover-bg)" },
   "&:last-child td, &:last-child th": { border: 0 },
 }));
 

@@ -21,7 +21,7 @@ type ImageCardProps = {
   image: string;
   path: string;
   badge?: { label: string; color: string };
-  variant?: "default" | "tile" | "chip";
+  variant?: "default" | "tile";
   tint?: string;
 };
 
@@ -96,46 +96,6 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path, badge, variant = "d
     </Dialog>
   );
 
-  if (variant === "chip") {
-    return (
-      <div className="relative">
-        <button
-          onClick={handleNavigate}
-          disabled={isComingSoon}
-          className={`w-full flex items-center gap-2 px-2.5 py-2 rounded-md border text-left transition-colors ${
-            isComingSoon
-              ? "border-gray-100 bg-gray-50 cursor-default"
-              : "border-[#cdeaea] bg-white hover:border-[#00a0a0] hover:bg-[#f0fbfb] cursor-pointer"
-          }`}
-        >
-          <img
-            src={displayImage}
-            alt=""
-            className={`w-4 h-4 object-contain flex-shrink-0 ${
-              isComingSoon ? "grayscale opacity-40" : ""
-            }`}
-          />
-          <span
-            className={`text-[11px] font-medium truncate ${
-              isComingSoon ? "text-gray-400" : "text-gray-600"
-            }`}
-          >
-            {title}
-          </span>
-          {!isComingSoon && badge && (
-            <span
-              className="ml-auto text-[9px] font-bold text-white px-1.5 py-0.5 rounded-full whitespace-nowrap"
-              style={{ backgroundColor: badge.color }}
-            >
-              {badge.label}
-            </span>
-          )}
-        </button>
-        {helpdeskDialog}
-      </div>
-    );
-  }
-
   if (variant === "tile") {
     return (
       <div className="relative">
@@ -146,7 +106,7 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path, badge, variant = "d
           }`}
         >
           <div
-            className={`relative w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
+            className={`relative w-14 h-14 rounded-xl ring-1 ring-black/5 flex items-center justify-center transition-all duration-200 ${
               isComingSoon
                 ? ""
                 : "group-hover:-translate-y-0.5 group-hover:shadow-md group-active:scale-95"

@@ -42,3 +42,14 @@
 .no-connector > .oc-children::before {
   display: none !important;
 }
+
+/* One hover colour for every list row / table row / clickable list card across the app. */
+:root {
+  --row-hover-bg: #e4f5f5;
+}
+.row-hover {
+  transition: background-color 0.15s ease;
+}
+.row-hover:hover {
+  background-color: var(--row-hover-bg);
+}

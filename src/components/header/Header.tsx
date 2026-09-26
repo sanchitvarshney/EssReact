@@ -21,6 +21,7 @@ import LogoutButton from "../dashboard/LogoutButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import logoImg from "../../assets/img/hrms_mscorpres_logo.png";
 import { useAuth } from "../../contextapi/AuthContext";
+import { useMyCompany } from "../../hooks/useMyCompany";
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "../../hooks/useToast";
 import { setEmplyeeCode } from "../../slices/authSlices";
@@ -32,6 +33,7 @@ function Header({ variant = "default" }: { variant?: "default" | "dashboard" }) 
   const isDash = variant === "dashboard";
   const path = useLocation().pathname;
   const { user, searchValueLength } = useAuth();
+  const { company, branch } = useMyCompany();
   const { showToast } = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -93,11 +95,10 @@ function Header({ variant = "default" }: { variant?: "default" | "dashboard" }) 
                 noWrap
                 sx={{ fontSize: { xs: 14, sm: 16 }, fontWeight: 700, lineHeight: 1.25, maxWidth: { xs: 140, sm: 320 } }}
               >
-                {/* @ts-ignore */}
-                Welcome, {user?.name || ""}!
+                {company || "ESS Portal"}
               </Typography>
-              <Typography sx={{ fontSize: 11, opacity: 0.8, display: { xs: "none", sm: "block" } }}>
-                Here's your dashboard for today.
+              <Typography noWrap sx={{ fontSize: 11, opacity: 0.8, maxWidth: { xs: 140, sm: 320 } }}>
+                {branch || "Employee Self Service"}
               </Typography>
             </Box>
           ) : (
@@ -200,27 +201,12 @@ function Header({ variant = "default" }: { variant?: "default" | "dashboard" }) 
               }}
               value={searchText}
             />
-            {searchText && (
-              <SearchBarComponent
-                open={openSearch}
-                close={() => setOpenSearch(false)}
-                searchQuary={searchText}
-                anchorRef={inputRef}
-                width={`${isSmallScreen ? "180px" : "400px"}`}
-                selectedIndex={selectedIndex}
-                setSelectedIndex={setSelectedIndex}
-                onSelect={() => setOpenSearch(false)}
-              />
-            )}
-          </Box>
-
-          {/* Right actions */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flexShrink: 0 }}>
 
             {/* Notification */}
             <IconButton
               onClick={() => setIsOpenNotification(true)}
               sx={{
+                ml: 1,
                 p: 1,
                 borderRadius: 2,
                 color: isDash ? "#fff" : isOpenNotification ? "#00a0a0" : "#64748b",
@@ -250,6 +236,34 @@ function Header({ variant = "default" }: { variant?: "default" | "dashboard" }) 
                 <NotificationDropDown />
               </CustomPopover>
             )}
+            {searchText && (
+              <SearchBarComponent
+                open={openSearch}
+                close={() => setOpenSearch(false)}
+                searchQuary={searchText}
+                anchorRef={inputRef}
+                width={`${isSmallScreen ? "180px" : "400px"}`}
+                selectedIndex={selectedIndex}
+                setSelectedIndex={setSelectedIndex}
+                onSelect={() => setOpenSearch(false)}
+              />
+            )}
+          </Box>
+
+          {/* Right actions */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flexShrink: 0 }}>
+
+            {/* Employee name + code */}
+            <Box sx={{ display: { xs: "none", md: "block" }, textAlign: "right", color: "#fff", mr: 1, lineHeight: 1.25, minWidth: 0 }}>
+              <Typography noWrap sx={{ fontSize: 13, fontWeight: 700, maxWidth: 200 }}>
+                {/* @ts-ignore */}
+                {user?.name}
+              </Typography>
+              <Typography sx={{ fontSize: 11, opacity: 0.8 }}>
+                {/* @ts-ignore */}
+                {user?.id}
+              </Typography>
+            </Box>
 
             <LogoutButton />
           </Box>

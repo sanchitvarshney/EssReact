@@ -251,10 +251,9 @@ const ReimbursementClaim = () => {
                           key={item.id}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
-                            "&:hover": { backgroundColor: "#f8fafc" },
+                            "&:hover": { backgroundColor: "var(--row-hover-bg)" },
                             transition: "background-color 0.2s ease",
                           }}
-                          className="hover:bg-gray-50"
                         >
                           <TableCell sx={{ py: 3 }} className=" w-60 sm:w-80">
                             <FormField

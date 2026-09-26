@@ -11,6 +11,9 @@ const GROUPS: { label: string; ids: string[] | null }[] = [
   { label: "Company", ids: ["vibe", "holiday", "help"] },
 ];
 
+// Soft pastel backgrounds for the app tiles (cycled in order).
+const TILE_TINTS = ["#e8efff", "#f3e8ff", "#e3f7ee", "#fff4d6", "#e6f4ff", "#ffe8ef"];
+
 type Props = {
   kraBadge?: { label: string; color: string } | null;
 };
@@ -44,11 +47,12 @@ const QuickActionsCard = ({ kraBadge }: Props) => {
         })}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-3">
-        {items.map((item) => (
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-x-3 gap-y-5 pb-1">
+        {items.map((item, index) => (
           <ImageCard
             key={item.id}
-            variant="chip"
+            variant="tile"
+            tint={TILE_TINTS[index % TILE_TINTS.length]}
             title={item.title}
             image={item.icon}
             path={item.path}

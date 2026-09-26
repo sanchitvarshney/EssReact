@@ -82,7 +82,7 @@ const CelebrationsPanel = ({ birthdays, anniversaries, hires, absences }: Props)
                   : r.department;
               const badge = tab === "away" ? null : r.date;
               return (
-                <div key={r.time || i} className="flex items-center gap-3 py-2.5">
+                <div key={r.time || i} className="flex items-center gap-3 py-2.5 px-2 -mx-2 rounded-xl row-hover">
                   <Avatar
                     src={photoOf(r.photo ?? r.emp_photo)}
                     sx={{ width: 36, height: 36, bgcolor: "#00a0a0", fontSize: 14, fontWeight: 700 }}
