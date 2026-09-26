@@ -1,581 +1,199 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Typography,
-  TableContainer,
+  Button,
+  Chip,
+  CircularProgress,
+  Drawer,
+  IconButton,
+  MenuItem,
   Table,
-  TableHead,
-  TableRow,
   TableBody,
   TableCell,
-  Avatar,
-  IconButton,
-  Card,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
 } from "@mui/material";
-
-import { StyledTableCell, StyledTableRow } from "./LeaveStatusPage";
-
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import AddIcon from "@mui/icons-material/Add";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import PersonIcon from "@mui/icons-material/Person";
+import GridViewIcon from "@mui/icons-material/GridView";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import EmptyData from "../components/reuseable/EmptyData";
+import TaskCard, { PRIORITY_COLOR, STATUS_COLOR, deadlineText, statusLabel } from "../components/reuseable/TaskCard";
+import CreateTaskDrawer from "../components/reuseable/CreateTaskDrawer";
+import TaskDetailDrawer from "../components/reuseable/TaskDetailDrawer";
+import { StyledTableCell, StyledTableRow } from "./LeaveStatusPage";
+import {
+  useGetManagedTasksMutation,
+  useGetManagerTaskMetricsMutation,
+  useGetMyTaskMetricsMutation,
+  useGetMyTasksMutation,
+} from "../services/tasks";
 
-import CloseIcon from "@mui/icons-material/Close";
-
-import CustomToolTip from "../components/reuseable/CustomToolTip";
-import { FaCommentAlt } from "react-icons/fa";
-import { CustomButton } from "../components/ui/CustomButton";
-
-interface Task {
-  id: number;
-  empName: string;
-  title: string;
-  description: string;
-  comments: string[];
-  status?: "pending" | "in-progress" | "completed";
-  priority?: "low" | "medium" | "high";
-  dueDate?: string;
-}
-
-const initialTasks: Task[] = [
-  {
-    id: 1,
-    empName: "John Doe",
-    title: "Complete Onboarding Documentation",
-    description:
-      "Submit your PAN card, Aadhar card, and bank details to HR department for processing.",
-    comments: [
-      "Please ensure all documents are properly scanned",
-      "Documents received, processing in progress",
-    ],
-    status: "in-progress",
-    priority: "high",
-    dueDate: "2024-01-15",
-  },
-  {
-    id: 2,
-    empName: "Jane Smith",
-    title: "Attend New Employee Orientation",
-    description:
-      "Join the scheduled Zoom call at 10 AM for company policies and procedures overview.",
-    comments: ["Meeting link sent via email", "Session completed successfully"],
-    status: "completed",
-    priority: "medium",
-    dueDate: "2024-01-10",
-  },
-  {
-    id: 3,
-    empName: "Mike Johnson",
-    title: "Setup Development Environment",
-    description:
-      "Install required software and configure development tools as per company standards.",
-    comments: [],
-    status: "pending",
-    priority: "high",
-    dueDate: "2024-01-20",
-  },
-  {
-    id: 1,
-    empName: "John Doe",
-    title: "Complete Onboarding Documentation",
-    description:
-      "Submit your PAN card, Aadhar card, and bank details to HR department for processing.",
-    comments: [
-      "Please ensure all documents are properly scanned",
-      "Documents received, processing in progress",
-    ],
-    status: "in-progress",
-    priority: "high",
-    dueDate: "2024-01-15",
-  },
-  {
-    id: 2,
-    empName: "Jane Smith",
-    title: "Attend New Employee Orientation",
-    description:
-      "Join the scheduled Zoom call at 10 AM for company policies and procedures overview.",
-    comments: ["Meeting link sent via email", "Session completed successfully"],
-    status: "completed",
-    priority: "medium",
-    dueDate: "2024-01-10",
-  },
-  {
-    id: 3,
-    empName: "Mike Johnson",
-    title: "Setup Development Environment",
-    description:
-      "Install required software and configure development tools as per company standards.",
-    comments: [],
-    status: "pending",
-    priority: "high",
-    dueDate: "2024-01-20",
-  },
-  {
-    id: 1,
-    empName: "John Doe",
-    title: "Complete Onboarding Documentation",
-    description:
-      "Submit your PAN card, Aadhar card, and bank details to HR department for processing.",
-    comments: [
-      "Please ensure all documents are properly scanned",
-      "Documents received, processing in progress",
-    ],
-    status: "in-progress",
-    priority: "high",
-    dueDate: "2024-01-15",
-  },
-  {
-    id: 2,
-    empName: "Jane Smith",
-    title: "Attend New Employee Orientation",
-    description:
-      "Join the scheduled Zoom call at 10 AM for company policies and procedures overview.",
-    comments: ["Meeting link sent via email", "Session completed successfully"],
-    status: "completed",
-    priority: "medium",
-    dueDate: "2024-01-10",
-  },
-  {
-    id: 3,
-    empName: "Mike Johnson",
-    title: "Setup Development Environment",
-    description:
-      "Install required software and configure development tools as per company standards.",
-    comments: [],
-    status: "pending",
-    priority: "high",
-    dueDate: "2024-01-20",
-  },
-  {
-    id: 1,
-    empName: "John Doe",
-    title: "Complete Onboarding Documentation",
-    description:
-      "Submit your PAN card, Aadhar card, and bank details to HR department for processing.",
-    comments: [
-      "Please ensure all documents are properly scanned",
-      "Documents received, processing in progress",
-    ],
-    status: "in-progress",
-    priority: "high",
-    dueDate: "2024-01-15",
-  },
-  {
-    id: 2,
-    empName: "Jane Smith",
-    title: "Attend New Employee Orientation",
-    description:
-      "Join the scheduled Zoom call at 10 AM for company policies and procedures overview.",
-    comments: ["Meeting link sent via email", "Session completed successfully"],
-    status: "completed",
-    priority: "medium",
-    dueDate: "2024-01-10",
-  },
-  {
-    id: 3,
-    empName: "Mike Johnson",
-    title: "Setup Development Environment",
-    description:
-      "Install required software and configure development tools as per company standards.",
-    comments: [],
-    status: "pending",
-    priority: "high",
-    dueDate: "2024-01-20",
-  },
-  {
-    id: 1,
-    empName: "John Doe",
-    title: "Complete Onboarding Documentation",
-    description:
-      "Submit your PAN card, Aadhar card, and bank details to HR department for processing.",
-    comments: [
-      "Please ensure all documents are properly scanned",
-      "Documents received, processing in progress",
-    ],
-    status: "in-progress",
-    priority: "high",
-    dueDate: "2024-01-15",
-  },
-  {
-    id: 2,
-    empName: "Jane Smith",
-    title: "Attend New Employee Orientation",
-    description:
-      "Join the scheduled Zoom call at 10 AM for company policies and procedures overview.",
-    comments: ["Meeting link sent via email", "Session completed successfully"],
-    status: "completed",
-    priority: "medium",
-    dueDate: "2024-01-10",
-  },
-  {
-    id: 3,
-    empName: "Mike Johnson",
-    title: "Setup Development Environment",
-    description:
-      "Install required software and configure development tools as per company standards.",
-    comments: [],
-    status: "pending",
-    priority: "high",
-    dueDate: "2024-01-20",
-  },
-  {
-    id: 1,
-    empName: "John Doe",
-    title: "Complete Onboarding Documentation",
-    description:
-      "Submit your PAN card, Aadhar card, and bank details to HR department for processing.",
-    comments: [
-      "Please ensure all documents are properly scanned",
-      "Documents received, processing in progress",
-    ],
-    status: "in-progress",
-    priority: "high",
-    dueDate: "2024-01-15",
-  },
-  {
-    id: 2,
-    empName: "Jane Smith",
-    title: "Attend New Employee Orientation",
-    description:
-      "Join the scheduled Zoom call at 10 AM for company policies and procedures overview.",
-    comments: ["Meeting link sent via email", "Session completed successfully"],
-    status: "completed",
-    priority: "medium",
-    dueDate: "2024-01-10",
-  },
-  {
-    id: 3,
-    empName: "Mike Johnson",
-    title: "Setup Development Environment",
-    description:
-      "Install required software and configure development tools as per company standards.",
-    comments: [],
-    status: "pending",
-    priority: "high",
-    dueDate: "2024-01-20",
-  },
+const FILTERS = [
+  { value: "", label: "All" },
+  { value: "active", label: "Open" },
+  { value: "overdue", label: "Overdue" },
+  { value: "waiting", label: "Waiting to close" },
+  { value: "closed", label: "Closed" },
 ];
 
+const MetricTile = ({ label, value, color, onClick }: { label: string; value: number; color: string; onClick: () => void }) => (
+  <div onClick={onClick} className="flex-1 min-w-[90px] rounded-xl p-3 cursor-pointer border border-gray-100 hover:shadow-sm transition-shadow" style={{ background: `${color}12` }}>
+    <Typography variant="caption" sx={{ color, fontWeight: 700 }}>{label}</Typography>
+    <Typography variant="h6" sx={{ color, fontWeight: 700 }}>{value}</Typography>
+  </div>
+);
+
 const TaskPage = () => {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const [commentText, setCommentText] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [tab, setTab] = useState(0); // 0 = my tasks, 1 = assigned by me
+  const [view, setView] = useState<"card" | "table">("card");
+  const [filter, setFilter] = useState("");
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [metrics, setMetrics] = useState<any>(null);
+  const [showCreate, setShowCreate] = useState(false);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [reloadTick, setReloadTick] = useState(0);
 
-  const handleViewTask = (task: Task) => {
-    setSelectedTask(task);
-    setIsDialogOpen(true);
+  const [getMyTasks, { isLoading: loadingMine }] = useGetMyTasksMutation();
+  const [getMyTaskMetrics] = useGetMyTaskMetricsMutation();
+  const [getManagedTasks, { isLoading: loadingManaged }] = useGetManagedTasksMutation();
+  const [getManagerTaskMetrics] = useGetManagerTaskMetricsMutation();
+
+  const byMe = tab === 1;
+  const loading = byMe ? loadingManaged : loadingMine;
+
+  const load = async () => {
+    const listCall: any = byMe ? await getManagedTasks({ filter: filter || undefined }) : await getMyTasks({ filter: filter || undefined });
+    if (listCall?.data?.success) setTasks(listCall.data.data?.tasks || []);
+    const metricsCall: any = byMe ? await getManagerTaskMetrics() : await getMyTaskMetrics();
+    if (metricsCall?.data?.success) setMetrics(metricsCall.data.data);
   };
 
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    setSelectedTask(null);
-    setCommentText("");
-  };
+  useEffect(() => { load(); }, [tab, filter, reloadTick]);
 
-  const handleAddComment = () => {
-    if (!selectedTask || commentText.trim() === "") return;
-
-    const updatedTasks = tasks.map((task) =>
-      task.id === selectedTask.id
-        ? { ...task, comments: [...task.comments, commentText] }
-        : task
-    );
-
-    setTasks(updatedTasks);
-    setSelectedTask({
-      ...selectedTask,
-      comments: [...selectedTask.comments, commentText],
-    });
-    setCommentText("");
-  };
+  const openList = (f: string) => setFilter(f);
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        p: 2,
-        backgroundColor: "#fff",
-        minHeight: "87vh",
-      }}
-    >
-      <Box sx={{ mb: 1 }}>
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2 mb-2">
-            <AssignmentIcon sx={{ fontSize: 32, color: "#2eacb3" }} />
-            <Typography
-              variant="subtitle1"
-              sx={{ fontWeight: 600, fontSize: 22, color: "#1f2937" }}
-            >
-              Task
-            </Typography>
-          </div>
-
-          {/* <CustomButton className="bg-[#000] hover:bg-gray-800 text-md text-white font-bold cursor-pointer">+ Add</CustomButton> */}
+    <div className="h-[calc(100vh-78px)] flex flex-col overflow-hidden px-3 py-4 w-full">
+      {/* Page header - same left-aligned accent-bar style as every other module page */}
+      <div className="flex items-center justify-between gap-2 mb-3 flex-shrink-0 flex-wrap">
+        <div className="flex items-center gap-2">
+          <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
+          <AssignmentIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
+          <span className="text-lg font-bold text-gray-800">Task Box</span>
+          {tasks.length > 0 && (
+            <span className="ml-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#e0f7fa] text-[#2eacb3] border border-[#2eacb3]/20">
+              {tasks.length} total
+            </span>
+          )}
         </div>
-      </Box>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" } }}
+          onClick={() => setShowCreate(true)}
+        >
+          Assign a Task
+        </Button>
+      </div>
 
-      <Card
-        sx={{ borderRadius: 1, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" }}
-      >
-        <TableContainer sx={{ maxHeight: "75vh", overflow: "auto" }}>
-          <Table>
-            <TableHead sx={{position: "sticky", top: 0, zIndex:99}}>
-              <TableRow sx={{   }}>
-                <StyledTableCell>
-                  Employee Name
-                </StyledTableCell>
-                <StyledTableCell>
-                  Task Details
-                </StyledTableCell>
-                <StyledTableCell>
-                  Due Date
-                </StyledTableCell>
-                <StyledTableCell>
-                  Actions
-                </StyledTableCell>
+      <div className="flex items-center justify-between gap-2 mb-2 flex-wrap flex-shrink-0">
+        <Tabs value={tab} onChange={(_, v) => { setTab(v); setFilter(""); }} sx={{ minHeight: 36 }}>
+          <Tab label="My Tasks" sx={{ minHeight: 36, textTransform: "none", fontWeight: 600 }} />
+          <Tab label="Assigned by Me" sx={{ minHeight: 36, textTransform: "none", fontWeight: 600 }} />
+        </Tabs>
+        <div className="flex items-center gap-1 border border-gray-200 rounded-lg p-0.5">
+          <IconButton size="small" onClick={() => setView("card")} sx={{ bgcolor: view === "card" ? "#2eacb31a" : "transparent" }}>
+            <GridViewIcon fontSize="small" sx={{ color: view === "card" ? "#2eacb3" : "#9ca3af" }} />
+          </IconButton>
+          <IconButton size="small" onClick={() => setView("table")} sx={{ bgcolor: view === "table" ? "#2eacb31a" : "transparent" }}>
+            <ViewListIcon fontSize="small" sx={{ color: view === "table" ? "#2eacb3" : "#9ca3af" }} />
+          </IconButton>
+        </div>
+      </div>
+
+      {metrics && (
+        <div className="flex gap-2 mb-3 flex-wrap flex-shrink-0">
+          <MetricTile label="Open" value={(metrics.assigned || 0) + (metrics.in_progress || 0)} color="#1e88e5" onClick={() => openList("active")} />
+          <MetricTile label="Overdue" value={metrics.overdue || 0} color="#e53935" onClick={() => openList("overdue")} />
+          <MetricTile label="Waiting" value={metrics.pending_approval || 0} color="#8e24aa" onClick={() => openList("waiting")} />
+          <MetricTile label="Closed" value={metrics.closed || 0} color="#2e7d32" onClick={() => openList("closed")} />
+        </div>
+      )}
+
+      <div className="mb-3 w-full sm:w-56 flex-shrink-0">
+        <TextField select size="small" fullWidth label="Filter" value={filter} onChange={(e) => setFilter(e.target.value)}>
+          {FILTERS.map((f) => <MenuItem key={f.value} value={f.value}>{f.label}</MenuItem>)}
+        </TextField>
+      </div>
+
+      {loading ? (
+        <Box className="w-full flex-1 flex items-center justify-center"><CircularProgress sx={{ color: "#2eacb3" }} /></Box>
+      ) : tasks.length === 0 ? (
+        <div className="flex-1 flex items-center justify-center"><EmptyData title="No tasks here" subtitle={byMe ? "Tasks you assigned will show up here." : "Tasks assigned to you will show up here."} /></div>
+      ) : view === "card" ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full flex-1 overflow-y-auto p-2 content-start">
+          {tasks.map((t) => <TaskCard key={t.id} task={t} onClick={() => setSelectedId(t.id)} />)}
+        </div>
+      ) : (
+        <TableContainer sx={{ flex: 1, overflow: "auto", borderRadius: 2, border: "1px solid #f3f4f6" }}>
+          <Table stickyHeader size="small">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Title</StyledTableCell>
+                <StyledTableCell>{byMe ? "Assigned To" : "Assigned By"}</StyledTableCell>
+                <StyledTableCell>Status</StyledTableCell>
+                <StyledTableCell>Priority</StyledTableCell>
+                <StyledTableCell>Deadline</StyledTableCell>
+                <StyledTableCell align="center">Action</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {tasks?.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
-                    <Box sx={{ textAlign: "center" }}>
-                      <AssignmentIcon
-                        sx={{ fontSize: 48, color: "#9ca3af", mb: 2 }}
-                      />
-                      <Typography variant="h6" sx={{ color: "#6b7280", mb: 1 }}>
-                        No tasks available
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: "#9ca3af" }}>
-                        Tasks will appear here once assigned
-                      </Typography>
-                    </Box>
+              {tasks.map((t) => (
+                <StyledTableRow key={t.id} sx={{ "&:hover": { backgroundColor: "#f9fafb" } }}>
+                  <TableCell>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: "#1f2937" }}>{t.title}</Typography>
+                    {t.status === "Forwarded" && t.current_assignee_name && (
+                      <Typography variant="caption" sx={{ color: "#1e88e5" }}>With {t.current_assignee_name}</Typography>
+                    )}
                   </TableCell>
-                </TableRow>
-              ) : (
-                tasks.map((row: Task) => (
-                  <StyledTableRow
-                    key={row.id}
-                    sx={{ "&:hover": { backgroundColor: "#f9fafb" } }}
-                  >
-                    <TableCell>
-                      <Box
-                        sx={{ display: "flex", alignItems: "center", gap: 2 }}
-                      >
-                        <Avatar
-                          sx={{ bgcolor: "#2eacb3", width: 40, height: 40,           pointerEvents: "none",
-                      userSelect: "none", }}
-                        >
-                          <PersonIcon />
-                        </Avatar>
-                        <Box>
-                          <Typography
-                            sx={{ fontWeight: 600, color: "#1f2937" }}
-                          >
-                            {row.empName}
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: "#6b7280" }}>
-                            Employee
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Box>
-                        <Typography
-                          sx={{ fontWeight: 600, color: "#1f2937", mb: 1 }}
-                        >
-                          {row.title}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          sx={{ color: "#6b7280", lineHeight: 1.4 }}
-                        >
-                          {row.description}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2" sx={{ color: "#6b7280" }}>
-                        {row.dueDate
-                          ? new Date(row.dueDate).toLocaleDateString()
-                          : "Not set"}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <CustomToolTip title="View Details" placement="bottom">
-                        <IconButton
-                          onClick={() => handleViewTask(row)}
-                          sx={{
-                            backgroundColor: "#f3f4f6",
-                            color: "#6b7280",
-                            "&:hover": {
-                              backgroundColor: "#2eacb3",
-                              color: "white",
-                              transform: "scale(1.1)",
-                            },
-                            transition: "all 0.2s ease",
-                          }}
-                        >
-                          <VisibilityIcon />
-                        </IconButton>
-                      </CustomToolTip>
-                    </TableCell>
-                  </StyledTableRow>
-                ))
-              )}
+                  <TableCell>{byMe ? (t.assigned_to_name || t.assigned_to) : t.assigned_by_name}</TableCell>
+                  <TableCell>
+                    <Chip size="small" label={statusLabel(t.status)} sx={{ bgcolor: `${STATUS_COLOR[t.status] || "#607d8b"}1a`, color: STATUS_COLOR[t.status] || "#607d8b", fontWeight: 600 }} />
+                  </TableCell>
+                  <TableCell>
+                    <Chip size="small" variant="outlined" label={t.priority} sx={{ borderColor: PRIORITY_COLOR[t.priority] || "#999", color: PRIORITY_COLOR[t.priority] || "#999", fontWeight: 600 }} />
+                  </TableCell>
+                  <TableCell>
+                    <span className={Number(t.is_overdue) === 1 ? "text-red-600 font-semibold text-sm" : "text-gray-500 text-sm"}>
+                      {Number(t.is_overdue) === 1 ? "Overdue - " : ""}{deadlineText(t)}
+                    </span>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button size="small" variant="outlined" onClick={() => setSelectedId(t.id)}>View</Button>
+                  </TableCell>
+                </StyledTableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
-      </Card>
+      )}
 
-      {/* Task Details Dialog */}
-      <Dialog
-        open={isDialogOpen}
-        onClose={handleCloseDialog}
-        fullWidth
-        maxWidth="md"
-        PaperProps={{
-          sx: {
-            borderRadius: 3,
-            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
-          },
-        }}
-      >
-        <DialogTitle
-          sx={{
-            pb: 1,
-            borderBottom: "1px solid #e5e7eb",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <AssignmentIcon sx={{ color: "#2eacb3" }} />
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
-              Task Details
-            </Typography>
-          </Box>
-          <IconButton onClick={handleCloseDialog} size="small">
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+      <Drawer anchor="right" open={showCreate} onClose={() => setShowCreate(false)} PaperProps={{ sx: { width: { xs: "100%", sm: 560 } } }}>
+        <CreateTaskDrawer onClose={() => setShowCreate(false)} onCreated={() => { setShowCreate(false); setReloadTick((x) => x + 1); }} />
+      </Drawer>
 
-        <DialogContent sx={{ pt: 2 }}>
-          <div className="py-3">
-            {selectedTask && (
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-                <div className="col-span-12 flex items-center gap-4">
-                  <Avatar sx={{ bgcolor: "#2eacb3", width: 40, height: 40,           pointerEvents: "none",
-                      userSelect: "none", }}>
-                    <PersonIcon />
-                  </Avatar>
-
-                  <div>
-                    <h2 className="text-lg font-semibold text-gray-800">
-                      {selectedTask.empName}
-                    </h2>
-                    <p className="text-sm text-gray-500">Assigned Employee</p>
-                  </div>
-                </div>
-
-                <div className="col-span-12 md:col-span-8">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    {selectedTask.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {selectedTask.description}
-                  </p>
-                </div>
-
-                <div className="col-span-12 md:col-span-4">
-                  <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                    <h4 className="text-sm font-semibold mb-3 text-gray-700">
-                      Task Information
-                    </h4>
-                    <div className="space-y-3">
-                      <div>
-                        <p className="text-xs text-gray-500">Due Date</p>
-                        <p className="text-sm font-medium text-gray-700">
-                          {selectedTask.dueDate
-                            ? new Date(
-                                selectedTask.dueDate
-                              ).toLocaleDateString()
-                            : "Not set"}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-span-12 border-t pt-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <FaCommentAlt className="text-gray-500" />
-                    <h4 className="text-lg font-semibold text-gray-800">
-                      Comments ({selectedTask.comments.length})
-                    </h4>
-                  </div>
-
-                  {selectedTask.comments.length > 0 ? (
-                    <ul className="space-y-2 bg-gray-50 p-4 rounded-lg">
-                      {selectedTask.comments.map((comment, index) => (
-                        <li
-                          key={index}
-                          className="text-sm text-gray-700 font-medium"
-                        >
-                          {comment}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <div className="text-center py-2">
-                      <FaCommentAlt className="mx-auto text-4xl text-[#2eacb3] mb-2 " />
-                      <p className="text-sm text-gray-500">
-                        No comments yet. Be the first to add one!
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Comment Input */}
-                <div className="col-span-12">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Add a comment
-                  </label>
-                  <textarea
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    rows={3}
-                    className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Type your comment here..."
-                  />
-                </div>
-              </div>
-            )}
-            <div className="flex justify-end gap-2 mt-4">
-              <CustomButton
-                onClick={handleCloseDialog}
-                className="bg-gray-400 hover:bg-gray-400/80  text-white cursor-pointer transform hover:scale-105 transition-all duration-200 shadow-xl rounded-sm text-lg"
-              >
-                {" "}
-                Close
-              </CustomButton>
-              <CustomButton
-                onClick={handleAddComment}
-                className=" cursor-pointer text-lg  shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-sm transform hover:scale-105 transition-all duration-200 text-white"
-              >
-                {" "}
-                Comment
-              </CustomButton>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </Box>
+      <Drawer anchor="right" open={!!selectedId} onClose={() => setSelectedId(null)} PaperProps={{ sx: { width: { xs: "100%", sm: "70vw", md: 680 } } }}>
+        {selectedId && (
+          <TaskDetailDrawer taskId={selectedId} onClose={() => setSelectedId(null)} onChanged={() => setReloadTick((x) => x + 1)} />
+        )}
+      </Drawer>
+    </div>
   );
 };
 
