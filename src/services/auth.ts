@@ -59,6 +59,12 @@ const extendedAuthApi = baseApiInstance.injectEndpoints({
       }),
       transformResponse: (response: any) => response,
     }),
+    // The signed-in employee's own company / branch / head office (GET /dashboard/emp/company-info).
+    // POST /login/login already returns the same block as data.companyInfo; this is for sessions that
+    // logged in before that existed, and for a refresh.
+    getMyCompanyInfo: builder.query<any, void>({
+      query: () => ({ url: "/dashboard/emp/company-info", method: "GET" }),
+    }),
     getEmployeeDetails: builder.query<any, any>({
       query: (credentials) => {
         const searchParams = new URLSearchParams();
@@ -103,4 +109,5 @@ export const {
   useChangePasswordMutation,
   useResetPasswordMutation,
   useGetEmployeeDetailsQuery,
+  useGetMyCompanyInfoQuery,
 } = extendedAuthApi;
