@@ -2,9 +2,19 @@ export type RatingRole = "employee" | "manager";
 
 export type TeamMemberStatus = "no_kra" | "no_points" | "pending" | "partial" | "complete";
 
+export interface RatingWindowHalf {
+  open: boolean;
+  targetMonth: string | null;
+  /** Only set on the 22nd-24th, counting down to the employee window opening on the 25th. */
+  daysUntilOpen?: number | null;
+}
+
 export interface RatingWindow {
   open: boolean;
   targetMonth: string;
+  /** Role-split view of the same window, additive (2026-09-26) - for the Home tile's Live/Closing/Xd-left badge. */
+  employee?: RatingWindowHalf;
+  manager?: RatingWindowHalf;
 }
 
 export interface TeamMember {

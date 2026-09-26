@@ -8,6 +8,7 @@ import {
 import ImageCard from "../components/reuseable/ImageCard";
 import { homeData } from "../staticData/homepagedata";
 import type { homeMenuTypes } from "../types/home-data-types/homepagetypes";
+import { useGetRatingWindowQuery } from "../services/kraRating";
 import NoticeboardCard from "../components/NoticeboardCard";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { keyframes, useTheme } from "@mui/material/styles";
@@ -21,6 +22,18 @@ const getScrollKeyframes = (fromX: string, toX: string) => keyframes`
   100% { transform: translateX(${toX}); }
 `;
 
+// Same Live / Xd left / Closing / Locked states as Android's Dashboard KRA tile badge
+// (DashboardScreen.kt's kraBadge `when`), computed from the same role-split window shape
+// (menu/kra.js's getKraWindowStatus()).
+const getKraBadge = (window_?: { employee?: { open: boolean; daysUntilOpen?: number | null }; manager?: { open: boolean } }) => {
+  if (!window_) return null;
+  const { employee, manager } = window_;
+  if (employee?.open) return { label: "Live", color: "#16a34a" };
+  if (employee?.daysUntilOpen != null) return { label: `${employee.daysUntilOpen}d left`, color: "#f59e0b" };
+  if (manager?.open) return { label: "Closing", color: "#ea580c" };
+  return { label: "Locked", color: "#dc2626" };
+};
+
 const HomePage = () => {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
@@ -28,6 +41,9 @@ const HomePage = () => {
   const fromX = isSmallDevice ? "20%" : isMediamDevice ? "40%" : "90%";
   const toX = isSmallDevice ? "-20%" : isMediamDevice ? "-40%" : "-120%";
   const scroll = getScrollKeyframes(fromX, toX);
+
+  const { data: ratingWindowRes } = useGetRatingWindowQuery();
+  const kraBadge = getKraBadge(ratingWindowRes?.data);
 
   return (
     <div className="w-full h-[calc(100vh-78px)] flex flex-col overflow-y-auto will-change-transform">
@@ -134,6 +150,7 @@ const HomePage = () => {
               title={item.title}
               image={item.icon}
               path={item.path}
+              badge={item.id === "performance" ? kraBadge ?? undefined : undefined}
             />
           ))}
         </div>

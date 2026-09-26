@@ -21,9 +21,10 @@ type ImageCardProps = {
   title: string;
   image: string;
   path: string;
+  badge?: { label: string; color: string };
 };
 
-const COMING_SOON = ["hr policies", "task box", "recruitment"];
+const COMING_SOON = ["hr policies", "recruitment"];
 
 const getBlockedImage = (title: string) => {
   switch (title.toLowerCase()) {
@@ -35,7 +36,7 @@ const getBlockedImage = (title: string) => {
   }
 };
 
-const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
+const ImageCard: FC<ImageCardProps> = ({ title, image, path, badge }) => {
   const navigation = useNavigate();
   const { setIsExpended } = useDrawerContext();
   const [open, setOpen] = useState(false);
@@ -95,6 +96,13 @@ const ImageCard: FC<ImageCardProps> = ({ title, image, path }) => {
       {isComingSoon && (
         <div className="absolute -top-2 -right-2 z-10">
           <CustomTag label="Coming Soon" />
+        </div>
+      )}
+
+      {/* Status badge (e.g. My KRA's Live / Xd left / Closing / Closed) - same corner slot as Coming Soon, mutually exclusive with it */}
+      {!isComingSoon && badge && (
+        <div className="absolute -top-2 -right-2 z-10">
+          <CustomTag label={badge.label} color={badge.color} />
         </div>
       )}
 
