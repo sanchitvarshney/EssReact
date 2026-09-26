@@ -22,10 +22,10 @@ export interface AddedAssetEntry {
   remark: string;
 }
 
-export const ACCENT = "#2eacb3";
+export const ACCENT = "#00a0a0";
 export const DISPUTE_RED = "#ef4444";
 
-export const isImageFile = (url: string) => {
+const isImageFile = (url: string) => {
   const ext = url?.split(".")?.pop()?.toLowerCase();
   return ["jpg", "jpeg", "png", "webp"].includes(ext || "");
 };

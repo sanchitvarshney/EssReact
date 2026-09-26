@@ -46,7 +46,7 @@ const statusColor = (status: string) => {
     return { bgcolor: "#dcfce7", color: "#15803d" };
   if (normalized === "DISPUTE" || normalized === "MISSING")
     return { bgcolor: "#fee2e2", color: "#b91c1c" };
-  return { bgcolor: "#e0f7fa", color: "#0097a7" };
+  return { bgcolor: "#e0f6f6", color: "#007f86" };
 };
 
 const AssetDetailsDialog = memo(function AssetDetailsDialog({
@@ -126,13 +126,13 @@ const AssetDetailsDialog = memo(function AssetDetailsDialog({
                   <>
                     <button
                       onClick={onPrev}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-gray-500 hover:text-[#2eacb3] hover:shadow-lg transition-all"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-gray-500 hover:text-[#00a0a0] hover:shadow-lg transition-all"
                     >
                       <FiChevronLeft size={18} />
                     </button>
                     <button
                       onClick={onNext}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-gray-500 hover:text-[#2eacb3] hover:shadow-lg transition-all"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-gray-500 hover:text-[#00a0a0] hover:shadow-lg transition-all"
                     >
                       <FiChevronRight size={18} />
                     </button>
@@ -149,7 +149,7 @@ const AssetDetailsDialog = memo(function AssetDetailsDialog({
                         onClick={() => onSelect(i)}
                         className={`flex-shrink-0 w-11 h-11 rounded-lg overflow-hidden border-2 transition-all ${
                           i === index
-                            ? "border-[#2eacb3] shadow-sm"
+                            ? "border-[#00a0a0] shadow-sm"
                             : "border-gray-200 hover:border-gray-300 opacity-70 hover:opacity-100"
                         }`}
                       >
@@ -179,8 +179,8 @@ const AssetDetailsDialog = memo(function AssetDetailsDialog({
                     label={asset.category}
                     size="small"
                     sx={{
-                      bgcolor: "#e0f7fa",
-                      color: "#0097a7",
+                      bgcolor: "#e0f6f6",
+                      color: "#007f86",
                       fontWeight: 600,
                     }}
                   />

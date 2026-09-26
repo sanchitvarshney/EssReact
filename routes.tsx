@@ -1,4 +1,72 @@
+import { lazy, Suspense, type ReactNode } from "react";
 import { createBrowserRouter, useParams } from "react-router-dom";
+import SideMenuBar from "./src/components/sidemenubar/SideMenuBar";
+import Protected from "./src/routes/Protected";
+import FallBackUi from "./src/pages/errorBoundary/FallBackUi";
+import MainLayout from "./src/layouts/MainLayout";
+import McGuardLayout from "./src/mscguard/layouts/McGuardLayout";
+import McGuardProtected from "./src/mscguard/routes/McGuardProtected";
+import { HierarchyProvider } from "./src/contextapi/hierarchyProvider";
+import DotLoading from "./src/components/reuseable/DotLoading";
+
+// Every page is its own chunk, so the first paint only downloads what the current route needs.
+const HolidayPage = lazy(() => import("./src/components/HolidayPage"));
+const Custom404Page = lazy(() => import("./src/pages/Custom404Page"));
+const LeavePage = lazy(() => import("./src/pages/LeavePage"));
+const AttendancePage = lazy(() => import("./src/pages/AttendancePage"));
+const TeamAttendancePage = lazy(() => import("./src/pages/TeamAttendancePage"));
+const TeamMemberAttendancePage = lazy(() => import("./src/pages/TeamMemberAttendancePage"));
+const ReimbursementPage = lazy(() => import("./src/pages/ReimbursementPage"));
+const LoanPage = lazy(() => import("./src/pages/LoanPage"));
+const GatePassPage = lazy(() => import("./src/pages/GatePassPage"));
+const PreApprovalPage = lazy(() => import("./src/pages/PreApprovalPage"));
+const LeaveStatusPage = lazy(() => import("./src/pages/LeaveStatusPage"));
+const WFHPage = lazy(() => import("./src/pages/WFHPage"));
+const PaySlipPage = lazy(() => import("./src/pages/PaySlipPage"));
+const HierarchyChart = lazy(() => import("./src/pages/HierarchyChart"));
+const AnnouncementPage = lazy(() => import("./src/pages/AnnouncementPage"));
+const HomePage = lazy(() => import("./src/pages/HomePage"));
+const EmployeeProfilePage = lazy(() => import("./src/pages/EmployeeProfilePage"));
+const PolicyPage = lazy(() => import("./src/pages/PolicyPage"));
+const DocumentsPage = lazy(() => import("./src/pages/DocumentsPage"));
+const LeaveGrantPage = lazy(() => import("./src/pages/LeaveGrantPage"));
+const HelpPortal = lazy(() => import("./src/pages/HelpPortal"));
+const RecruitmentsPage = lazy(() => import("./src/pages/RecruitmentsPage"));
+const PerformancePage = lazy(() => import("./src/pages/PerformancePage"));
+const ReimbursementClaim = lazy(() => import("./src/pages/ReimbursementClaim"));
+const PeripheralPage = lazy(() => import("./src/pages/PeripheralPage"));
+const CreateTicketPage = lazy(() => import("./src/pages/CreateTicketPage"));
+const ReimbursementStatusPage = lazy(() => import("./src/pages/ReimbursementStatusPage"));
+const ReimbursementGrantPage = lazy(() => import("./src/pages/ReimbursementGrantPage"));
+const RecoverPassword = lazy(() => import("./src/pages/RecoverPassword"));
+const TwoFactorAuthPage = lazy(() => import("./src/pages/TwoFactorAuthPage"));
+const SignInScreen = lazy(() => import("./src/pages/SignInScreen"));
+const TaskPage = lazy(() => import("./src/pages/TaskPage"));
+const EmployeeDetails = lazy(() => import("./src/pages/EmployeeDetails"));
+const GatepassRequestPage = lazy(() => import("./src/pages/GatepassRequestPage"));
+const VisitorInvitePage = lazy(() => import("./src/pages/VisitorInvitePage"));
+const VisitorSelfRegisterEntryPage = lazy(() => import("./src/pages/VisitorSelfRegisterEntryPage"));
+const Login = lazy(() => import("./src/mscguard/pages/Login"));
+const Dashboard = lazy(() => import("./src/mscguard/pages/Dashboard"));
+const GatepassApprovals = lazy(() => import("./src/mscguard/pages/GatepassApprovals"));
+const MaterialApprovals = lazy(() => import("./src/mscguard/pages/MaterialApprovals"));
+const PreApprovals = lazy(() => import("./src/mscguard/pages/PreApprovals"));
+const Attendance = lazy(() => import("./src/mscguard/pages/Attendance"));
+const EmployeeCodes = lazy(() => import("./src/mscguard/pages/EmployeeCodes"));
+const EmpHierarchy = lazy(() => import("./src/mscguard/pages/EmpHierarchy"));
+const Analytics = lazy(() => import("./src/mscguard/pages/Analytics"));
+const AdvancedSearch = lazy(() => import("./src/mscguard/pages/AdvancedSearch"));
+const Reports = lazy(() => import("./src/mscguard/pages/Reports"));
+const Guards = lazy(() => import("./src/mscguard/pages/Guards"));
+const McGuardSettings = lazy(() => import("./src/mscguard/pages/Settings"));
+
+const RouteFallback = () => (
+  <div className="w-full h-full min-h-[60vh] flex items-center justify-center">
+    <DotLoading />
+  </div>
+);
+
+const withSuspense = (node: ReactNode) => <Suspense fallback={<RouteFallback />}>{node}</Suspense>;
 
 const EmployeeDetailsRoute = () => {
   const { empCode } = useParams();
@@ -8,77 +76,20 @@ const EmployeeDetailsRoute = () => {
     </HierarchyProvider>
   );
 };
-import HolidayPage from "./src/components/HolidayPage";
-import Custom404Page from "./src/pages/Custom404Page";
-import LeavePage from "./src/pages/LeavePage";
-import SideMenuBar from "./src/components/sidemenubar/SideMenuBar";
-import AttendancePage from "./src/pages/AttendancePage";
-import LeaveStatusPage from "./src/pages/LeaveStatusPage";
-import WFHPage from "./src/pages/WFHPage";
-import PaySlipPage from "./src/pages/PaySlipPage";
-import HierarchyChart from "./src/pages/HierarchyChart";
-import AnnouncementPage from "./src/pages/AnnouncementPage";
-import HomePage from "./src/pages/HomePage";
-import EmployeeProfilePage from "./src/pages/EmployeeProfilePage";
-import PolicyPage from "./src/pages/PolicyPage";
-import DocumentsPage from "./src/pages/DocumentsPage";
-import LeaveGrantPage from "./src/pages/LeaveGrantPage";
-import HelpPortal from "./src/pages/HelpPortal";
-import RecruitmentsPage from "./src/pages/RecruitmentsPage";
-import PerformancePage from "./src/pages/PerformancePage";
-import ReimbursementClaim from "./src/pages/ReimbursementClaim";
-import PeripheralPage from "./src/pages/PeripheralPage";
-import CreateTicketPage from "./src/pages/CreateTicketPage";
-// import ViewStatusTicketPage from "./src/pages/ViewStatusTicketPage";
-import ReimbursementStatusPage from "./src/pages/ReimbursementStatusPage";
-import ReimbursementGrantPage from "./src/pages/ReimbursementGrantPage";
-import RecoverPassword from "./src/pages/RecoverPassword";
-import TwoFactorAuthPage from "./src/pages/TwoFactorAuthPage";
-import Protected from "./src/routes/Protected";
-import SignInScreen from "./src/pages/SignInScreen";
-import TaskPage from "./src/pages/TaskPage";
-import { HierarchyProvider } from "./src/contextapi/hierarchyProvider";
-import EmployeeDetails from "./src/pages/EmployeeDetails";
-import FallBackUi from "./src/pages/errorBoundary/FallBackUi";
-// import { lazy, Suspense } from "react";
-// import AppLoader from "./src/pages/AppLoader";
-import MainLayout from "./src/layouts/MainLayout";
-import GatepassRequestPage from "./src/pages/GatepassRequestPage";
-import VisitorInvitePage from "./src/pages/VisitorInvitePage";
-import VisitorSelfRegisterEntryPage from "./src/pages/VisitorSelfRegisterEntryPage";
-import Login from "./src/mscguard/pages/Login";
-import Dashboard from "./src/mscguard/pages/Dashboard";
-import GatepassApprovals from "./src/mscguard/pages/GatepassApprovals";
-import MaterialApprovals from "./src/mscguard/pages/MaterialApprovals";
-import PreApprovals from "./src/mscguard/pages/PreApprovals";
-import Attendance from "./src/mscguard/pages/Attendance";
-import EmployeeCodes from "./src/mscguard/pages/EmployeeCodes";
-import EmpHierarchy from "./src/mscguard/pages/EmpHierarchy";
-import Analytics from "./src/mscguard/pages/Analytics";
-import AdvancedSearch from "./src/mscguard/pages/AdvancedSearch";
-import Reports from "./src/mscguard/pages/Reports";
-import Guards from "./src/mscguard/pages/Guards";
-import McGuardSettings from "./src/mscguard/pages/Settings";
-import McGuardLayout from "./src/mscguard/layouts/McGuardLayout";
-import McGuardProtected from "./src/mscguard/routes/McGuardProtected";
-// const MainLayout = lazy(() => import("./src/layouts/MainLayout"));
-// import logo from "./src/assets/img/hrms_mscorpres_logo.png";
 
 export const route = createBrowserRouter([
   {
     path: "/",
     element: (
-      // <Suspense fallback={<AppLoader logo={logo} />}>
-        <Protected>
-          <MainLayout />
-        </Protected>
-      // </Suspense>
+      <Protected>
+        <MainLayout />
+      </Protected>
     ),
     errorElement: <FallBackUi />,
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: withSuspense(<HomePage />),
       },
 
       {
@@ -86,105 +97,124 @@ export const route = createBrowserRouter([
         children: [
           {
             path: "task-box",
-            element: <TaskPage />,
+            element: withSuspense(<TaskPage />),
           },
           {
             path: "manage-account",
-            element: (
+            element: withSuspense(
               <HierarchyProvider>
-                {" "}
                 <EmployeeProfilePage />
-              </HierarchyProvider>
+              </HierarchyProvider>,
             ),
           },
 
           {
             path: "hr-policy",
-            element: <PolicyPage />,
+            element: withSuspense(<PolicyPage />),
           },
           {
             path: "support-portal",
-            element: <HelpPortal />,
+            element: withSuspense(<HelpPortal />),
           },
           {
             path: "attendance",
-            element: <AttendancePage />,
+            element: withSuspense(<AttendancePage />),
+          },
+          {
+            path: "team-attendance",
+            element: withSuspense(<TeamAttendancePage />),
+          },
+          {
+            path: "team-attendance/:empCode",
+            element: withSuspense(<TeamMemberAttendancePage />),
           },
           {
             path: "calendar",
-            element: <HolidayPage />,
+            element: withSuspense(<HolidayPage />),
           },
           {
             path: "self-service/apply-leave",
-            element: <LeavePage />,
+            element: withSuspense(<LeavePage />),
           },
           {
             path: "self-service/leave-status",
-            element: <LeaveStatusPage />,
+            element: withSuspense(<LeaveStatusPage />),
           },
           {
             path: "self-service/wfh",
-            element: <WFHPage />,
+            element: withSuspense(<WFHPage />),
           },
           {
             path: "payroll",
-            element: <PaySlipPage />,
+            element: withSuspense(<PaySlipPage />),
           },
           {
             path: "vibe",
-            element: <AnnouncementPage />,
+            element: withSuspense(<AnnouncementPage />),
           },
           {
             path: "home/hierarchy",
-            element: (
+            element: withSuspense(
               <HierarchyProvider>
                 <HierarchyChart />
-              </HierarchyProvider>
+              </HierarchyProvider>,
             ),
           },
           {
             path: "hr-documents",
-            element: <DocumentsPage />,
+            element: withSuspense(<DocumentsPage />),
           },
           {
             path: "self-service/leave-grant",
-            element: <LeaveGrantPage />,
+            element: withSuspense(<LeaveGrantPage />),
           },
           {
             path: "performance",
-            element: <PerformancePage />,
+            element: withSuspense(<PerformancePage />),
+          },
+          {
+            path: "reimbursement",
+            element: withSuspense(<ReimbursementPage />),
+          },
+          {
+            path: "loan",
+            element: withSuspense(<LoanPage />),
+          },
+          {
+            path: "gate-pass",
+            element: withSuspense(<PreApprovalPage />),
+          },
+          {
+            path: "gate-pass/out-pass",
+            element: withSuspense(<GatePassPage />),
           },
           {
             path: "reimbursement/claim",
-            element: <ReimbursementClaim />,
+            element: withSuspense(<ReimbursementClaim />),
           },
           {
             path: "recruitments",
-            element: <RecruitmentsPage />,
+            element: withSuspense(<RecruitmentsPage />),
           },
           {
             path: "peripheral",
-            element: <PeripheralPage />,
+            element: withSuspense(<PeripheralPage />),
           },
           {
             path: "support-portal/create-new-ticket",
-            element: <CreateTicketPage />,
+            element: withSuspense(<CreateTicketPage />),
           },
-          // {
-          //   path: "support-portal/ticket-status",
-          //   element: <ViewStatusTicketPage />,
-          // },
           {
             path: "reimbursement/status",
-            element: <ReimbursementStatusPage />,
+            element: withSuspense(<ReimbursementStatusPage />),
           },
           {
             path: "reimbursement/grant",
-            element: <ReimbursementGrantPage />,
+            element: withSuspense(<ReimbursementGrantPage />),
           },
           {
             path: "employee/details/:empCode",
-            element: <EmployeeDetailsRoute />,
+            element: withSuspense(<EmployeeDetailsRoute />),
           },
         ],
       },
@@ -192,19 +222,19 @@ export const route = createBrowserRouter([
   },
   {
     path: "/gp/int/emp",
-    element: <GatepassRequestPage />,
+    element: withSuspense(<GatepassRequestPage />),
   },
   {
     path: "/gp/int/invite/:token",
-    element: <VisitorInvitePage />,
+    element: withSuspense(<VisitorInvitePage />),
   },
   {
     path: "/gp/int/self",
-    element: <VisitorSelfRegisterEntryPage />,
+    element: withSuspense(<VisitorSelfRegisterEntryPage />),
   },
   {
     path: "/gp/sp/login",
-    element: <Login />,
+    element: withSuspense(<Login />),
   },
   {
     path: "/gp/sp",
@@ -214,25 +244,25 @@ export const route = createBrowserRouter([
       </McGuardProtected>
     ),
     children: [
-      { index: true, element: <Dashboard /> },
-      { path: "gatepass", element: <GatepassApprovals /> },
-      { path: "material", element: <MaterialApprovals /> },
-      { path: "pre-approved", element: <PreApprovals /> },
-      { path: "attendance", element: <Attendance /> },
-      { path: "employee-codes", element: <EmployeeCodes /> },
-      { path: "hierarchy", element: <EmpHierarchy /> },
-      { path: "analytics", element: <Analytics /> },
-      { path: "search", element: <AdvancedSearch /> },
-      { path: "reports", element: <Reports /> },
-      { path: "guards", element: <Guards /> },
-      { path: "settings", element: <McGuardSettings /> },
+      { index: true, element: withSuspense(<Dashboard />) },
+      { path: "gatepass", element: withSuspense(<GatepassApprovals />) },
+      { path: "material", element: withSuspense(<MaterialApprovals />) },
+      { path: "pre-approved", element: withSuspense(<PreApprovals />) },
+      { path: "attendance", element: withSuspense(<Attendance />) },
+      { path: "employee-codes", element: withSuspense(<EmployeeCodes />) },
+      { path: "hierarchy", element: withSuspense(<EmpHierarchy />) },
+      { path: "analytics", element: withSuspense(<Analytics />) },
+      { path: "search", element: withSuspense(<AdvancedSearch />) },
+      { path: "reports", element: withSuspense(<Reports />) },
+      { path: "guards", element: withSuspense(<Guards />) },
+      { path: "settings", element: withSuspense(<McGuardSettings />) },
     ],
   },
   {
     path: "/sign-in",
     element: (
       <Protected authentication={false}>
-        <SignInScreen />
+        {withSuspense(<SignInScreen />)}
       </Protected>
     ),
   },
@@ -240,7 +270,7 @@ export const route = createBrowserRouter([
     path: "/recover-password",
     element: (
       <Protected authentication={false}>
-        <RecoverPassword />
+        {withSuspense(<RecoverPassword />)}
       </Protected>
     ),
   },
@@ -248,7 +278,7 @@ export const route = createBrowserRouter([
     path: "/two-factor-auth",
     element: (
       <Protected authentication={false}>
-        <TwoFactorAuthPage />
+        {withSuspense(<TwoFactorAuthPage />)}
       </Protected>
     ),
   },
@@ -256,7 +286,7 @@ export const route = createBrowserRouter([
     path: "*",
     element: (
       <Protected>
-        <Custom404Page />
+        {withSuspense(<Custom404Page />)}
       </Protected>
     ),
   },

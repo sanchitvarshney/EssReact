@@ -29,7 +29,7 @@ function ReferalPage({ onClose }: ReferalPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br  from-blue-50 via-white to-indigo-50 p-4">
+    <div className="min-h-full p-4">
  <div className="flex justify-end my-2">
        <IconButton onClick={onClose}>
 <CloseIcon />
@@ -38,7 +38,7 @@ function ReferalPage({ onClose }: ReferalPageProps) {
       <div className="max-w-2xl mx-auto ">
         {/* Header Section */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#2eacb3] rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#00a0a0] rounded-full mb-4">
             <svg
               className="w-8 h-8 text-white"
               fill="none"
@@ -63,7 +63,7 @@ function ReferalPage({ onClose }: ReferalPageProps) {
 
         {/* Main Form Card */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-          <div className="bg-[#2eacb3] px-6 py-4">
+          <div className="bg-[#00a0a0] px-6 py-4">
             <h2 className="text-xl font-semibold text-white flex items-center">
               <svg
                 className="w-5 h-5 mr-2"
@@ -126,7 +126,7 @@ function ReferalPage({ onClose }: ReferalPageProps) {
                   <div className="mt-4">
                     <p className="text-sm text-gray-600">
                       {selectedFile ? (
-                        <span className="text-[#2eacb3] font-medium">
+                        <span className="text-[#00a0a0] font-medium">
                           {selectedFile.name}
                         </span>
                       ) : (
@@ -172,7 +172,7 @@ function ReferalPage({ onClose }: ReferalPageProps) {
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  className="h-11 border-gray-300 focus:border-[#2eacb3] focus:ring-[#2eacb3]"
+                  className="h-11 border-gray-300 focus:border-[#00a0a0] focus:ring-[#00a0a0]"
                 />
               </div>
 
@@ -200,7 +200,7 @@ function ReferalPage({ onClose }: ReferalPageProps) {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className="h-11 border-gray-300 focus:border-[#2eacb3] focus:ring-[#2eacb3]"
+                  className="h-11 border-gray-300 focus:border-[#00a0a0] focus:ring-[#00a0a0]"
                 />
               </div>
 
@@ -228,7 +228,7 @@ function ReferalPage({ onClose }: ReferalPageProps) {
                   onChange={(e) =>
                     setFormData({ ...formData, phone: e.target.value })
                   }
-                  className="h-11 border-gray-300 focus:border-[#2eacb3] focus:ring-[#2eacb3]"
+                  className="h-11 border-gray-300 focus:border-[#00a0a0] focus:ring-[#00a0a0]"
                 />
               </div>
 
@@ -256,7 +256,7 @@ function ReferalPage({ onClose }: ReferalPageProps) {
                   onChange={(e) =>
                     setFormData({ ...formData, experience: e.target.value })
                   }
-                  className="h-11 border-gray-300 focus:border-[#2eacb3] focus:ring-[#2eacb3]"
+                  className="h-11 border-gray-300 focus:border-[#00a0a0] focus:ring-[#00a0a0]"
                   min="0"
                   max="50"
                 />
@@ -286,7 +286,7 @@ function ReferalPage({ onClose }: ReferalPageProps) {
                 onChange={(e) =>
                   setFormData({ ...formData, skills: e.target.value })
                 }
-                className="min-h-[100px] border-gray-300 focus:border-[#2eacb3] focus:ring-[#2eacb3] resize-none"
+                className="min-h-[100px] border-gray-300 focus:border-[#00a0a0] focus:ring-[#00a0a0] resize-none"
               />
             </div>
 
@@ -295,7 +295,7 @@ function ReferalPage({ onClose }: ReferalPageProps) {
               <CustomButton
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-12 bg-[#2eacb3]  text-white font-semibold text-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="w-full h-12 bg-[#00a0a0]  text-white font-semibold text-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {isSubmitting ? (
                   <div className="flex items-center justify-center">
@@ -348,7 +348,7 @@ function ReferalPage({ onClose }: ReferalPageProps) {
         <div className="mt-8 bg-[#fff] rounded-xl p-6 border border-black">
           <div className="flex items-start">
             <svg
-              className="w-6 h-6 text-[#2eacb3] mt-1 mr-3 flex-shrink-0"
+              className="w-6 h-6 text-[#00a0a0] mt-1 mr-3 flex-shrink-0"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -361,10 +361,10 @@ function ReferalPage({ onClose }: ReferalPageProps) {
               />
             </svg>
             <div>
-              <h3 className="text-lg font-semibold text-[#2eacb3] mb-2">
+              <h3 className="text-lg font-semibold text-[#00a0a0] mb-2">
                 Referral Program Benefits
               </h3>
-              <ul className="text-[#2eacb3] space-y-1 text-sm">
+              <ul className="text-[#00a0a0] space-y-1 text-sm">
                 <li>• Earn rewards for successful referrals</li>
                 <li>• Help build our amazing team</li>
                 <li>• Contribute to our company culture</li>

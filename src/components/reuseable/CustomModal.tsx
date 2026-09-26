@@ -2,7 +2,6 @@ import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-// import DialogActions from '@mui/material/DialogActions';
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -22,11 +21,6 @@ const CustomModal: React.FC<CustomModalProps> = ({
   return (
     <Dialog
       open={open}
-      // onClose={(reason) => {
-      //   if (reason !== 'backdropClick') {
-      //     onClose(false);
-      //   }
-      // }}
       maxWidth="md"
       fullWidth
       BackdropProps={{
@@ -55,7 +49,6 @@ const CustomModal: React.FC<CustomModalProps> = ({
             position: "absolute",
             right: 8,
             top: 12,
-            // color: (theme) => theme.palette.grey[500],
           }}
         >
           <CloseIcon />

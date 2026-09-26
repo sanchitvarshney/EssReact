@@ -56,36 +56,36 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
                 borderRadius: "10px",
                 fontWeight: 500,
                 "&.Mui-selected": {
-                  backgroundColor: "#2eacb3",
+                  backgroundColor: "#00a0a0",
                   color: "#fff",
                   fontWeight: 700,
-                  "&:hover": { backgroundColor: "#0097a7" },
-                  "&:focus": { backgroundColor: "#2eacb3" },
+                  "&:hover": { backgroundColor: "#007f86" },
+                  "&:focus": { backgroundColor: "#00a0a0" },
                 },
                 "&:not(.Mui-selected):hover": {
-                  backgroundColor: "#e0f7fa",
+                  backgroundColor: "#e0f6f6",
                   color: "#006064",
                 },
                 "&.MuiPickersDay-today:not(.Mui-selected)": {
-                  border: "2px solid #2eacb3",
-                  color: "#2eacb3",
+                  border: "2px solid #00a0a0",
+                  color: "#00a0a0",
                 },
               },
               "& .MuiPickersYear-yearButton.Mui-selected": {
-                backgroundColor: "#2eacb3",
+                backgroundColor: "#00a0a0",
                 color: "#fff",
-                "&:hover": { backgroundColor: "#0097a7" },
+                "&:hover": { backgroundColor: "#007f86" },
               },
               "& .MuiPickersMonth-monthButton.Mui-selected": {
-                backgroundColor: "#2eacb3",
+                backgroundColor: "#00a0a0",
                 color: "#fff",
-                "&:hover": { backgroundColor: "#0097a7" },
+                "&:hover": { backgroundColor: "#007f86" },
               },
               "& .MuiPickersCalendarHeader-switchViewButton": {
-                color: "#2eacb3",
+                color: "#00a0a0",
               },
               "& .MuiPickersArrowSwitcher-button": {
-                color: "#2eacb3",
+                color: "#00a0a0",
               },
               "& .MuiDayCalendar-weekDayLabel": {
                 color: "#94a3b8",
@@ -110,7 +110,7 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
                   borderColor: "#9ca3af",
                 },
                 "&.Mui-focused fieldset": {
-                  borderColor: "#2eacb3",
+                  borderColor: "#00a0a0",
                   borderWidth: "2px",
                 },
                 "& .MuiInputAdornment-root .MuiSvgIcon-root": {
@@ -119,10 +119,10 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
                   transition: "color 0.2s",
                 },
                 "&:hover .MuiInputAdornment-root .MuiSvgIcon-root": {
-                  color: "#2eacb3",
+                  color: "#00a0a0",
                 },
                 "&.Mui-focused .MuiInputAdornment-root .MuiSvgIcon-root": {
-                  color: "#2eacb3",
+                  color: "#00a0a0",
                 },
               },
               "& .MuiInputLabel-root": {
@@ -130,7 +130,7 @@ const CustomModalDatePicker: React.FC<CustomModalDatePickerProps> = ({
                 fontSize: "0.875rem",
               },
               "& .MuiInputLabel-root.Mui-focused": {
-                color: "#2eacb3",
+                color: "#00a0a0",
               },
             },
           },

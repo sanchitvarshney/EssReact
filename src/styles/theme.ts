@@ -1,11 +1,22 @@
 import { createTheme } from "@mui/material/styles";
+import "@mui/x-date-pickers/themeAugmentation";
 
 
 export const theme = createTheme({
   typography: {
-    fontFamily: "MsCorpres EmberFont, sans-serif",
+    fontFamily: "'Google Sans', sans-serif",
   },
   components: {
+    // App-wide date input format: DD-MM-YYYY (pickers default to the US MM/DD/YYYY otherwise).
+    MuiDatePicker: { defaultProps: { format: "DD-MM-YYYY" } },
+    MuiDesktopDatePicker: { defaultProps: { format: "DD-MM-YYYY" } },
+    MuiMobileDatePicker: { defaultProps: { format: "DD-MM-YYYY" } },
+    // Same row hover colour as the .row-hover utility (see index.css).
+    MuiTableRow: {
+      styleOverrides: {
+        hover: { "&:hover": { backgroundColor: "var(--row-hover-bg)" } },
+      },
+    },
     MuiTextField: {
       styleOverrides: {
         root: {
@@ -113,18 +124,18 @@ export const theme = createTheme({
     MuiAccordionSummary: {
       styleOverrides: {
         root: {
-          fontFamily: "MsCorpres EmberFont, sans-serif",
+          fontFamily: "'Google Sans', sans-serif",
           fontSize: "14px",
         },
         content: {
-          fontFamily: "MsCorpres EmberFont, sans-serif",
+          fontFamily: "'Google Sans', sans-serif",
         },
       },
     },
     MuiAccordionDetails: {
       styleOverrides: {
         root: {
-          fontFamily: "MsCorpres EmberFont, sans-serif",
+          fontFamily: "'Google Sans', sans-serif",
           fontSize: "13px",
         },
       },
@@ -132,16 +143,16 @@ export const theme = createTheme({
     MuiAccordion: {
       styleOverrides: {
         root: {
-          fontFamily: "MsCorpres EmberFont, sans-serif",
+          fontFamily: "'Google Sans', sans-serif",
         },
       },
     },
   },
   palette: {
     primary: {
-      light: "#22d3ee", // Light teal
-      main: "#0891b2", // Main teal
-      dark: "#0e7490", // Dark teal
+      light: "#4fd1c5", // Light indigo
+      main: "#00a0a0", // Main indigo (dashboard theme)
+      dark: "#007f86", // Dark indigo
       contrastText: "#fff",
     },
     secondary: {

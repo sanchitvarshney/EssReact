@@ -38,8 +38,18 @@ const tasksApi = baseApiInstance.injectEndpoints({
         params,
       }),
     }),
-    getAssignees: builder.mutation<any, void>({
-      query: () => ({ url: "/tasks/assignees", method: "GET" }),
+    getTeamOverview: builder.mutation<any, void>({
+      query: () => ({ url: "/tasks/team-overview", method: "GET" }),
+    }),
+    getTeamTasks: builder.mutation<
+      any,
+      { filter?: string; page?: number; limit?: number } | void
+    >({
+      query: (params) => ({
+        url: "/tasks/team-tasks",
+        method: "GET",
+        params: params || {},
+      }),
     }),
     searchAssignees: builder.mutation<any, string>({
       query: (q) => ({
@@ -135,31 +145,6 @@ const tasksApi = baseApiInstance.injectEndpoints({
         body,
       }),
     }),
-    setDeadline: builder.mutation<
-      any,
-      {
-        id: number;
-        deadline_date?: string;
-        deadline_time: string;
-        reason?: string;
-      }
-    >({
-      query: ({ id, ...body }) => ({
-        url: `/tasks/${id}/set-deadline`,
-        method: "POST",
-        body,
-      }),
-    }),
-    changeDeadline: builder.mutation<
-      any,
-      { id: number; expected_end_at: string; reason?: string }
-    >({
-      query: ({ id, ...body }) => ({
-        url: `/tasks/${id}/deadline`,
-        method: "POST",
-        body,
-      }),
-    }),
     reassignTask: builder.mutation<any, { id: number; assigned_to: string }>({
       query: ({ id, ...body }) => ({
         url: `/tasks/${id}/reassign`,
@@ -198,7 +183,8 @@ export const {
   useGetManagedTasksMutation,
   useGetManagerTaskMetricsMutation,
   useGetPersonTasksMutation,
-  useGetAssigneesMutation,
+  useGetTeamOverviewMutation,
+  useGetTeamTasksMutation,
   useSearchAssigneesMutation,
   useGetTaskDetailMutation,
   useGetTaskTimelineMutation,
@@ -213,8 +199,6 @@ export const {
   useReopenTaskMutation,
   useWithdrawTaskMutation,
   useEditTaskMutation,
-  useSetDeadlineMutation,
-  useChangeDeadlineMutation,
   useReassignTaskMutation,
   useAddSubtaskMutation,
   useToggleSubtaskMutation,

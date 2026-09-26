@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuItem from "@mui/material/MenuItem";
 import CustomSearch from "../reuseable/CustomSearch";
@@ -18,38 +17,39 @@ import SearchBarComponent from "../dropdowns/SearchBarComponent";
 
 import CustomPopover from "../reuseable/CustomPopover";
 import NotificationDropDown from "../dropdowns/NotificationDropDown";
-import ProfileDropDown from "../dropdowns/ProfileDropDown";
-import { useNavigate } from "react-router-dom";
+import LogoutButton from "../dashboard/LogoutButton";
+import { useLocation, useNavigate } from "react-router-dom";
 import logoImg from "../../assets/img/hrms_mscorpres_logo.png";
 import { useAuth } from "../../contextapi/AuthContext";
+import { useMyCompany } from "../../hooks/useMyCompany";
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "../../hooks/useToast";
 import { setEmplyeeCode } from "../../slices/authSlices";
 
 const pages = ["Products", "Pricing", "Blog"];
 
-function Header() {
-  const path = window.location.pathname;
+
+function Header({ variant = "default" }: { variant?: "default" | "dashboard" }) {
+  const isDash = variant === "dashboard";
+  const path = useLocation().pathname;
   const { user, searchValueLength } = useAuth();
+  const { company, branch } = useMyCompany();
   const { showToast } = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRef = React.useRef(null);
   const notificationRef = React.useRef(null);
-  const profileRef = React.useRef(null);
 
   const [searchText, setSearchText] = React.useState("");
   const [openSearch, setOpenSearch] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(-1);
   const { toggleDrawerOpen } = useDrawerContext();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<boolean>(false);
   const [isOpenNotification, setIsOpenNotification] = React.useState(false);
 
   const isSmallScreen = useMediaQuery("(max-width:450px)");
   const { empCode } = useSelector((state: any) => state?.auth);
 
-  const handleOpenUserMenu = () => setAnchorElUser(true);
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
   React.useEffect(() => {
@@ -70,24 +70,47 @@ function Header() {
     <AppBar
       position="static"
       elevation={0}
-      sx={{
-        backgroundColor: "#ffffff",
-        borderBottom: "1px solid #f1f5f9",
-        py: 0.75,
-      }}
+      sx={
+        isDash
+          ? {
+              background: "linear-gradient(120deg, #0f2f3a 0%, #0b5563 45%, #00a0a0 100%)",
+              borderRadius: "14px",
+              py: 0.75,
+              px: { xs: 1, sm: 2 },
+            }
+          : {
+              backgroundColor: "#ffffff",
+              borderBottom: "1px solid #f1f5f9",
+              py: 0.75,
+            }
+      }
     >
-      <Container maxWidth="xl">
+      <Container maxWidth={isDash ? false : "xl"} disableGutters={isDash}>
         <Toolbar disableGutters sx={{ gap: 1 }}>
 
-          {/* Desktop logo */}
-          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2, flexShrink: 0 }}>
-            <img
-              onClick={() => navigate("/")}
-              src={logoImg}
-              alt="mscorpres"
-              className="cursor-pointer w-56"
-            />
-          </Box>
+          {/* Desktop logo (the dashboard shows a welcome message instead) */}
+          {isDash ? (
+            <Box sx={{ mr: 2, flexShrink: 0, color: "#fff", minWidth: 0 }}>
+              <Typography
+                noWrap
+                sx={{ fontSize: { xs: 14, sm: 16 }, fontWeight: 700, lineHeight: 1.25, maxWidth: { xs: 140, sm: 320 } }}
+              >
+                {company || "ESS Portal"}
+              </Typography>
+              <Typography noWrap sx={{ fontSize: 11, opacity: 0.8, maxWidth: { xs: 140, sm: 320 } }}>
+                {branch || "Employee Self Service"}
+              </Typography>
+            </Box>
+          ) : (
+            <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2, flexShrink: 0 }}>
+              <img
+                onClick={() => navigate("/")}
+                src={logoImg}
+                alt="mscorpres"
+                className="cursor-pointer w-56"
+              />
+            </Box>
+          )}
 
           {/* Mobile hamburger (non-home pages) */}
           {path === "/" ? null : (
@@ -137,13 +160,15 @@ function Header() {
           >
             <CustomSearch
               ref={inputRef}
-              width={isSmallScreen ? "18ch" : "58ch"}
+              width={isSmallScreen ? "18ch" : isDash ? "44ch" : "58ch"}
               placeholder={
                 isSmallScreen
                   ? "Search"
-                  : "Search by Employee name or Employee code"
+                  : isDash
+                    ? "Search members..."
+                    : "Search by Employee name or Employee code"
               }
-              bgColor="#f1f5f9"
+              bgColor={isDash ? "#ffffff" : "#f1f5f9"}
               bgOpacity={1}
               borderRadius={20}
               textColor="#475569"
@@ -176,32 +201,19 @@ function Header() {
               }}
               value={searchText}
             />
-            {searchText && (
-              <SearchBarComponent
-                open={openSearch}
-                close={() => setOpenSearch(false)}
-                searchQuary={searchText}
-                anchorRef={inputRef}
-                width={`${isSmallScreen ? "180px" : "400px"}`}
-                selectedIndex={selectedIndex}
-                setSelectedIndex={setSelectedIndex}
-                onSelect={() => setOpenSearch(false)}
-              />
-            )}
-          </Box>
-
-          {/* Right actions */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flexShrink: 0 }}>
 
             {/* Notification */}
             <IconButton
               onClick={() => setIsOpenNotification(true)}
               sx={{
+                ml: 1,
                 p: 1,
                 borderRadius: 2,
-                color: isOpenNotification ? "#2eacb3" : "#64748b",
-                bgcolor: isOpenNotification ? "#e0f7fa" : "transparent",
-                "&:hover": { bgcolor: "#e0f7fa", color: "#2eacb3" },
+                color: isDash ? "#fff" : isOpenNotification ? "#00a0a0" : "#64748b",
+                bgcolor: isOpenNotification ? (isDash ? "rgba(255,255,255,0.2)" : "#e0f6f6") : "transparent",
+                "&:hover": isDash
+                  ? { bgcolor: "rgba(255,255,255,0.2)" }
+                  : { bgcolor: "#e0f6f6", color: "#00a0a0" },
                 transition: "all 0.2s",
               }}
             >
@@ -219,45 +231,41 @@ function Header() {
                 anchorEl={notificationRef}
                 width={400}
                 isCone={true}
-                coneColor="#1e8a8f"
+                coneColor="#007f86"
               >
                 <NotificationDropDown />
               </CustomPopover>
             )}
-
-            {/* Profile avatar */}
-            <IconButton
-              onClick={handleOpenUserMenu}
-              sx={{
-                p: 0.5,
-                borderRadius: "50%",
-                border: "2px solid transparent",
-                "&:hover": { borderColor: "#2eacb3" },
-                transition: "border-color 0.2s",
-              }}
-            >
-              <Avatar
-                ref={profileRef}
-                //@ts-ignore
-                alt={user?.name}
-                //@ts-ignore
-                src={user?.imgUrl}
-                sx={{ backgroundColor: "#2eacb3", width: 36, height: 36 }}
+            {searchText && (
+              <SearchBarComponent
+                open={openSearch}
+                close={() => setOpenSearch(false)}
+                searchQuary={searchText}
+                anchorRef={inputRef}
+                width={`${isSmallScreen ? "180px" : "400px"}`}
+                selectedIndex={selectedIndex}
+                setSelectedIndex={setSelectedIndex}
+                onSelect={() => setOpenSearch(false)}
               />
-            </IconButton>
-
-            {anchorElUser && (
-              <CustomPopover
-                open={anchorElUser}
-                close={() => setAnchorElUser(false)}
-                anchorEl={profileRef}
-                width={240}
-                isCone={true}
-                coneColor="#1e8a8f"
-              >
-                <ProfileDropDown close={() => setAnchorElUser(false)} />
-              </CustomPopover>
             )}
+          </Box>
+
+          {/* Right actions */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flexShrink: 0 }}>
+
+            {/* Employee name + code */}
+            <Box sx={{ display: { xs: "none", md: "block" }, textAlign: "right", color: "#fff", mr: 1, lineHeight: 1.25, minWidth: 0 }}>
+              <Typography noWrap sx={{ fontSize: 13, fontWeight: 700, maxWidth: 200 }}>
+                {/* @ts-ignore */}
+                {user?.name}
+              </Typography>
+              <Typography sx={{ fontSize: 11, opacity: 0.8 }}>
+                {/* @ts-ignore */}
+                {user?.id}
+              </Typography>
+            </Box>
+
+            <LogoutButton />
           </Box>
 
         </Toolbar>

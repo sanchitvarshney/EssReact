@@ -6,16 +6,6 @@ export const menu: MenuItem[] = [
     title: "Home",
     icon: "home",
     path: "/",
-    // children: [
-    //
-    //   // {
-    //   //   id: "dashboard",
-    //   //   title: "Dashboard",
-    //   //   path: "/",
-    //   // },
-    //   {
-
-    // ],
   },
   {
     id: "announcement",
@@ -49,11 +39,6 @@ export const menu: MenuItem[] = [
         title: "Leave Grant",
         path: "/self-service/leave-grant",
       },
-      // {
-      //   id: "wfh",
-      //   title: "WHF Update",
-      //   path: "/self-service/wfh",
-      // },
     ],
   },
   {
@@ -63,10 +48,34 @@ export const menu: MenuItem[] = [
     path: "/attendance",
   },
   {
+    id: "team-attendance",
+    title: "Team Attendance",
+    icon: "PeopleIcon",
+    path: "/team-attendance",
+  },
+  {
     id: "payroll",
     title: "Quick Payslip",
     path: "/payroll",
     icon: "compensation",
+  },
+  {
+    id: "reimbursement-claims",
+    title: "Reimbursement",
+    icon: "reimbursement",
+    path: "/reimbursement",
+  },
+  {
+    id: "loan",
+    title: "Loan & Advance",
+    icon: "compensation",
+    path: "/loan",
+  },
+  {
+    id: "gate-pass",
+    title: "Gate Pass",
+    icon: "peripheral",
+    path: "/gate-pass",
   },
   {
     id: "event",
@@ -74,52 +83,16 @@ export const menu: MenuItem[] = [
     icon: "AccessTimeIcon",
     path: "/calendar",
   },
-  
-
   {
     id: "peripheral",
     title: "Peripheral",
     icon: "MonetizationOnIcon",
     path: "/peripheral",
   },
-  // {
-  //   id: "reimbursement",
-  //   title: "Reimbursement",
-  //   icon: "reimbursement",
-  //   children: [
-  //     {
-  //       id: "claim",
-  //       title: "Claim",
-  //       path: "/reimbursement/claim",
-  //     },
-  //     {
-  //       id: "status",
-  //       title: "Status",
-  //       path: "/reimbursement/status",
-  //     },
-  //     {
-  //       id: "grant",
-  //       title: "Grant",
-  //       path: "/reimbursement/grant",
-  //     },
-  //   ],
-  // },
-  //  {
-  //   id: "policies",
-  //   title: "Policies",
-  //   icon: "policyicon",
-  //   path: "/hr-policy",
-  // },
   {
     id: "documents",
     title: "Documents",
     icon: "folder",
     path: "/hr-documents",
   },
-  // {
-  //   id: "support",
-  //   title: "Support Portal",
-  //   icon: "support",
-  //   path: "/support-portal",
-  // },
 ];

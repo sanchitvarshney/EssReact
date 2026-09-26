@@ -1,14 +1,4 @@
-import {
-  Table,
-  TableBody,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
-  Tooltip,
-  Chip,
-} from "@mui/material";
+import { TableRow, Tooltip, Chip } from "@mui/material";
 import UndoIcon from "@mui/icons-material/Undo";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import { styled } from "@mui/material/styles";
@@ -18,7 +8,10 @@ import {
   useRejectLeaveMutation,
 } from "../services/Leave";
 import { useAuth } from "../contextapi/AuthContext";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import LeaveTabs from "../components/leave/LeaveTabs";
 import { useToast } from "../hooks/useToast";
 import LeaveStatusPageSkeleton from "../skeleton/LeaveStatusPageSkeleton";
 import ConfirmationModal from "../components/reuseable/ConfirmationModal";
@@ -47,7 +40,7 @@ export const StyledTableCell = styled(TableCell)(() => ({
 
 export const StyledTableRow = styled(TableRow)(() => ({
   transition: "background-color 0.15s",
-  "&:hover": { backgroundColor: "#f8fafc" },
+  "&:hover": { backgroundColor: "var(--row-hover-bg)" },
   "&:last-child td, &:last-child th": { border: 0 },
 }));
 
@@ -89,26 +82,40 @@ export const getStatus = (status: any) => {
 };
 
 const LEAVE_TYPE_COLORS: Record<string, string> = {
-  EL: "#2eacb3", SL: "#f59e0b", WFH: "#8b5cf6",
+  EL: "#00a0a0", SL: "#f59e0b", WFH: "#8b5cf6",
   OD: "#3b82f6", CL: "#10b981", ACL: "#ec4899", LWP: "#ef4444",
 };
 
-const getLeaveDot = (type: string) => {
-  const color = Object.entries(LEAVE_TYPE_COLORS).find(([k]) =>
-    type?.toUpperCase().includes(k)
-  )?.[1] ?? "#94a3b8";
-  return <span className="inline-block w-2 h-2 rounded-full mr-1.5 flex-shrink-0" style={{ backgroundColor: color }} />;
+const STATUS_GROUPS = [
+  { id: "all", label: "All" },
+  { id: "PEN", label: "Pending" },
+  { id: "APR", label: "Approved" },
+  { id: "REJ", label: "Rejected" },
+  { id: "WD", label: "Withdrawn" },
+];
+
+const groupOf = (status: string) => (["PEN", "APR", "REJ"].includes(status) ? status : "WD");
+
+const STATUS_ACCENT: Record<string, string> = {
+  PEN: "#f59e0b",
+  APR: "#16a34a",
+  REJ: "#dc2626",
+  WD: "#3b82f6",
 };
+
+const leaveColor = (type: string) =>
+  Object.entries(LEAVE_TYPE_COLORS).find(([k]) => type?.toUpperCase().includes(k))?.[1] ?? "#94a3b8";
 
 const LeaveStatusPage = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
+  const navigate = useNavigate();
   const [trackId, setTrackId] = useState<string>("");
+  const [filter, setFilter] = useState("all");
 
   const [getLeaveStatus, { data, isLoading: leaveStatusLoading, error: leaveStatusError }] =
     useGetLeaveStatusMutation();
-  const [rejectLeave, { isLoading: rejectLeaveLoading, isSuccess }] =
-    useRejectLeaveMutation();
+  const [rejectLeave, { isLoading: rejectLeaveLoading, isSuccess }] = useRejectLeaveMutation();
 
   const [isConfirm, setIsConfirm] = useState<boolean>(false);
 
@@ -123,8 +130,7 @@ const LeaveStatusPage = () => {
     if (leaveStatusError) {
       showToast(
         //@ts-ignore
-        leaveStatusError?.message || leaveStatusError?.data?.message ||
-          "An unexpected error occurred.",
+        leaveStatusError?.message || leaveStatusError?.data?.message || "An unexpected error occurred.",
         "error",
       );
     }
@@ -142,169 +148,185 @@ const LeaveStatusPage = () => {
       });
   };
 
+  const rows: any[] = data?.data ?? [];
+
+  const counts = useMemo(() => {
+    const c: Record<string, number> = { all: rows.length, PEN: 0, APR: 0, REJ: 0, WD: 0 };
+    rows.forEach((r) => (c[groupOf(r.status)] += 1));
+    return c;
+  }, [rows]);
+
+  const visible = filter === "all" ? rows : rows.filter((r) => groupOf(r.status) === filter);
+
   if (leaveStatusLoading) return <LeaveStatusPageSkeleton />;
 
-  const rows: any[] = data?.data ?? [];
-  const totalCount = data?.totalrequest ?? rows.length;
+  const stats = [
+    { label: "Total", value: counts.all },
+    { label: "Pending", value: counts.PEN },
+    { label: "Approved", value: counts.APR },
+    { label: "Rejected", value: counts.REJ },
+  ];
 
   return (
-    <div className="h-[calc(100vh-78px)] flex flex-col overflow-hidden px-3 py-4 w-full gap-4">
+    <div className="h-full overflow-y-auto custom-scrollbar-for-menu px-3 py-4 flex flex-col gap-4 [&>*]:flex-shrink-0">
+      <LeaveTabs />
 
-      {/* ── Page header ── */}
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <div className="w-1 h-7 rounded-full bg-[#2eacb3]" />
-        <EventBusyIcon sx={{ fontSize: 20, color: "#2eacb3" }} />
-        <span className="text-base sm:text-lg font-bold text-gray-800">Leave Applications</span>
-        <Chip
-          label={totalCount}
-          size="small"
-          sx={{ height: 20, fontSize: 11, fontWeight: 700, bgcolor: "#e0f7fa", color: "#0097a7", "& .MuiChip-label": { px: 1 } }}
-        />
+      {/* Hero */}
+      <section
+        className="relative overflow-hidden rounded-3xl text-white p-5 sm:p-6"
+        style={{ background: "linear-gradient(120deg, #0f2f3a 0%, #0b5563 50%, #00a0a0 100%)" }}
+      >
+        <div className="pointer-events-none absolute -right-14 -top-20 w-60 h-60 rounded-full border-[26px] border-white/5" />
+        <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          <div className="flex items-center gap-4">
+            <span className="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center flex-shrink-0">
+              <EventBusyIcon sx={{ fontSize: 28 }} />
+            </span>
+            <div>
+              <p className="text-[11px] uppercase tracking-widest text-white/60">Leave & WFH</p>
+              <p className="text-xl sm:text-2xl font-bold leading-tight">My leave requests</p>
+              <p className="text-sm text-white/70">Track approvals and withdraw pending requests.</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="grid grid-cols-4 gap-2">
+              {stats.map(({ label, value }) => (
+                <div key={label} className="rounded-2xl bg-white/12 border border-white/10 px-4 py-2.5 text-center min-w-[74px]" style={{ backgroundColor: "rgba(255,255,255,0.12)" }}>
+                  <p className="text-xl font-bold tabular-nums leading-none">{value}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-white/60 mt-1">{label}</p>
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => navigate("/self-service/apply-leave")}
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white text-[#007f86] text-sm font-semibold shadow-lg hover:bg-teal-50 transition-colors cursor-pointer whitespace-nowrap"
+            >
+              <AddIcon sx={{ fontSize: 18 }} /> Apply leave
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Filter chips */}
+      <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar-for-menu pb-0.5">
+        {STATUS_GROUPS.map(({ id, label }) => {
+          const on = filter === id;
+          return (
+            <button
+              key={id}
+              onClick={() => setFilter(id)}
+              className={`flex items-center gap-2 flex-shrink-0 px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                on
+                  ? "text-white shadow-md bg-gradient-to-r from-[#00a0a0] to-[#007f86]"
+                  : "bg-white border border-gray-100 text-gray-600 hover:border-[#00a0a0] hover:text-[#007f86]"
+              }`}
+            >
+              {label}
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${on ? "bg-white/25" : "bg-gray-100 text-gray-500"}`}>
+                {counts[id]}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* ── Table card ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-col flex-1 overflow-hidden">
+      {/* Requests */}
+      {visible.length === 0 ? (
+        <div className="bg-white rounded-3xl border border-dashed border-gray-200 py-16 flex flex-col items-center gap-3 text-center px-6">
+          <span className="w-16 h-16 rounded-full bg-[#e0f6f6] flex items-center justify-center">
+            <EventBusyIcon sx={{ fontSize: 30, color: "#00a0a0" }} />
+          </span>
+          <p className="text-sm font-semibold text-gray-700">
+            {rows.length === 0 ? "No leave applications yet" : "Nothing in this status"}
+          </p>
+          <p className="text-xs text-gray-400 max-w-xs">
+            {rows.length === 0
+              ? "Your submitted leave requests will appear here."
+              : "Try another status filter to see your other requests."}
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 pb-2">
+          {visible.map((row: any) => {
+            const group = groupOf(row?.status);
+            const accent = STATUS_ACCENT[group];
+            const canWithdraw = group === "PEN";
+            const busy = rejectLeaveLoading && trackId === row?.trackid;
 
-
-        <TableContainer
-          component={Paper}
-          elevation={0}
-          sx={{ flex: 1, overflow: "auto", borderRadius: 0, boxShadow: "none" }}
-          className="custom-scrollbar-for-menu"
-        >
-          <Table stickyHeader size="small">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>Leave Type</StyledTableCell>
-                <StyledTableCell>Duration</StyledTableCell>
-                <StyledTableCell>Date Range</StyledTableCell>
-                <StyledTableCell>Requested On</StyledTableCell>
-                <StyledTableCell>Reporting To</StyledTableCell>
-                <StyledTableCell>Status</StyledTableCell>
-                <StyledTableCell>Remark</StyledTableCell>
-                <StyledTableCell align="center">Action</StyledTableCell>
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {!rows.length ? (
-                <StyledTableRow>
-                  <TableCell colSpan={8} align="center" sx={{ py: 10, borderBottom: 0 }}>
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-14 h-14 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center">
-                        <EventBusyIcon sx={{ fontSize: 28, color: "#d1d5db" }} />
-                      </div>
-                      <div className="text-center">
-                        <p className="text-sm font-semibold text-gray-500">No leave applications yet</p>
-                        <p className="text-xs text-gray-400 mt-0.5">Your submitted leave requests will appear here</p>
+            return (
+              <article
+                key={row.trackid}
+                className="relative bg-white rounded-3xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] overflow-hidden hover:shadow-md transition-shadow"
+              >
+                <span className="absolute left-0 top-0 bottom-0 w-1.5" style={{ backgroundColor: accent }} />
+                <div className="pl-6 pr-5 py-4 flex flex-col gap-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span
+                        className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
+                        style={{ backgroundColor: `${leaveColor(row?.leavetype)}1a` }}
+                      >
+                        <span className="w-3 h-3 rounded-full" style={{ backgroundColor: leaveColor(row?.leavetype) }} />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold text-gray-800 truncate">{row?.leavetype}</p>
+                        <p className="text-[11px] text-gray-400">Requested on {row.regdate}</p>
                       </div>
                     </div>
-                  </TableCell>
-                </StyledTableRow>
-              ) : (
-                rows.map((row: any) => (
-                  <StyledTableRow key={row.trackid}>
+                    {getStatus(row?.status)}
+                  </div>
 
-                    {/* Leave type */}
-                    <StyledTableCell>
-                      <div className="flex items-center gap-1.5">
-                        {getLeaveDot(row?.leavetype)}
-                        <span className="font-semibold text-gray-800 text-xs whitespace-nowrap">
-                          {row?.leavetype}
-                        </span>
-                      </div>
-                    </StyledTableCell>
+                  <div className="flex items-center gap-3 flex-wrap rounded-2xl bg-[#f6fafa] px-4 py-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                      <span>{row.fromdt}</span>
+                      <span className="text-gray-300">→</span>
+                      <span>{row.todt}</span>
+                    </div>
+                    <span className="ml-auto text-xs font-bold px-2.5 py-1 rounded-full bg-[#e0f6f6] text-[#007f86] whitespace-nowrap">
+                      {row?.totalday}
+                    </span>
+                  </div>
 
-                    {/* Duration */}
-                    <StyledTableCell>
-                      <span
-                        className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
-                        style={{ backgroundColor: "#e0f7fa", color: "#0097a7" }}
-                      >
-                        {row?.totalday}
-                      </span>
-                    </StyledTableCell>
-
-                    {/* Date range */}
-                    <StyledTableCell>
-                      <div className="flex items-center gap-1 whitespace-nowrap">
-                        <span className="text-xs font-semibold text-gray-700">{row.fromdt}</span>
-                        <span className="text-gray-300 text-[10px]">→</span>
-                        <span className="text-xs font-semibold text-gray-700">{row.todt}</span>
-                      </div>
-                    </StyledTableCell>
-
-                    {/* Requested on */}
-                    <StyledTableCell>
-                      <span className="text-xs text-gray-600">{row.regdate}</span>
-                    </StyledTableCell>
-
-                    {/* Reporting to */}
-                    <StyledTableCell>
-                      <span className="text-xs font-medium text-gray-700">{row.reportto}</span>
-                    </StyledTableCell>
-
-                    {/* Status */}
-                    <StyledTableCell>{getStatus(row?.status)}</StyledTableCell>
-
-                    {/* Remark */}
-                    <StyledTableCell>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0 space-y-0.5">
+                      <p className="text-[11px] text-gray-400">
+                        Reporting to <span className="font-semibold text-gray-600">{row.reportto || "—"}</span>
+                      </p>
                       {row?.remark ? (
-                      <CustomToolTip title={row?.remark} placement={"top"}>
-                        <span className="text-xs text-gray-600 max-w-[140px] line-clamp-2">{row.remark}</span>
-                      </CustomToolTip>
+                        <CustomToolTip title={row?.remark} placement="top">
+                          <p className="text-xs text-gray-500 line-clamp-1 max-w-[320px]">“{row.remark}”</p>
+                        </CustomToolTip>
                       ) : (
-                        <span className="text-gray-300 text-xs italic">—</span>
+                        <p className="text-xs text-gray-300 italic">No remark</p>
                       )}
-                    </StyledTableCell>
+                    </div>
 
-                    {/* Action */}
-                    <StyledTableCell align="center">
-                      {rejectLeaveLoading && trackId === row?.trackid ? (
-                        <DotLoading />
-                      ) : (
-                        <Tooltip
-                          title={
-                            row?.status === "APR" || row?.status === "RTN" || row?.status === "REJ"
-                              ? "Cannot withdraw this request"
-                              : "Withdraw request"
-                          }
-                          placement="left"
-                        >
-                          <span>
-                            <IconButton
-                              size="small"
-                              disabled={
-                                row?.status === "APR" ||
-                                row?.status === "RTN" ||
-                                row?.status === "REJ"
-                              }
-                              onClick={() => {
-                                setTrackId(row?.trackid);
-                                setIsConfirm(true);
-                              }}
-                              sx={{
-                                color: "#9ca3af",
-                                "&:hover": { color: "#ef4444", bgcolor: "#fee2e2" },
-                                "&.Mui-disabled": { opacity: 0.25 },
-                                transition: "all 0.2s",
-                              }}
-                            >
-                              <UndoIcon sx={{ fontSize: 18 }} />
-                            </IconButton>
-                          </span>
-                        </Tooltip>
-                      )}
-                    </StyledTableCell>
-
-                  </StyledTableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
-
+                    {busy ? (
+                      <DotLoading />
+                    ) : (
+                      <Tooltip title={canWithdraw ? "Withdraw request" : "Cannot withdraw this request"} placement="left">
+                        <span>
+                          <button
+                            disabled={!canWithdraw}
+                            onClick={() => {
+                              setTrackId(row?.trackid);
+                              setIsConfirm(true);
+                            }}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-red-500 bg-red-50 hover:bg-red-100 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed whitespace-nowrap"
+                          >
+                            <UndoIcon sx={{ fontSize: 15 }} /> Withdraw
+                          </button>
+                        </span>
+                      </Tooltip>
+                    )}
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
 
       <ConfirmationModal
         open={isConfirm}

@@ -286,7 +286,7 @@ const AssetVerificationDrawer: React.FC<AssetVerificationDrawerProps> = ({
           <div className="flex items-start gap-3">
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ backgroundColor: "#e0f7fa" }}
+              style={{ backgroundColor: "#e0f6f6" }}
             >
               <Inventory2Icon sx={{ color: ACCENT, fontSize: 20 }} />
             </div>
@@ -304,7 +304,7 @@ const AssetVerificationDrawer: React.FC<AssetVerificationDrawerProps> = ({
           {!isLoading && !isError && (
             <button
               onClick={() => setShowAddAssetDialog(true)}
-              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg border border-dashed border-gray-300 text-gray-500 hover:border-[#2eacb3] hover:text-[#2eacb3] transition-colors flex-shrink-0"
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg border border-dashed border-gray-300 text-gray-500 hover:border-[#00a0a0] hover:text-[#00a0a0] transition-colors flex-shrink-0"
             >
               <AddIcon sx={{ fontSize: 16 }} />
               Add Asset
@@ -341,7 +341,7 @@ const AssetVerificationDrawer: React.FC<AssetVerificationDrawerProps> = ({
                 </div>
               ) : (
                 <>
-                  <div className="flex items-start gap-2.5 rounded-xl border border-[#2eacb3]/20 bg-[#2eacb3]/5 px-4 py-3">
+                  <div className="flex items-start gap-2.5 rounded-xl border border-[#00a0a0]/20 bg-[#00a0a0]/5 px-4 py-3">
                     <InfoOutlinedIcon
                       sx={{ fontSize: 18, color: ACCENT, mt: "1px", flexShrink: 0 }}
                     />
@@ -412,7 +412,7 @@ const AssetVerificationDrawer: React.FC<AssetVerificationDrawerProps> = ({
               disabled={isSubmitting}
               className="text-sm font-semibold px-5 py-2.5 rounded-xl text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               style={{
-                background: "linear-gradient(90deg, #2eacb3, #00d4e4)",
+                background: "linear-gradient(90deg, #00a0a0, #4fd1c5)",
               }}
             >
               {isSubmitting && (

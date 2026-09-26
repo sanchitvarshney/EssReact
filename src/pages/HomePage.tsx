@@ -1,21 +1,18 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Typography,
-} from "@mui/material";
-import ImageCard from "../components/reuseable/ImageCard";
-import { homeData } from "../staticData/homepagedata";
-import type { homeMenuTypes } from "../types/home-data-types/homepagetypes";
+import { Box } from "@mui/material";
 import { useGetRatingWindowQuery } from "../services/kraRating";
 import NoticeboardCard from "../components/NoticeboardCard";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { keyframes, useTheme } from "@mui/material/styles";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import CampaignIcon from "@mui/icons-material/Campaign";
 import CustomFooter from "../components/reuseable/CustomFooter";
+import ProfileCard from "../components/dashboard/ProfileCard";
+import BirthdaysCard from "../components/dashboard/BirthdaysCard";
+import QuickActionsCard from "../components/dashboard/QuickActionsCard";
+import TasksCard from "../components/dashboard/TasksCard";
+import DocumentsCard from "../components/dashboard/DocumentsCard";
+import LeavesAttendanceCard from "../components/dashboard/LeavesAttendanceCard";
+import NewJoiningCard from "../components/dashboard/NewJoiningCard";
+import AbsentTodayCard from "../components/dashboard/AbsentTodayCard";
 
 const getScrollKeyframes = (fromX: string, toX: string) => keyframes`
   0%   { transform: translateX(${fromX}); }
@@ -46,9 +43,9 @@ const HomePage = () => {
   const kraBadge = getKraBadge(ratingWindowRes?.data);
 
   return (
-    <div className="w-full h-[calc(100vh-78px)] flex flex-col overflow-y-auto will-change-transform">
+    <div className="w-full min-h-full flex flex-col">
       {/* What's New marquee banner */}
-      <div className="mx-4 mt-4 mb-5 flex items-stretch bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex-shrink-0">
+      <div className="mx-4 mt-4 mb-4 flex items-stretch bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex-shrink-0">
         {/* Label */}
         <div className="relative flex-shrink-0 bg-[#fec300ff]  flex items-center px-3">
           <CampaignIcon sx={{ color: "#fff", fontSize: 18, mr: 0.5 }} />
@@ -102,61 +99,31 @@ const HomePage = () => {
         </Box>
       </div>
 
-      {/* Mobile noticeboard accordion */}
-      <div className="block sm:hidden px-4 mb-4">
-        <Accordion
-          sx={{
-            borderRadius: "16px !important",
-            boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
-            border: "1px solid #e2e8f0",
-            "&:before": { display: "none" },
-            overflow: "hidden",
-          }}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon sx={{ color: "#2eacb3" }} />}
-            sx={{ minHeight: 48, "& .MuiAccordionSummary-content": { my: 0 } }}
-          >
-            <div className="flex items-center gap-2">
-              <NotificationsNoneIcon sx={{ fontSize: 18, color: "#2eacb3" }} />
-              <Typography variant="subtitle2" fontWeight={700} color="#1e293b">
-                Notice Board
-              </Typography>
-            </div>
-          </AccordionSummary>
-          <AccordionDetails sx={{ pt: 0, px: 0, pb: 0 }}>
-            <NoticeboardCard />
-          </AccordionDetails>
-        </Accordion>
-      </div>
+      <div className="flex-1 px-4 pb-4 flex flex-col gap-4">
+        {/* Row 1: profile + birthdays | quick actions + tasks/documents | leaves & attendance */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[minmax(250px,0.9fr)_minmax(0,2.2fr)_minmax(300px,1.1fr)] gap-4 items-start">
+          <div className="flex flex-col gap-4 min-w-0">
+            <ProfileCard />
+            <BirthdaysCard />
+          </div>
 
-      {/* Main content: menu grid + noticeboard sidebar */}
-      <div
-        className={`flex-1 ${
-          isSmallDevice
-            ? "w-full px-4"
-            : `grid ${
-                isMediamDevice
-                  ? "md:grid-cols-[2fr_1fr]"
-                  : "lg:grid-cols-[3fr_1fr]"
-              } gap-4 px-4`
-        }`}
-      >
-        {/* Menu grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 content-start pb-4">
-          {homeData.map((item: homeMenuTypes) => (
-            <ImageCard
-              key={item.id}
-              title={item.title}
-              image={item.icon}
-              path={item.path}
-              badge={item.id === "performance" ? kraBadge ?? undefined : undefined}
-            />
-          ))}
+          <div className="flex flex-col gap-4 min-w-0 md:order-3 xl:order-none md:col-span-2 xl:col-span-1">
+            <QuickActionsCard kraBadge={kraBadge} />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <TasksCard />
+              <DocumentsCard />
+            </div>
+          </div>
+
+          <div className="min-w-0 md:order-2 xl:order-none">
+            <LeavesAttendanceCard />
+          </div>
         </div>
 
-        {/* Noticeboard sidebar (tablet and above) */}
-        <div className="hidden sm:block pb-4">
+        {/* Row 2 */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
+          <NewJoiningCard />
+          <AbsentTodayCard />
           <NoticeboardCard />
         </div>
       </div>

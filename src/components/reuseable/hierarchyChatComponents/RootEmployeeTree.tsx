@@ -30,7 +30,7 @@ export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
           ? "#4ade80"
           : highlightType === "ancestor"
             ? "#a78bfa"
-            : "#2eacb3";
+            : "#00a0a0";
 
   const isHighlighted = Boolean(highlightType);
 
@@ -57,7 +57,7 @@ export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
           style={{
             background: isHighlighted
               ? `linear-gradient(135deg, ${accentColor}30, ${accentColor}10)`
-              : "linear-gradient(135deg, #e0f7fa 0%, #f0fdfe 100%)",
+              : "linear-gradient(135deg, #e0f6f6 0%, #f0fbfb 100%)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -75,7 +75,7 @@ export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
                 width: 72,
                 height: 72,
                 border: `3px solid ${accentColor}`,
-                bgcolor: "#2eacb3",
+                bgcolor: "#00a0a0",
                 fontWeight: 700,
                 fontSize: 26,
                 pointerEvents: "none",
@@ -137,7 +137,7 @@ export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
               padding: "3px 12px",
               borderRadius: 999,
               backgroundColor: isHighlighted ? `${accentColor}25` : "#ccf2f5",
-              color: isHighlighted ? accentColor : "#0097a7",
+              color: isHighlighted ? accentColor : "#007f86",
             }}
           >
             Organization Head

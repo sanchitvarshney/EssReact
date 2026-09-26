@@ -24,8 +24,6 @@ const CustomPopover: React.FC<Props> = ({
   coneColor,
 }) => {
   const [arrowLeft, setArrowLeft] = useState<number>(0);
-  //  const theme = useTheme();
-  //   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (anchorEl?.current) {
@@ -43,8 +41,6 @@ const CustomPopover: React.FC<Props> = ({
       {open && (
         <Popover
         elevation={1}
-          // disablePortal
-          // tabIndex={-1}
           open={open}
           anchorEl={anchorEl?.current || null}
           onClose={close}
@@ -69,7 +65,6 @@ const CustomPopover: React.FC<Props> = ({
               mt: 2,
               width: width ? width : 400,
               height: height && height,
-              // zIndex: 1600,
             },
           }}
         >

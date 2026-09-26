@@ -142,10 +142,10 @@ const AddAssetDialog: React.FC<AddAssetDialogProps> = ({
                   value={row.name}
                   onChange={(e) => handleNameChange(row.key, e.target.value)}
                   placeholder="Asset name (e.g. Mouse, Laptop charger)"
-                  className={`w-full text-sm rounded-lg border bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#2eacb3]/30 transition-all ${
+                  className={`w-full text-sm rounded-lg border bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#00a0a0]/30 transition-all ${
                     incomplete && !row.name.trim()
                       ? "border-red-400"
-                      : "border-gray-200 focus:border-[#2eacb3]"
+                      : "border-gray-200 focus:border-[#00a0a0]"
                   }`}
                 />
 
@@ -157,10 +157,10 @@ const AddAssetDialog: React.FC<AddAssetDialogProps> = ({
                     }
                     placeholder="Remark (e.g. why you have this / where it came from)"
                     rows={2}
-                    className={`w-full text-sm rounded-lg border bg-white resize-none focus:outline-none focus:ring-2 focus:ring-[#2eacb3]/30 transition-all ${
+                    className={`w-full text-sm rounded-lg border bg-white resize-none focus:outline-none focus:ring-2 focus:ring-[#00a0a0]/30 transition-all ${
                       incomplete && !row.remark.trim()
                         ? "border-red-400"
-                        : "border-gray-200 focus:border-[#2eacb3]"
+                        : "border-gray-200 focus:border-[#00a0a0]"
                     }`}
                   />
                   <div className="flex items-center justify-between mt-1">
@@ -182,7 +182,7 @@ const AddAssetDialog: React.FC<AddAssetDialogProps> = ({
 
           <button
             onClick={handleAddRow}
-            className="flex items-center justify-center gap-1.5 text-xs font-semibold px-3 py-2.5 rounded-lg border border-dashed border-gray-300 text-gray-500 hover:border-[#2eacb3] hover:text-[#2eacb3] transition-colors"
+            className="flex items-center justify-center gap-1.5 text-xs font-semibold px-3 py-2.5 rounded-lg border border-dashed border-gray-300 text-gray-500 hover:border-[#00a0a0] hover:text-[#00a0a0] transition-colors"
           >
             <AddIcon sx={{ fontSize: 16 }} />
             Add another asset
@@ -199,7 +199,7 @@ const AddAssetDialog: React.FC<AddAssetDialogProps> = ({
           <button
             onClick={handleSave}
             className="text-sm font-semibold px-5 py-2.5 rounded-xl text-white transition-all"
-            style={{ background: `linear-gradient(90deg, ${ACCENT}, #00d4e4)` }}
+            style={{ background: `linear-gradient(90deg, ${ACCENT}, #4fd1c5)` }}
           >
             Add to list
           </button>

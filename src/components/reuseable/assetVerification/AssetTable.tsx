@@ -41,7 +41,7 @@ const AssetTableRow = memo(function AssetTableRow({
   const showRemarks = confirmed === false;
 
   return (
-    <tr className="border-b border-gray-50 last:border-b-0 hover:bg-gray-50/60 transition-colors align-top">
+    <tr className="border-b border-gray-50 last:border-b-0 row-hover align-top">
       <td className="px-4 py-3">
         <button
           onClick={() => onView(asset)}
@@ -89,7 +89,7 @@ const AssetTableRow = memo(function AssetTableRow({
         <Tooltip title="View asset details">
           <button
             onClick={() => onView(asset)}
-            className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:border-[#2eacb3] hover:text-[#2eacb3] transition-colors"
+            className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:border-[#00a0a0] hover:text-[#00a0a0] transition-colors"
           >
             <VisibilityOutlinedIcon sx={{ fontSize: 15 }} />
             View
@@ -137,7 +137,7 @@ const AssetTableRow = memo(function AssetTableRow({
           {locked && (
             <button
               onClick={() => onUnlock(asset.id)}
-              className="flex items-center gap-0.5 text-[11px] font-semibold text-gray-400 hover:text-[#2eacb3]"
+              className="flex items-center gap-0.5 text-[11px] font-semibold text-gray-400 hover:text-[#00a0a0]"
               aria-label={`Edit verification for ${asset.name}`}
             >
               <LockIcon sx={{ fontSize: 13 }} />
@@ -153,10 +153,10 @@ const AssetTableRow = memo(function AssetTableRow({
       </td>
       <td className="px-4 py-3 min-w-[200px]">
         <Textarea
-          className={`w-full border text-sm rounded-lg bg-white focus:ring-2 focus:ring-[#2eacb3]/30 transition-all resize-none disabled:opacity-60 disabled:cursor-not-allowed ${
+          className={`w-full border text-sm rounded-lg bg-white focus:ring-2 focus:ring-[#00a0a0]/30 transition-all resize-none disabled:opacity-60 disabled:cursor-not-allowed ${
             showRemarksError
               ? "border-red-400"
-              : "border-gray-200 focus:border-[#2eacb3]"
+              : "border-gray-200 focus:border-[#00a0a0]"
           }`}
           placeholder={
             showRemarks

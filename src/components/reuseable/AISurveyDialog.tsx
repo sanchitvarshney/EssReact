@@ -104,8 +104,8 @@ const QuestionBlock = ({
                     checked={selectedMulti.includes(option.value)}
                     onChange={() => onMultiToggle(fieldKey, option.value)}
                     sx={{
-                      color: "#2eacb3",
-                      "&.Mui-checked": { color: "#2eacb3" },
+                      color: "#00a0a0",
+                      "&.Mui-checked": { color: "#00a0a0" },
                     }}
                   />
                 }
@@ -125,8 +125,8 @@ const QuestionBlock = ({
                 control={
                   <Radio
                     sx={{
-                      color: "#2eacb3",
-                      "&.Mui-checked": { color: "#2eacb3" },
+                      color: "#00a0a0",
+                      "&.Mui-checked": { color: "#00a0a0" },
                     }}
                   />
                 }
@@ -265,7 +265,7 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
           px: { xs: 2, sm: 4 },
           pt: 3,
           pb: 2,
-          background: "linear-gradient(135deg, #2eacb3 0%, #1f8a90 100%)",
+          background: "linear-gradient(135deg, #00a0a0 0%, #007f86 100%)",
           color: "white",
         }}
       >
@@ -304,7 +304,7 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
       >
         {isLoadingState && (
           <div className="flex justify-center py-12">
-            <CircularProgress sx={{ color: "#2eacb3" }} />
+            <CircularProgress sx={{ color: "#00a0a0" }} />
           </div>
         )}
 
@@ -344,7 +344,7 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
                   sx={{
                     height: "100%",
                     width: `${questions.length ? (answeredCount / questions.length) * 100 : 0}%`,
-                    bgcolor: "#2eacb3",
+                    bgcolor: "#00a0a0",
                     transition: "width 0.3s ease",
                   }}
                 />
@@ -381,21 +381,6 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
           bgcolor: "background.paper",
         }}
       >
-        {/* <Button
-          variant="outlined"
-          onClick={handleDismiss}
-          disabled={isLoadingState || isSaving}
-          sx={{
-            borderColor: "#2eacb3",
-            color: "#2eacb3",
-            "&:hover": {
-              borderColor: "#279aa0",
-              bgcolor: "rgba(46, 172, 179, 0.06)",
-            },
-          }}
-        >
-          Skip for now
-        </Button> */}
         <Button
           onClick={handleSubmit}
           disabled={isLoadingState || isSaving || isError}
@@ -409,7 +394,7 @@ const AISurveyDialog: React.FC<AISurveyDialogProps> = ({
           }
           sx={{
             minWidth: 160,
-            backgroundColor: "#2eacb3",
+            backgroundColor: "#00a0a0",
             "&:hover": { backgroundColor: "#279aa0" },
             fontWeight: "bold",
           }}

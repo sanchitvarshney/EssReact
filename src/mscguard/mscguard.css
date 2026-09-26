@@ -1,8 +1,8 @@
 /* Lexend for the MsCGuard module only — scoped to this class rather than
    overriding the app-wide Tailwind `font-sans`, which the rest of ESS still
-   uses its own brand font (MsCorpres EmberFont) for.
+   uses its own brand font (Google Sans) for.
 
-   ESS's own global reset sets `* { font-family: "MsCorpres EmberFont" }`
+   ESS's own global reset sets `* { font-family: "Google Sans" }`
    directly on every element (not just via inheritance from body) — so this
    has to win against that same universal selector on every descendant too,
    not just cascade down from the root. Applied once at each MsCGuard root

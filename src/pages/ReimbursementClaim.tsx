@@ -1,4 +1,3 @@
-// import React, { useState } from 'react';
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -145,15 +144,12 @@ const ReimbursementClaim = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Header Section */}
             <div className="text-center mb-4">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] rounded-full mb-2 shadow-lg">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#00a0a0] to-[#007f86] rounded-full mb-2 shadow-lg">
                 <CurrencyRupeeIcon sx={{ fontSize: "2rem", color: "white" }} />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] bg-clip-text text-transparent">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 bg-gradient-to-r from-[#00a0a0] to-[#007f86] bg-clip-text text-transparent">
                 Reimbursement Claim
               </h2>
-              {/* <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-                Submit your expense details below to request a reimbursement. Please ensure all information is accurate and complete.
-              </p> */}
             </div>
 
             {/* Basic Information Card */}
@@ -255,10 +251,9 @@ const ReimbursementClaim = () => {
                           key={item.id}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
-                            "&:hover": { backgroundColor: "#f8fafc" },
+                            "&:hover": { backgroundColor: "var(--row-hover-bg)" },
                             transition: "background-color 0.2s ease",
                           }}
-                          className="hover:bg-gray-50"
                         >
                           <TableCell sx={{ py: 3 }} className=" w-60 sm:w-80">
                             <FormField
@@ -341,7 +336,7 @@ const ReimbursementClaim = () => {
                   onClick={() =>
                     append({ category: "", description: "", amount: "" })
                   }
-                  className="flex items-center gap-2 text-white bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-xl px-6 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                  className="flex items-center gap-2 text-white bg-gradient-to-r from-[#00a0a0] to-[#007f86] hover:from-[#007f86] hover:to-[#00a0a0] rounded-xl px-6 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
                 >
                   <FiPlus className="w-4 h-4" /> Add Item
                 </CustomButton>
@@ -368,8 +363,8 @@ const ReimbursementClaim = () => {
                       Upload Receipt
                     </FormLabel>
                     <FormControl>
-                      <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-2xl p-8 cursor-pointer hover:border-[#2eacb3] hover:bg-gradient-to-br hover:from-blue-50 hover:to-cyan-50 transition-all duration-300 text-center group">
-                        <div className="w-16 h-16 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] rounded-full flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-200">
+                      <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-2xl p-8 cursor-pointer hover:border-[#00a0a0] hover:bg-gradient-to-br hover:from-blue-50 hover:to-teal-50 transition-all duration-300 text-center group">
+                        <div className="w-16 h-16 bg-gradient-to-r from-[#00a0a0] to-[#007f86] rounded-full flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-200">
                           <FiUpload className="w-8 h-8 text-white" />
                         </div>
                         <span className="text-gray-600 text-lg font-medium mb-2">
@@ -403,7 +398,7 @@ const ReimbursementClaim = () => {
             <div className="flex justify-center pt-6 pb-4">
               <CustomButton
                 type="submit"
-                className="px-12 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-105 transition-all duration-200 text-white"
+                className="px-12 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#00a0a0] to-[#007f86] hover:from-[#007f86] hover:to-[#00a0a0] rounded-2xl transform hover:scale-105 transition-all duration-200 text-white"
               >
                 {isLoading ? (
                   <CircularProgress sx={{ color: "#ffffff" }} size={"25px"} />

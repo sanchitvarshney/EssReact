@@ -87,10 +87,6 @@ const CreateTicketPage = () => {
                 Ticket Summary
               </Typography>
             </div>
-            {/* <Input
-              placeholder="Brief description of your issue..."
-              className="w-70 sm:w-1/2 p-4 text-lg border-2 border-gray-200 rounded-md focus:border-[#2eacb3] focus:ring-2 focus:ring-[#2eacb3] transition-all duration-200"
-            /> */}
             <div className="w-100">
               <CustomTextInput field={undefined} label={"Enter Ticket Summary"} />
             </div>
@@ -107,9 +103,9 @@ const CreateTicketPage = () => {
             <div
               onDragOver={handleDragOver}
               onDrop={handleDrop}
-              className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-[#2eacb3] transition-colors duration-200 relative"
+              className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-[#00a0a0] transition-colors duration-200 relative"
             >
-              <CloudUpload className="text-[#2eacb3] text-4xl mb-3 mx-auto" />
+              <CloudUpload className="text-[#00a0a0] text-4xl mb-3 mx-auto" />
 
               <Typography variant="body1" className="text-gray-600 mb-4">
                 Upload files here, or click below to browse

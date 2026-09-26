@@ -35,7 +35,7 @@ export const syncAiSurveyStateWithUser = (): void => {
   }
 };
 
-export const shouldShowAiSurvey = (): boolean => shouldDisplayAISurvey();
+const shouldShowAiSurvey = (): boolean => shouldDisplayAISurvey();
 
 const LOGIN_PENDING_KEY = `${PREFIX}_showAfterLogin`;
 
@@ -45,7 +45,7 @@ export const markAiSurveyPendingForLogin = (): void => {
   sessionStorage.setItem(LOGIN_PENDING_KEY, "true");
 };
 
-export const isAiSurveyPendingForLogin = (): boolean =>
+const isAiSurveyPendingForLogin = (): boolean =>
   sessionStorage.getItem(LOGIN_PENDING_KEY) === "true";
 
 export const clearAiSurveyPendingForLogin = (): void => {

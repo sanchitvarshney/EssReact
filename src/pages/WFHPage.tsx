@@ -49,8 +49,8 @@ const WFHPage = () => {
   });
 
   return (
-    <div className="h-[calc(100vh-65px)]  flex justify-center items-center">roy
-  <div className="p-4 max-h-[600px] ring ring-black/20 shadow-lg will-change-transform  overflow-y-auto">
+    <div className="h-full p-4 flex justify-center items-center">
+  <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] p-4 max-h-full will-change-transform overflow-y-auto">
         <h1 className="text-xl text-center my-1 font-semibold">
           Update Work from home
         </h1>
@@ -67,7 +67,6 @@ const WFHPage = () => {
                       <FormControl>
                         <Select
                           onValueChange={() => {
-                            // setWise(value);
                           }}
                           defaultValue={""}
                         >
@@ -108,8 +107,6 @@ const WFHPage = () => {
                             <TimePicker
                               className="border-none"
                               onChange={() => {
-                                // Example: set value in form
-                                // setInvoiceDate(newValue ? newValue.format("DD-MM-YYYY HH:mm") : undefined);
                               }}
                               format="HH:mm"
                               slotProps={{
@@ -167,8 +164,6 @@ const WFHPage = () => {
                             <TimePicker
                               className="border-none"
                               onChange={() => {
-                                // Example: set value in form
-                                // setInvoiceDate(newValue ? newValue.format("DD-MM-YYYY HH:mm") : undefined);
                               }}
                               format="HH:mm"
                               slotProps={{

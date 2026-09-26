@@ -102,8 +102,8 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-10 gap-3">
-        <div className="w-12 h-12 rounded-2xl bg-[#e0f7fa] flex items-center justify-center">
-          <SearchIcon sx={{ fontSize: 22, color: "#2eacb3" }} />
+        <div className="w-12 h-12 rounded-2xl bg-[#e0f6f6] flex items-center justify-center">
+          <SearchIcon sx={{ fontSize: 22, color: "#00a0a0" }} />
         </div>
         <p className="text-sm font-medium text-gray-500">
           {inputText.length < 3 ? "Enter at least 3 characters" : "Searching…"}
@@ -136,7 +136,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
       {/* Header */}
       {filteredData.length > 0 && (
         <div className="px-4 py-2 border-b border-gray-100 bg-gray-50 flex items-center gap-2">
-          <PersonSearchIcon sx={{ fontSize: 14, color: "#2eacb3" }} />
+          <PersonSearchIcon sx={{ fontSize: 14, color: "#00a0a0" }} />
           <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
             {filteredData.length} employee
             {filteredData.length !== 1 ? "s" : ""} found
@@ -166,7 +166,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
                 itemRefs.current[idx] = el;
               }}
               className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-150 border-b border-gray-50 last:border-0 ${
-                isSelected ? "bg-[#e0f7fa]" : "hover:bg-[#f0fdfe]"
+                isSelected ? "bg-[#e0f6f6]" : "hover:bg-[#f0fbfb]"
               }`}
               onClick={() => {
                 if (shouldNavigateOnSelect) {
@@ -179,7 +179,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
               {/* Initials avatar */}
               <div
                 className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold text-white transition-colors duration-150 ${
-                  isSelected ? "bg-[#2eacb3]" : "bg-slate-400"
+                  isSelected ? "bg-[#00a0a0]" : "bg-slate-400"
                 }`}
               >
                 {initials || "?"}
@@ -214,7 +214,7 @@ const SearchBarComponentContent: FC<SearchBarComponentContentType> = ({
 
               {/* Arrow on selected */}
               {isSelected && (
-                <EastIcon sx={{ fontSize: 16, color: "#2eacb3", flexShrink: 0 }} />
+                <EastIcon sx={{ fontSize: 16, color: "#00a0a0", flexShrink: 0 }} />
               )}
             </div>
           );

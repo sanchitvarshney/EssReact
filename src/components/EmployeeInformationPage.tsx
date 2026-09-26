@@ -38,10 +38,10 @@ const Information = ({
             backgroundColor: "#f9fafb",
             transition: "all 0.2s",
             "& fieldset": { borderColor: "#e2e8f0" },
-            "&:hover fieldset": { borderColor: "#2eacb3" },
-            "&.Mui-focused fieldset": { borderColor: "#2eacb3" },
+            "&:hover fieldset": { borderColor: "#00a0a0" },
+            "&.Mui-focused fieldset": { borderColor: "#00a0a0" },
           },
-          "& label.Mui-focused": { color: "#2eacb3" },
+          "& label.Mui-focused": { color: "#00a0a0" },
           "& label": { fontSize: 13 },
         }}
       />
@@ -79,14 +79,14 @@ const SectionHeader = ({
 }) => (
   <div className="flex justify-between items-center px-5 py-3.5 border-b border-gray-50">
     <div className="flex items-center gap-2">
-      <div className="w-1 h-5 rounded-full bg-[#2eacb3]" />
+      <div className="w-1 h-5 rounded-full bg-[#00a0a0]" />
       {icon}
       <span className="text-sm font-bold text-gray-800">{title}</span>
     </div>
     <div className="flex gap-1">
       {editMode && (
         <IconButton size="small" onClick={onSave}>
-          <SaveIcon sx={{ fontSize: 18, color: "#2eacb3" }} />
+          <SaveIcon sx={{ fontSize: 18, color: "#00a0a0" }} />
         </IconButton>
       )}
       <IconButton size="small" onClick={onToggleEdit} disabled={disabled}>
@@ -103,7 +103,7 @@ const SectionHeader = ({
 /* ── Sub-section label (Current / Permanent Address) ── */
 const SubLabel = ({ label }: { label: string }) => (
   <div className="col-span-full flex items-center gap-2 pt-1 pb-0">
-    <div className="w-2 h-2 rounded-full bg-[#2eacb3]/50" />
+    <div className="w-2 h-2 rounded-full bg-[#00a0a0]/50" />
     <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wide">{label}</span>
     <div className="flex-1 h-px bg-gray-100" />
   </div>
@@ -173,7 +173,7 @@ const EmployeeInformationPage = ({ data }: { editMode?: boolean; data: any }) =>
       {/* ── Basic Information ── */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <SectionHeader
-          icon={<BadgeIcon sx={{ fontSize: 16, color: "#2eacb3" }} />}
+          icon={<BadgeIcon sx={{ fontSize: 16, color: "#00a0a0" }} />}
           title="Basic Information"
           editMode={editSection.basic}
           onToggleEdit={() => setEditSection((p) => ({ ...p, basic: !p.basic }))}
@@ -207,7 +207,7 @@ const EmployeeInformationPage = ({ data }: { editMode?: boolean; data: any }) =>
       {/* ── Contact Information ── */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <SectionHeader
-          icon={<HomeIcon sx={{ fontSize: 16, color: "#2eacb3" }} />}
+          icon={<HomeIcon sx={{ fontSize: 16, color: "#00a0a0" }} />}
           title="Contact Information"
           editMode={editSection.contact}
           onToggleEdit={() => setEditSection((p) => ({ ...p, contact: !p.contact }))}
@@ -255,7 +255,7 @@ const EmployeeInformationPage = ({ data }: { editMode?: boolean; data: any }) =>
       {/* ── Emergency Contact ── */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <SectionHeader
-          icon={<LocalPhoneIcon sx={{ fontSize: 16, color: "#2eacb3" }} />}
+          icon={<LocalPhoneIcon sx={{ fontSize: 16, color: "#00a0a0" }} />}
           title="Emergency Contact"
           editMode={editSection.emergency}
           onToggleEdit={() => setEditSection((p) => ({ ...p, emergency: !p.emergency }))}

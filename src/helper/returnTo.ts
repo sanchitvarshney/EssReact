@@ -4,7 +4,7 @@ const DEFAULT_REDIRECT_PATH = "/";
 const hasExternalPattern = (value: string) =>
   value.includes("://") || value.startsWith("//");
 
-export const isSafeReturnToPath = (
+const isSafeReturnToPath = (
   value: string | null | undefined
 ): value is string => {
   if (!value) return false;
@@ -26,5 +26,3 @@ export const consumeReturnToPath = (): string => {
   }
   return stored;
 };
-
-export const getDefaultRedirectPath = () => DEFAULT_REDIRECT_PATH;

@@ -53,7 +53,6 @@ const CalenderView: FC<CalenderViewPropsType> = ({
     countSundays();
   }, [fromDate, toDate]);
 
-  // const defaultClassNames = getDefaultClassNames();
 
   return (
     <div className=" p-3 border rounded shadow flex flex-col justify-center items-center bg-white flex relative ">
@@ -72,9 +71,9 @@ const CalenderView: FC<CalenderViewPropsType> = ({
         }}
         modifiersClassNames={{
           range_start:
-            "bg-[#2eacb3] border-0 text-white rounded-full font-bold",
-          range_end: "bg-[#2eacb3] text-white rounded-full font-bold",
-          range_middle: "bg-[#2eacb3] text-white  font-bold rounded-full",
+            "bg-[#00a0a0] border-0 text-white rounded-full font-bold",
+          range_end: "bg-[#00a0a0] text-white rounded-full font-bold",
+          range_middle: "bg-[#00a0a0] text-white  font-bold rounded-full",
           selected: "border-none text-gray-900",
           today: "text-white font-bold ",
         }}

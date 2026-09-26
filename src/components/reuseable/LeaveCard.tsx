@@ -19,8 +19,8 @@ const LeaveCard: FC<LeaveCardPropsType> = ({
   const isLow = available < 2;
   const isMed = available >= 2 && available < 5;
 
-  const accentColor = isLow ? "#ef4444" : isMed ? "#f59e0b" : "#2eacb3";
-  const bgColor = isLow ? "#fef2f2" : isMed ? "#fffbeb" : "#e0f7fa";
+  const accentColor = isLow ? "#ef4444" : isMed ? "#f59e0b" : "#00a0a0";
+  const bgColor = isLow ? "#fef2f2" : isMed ? "#fffbeb" : "#e0f6f6";
   const badgeBg = isLow ? "#fecaca" : isMed ? "#fde68a" : "#99f6e4";
   const badgeColor = isLow ? "#b91c1c" : isMed ? "#92400e" : "#0f766e";
   const badgeText = isLow ? "Low" : isMed ? "Moderate" : "Good";

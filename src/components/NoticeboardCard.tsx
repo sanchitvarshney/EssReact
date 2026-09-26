@@ -43,14 +43,14 @@ const slides: React.ReactNode[] = [
 
     <Box
       sx={{
-        border: "1px dashed rgba(13,145,139,0.4)",
+        border: "1px dashed rgba(0,160,160,0.4)",
         borderRadius: 2,
         p: 2.25,
         textAlign: "center",
-        bgcolor: "rgba(13,145,139,0.03)",
+        bgcolor: "rgba(0,160,160,0.03)",
       }}
     >
-      <Typography variant="body2" fontWeight={700} sx={{ mb: 1.5, color: "#0d918b" }}>
+      <Typography variant="body2" fontWeight={700} sx={{ mb: 1.5, color: "#007f86" }}>
         🔹 Download Android App QR Code
       </Typography>
       <Box component="img" src={qrCode} alt="QR" sx={{ width: 160, mx: "auto", display: "block" }} />
@@ -81,7 +81,7 @@ const slides: React.ReactNode[] = [
   </Box>,
 ];
 
-const BRAND = "#0d918b";
+const BRAND = "#007f86";
 
 const slideInFromRight = keyframes`
   from { opacity: 0; transform: translateX(24px); }
@@ -109,7 +109,7 @@ const arrowSx = (side: "left" | "right", visible: boolean) => ({
   height: 36,
   color: BRAND,
   bgcolor: "rgba(255,255,255,0.92)",
-  border: "1px solid rgba(13,145,139,0.2)",
+  border: "1px solid rgba(0,160,160,0.2)",
   boxShadow: "0 2px 10px rgba(0,0,0,0.12)",
   backdropFilter: "blur(4px)",
   opacity: visible ? 1 : 0,
@@ -177,10 +177,10 @@ const NoticeboardCard: React.FC = () => {
         borderRadius: 3,
         backgroundColor: "#ffffff",
         overflow: "hidden",
-        border: isSmallDevice ? "none" : "1px solid rgba(13,145,139,0.15)",
-        boxShadow: isSmallDevice ? "none" : "0 4px 20px rgba(13,145,139,0.08)",
+        border: isSmallDevice ? "none" : "1px solid rgba(0,160,160,0.15)",
+        boxShadow: isSmallDevice ? "none" : "0 4px 20px rgba(0,160,160,0.08)",
         transition: "box-shadow 0.3s ease",
-        "&:hover": isSmallDevice ? {} : { boxShadow: "0 8px 28px rgba(13,145,139,0.14)" },
+        "&:hover": isSmallDevice ? {} : { boxShadow: "0 8px 28px rgba(0,160,160,0.14)" },
       }}
     >
       {!isSmallDevice && (
@@ -191,7 +191,7 @@ const NoticeboardCard: React.FC = () => {
             justifyContent: "space-between",
             px: 2,
             py: 1,
-            background: "linear-gradient(90deg, rgba(13,145,139,0.1), rgba(46,172,179,0.04))",
+            background: "linear-gradient(90deg, rgba(0,160,160,0.1), rgba(0,160,160,0.04))",
           }}
         >
           <Typography variant="subtitle1" fontWeight={700} sx={{ color: "#134e4a" }}>
@@ -203,7 +203,7 @@ const NoticeboardCard: React.FC = () => {
               fontWeight={600}
               sx={{
                 color: BRAND,
-                bgcolor: "rgba(13,145,139,0.1)",
+                bgcolor: "rgba(0,160,160,0.1)",
                 px: 1,
                 py: 0.25,
                 borderRadius: 5,
@@ -216,7 +216,7 @@ const NoticeboardCard: React.FC = () => {
       )}
 
       {hasMultiple && (
-        <Box sx={{ height: 3, bgcolor: "rgba(13,145,139,0.12)", overflow: "hidden" }}>
+        <Box sx={{ height: 3, bgcolor: "rgba(0,160,160,0.12)", overflow: "hidden" }}>
           <Box
             key={current}
             onAnimationEnd={nextNotice}
@@ -337,8 +337,8 @@ const NoticeboardCard: React.FC = () => {
                   borderRadius: 4,
                   cursor: "pointer",
                   transition: "all 0.3s ease",
-                  bgcolor: i === current ? BRAND : "rgba(13,145,139,0.25)",
-                  "&:hover": { bgcolor: i === current ? BRAND : "rgba(13,145,139,0.5)" },
+                  bgcolor: i === current ? BRAND : "rgba(0,160,160,0.25)",
+                  "&:hover": { bgcolor: i === current ? BRAND : "rgba(0,160,160,0.5)" },
                 }}
               />
             ))}

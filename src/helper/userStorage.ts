@@ -1,4 +1,4 @@
-export type StoredUser = {
+type StoredUser = {
   token?: string;
   userID?: string;
   empCode?: string;
@@ -40,7 +40,7 @@ export const shouldDisplayAssetConfirmation = (): boolean =>
   getAssetConfirmationFlag() === "Y";
 
 /** Login API may return `other` on the response root, not inside `data`. */
-export const buildStoredUserFromLoginResponse = (
+const buildStoredUserFromLoginResponse = (
   response: Record<string, unknown>
 ): StoredUser => {
   const userData = (response?.data ?? response) as Record<string, unknown>;

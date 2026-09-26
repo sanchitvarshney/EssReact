@@ -34,9 +34,9 @@ const NodeCard = ({ name, role, dept, imageUrl, highlighted }: NodeCardProps) =>
       borderRadius: 16,
       minWidth: 220,
       maxWidth: 220,
-      border: `2px solid ${highlighted ? "#2eacb3" : "#e2e8f0"}`,
+      border: `2px solid ${highlighted ? "#00a0a0" : "#e2e8f0"}`,
       boxShadow: highlighted
-        ? "0 0 0 4px rgba(46,172,179,0.15), 0 8px 24px rgba(0,0,0,0.1)"
+        ? "0 0 0 4px rgba(0,160,160,0.15), 0 8px 24px rgba(0,0,0,0.1)"
         : "0 4px 16px rgba(0,0,0,0.06)",
       display: "flex",
       flexDirection: "column",
@@ -50,8 +50,8 @@ const NodeCard = ({ name, role, dept, imageUrl, highlighted }: NodeCardProps) =>
         height: 4,
         borderRadius: "14px 14px 0 0",
         background: highlighted
-          ? "#2eacb3"
-          : "linear-gradient(90deg, #2eacb3, #00d4e4)",
+          ? "#00a0a0"
+          : "linear-gradient(90deg, #00a0a0, #4fd1c5)",
       }}
     />
 
@@ -63,8 +63,8 @@ const NodeCard = ({ name, role, dept, imageUrl, highlighted }: NodeCardProps) =>
         sx={{
           width: 48,
           height: 48,
-          border: `2.5px solid ${highlighted ? "#2eacb3" : "#e2e8f0"}`,
-          backgroundColor: "#2eacb3",
+          border: `2.5px solid ${highlighted ? "#00a0a0" : "#e2e8f0"}`,
+          backgroundColor: "#00a0a0",
           pointerEvents: "none",
           userSelect: "none",
           fontSize: 18,
@@ -78,7 +78,7 @@ const NodeCard = ({ name, role, dept, imageUrl, highlighted }: NodeCardProps) =>
           style={{
             fontWeight: 700,
             fontSize: 13,
-            color: highlighted ? "#0097a7" : "#1e293b",
+            color: highlighted ? "#007f86" : "#1e293b",
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
@@ -98,8 +98,8 @@ const NodeCard = ({ name, role, dept, imageUrl, highlighted }: NodeCardProps) =>
               display: "inline-block",
               fontSize: 10,
               fontWeight: 600,
-              color: highlighted ? "#0097a7" : "#64748b",
-              backgroundColor: highlighted ? "#e0f7fa" : "#f1f5f9",
+              color: highlighted ? "#007f86" : "#64748b",
+              backgroundColor: highlighted ? "#e0f6f6" : "#f1f5f9",
               padding: "1px 8px",
               borderRadius: 99,
             }}
@@ -156,7 +156,7 @@ const EmployeeHierarchyPage = ({ userId }: { userId: any }) => {
   if (hierarchyLoading) {
     return (
       <div className="w-full flex flex-col h-48 justify-center items-center gap-3">
-        <CircularProgress sx={{ color: "#2eacb3" }} size={32} />
+        <CircularProgress sx={{ color: "#00a0a0" }} size={32} />
         <p className="text-xs text-gray-400 font-medium">Loading hierarchy…</p>
       </div>
     );
@@ -169,7 +169,7 @@ const EmployeeHierarchyPage = ({ userId }: { userId: any }) => {
         <button
           onClick={() => setZoom((z) => Math.min(z + 0.1, 2))}
           title="Zoom in"
-          className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-500 hover:bg-[#e0f7fa] hover:text-[#2eacb3] transition-all"
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-500 hover:bg-[#e0f6f6] hover:text-[#00a0a0] transition-all"
         >
           <ZoomInIcon sx={{ fontSize: 18 }} />
         </button>
@@ -179,7 +179,7 @@ const EmployeeHierarchyPage = ({ userId }: { userId: any }) => {
         <button
           onClick={() => setZoom((z) => Math.max(z - 0.1, 0.5))}
           title="Zoom out"
-          className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-500 hover:bg-[#e0f7fa] hover:text-[#2eacb3] transition-all"
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-500 hover:bg-[#e0f6f6] hover:text-[#00a0a0] transition-all"
         >
           <ZoomOutIcon sx={{ fontSize: 18 }} />
         </button>
@@ -187,7 +187,7 @@ const EmployeeHierarchyPage = ({ userId }: { userId: any }) => {
         <button
           onClick={() => setZoom(0.8)}
           title="Reset zoom"
-          className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-[#e0f7fa] hover:text-[#2eacb3] transition-all"
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-[#e0f6f6] hover:text-[#00a0a0] transition-all"
         >
           <RestartAltIcon sx={{ fontSize: 18 }} />
         </button>
@@ -224,7 +224,7 @@ const EmployeeHierarchyPage = ({ userId }: { userId: any }) => {
                 <div
                   style={{
                     height: 4,
-                    background: "linear-gradient(90deg, #2eacb3, #00d4e4)",
+                    background: "linear-gradient(90deg, #00a0a0, #4fd1c5)",
                     borderRadius: "18px 18px 0 0",
                   }}
                 />
@@ -235,8 +235,8 @@ const EmployeeHierarchyPage = ({ userId }: { userId: any }) => {
                     sx={{
                       width: 56,
                       height: 56,
-                      border: "3px solid #e0f7fa",
-                      backgroundColor: "#2eacb3",
+                      border: "3px solid #e0f6f6",
+                      backgroundColor: "#00a0a0",
                       pointerEvents: "none",
                       userSelect: "none",
                       fontSize: 20,
@@ -252,7 +252,7 @@ const EmployeeHierarchyPage = ({ userId }: { userId: any }) => {
                     <div style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>
                       {hierarchyData?.[0]?.title}
                     </div>
-                    <div style={{ marginTop: 4, display: "inline-block", fontSize: 10, fontWeight: 600, color: "#0097a7", backgroundColor: "#e0f7fa", padding: "1px 8px", borderRadius: 99 }}>
+                    <div style={{ marginTop: 4, display: "inline-block", fontSize: 10, fontWeight: 600, color: "#007f86", backgroundColor: "#e0f6f6", padding: "1px 8px", borderRadius: 99 }}>
                       Organization Head
                     </div>
                   </div>

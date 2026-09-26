@@ -7,8 +7,8 @@ const HelpPortal = () => {
   const navigation = useNavigate();
 
   return (
-    <div className="w-full p-4 flex flex-col justify-center items-center">
-      <div className="  flex flex-col justify-center items-center h-[80vh] overflow-y-auto gap-y-5 will-change-transform">
+    <div className="w-full h-full p-4">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] h-full flex flex-col justify-center items-center overflow-y-auto gap-y-5 p-6 will-change-transform">
         <Avatar
           variant="square"
           src={help}
@@ -26,13 +26,13 @@ const HelpPortal = () => {
         </Typography>
         <div className=" w-full space-x-4 space-y-4 flex flex-col justify-center items-center">
           <CustomButton
-            className=" px-10 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-105 transition-all duration-200 text-white"
+            className=" px-10 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#00a0a0] to-[#007f86] hover:from-[#007f86] hover:to-[#00a0a0] rounded-2xl transform hover:scale-105 transition-all duration-200 text-white"
             onClick={() => navigation("/support-portal/create-new-ticket")}
           >
             Create New Ticket
           </CustomButton>
           <CustomButton
-            className=" px-10 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] rounded-2xl transform hover:scale-105 transition-all duration-200 text-white"
+            className=" px-10 cursor-pointer py-4 text-lg font-bold shadow-xl bg-gradient-to-r from-[#00a0a0] to-[#007f86] hover:from-[#007f86] hover:to-[#00a0a0] rounded-2xl transform hover:scale-105 transition-all duration-200 text-white"
             onClick={() => navigation("/support-portal/ticket-status")}
           >
             Ticket Status

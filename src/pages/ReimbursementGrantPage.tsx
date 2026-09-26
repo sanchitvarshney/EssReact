@@ -4,34 +4,7 @@ import { Divider, Typography } from "@mui/material";
 import ReimbursementGrantCard from "../components/reuseable/ReimbursementGrantCard";
 import EmptyData from "../components/reuseable/EmptyData";
 
-// Mock data for demonstration
-const reimbursements:any = [
-  // {
-  //   id: "RB-001",
-  //   name: "John Doe",
-  //   designation: "Sales Manager",
-  //   department: "Sales",
-  //   date: "2024-06-01",
-  //   purpose: "Client Meeting Travel",
-  //   amount: 120.5,
-  //   status: "Pending",
-  //   details: "Taxi fare for client meeting at downtown.",
-  //   receipt: "/src/assets/coin.png",
-  //   comment: "Urgent client visit."
-  // },
-  // {
-  //   id: "RB-002",
-  //   name: "Jane Smith",
-  //   designation: "Accountant",
-  //   department: "Finance",
-  //   date: "2024-05-28",
-  //   purpose: "Office Supplies",
-  //   amount: 45.0,
-  //   status: "Pending",
-  //   details: "Purchased printer ink and paper.",
-  //   receipt: "/src/assets/dollar.png",
-  //   comment: "Needed for monthly reports."
-  // },
+const reimbursements: any[] = [
 ];
 
 const ReimbursementGrantPage = () => {
@@ -44,8 +17,8 @@ const ReimbursementGrantPage = () => {
   };
 
   return (
-    <div className="w-full py-4 flex  flex-col h-[calc(100vh-100px)]">
-      <Typography variant="h4" className="font-bold text-center mb-6 bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] bg-clip-text text-transparent">
+    <div className="w-full py-4 flex  flex-col h-full">
+      <Typography variant="h4" className="font-bold text-center mb-6 bg-gradient-to-r from-[#00a0a0] to-[#007f86] bg-clip-text text-transparent">
         Reimbursement Grant
       </Typography>
    {reimbursements.length === 0 ? (<EmptyData />): (

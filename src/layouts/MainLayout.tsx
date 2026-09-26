@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import Header from "../components/header/Header";
+import DashboardRail from "../components/dashboard/DashboardRail";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Avatar, Typography } from "@mui/material";
@@ -20,7 +21,6 @@ import {
 } from "../helper/assetVerificationStorage";
 import { updateStoredUserAssetConfirmation } from "../helper/userStorage";
 
-// props: { children: React.ReactNode }
 function MainLayout() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
@@ -105,19 +105,19 @@ function MainLayout() {
           </Typography>
         </div>
       )}
-      <div className="sticky top-0 z-50">
-        <Header />
+      <div className="flex h-screen overflow-hidden bg-[#f1f7f7]">
+        <DashboardRail />
+        <div className="flex-1 min-w-0 flex flex-col">
+          <div className="px-3 pt-3 flex-shrink-0 relative z-50">
+            <Header variant="dashboard" />
+          </div>
+          <main
+            className={`relative flex-1 min-h-0 overflow-y-auto custom-scrollbar-for-menu ${!isOnline && "blur-sm"}`}
+          >
+            <Outlet />
+          </main>
+        </div>
       </div>
-
-      <main
-        className={`relative  bg-gradient-to-br from-[#f8fbfc] to-[#eaf7f5]
- h-full  custom-scrollbar-for-menu  ${!isOnline && "blur-sm"} `}
-      >
-        <Outlet />
-      </main>
-      {/* <div className="absolute bottom-0 right-4 sm:right-10 z-99">
-        <CustomFooter />
-      </div> */}
 
       <AISurveyDialog
         open={aiSurveyOpen}

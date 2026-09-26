@@ -2,7 +2,7 @@ import { Skeleton } from "@mui/material";
 
 const HierarchyChartSkeleton = () => {
   return (
-    <div className="h-[calc(100vh-90px)] flex flex-col overflow-hidden px-3 py-4 w-full">
+    <div className="h-full flex flex-col overflow-hidden px-3 py-4 w-full">
       {/* Page header */}
       <div className="flex items-center gap-2 mb-4 flex-shrink-0">
         <Skeleton
@@ -73,7 +73,7 @@ const HierarchyChartSkeleton = () => {
           {/* Gradient header zone */}
           <div
             style={{
-              background: "linear-gradient(135deg, #e0f7fa 0%, #f0fdfe 100%)",
+              background: "linear-gradient(135deg, #e0f6f6 0%, #f0fbfb 100%)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -158,7 +158,7 @@ const HierarchyChartSkeleton = () => {
               <div
                 style={{
                   height: 4,
-                  background: "linear-gradient(90deg, #b2ebf2, #e0f7fa)",
+                  background: "linear-gradient(90deg, #cdeaea, #e0f6f6)",
                   borderRadius: "14px 14px 0 0",
                 }}
               />

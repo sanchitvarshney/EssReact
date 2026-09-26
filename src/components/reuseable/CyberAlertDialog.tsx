@@ -51,7 +51,7 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
         },
       }}
     >
-      <div className="flex items-center space-x-3 text-[#2eacb3] mb-4">
+      <div className="flex items-center space-x-3 text-[#00a0a0] mb-4">
         <ShieldCheck className="h-8 w-8" />
         <Typography variant="h5" fontWeight="bold">
           Important - Cyber Alert & Prevention
@@ -61,9 +61,9 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
 
       <div className="flex flex-col gap-6 max-h-[calc(100vh-200px)] overflow-y-auto">
         {/* Section 1 */}
-        <div className="bg-gradient-to-r from-[#2eacb3]/10 to-transparent p-6 rounded-xl">
+        <div className="bg-gradient-to-r from-[#00a0a0]/10 to-transparent p-6 rounded-xl">
           <div className="flex items-center space-x-3 mb-4">
-            <Info className="h-6 w-6 text-[#2eacb3]" />
+            <Info className="h-6 w-6 text-[#00a0a0]" />
             <Typography variant="h6">Cybersecurity Measures</Typography>
           </div>
           <ul className="space-y-3 text-gray-600">
@@ -75,7 +75,7 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
               "Report suspicious activity immediately.",
             ].map((text, idx) => (
               <li key={idx} className="flex items-start">
-                <ArrowRight className="h-5 w-5 mr-2 mt-0.5 text-[#2eacb3]" />
+                <ArrowRight className="h-5 w-5 mr-2 mt-0.5 text-[#00a0a0]" />
                 <span>{text}</span>
               </li>
             ))}
@@ -83,9 +83,9 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
         </div>
 
         {/* Section 2 */}
-        <div className="bg-gradient-to-r from-[#2eacb3]/10 to-transparent p-6 rounded-xl">
+        <div className="bg-gradient-to-r from-[#00a0a0]/10 to-transparent p-6 rounded-xl">
           <div className="flex items-center space-x-3 mb-4">
-            <Info className="h-6 w-6 text-[#2eacb3]" />
+            <Info className="h-6 w-6 text-[#00a0a0]" />
             <Typography variant="h6">
               Why Windows Updates are Important
             </Typography>
@@ -98,7 +98,7 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
               "New features expand functionality.",
             ].map((text, idx) => (
               <li key={idx} className="flex items-start">
-                <ArrowRight className="h-5 w-5 mr-2 mt-0.5 text-[#2eacb3]" />
+                <ArrowRight className="h-5 w-5 mr-2 mt-0.5 text-[#00a0a0]" />
                 <span>{text}</span>
               </li>
             ))}
@@ -114,7 +114,7 @@ const CyberAlertDialog: React.FC<CyberAlertDialogProps> = ({
             variant="contained"
             sx={{
               width: 150,
-              backgroundColor: "#2eacb3",
+              backgroundColor: "#00a0a0",
               "&:hover": { backgroundColor: "#279aa0" },
               px: 2,
               py: 1.2,

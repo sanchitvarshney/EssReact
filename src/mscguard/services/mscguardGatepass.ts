@@ -7,15 +7,6 @@ export async function fetchGatepassList(q: string): Promise<EmployeeGatepassRow[
   return data.rows;
 }
 
-export interface GatepassDetailData {
-  gp: EmployeeGatepassRow;
-  materials: unknown[];
-}
-
-export function fetchGatepassDetail(gpRef: string): Promise<GatepassDetailData> {
-  return mscGuardGet<GatepassDetailData>(`/gate-pass/admin/pending/gatepass/${encodeURIComponent(gpRef)}`);
-}
-
 export function reassignGatepassTl(gpRef: string, tlCode: string, tlName: string, tlEmail: string): Promise<unknown> {
   return mscGuardPost(`/gate-pass/hr/gatepass/${encodeURIComponent(gpRef)}/reassign-tl`, {
     tl_code: tlCode,

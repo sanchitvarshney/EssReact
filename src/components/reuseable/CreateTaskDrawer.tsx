@@ -183,7 +183,7 @@ const CreateTaskDrawer = ({ onClose, onCreated }: { onClose: () => void; onCreat
         variant="contained"
         disabled={creating}
         onClick={handleSubmit}
-        sx={{ bgcolor: "#2eacb3", "&:hover": { bgcolor: "#1e8a8f" }, mt: 1 }}
+        sx={{ bgcolor: "#00a0a0", "&:hover": { bgcolor: "#007f86" }, mt: 1 }}
       >
         {creating ? <CircularProgress size={20} sx={{ color: "#fff" }} /> : "Assign Task"}
       </Button>

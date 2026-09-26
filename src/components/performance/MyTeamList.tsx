@@ -66,7 +66,7 @@ const MyTeamList = ({ members, onSelect }: MyTeamListProps) => {
                           size="sm"
                           disabled={disabled}
                           onClick={() => onSelect(member.empId)}
-                          className="cursor-pointer bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f] hover:from-[#1e8a8f] hover:to-[#2eacb3] text-white"
+                          className="cursor-pointer bg-gradient-to-r from-[#00a0a0] to-[#007f86] hover:from-[#007f86] hover:to-[#00a0a0] text-white"
                         >
                           Rate
                           <ChevronRight size={14} className="ml-0.5" />

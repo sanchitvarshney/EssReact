@@ -191,7 +191,7 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
   if (loadingDetail && !task) {
     return (
       <div className="w-full h-full flex items-center justify-center">
-        <CircularProgress sx={{ color: "#2eacb3" }} />
+        <CircularProgress sx={{ color: "#00a0a0" }} />
       </div>
     );
   }
@@ -232,7 +232,7 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
 
       {/* ── Primary actions ─────────────────────────────────────────────── */}
       {actions.includes("start") && (
-        <Button variant="contained" sx={{ bgcolor: "#2eacb3" }} disabled={starting} onClick={() => wrap("Task started", startTask({ id: task.id }), false)}>
+        <Button variant="contained" sx={{ bgcolor: "#00a0a0" }} disabled={starting} onClick={() => wrap("Task started", startTask({ id: task.id }), false)}>
           {starting ? <CircularProgress size={18} sx={{ color: "#fff" }} /> : "Start Working"}
         </Button>
       )}
@@ -388,7 +388,7 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
                 const res: any = await postComment({ id: task.id, comment: commentText.trim() });
                 if (res?.data?.success) { setCommentText(""); load(); }
               }}
-            ><SendIcon fontSize="small" sx={{ color: "#2eacb3" }} /></IconButton>
+            ><SendIcon fontSize="small" sx={{ color: "#00a0a0" }} /></IconButton>
           </div>
         )}
       </div>
@@ -400,7 +400,7 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
             <Typography variant="subtitle2" className="font-semibold">Activity timeline</Typography>
             {timeline.map((e: any, i: number) => (
               <div key={i} className="flex gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#2eacb3] mt-1.5 flex-shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-[#00a0a0] mt-1.5 flex-shrink-0" />
                 <div>
                   <Typography variant="body2">{e.text || `${e.actor_name || "System"} ${e.action_type}`}</Typography>
                   <Typography variant="caption" className="text-gray-400">{fmtDate(e.at)}</Typography>

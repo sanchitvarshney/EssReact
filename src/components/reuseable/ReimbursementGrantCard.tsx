@@ -55,7 +55,7 @@ const ReimbursementGrantCard: FC<ReimbursementGrantCardProps> = ({
               sx={{
                 width: isView ? 60 : 40,
                 height: isView ? 60 : 40,
-                bgcolor: "#2eacb3",
+                bgcolor: "#00a0a0",
                            pointerEvents: "none",
                       userSelect: "none",
               }}
@@ -130,26 +130,6 @@ const ReimbursementGrantCard: FC<ReimbursementGrantCardProps> = ({
             </CustomToolTip>
           </div>
         </div>
-        {/* {isView ? null : (
-          <>
-            <Divider sx={{ mt: 2 }} />
-            <div className="flex justify-between items-center">
-              <div className="space-x-4 mt-4">
-                <CustomButton className="bg-[#2eacb3] transition-transform duration-300 ease-in-out hover:scale-105 cursor-pointer">
-                  Approve
-                </CustomButton>
-                <CustomButton className="border-2 border-[#2eacb3] transition-transform duration-300 ease-in-out hover:scale-105 cursor-pointer">
-                  Reject
-                </CustomButton>
-              </div>
-              <CustomToolTip title={"More Details"} placement={"bottom"}>
-                <IconButton onClick={open}>
-                  <VisibilityIcon sx={{ fontSize: 26, color: "#000" }} />
-                </IconButton>
-              </CustomToolTip>
-            </div>
-          </>
-        )} */}
       </CardContent>
     </Card>
   );

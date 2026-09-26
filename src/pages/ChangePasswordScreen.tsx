@@ -58,7 +58,7 @@ const PasswordField = ({
       </span>
       <input
         type={show ? "text" : "password"}
-        className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-[#2eacb3]/40 focus:border-[#2eacb3] transition-all"
+        className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-[#00a0a0]/40 focus:border-[#00a0a0] transition-all"
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -157,8 +157,8 @@ const ChangePasswordScreen = () => {
         {/* ── Left: form ── */}
         <div className="flex-1 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
           <div className="flex items-center gap-2 mb-5">
-            <div className="w-1 h-5 rounded-full bg-[#2eacb3]" />
-            <LockIcon sx={{ fontSize: 16, color: "#2eacb3" }} />
+            <div className="w-1 h-5 rounded-full bg-[#00a0a0]" />
+            <LockIcon sx={{ fontSize: 16, color: "#00a0a0" }} />
             <span className="text-sm font-bold text-gray-800">Change Password</span>
           </div>
 
@@ -198,8 +198,8 @@ const ChangePasswordScreen = () => {
               type="submit"
               disabled={!currentPassword || !newPassword || !confirmPassword}
               className="w-full mt-1 py-2.5 rounded-xl text-sm font-bold text-white transition-all duration-200
-                bg-gradient-to-r from-[#2eacb3] to-[#1e8a8f]
-                hover:from-[#1e8a8f] hover:to-[#2eacb3]
+                bg-gradient-to-r from-[#00a0a0] to-[#007f86]
+                hover:from-[#007f86] hover:to-[#00a0a0]
                 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {changing ? (
@@ -217,7 +217,7 @@ const ChangePasswordScreen = () => {
         {/* ── Right: criteria + strength ── */}
         <div className="flex-1 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
           <div className="flex items-center gap-2 mb-5">
-            <div className="w-1 h-5 rounded-full bg-[#2eacb3]" />
+            <div className="w-1 h-5 rounded-full bg-[#00a0a0]" />
             <span className="text-sm font-bold text-gray-800">Password Requirements</span>
           </div>
 
