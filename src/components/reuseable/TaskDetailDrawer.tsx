@@ -19,8 +19,6 @@ import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import dayjs, { type Dayjs } from "dayjs";
 import { useToast } from "../../hooks/useToast";
-import { PRIORITY_COLOR, STATUS_COLOR, deadlineText, statusLabel } from "./TaskCard";
-import ConfirmationModal from "./ConfirmationModal";
 import {
   useAddSubtaskMutation,
   useCloseTaskMutation,
@@ -40,6 +38,8 @@ import {
   useToggleSubtaskMutation,
   useWithdrawTaskMutation,
 } from "../../services/tasks";
+import ConfirmationModal from "./ConfirmationModal";
+import { deadlineText, PRIORITY_COLOR, STATUS_COLOR, statusLabel } from "../../utils/taskBoxUtils";
 
 const PRIORITIES = ["Critical", "High", "Medium", "Low"];
 

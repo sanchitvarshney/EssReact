@@ -111,10 +111,7 @@ const CreateTaskDrawer = ({ onClose, onCreated }: { onClose: () => void; onCreat
         value={assignee}
         onChange={(_, v) => setAssignee(v)}
         onInputChange={(_, v, reason) => { if (reason === "input") handleSearch(v); }}
-        // The list already comes back filtered from the server (assignee-search?q=) - MUI's own
-        // default text filter was re-filtering it client-side against the typed text and hiding
-        // every result whenever the label didn't literally start/contain-match the same way
-        // (2026-09-26 bug report: "search not working"). Turning it off just shows what the API sent.
+ 
         filterOptions={(x) => x}
         noOptionsText={searching ? "Searching..." : "Type at least 2 characters"}
         getOptionLabel={(o: any) => o?.text || o?.name || ""}

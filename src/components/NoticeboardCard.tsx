@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   Box,
   Card,
@@ -14,7 +14,6 @@ import {
 import { keyframes } from "@emotion/react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import qrCode from "../assets/img/essDownload.png";
 import cricketAds from "../assets/img/cricket-ads.gif";
@@ -23,14 +22,13 @@ const MIN_AUTOPLAY_MS = 3000;
 const MAX_AUTOPLAY_MS = 5000;
 const randomAutoplayMs = () => Math.floor(Math.random() * (MAX_AUTOPLAY_MS - MIN_AUTOPLAY_MS + 1)) + MIN_AUTOPLAY_MS;
 
-// Each entry is a full slide's content. Kept as plain JSX (not the old title/message/author
-// shape) since announcements here are one-off designed blocks, not a uniform feed.
+
 const slides: React.ReactNode[] = [
   <Box sx={{ width: "100%", maxWidth: 420, mx: "auto" }}>
     <Typography
       variant="body2"
       color="text.secondary"
-      sx={{ mb: 1.25, textAlign: "center", lineHeight: 1.7 }}
+      sx={{ mb: 1.25, textAlign: "start", lineHeight: 1.7 }}
     >
       🎉 We've also launched the new ESS
       app on the Play Store, packed with many new features — we hope
@@ -83,177 +81,271 @@ const slides: React.ReactNode[] = [
   </Box>,
 ];
 
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+const BRAND = "#0d918b";
+
+const slideInFromRight = keyframes`
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
 `;
 
-const shrink = keyframes`
-  from { width: 100%; }
-  to { width: 0%; }
+const slideInFromLeft = keyframes`
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
 `;
+
+const fill = keyframes`
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+`;
+
+const SWIPE_THRESHOLD_PX = 40;
+
+const arrowSx = (side: "left" | "right", visible: boolean) => ({
+  position: "absolute" as const,
+  top: "50%",
+  [side]: 8,
+  zIndex: 2,
+  width: 36,
+  height: 36,
+  color: BRAND,
+  bgcolor: "rgba(255,255,255,0.92)",
+  border: "1px solid rgba(13,145,139,0.2)",
+  boxShadow: "0 2px 10px rgba(0,0,0,0.12)",
+  backdropFilter: "blur(4px)",
+  opacity: visible ? 1 : 0,
+  transform: `translateY(-50%) translateX(${visible ? 0 : side === "left" ? -8 : 8}px)`,
+  transition: "opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease",
+  "&:hover": { bgcolor: BRAND, color: "#fff" },
+  "&:focus-visible": { opacity: 1, transform: "translateY(-50%)" },
+});
 
 const NoticeboardCard: React.FC = () => {
   const [current, setCurrent] = useState<number>(0);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTouch = useMediaQuery("(hover: none)");
 
-  const [isPlaying, setIsPlaying] = useState(true);
-  // A fresh random 3-5s duration is picked every time we land on a slide, so each one gets its
-  // own timer (not a fixed interval) - also drives the progress bar's animation length below.
-  const [slideDuration, setSlideDuration] = useState(randomAutoplayMs);
+  const [isHovered, setIsHovered] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+
+  // A fresh random duration for every slide change.
+  const slideDuration = useMemo(randomAutoplayMs, [current]);
   const hasMultiple = slides.length > 1;
+  const isPaused =  isHovered;
+  const showArrows = hasMultiple && (isHovered || isTouch);
 
   const prevNotice = () => {
+    setDirection("prev");
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   };
   const nextNotice = () => {
+    setDirection("next");
     setCurrent((prev) => (prev + 1) % slides.length);
   };
+  const goTo = (i: number) => {
+    if (i === current) return;
+    setDirection(i > current ? "next" : "prev");
+    setCurrent(i);
+  };
 
-  useEffect(() => {
-    if (!isPlaying || !hasMultiple) return;
-    const ms = randomAutoplayMs();
-    setSlideDuration(ms);
-    const timer = setTimeout(nextNotice, ms);
-    return () => clearTimeout(timer);
-  }, [isPlaying, current, hasMultiple]);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!hasMultiple) return;
+    if (e.key === "ArrowLeft") prevNotice();
+    if (e.key === "ArrowRight") nextNotice();
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || !hasMultiple) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (dx > SWIPE_THRESHOLD_PX) prevNotice();
+    else if (dx < -SWIPE_THRESHOLD_PX) nextNotice();
+  };
 
   return (
     <Card
-      elevation={isSmallDevice ? 0 : 2}
+      elevation={0}
       sx={{
         maxWidth: "100%",
         minHeight: "60vh",
         display: "flex",
         flexDirection: "column",
-        p: isSmallDevice ? 0 : 0,
         borderRadius: 3,
         backgroundColor: "#ffffff",
         overflow: "hidden",
-        border: isSmallDevice ? "none" : "1px solid #f0f0f0",
+        border: isSmallDevice ? "none" : "1px solid rgba(13,145,139,0.15)",
+        boxShadow: isSmallDevice ? "none" : "0 4px 20px rgba(13,145,139,0.08)",
+        transition: "box-shadow 0.3s ease",
+        "&:hover": isSmallDevice ? {} : { boxShadow: "0 8px 28px rgba(13,145,139,0.14)" },
       }}
     >
       {!isSmallDevice && (
         <Box
           sx={{
-            background:
-              "linear-gradient(90deg, rgba(13,145,139,0.08), rgba(46,172,179,0.08))",
-            borderBottom: "2px solid #0d918b",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            px: 2,
+            py: 1,
+            background: "linear-gradient(90deg, rgba(13,145,139,0.1), rgba(46,172,179,0.04))",
           }}
         >
-          <Typography
-            variant="subtitle1"
-            fontWeight="bold"
-            textAlign={"center"}
-            sx={{ py: 1 }}
-          >
-            📌 Announcement's
+          <Typography variant="subtitle1" fontWeight={700} sx={{ color: "#134e4a" }}>
+            📌 Announcements
           </Typography>
+          {hasMultiple && (
+            <Typography
+              variant="caption"
+              fontWeight={600}
+              sx={{
+                color: BRAND,
+                bgcolor: "rgba(13,145,139,0.1)",
+                px: 1,
+                py: 0.25,
+                borderRadius: 5,
+              }}
+            >
+              {current + 1} / {slides.length}
+            </Typography>
+          )}
         </Box>
       )}
-
-      <CardContent
-        sx={{
-          flex: 1,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          px: isSmallDevice ? 2 : 4,
-          py: 1.25,
-        }}
-      >
-        <Box key={current} sx={{ width: "100%", animation: `${fadeIn} 0.35s ease` }}>
-          {slides[current]}
-        </Box>
-      </CardContent>
 
       {hasMultiple && (
-        <Stack direction="row" spacing={0.75} justifyContent="center" sx={{ mb: 1 }}>
-          {slides.map((_, i) => (
-            <Box
-              key={i}
-              component="button"
-              aria-label={`Go to announcement ${i + 1}`}
-              onClick={() => setCurrent(i)}
-              sx={{
-                width: i === current ? 18 : 6,
-                height: 6,
-                p: 0,
-                border: "none",
-                borderRadius: 3,
-                cursor: "pointer",
-                transition: "all 0.25s ease",
-                bgcolor: i === current ? "#0d918b" : "rgba(13,145,139,0.25)",
-              }}
-            />
-          ))}
-        </Stack>
-      )}
-
-      {isPlaying && hasMultiple && (
-        <Box
-          sx={{
-            height: 3,
-            bgcolor: "rgba(13,145,139,0.12)",
-            mx: 3,
-            borderRadius: 2,
-            overflow: "hidden",
-          }}
-        >
+        <Box sx={{ height: 3, bgcolor: "rgba(13,145,139,0.12)", overflow: "hidden" }}>
           <Box
             key={current}
+            onAnimationEnd={nextNotice}
             sx={{
               height: "100%",
-              bgcolor: "#0d918b",
-              animation: `${shrink} ${slideDuration}ms linear`,
+              bgcolor: BRAND,
+              transformOrigin: "left",
+              animation: `${fill} ${slideDuration}ms linear forwards`,
+              animationPlayState: isPaused ? "paused" : "running",
+              opacity:  0.35,
+              transition: "opacity 0.2s ease",
             }}
           />
         </Box>
       )}
 
-      <CardActions sx={{ justifyContent: "center", pb: 2 }}>
-        <Box sx={{ display: "flex", gap: 3, alignItems: "center" }}>
-          <Tooltip title="Previous">
-            <span>
-              <IconButton
-                onClick={prevNotice}
-                disabled={!hasMultiple}
-                sx={{
-                  color: "#0d918b",
-                  "&:hover": { bgcolor: "rgba(13,145,139,0.1)" },
-                }}
-              >
-                <ArrowBackIosNewIcon fontSize="medium" />
-              </IconButton>
-            </span>
+      <CardContent
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Announcements"
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onFocus={() => setIsHovered(true)}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node)) setIsHovered(false);
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        sx={{
+          position: "relative",
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          px: hasMultiple ? (isSmallDevice ? 5 : 7) : isSmallDevice ? 2 : 4,
+          py: 2,
+          outline: "none",
+          overflow: "hidden",
+        }}
+      >
+        {hasMultiple && (
+          <Tooltip title="Previous" placement="right">
+            <IconButton
+              aria-label="Previous announcement"
+              onClick={prevNotice}
+              size="small"
+              sx={arrowSx("left", showArrows)}
+            >
+              <ArrowBackIosNewIcon sx={{ fontSize: 16 }} />
+            </IconButton>
           </Tooltip>
-          <IconButton
-            onClick={() => setIsPlaying((p) => !p)}
+        )}
+
+        <Box
+          key={current}
+          sx={{
+            width: "100%",
+            animation: `${direction === "next" ? slideInFromRight : slideInFromLeft} 0.4s cubic-bezier(0.22, 1, 0.36, 1)`,
+          }}
+        >
+          {slides[current]}
+        </Box>
+
+        {hasMultiple && (
+          <Tooltip title="Next" placement="left">
+            <IconButton
+              aria-label="Next announcement"
+              onClick={nextNotice}
+              size="small"
+              sx={arrowSx("right", showArrows)}
+            >
+              <ArrowForwardIosIcon sx={{ fontSize: 16 }} />
+            </IconButton>
+          </Tooltip>
+        )}
+
+        {hasMultiple && isHovered && !isTouch && (
+          <Box
             sx={{
+              position: "absolute",
+              top: 8,
+              right: 8,
+              display: "flex",
+              alignItems: "center",
+              gap: 0.5,
+              px: 1,
+              py: 0.25,
+              borderRadius: 5,
+              bgcolor: "rgba(0,0,0,0.55)",
               color: "#fff",
-              bgcolor: "#0d918b",
-              "&:hover": { bgcolor: "#0b7b76" },
+              fontSize: 11,
+              fontWeight: 600,
+              pointerEvents: "none",
             }}
           >
-            {isPlaying ? <PauseIcon fontSize="medium" /> : <PlayArrowIcon fontSize="medium" />}
-          </IconButton>
-          <Tooltip title="Next">
-            <span>
-              <IconButton
-                onClick={nextNotice}
-                disabled={!hasMultiple}
+            <PauseIcon sx={{ fontSize: 12 }} /> Paused
+          </Box>
+        )}
+      </CardContent>
+
+      {hasMultiple && (
+        <CardActions sx={{ justifyContent: "center", gap: 1.5, pt: 0, pb: 1.5 }}>
+          <Stack direction="row" spacing={0.75} alignItems="center">
+            {slides.map((_, i) => (
+              <Box
+                key={i}
+                component="button"
+                aria-label={`Go to announcement ${i + 1}`}
+                aria-current={i === current}
+                onClick={() => goTo(i)}
                 sx={{
-                  color: "#0d918b",
-                  "&:hover": { bgcolor: "rgba(13,145,139,0.1)" },
+                  width: i === current ? 22 : 8,
+                  height: 8,
+                  p: 0,
+                  border: "none",
+                  borderRadius: 4,
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  bgcolor: i === current ? BRAND : "rgba(13,145,139,0.25)",
+                  "&:hover": { bgcolor: i === current ? BRAND : "rgba(13,145,139,0.5)" },
                 }}
-              >
-                <ArrowForwardIosIcon fontSize="medium" />
-              </IconButton>
-            </span>
-          </Tooltip>
-        </Box>
-      </CardActions>
+              />
+            ))}
+          </Stack>
+      
+        </CardActions>
+      )}
     </Card>
   );
 };

@@ -23,7 +23,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import EmptyData from "../components/reuseable/EmptyData";
-import TaskCard, { PRIORITY_COLOR, STATUS_COLOR, deadlineText, statusLabel } from "../components/reuseable/TaskCard";
+import TaskCard from "../components/reuseable/TaskCard";
 import CreateTaskDrawer from "../components/reuseable/CreateTaskDrawer";
 import TaskDetailDrawer from "../components/reuseable/TaskDetailDrawer";
 import { StyledTableCell, StyledTableRow } from "./LeaveStatusPage";
@@ -33,6 +33,7 @@ import {
   useGetMyTaskMetricsMutation,
   useGetMyTasksMutation,
 } from "../services/tasks";
+import { deadlineText, PRIORITY_COLOR, STATUS_COLOR, statusLabel } from "../utils/taskBoxUtils";
 
 const FILTERS = [
   { value: "", label: "All" },
@@ -50,7 +51,7 @@ const MetricTile = ({ label, value, color, onClick }: { label: string; value: nu
 );
 
 const TaskPage = () => {
-  const [tab, setTab] = useState(0); // 0 = my tasks, 1 = assigned by me
+  const [tab, setTab] = useState(0); 
   const [view, setView] = useState<"card" | "table">("card");
   const [filter, setFilter] = useState("");
   const [tasks, setTasks] = useState<any[]>([]);
