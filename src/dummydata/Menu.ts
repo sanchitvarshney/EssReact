@@ -63,10 +63,34 @@ export const menu: MenuItem[] = [
     path: "/attendance",
   },
   {
+    id: "team-attendance",
+    title: "Team Attendance",
+    icon: "PeopleIcon",
+    path: "/team-attendance",
+  },
+  {
     id: "payroll",
     title: "Quick Payslip",
     path: "/payroll",
     icon: "compensation",
+  },
+  {
+    id: "reimbursement-claims",
+    title: "Reimbursement",
+    icon: "reimbursement",
+    path: "/reimbursement",
+  },
+  {
+    id: "loan",
+    title: "Loan & Advance",
+    icon: "compensation",
+    path: "/loan",
+  },
+  {
+    id: "gate-pass",
+    title: "Gate Pass",
+    icon: "peripheral",
+    path: "/gate-pass",
   },
   {
     id: "event",

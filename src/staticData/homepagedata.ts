@@ -8,7 +8,9 @@ import doc from "../assets/documentation.png";
 // import recruitment from "../assets/selection.png";
 import calendar from "../assets/calendar (2).png";
 import performance from "../assets/performance.png";
-// import reimb from "../assets/dollar.png";
+import reimb from "../assets/dollar.png";
+import loanIcon from "../assets/coin.png";
+import gatePassIcon from "../assets/accept.png";
 import help from "../assets/help.png";
 import org from "../assets/hierarchy-structure.png";
 import perip from "../assets/peripheral.png";
@@ -59,12 +61,9 @@ export const homeData: homeMenuTypes[] = [
     path: "/peripheral",
   },
 
-  // {
-  //   id: "reimbursement",
-  //   title: "Reimbursement",
-  //   icon: reimb,
-  //   path: "/reimbursement/claim",
-  // },
+  { id: "reimbursement", title: "Reimbursement", icon: reimb, path: "/reimbursement" },
+  { id: "loan", title: "Loan & Advance", icon: loanIcon, path: "/loan" },
+  { id: "gatepass", title: "Gate Pass", icon: gatePassIcon, path: "/gate-pass" },
 
   { id: "org", title: "Org View", icon: org, path: "/home/hierarchy" },
     { id: "help", title: "Helpdesk", icon: help, path: "" },

@@ -9,6 +9,10 @@ import BeachAccessOutlinedIcon from "@mui/icons-material/BeachAccessOutlined";
 import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
+import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -36,8 +40,12 @@ const groups: { label: string; items: RailItem[] }[] = [
     label: "My work",
     items: [
       { title: "Attendance", path: "/attendance", Icon: CalendarMonthOutlinedIcon },
+      { title: "Team Attendance", path: "/team-attendance", Icon: GroupsOutlinedIcon },
       { title: "Leave", path: "/self-service/apply-leave", Icon: BeachAccessOutlinedIcon, match: "/self-service" },
       { title: "Payslip", path: "/payroll", Icon: CurrencyRupeeIcon },
+      { title: "Reimbursement", path: "/reimbursement", Icon: ReceiptLongOutlinedIcon },
+      { title: "Loan & Advance", path: "/loan", Icon: PaymentsOutlinedIcon },
+      { title: "Gate Pass", path: "/gate-pass", Icon: ConfirmationNumberOutlinedIcon },
       { title: "My KRA", path: "/performance", Icon: TrendingUpIcon },
     ],
   },

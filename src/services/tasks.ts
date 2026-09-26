@@ -41,6 +41,19 @@ const tasksApi = baseApiInstance.injectEndpoints({
     getAssignees: builder.mutation<any, void>({
       query: () => ({ url: "/tasks/assignees", method: "GET" }),
     }),
+    getTeamOverview: builder.mutation<any, void>({
+      query: () => ({ url: "/tasks/team-overview", method: "GET" }),
+    }),
+    getTeamTasks: builder.mutation<
+      any,
+      { filter?: string; page?: number; limit?: number } | void
+    >({
+      query: (params) => ({
+        url: "/tasks/team-tasks",
+        method: "GET",
+        params: params || {},
+      }),
+    }),
     searchAssignees: builder.mutation<any, string>({
       query: (q) => ({
         url: "/tasks/assignee-search",
@@ -199,6 +212,8 @@ export const {
   useGetManagerTaskMetricsMutation,
   useGetPersonTasksMutation,
   useGetAssigneesMutation,
+  useGetTeamOverviewMutation,
+  useGetTeamTasksMutation,
   useSearchAssigneesMutation,
   useGetTaskDetailMutation,
   useGetTaskTimelineMutation,

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
+  Avatar,
   Box,
   Button,
   Chip,
@@ -32,6 +33,9 @@ import {
   useGetManagerTaskMetricsMutation,
   useGetMyTaskMetricsMutation,
   useGetMyTasksMutation,
+  useGetPersonTasksMutation,
+  useGetTeamOverviewMutation,
+  useGetTeamTasksMutation,
 } from "../services/tasks";
 import { deadlineText, PRIORITY_COLOR, STATUS_COLOR, statusLabel } from "../utils/taskBoxUtils";
 
@@ -59,23 +63,66 @@ const TaskPage = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [reloadTick, setReloadTick] = useState(0);
+  // My Team tab (managers only): everyone in my reporting tree, and optionally one person to drill into.
+  const [team, setTeam] = useState<any[]>([]);
+  const [person, setPerson] = useState<any | null>(null);
+  const [personBy, setPersonBy] = useState<"on" | "given">("on");
+  const [teamQuery, setTeamQuery] = useState("");
+  const [teamLoading, setTeamLoading] = useState(false);
 
   const [getMyTasks, { isLoading: loadingMine }] = useGetMyTasksMutation();
   const [getMyTaskMetrics] = useGetMyTaskMetricsMutation();
   const [getManagedTasks, { isLoading: loadingManaged }] = useGetManagedTasksMutation();
   const [getManagerTaskMetrics] = useGetManagerTaskMetricsMutation();
+  const [getTeamOverview] = useGetTeamOverviewMutation();
+  const [getTeamTasks] = useGetTeamTasksMutation();
+  const [getPersonTasks] = useGetPersonTasksMutation();
 
   const byMe = tab === 1;
-  const loading = byMe ? loadingManaged : loadingMine;
+  const isTeam = tab === 2;
+  const isManager = team.length > 0;
+  const loading = isTeam ? teamLoading : byMe ? loadingManaged : loadingMine;
 
   const load = async () => {
+    if (isTeam) {
+      setTeamLoading(true);
+      const listCall: any = person
+        ? await getPersonTasks({ empCode: person.emp_code, filter: filter || undefined, by: personBy === "given" ? "assigner" : undefined })
+        : await getTeamTasks({ filter: filter || undefined });
+      if (listCall?.data?.success) setTasks(listCall.data.data?.tasks || []);
+      const overview: any = await getTeamOverview();
+      if (overview?.data?.success) setTeam(overview.data.data?.members || []);
+      setTeamLoading(false);
+      return;
+    }
     const listCall: any = byMe ? await getManagedTasks({ filter: filter || undefined }) : await getMyTasks({ filter: filter || undefined });
     if (listCall?.data?.success) setTasks(listCall.data.data?.tasks || []);
     const metricsCall: any = byMe ? await getManagerTaskMetrics() : await getMyTaskMetrics();
     if (metricsCall?.data?.success) setMetrics(metricsCall.data.data);
   };
 
-  useEffect(() => { load(); }, [tab, filter, reloadTick]);
+  useEffect(() => { load(); }, [tab, filter, reloadTick, person, personBy]);
+
+  // Who reports to me decides whether the My Team tab exists at all - checked once, up front.
+  useEffect(() => {
+    (async () => {
+      const overview: any = await getTeamOverview();
+      if (overview?.data?.success) setTeam(overview.data.data?.members || []);
+    })();
+  }, []);
+
+  // Team tiles are the sum of the people's own counts (whole team) or that one person's counts.
+  const teamMetrics = useMemo(() => {
+    const pool = person ? team.filter((m) => m.emp_code === person.emp_code) : team;
+    const sum = (k: string) => pool.reduce((a, m) => a + (Number(m[k]) || 0), 0);
+    return { assigned: sum("not_started"), in_progress: sum("in_progress"), pending_approval: sum("pending_approval"), overdue: sum("overdue"), closed: sum("closed") };
+  }, [team, person]);
+  const shownMetrics = isTeam ? (team.length ? teamMetrics : null) : metrics;
+
+  const rosterShown = useMemo(() => {
+    const q = teamQuery.trim().toLowerCase();
+    return q ? team.filter((m) => m.name.toLowerCase().includes(q) || m.emp_code.toLowerCase().includes(q)) : team;
+  }, [team, teamQuery]);
 
   const groups = useMemo(() => {
     const pick = (statuses: string[]) => tasks.filter((t) => statuses.includes(t.status));
@@ -83,10 +130,10 @@ const TaskPage = () => {
   }, [tasks]);
 
   const tiles = [
-    { key: "active", label: "Open", value: (metrics?.assigned || 0) + (metrics?.in_progress || 0), color: "#1e88e5", icon: PlayCircleOutlineIcon },
-    { key: "overdue", label: "Overdue", value: metrics?.overdue || 0, color: "#e53935", icon: ErrorOutlineIcon },
-    { key: "waiting", label: "Waiting", value: metrics?.pending_approval || 0, color: "#8e24aa", icon: HourglassEmptyIcon },
-    { key: "closed", label: "Closed", value: metrics?.closed || 0, color: "#2e7d32", icon: TaskAltIcon },
+    { key: "active", label: "Open", value: (shownMetrics?.assigned || 0) + (shownMetrics?.in_progress || 0), color: "#1e88e5", icon: PlayCircleOutlineIcon },
+    { key: "overdue", label: "Overdue", value: shownMetrics?.overdue || 0, color: "#e53935", icon: ErrorOutlineIcon },
+    { key: "waiting", label: "Waiting", value: shownMetrics?.pending_approval || 0, color: "#8e24aa", icon: HourglassEmptyIcon },
+    { key: "closed", label: "Closed", value: shownMetrics?.closed || 0, color: "#2e7d32", icon: TaskAltIcon },
   ];
 
   const views = [
@@ -112,19 +159,23 @@ const TaskPage = () => {
               <p className="text-[11px] uppercase tracking-widest text-white/60">Work on your plate</p>
               <p className="text-xl sm:text-2xl font-bold leading-tight">Task Box</p>
               <p className="text-sm text-white/70">
-                {byMe ? "Tasks you have assigned to others" : "Tasks assigned to you"} · {tasks.length} shown
+                {isTeam
+                  ? person ? `${person.name} · ${personBy === "given" ? "tasks they handed out" : "tasks on them"}` : "Tasks across your team"
+                  : byMe ? "Tasks you have assigned to others" : "Tasks assigned to you"} · {tasks.length} shown
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center bg-white/15 rounded-2xl p-1 gap-0.5">
-              {["My Tasks", "Assigned by Me"].map((label, idx) => (
+              {["My Tasks", "Assigned by Me", ...(isManager ? ["My Team"] : [])].map((label, idx) => (
                 <button
                   key={label}
                   onClick={() => {
                     setTab(idx);
                     setFilter("");
+                    setPerson(null);
+                    setPersonBy("on");
                   }}
                   className={`px-4 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
                     tab === idx ? "bg-white text-[#007f86] shadow" : "text-white/80 hover:bg-white/10"
@@ -144,8 +195,66 @@ const TaskPage = () => {
         </div>
       </section>
 
+      {/* My Team: pick everyone or one person */}
+      {isTeam && (
+        <div className="flex-shrink-0 flex flex-col gap-2">
+          <div className="flex items-stretch gap-2 overflow-x-auto custom-scrollbar-for-menu pb-1">
+            {team.length > 10 && (
+              <input
+                value={teamQuery}
+                onChange={(e) => setTeamQuery(e.target.value)}
+                placeholder="Find a person"
+                className="flex-shrink-0 w-40 px-3 rounded-2xl border border-gray-100 bg-white text-xs focus:outline-none focus:border-[#00a0a0]"
+              />
+            )}
+            {[null, ...rosterShown].map((m: any) => {
+              const on = (m?.emp_code ?? null) === (person?.emp_code ?? null);
+              return (
+                <button
+                  key={m?.emp_code ?? "everyone"}
+                  onClick={() => { setPerson(m); setPersonBy("on"); setFilter(""); }}
+                  className={`flex-shrink-0 flex items-center gap-2 pl-2 pr-3.5 py-2 rounded-2xl border text-left transition-all cursor-pointer ${
+                    on ? "border-[#00a0a0] bg-[#e0f6f6] shadow-sm" : "border-gray-100 bg-white hover:border-[#00a0a0]/50"
+                  }`}
+                >
+                  {m ? (
+                    <Avatar src={m.photo || undefined} sx={{ width: 30, height: 30, fontSize: 12, bgcolor: "#00a0a01f", color: "#007f86", fontWeight: 700 }}>
+                      {(m.name || "?").trim().split(/\s+/).slice(0, 2).map((p: string) => p[0]?.toUpperCase()).join("")}
+                    </Avatar>
+                  ) : (
+                    <span className="w-[30px] h-[30px] rounded-full bg-[#00a0a0] text-white text-[11px] font-bold flex items-center justify-center">All</span>
+                  )}
+                  <span className="min-w-0">
+                    <span className="block text-xs font-bold text-gray-800 max-w-[130px] truncate">{m ? m.name : "Everyone"}</span>
+                    <span className="block text-[10px] text-gray-400">
+                      {m ? `${Number(m.open_tasks) || 0} open` : `${team.length} people`}
+                      {m && Number(m.overdue) > 0 && <span className="text-red-600 font-semibold"> · {Number(m.overdue)} overdue</span>}
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          {person && (
+            <div className="flex items-center gap-2">
+              {([["on", "On them"], ["given", "Given by them"]] as const).map(([k, label]) => (
+                <button
+                  key={k}
+                  onClick={() => setPersonBy(k)}
+                  className={`px-3 py-1 rounded-full text-[11px] font-semibold cursor-pointer transition-colors ${
+                    personBy === k ? "text-white bg-gradient-to-r from-[#00a0a0] to-[#007f86]" : "bg-white border border-gray-100 text-gray-500 hover:text-[#007f86]"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Metric tiles (click to filter) */}
-      {metrics && (
+      {shownMetrics && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 flex-shrink-0">
           {tiles.map(({ key, label, value, color, icon: Icon }) => {
             const on = filter === key;
@@ -226,7 +335,7 @@ const TaskPage = () => {
         <div className="flex-1 flex items-center justify-center">
           <EmptyData
             title="No tasks here"
-            subtitle={byMe ? "Tasks you assigned will show up here." : "Tasks assigned to you will show up here."}
+            subtitle={isTeam ? "Tasks on your team will show up here." : byMe ? "Tasks you assigned will show up here." : "Tasks assigned to you will show up here."}
           />
         </div>
       ) : view === "board" ? (
@@ -270,7 +379,7 @@ const TaskPage = () => {
             <TableHead>
               <TableRow>
                 <StyledTableCell>Title</StyledTableCell>
-                <StyledTableCell>{byMe ? "Assigned To" : "Assigned By"}</StyledTableCell>
+                <StyledTableCell>{byMe || isTeam ? "Assigned To" : "Assigned By"}</StyledTableCell>
                 <StyledTableCell>Status</StyledTableCell>
                 <StyledTableCell>Priority</StyledTableCell>
                 <StyledTableCell>Deadline</StyledTableCell>
@@ -286,7 +395,7 @@ const TaskPage = () => {
                       <Typography variant="caption" sx={{ color: "#1e88e5" }}>With {t.current_assignee_name}</Typography>
                     )}
                   </TableCell>
-                  <TableCell>{byMe ? (t.assigned_to_name || t.assigned_to) : t.assigned_by_name}</TableCell>
+                  <TableCell>{byMe || isTeam ? (t.assigned_to_name || t.assigned_to) : t.assigned_by_name}</TableCell>
                   <TableCell>
                     <Chip size="small" label={statusLabel(t.status)} sx={{ bgcolor: `${STATUS_COLOR[t.status] || "#607d8b"}1a`, color: STATUS_COLOR[t.status] || "#607d8b", fontWeight: 600 }} />
                   </TableCell>

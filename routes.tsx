@@ -13,6 +13,10 @@ import Custom404Page from "./src/pages/Custom404Page";
 import LeavePage from "./src/pages/LeavePage";
 import SideMenuBar from "./src/components/sidemenubar/SideMenuBar";
 import AttendancePage from "./src/pages/AttendancePage";
+import TeamAttendancePage from "./src/pages/TeamAttendancePage";
+import ReimbursementPage from "./src/pages/ReimbursementPage";
+import LoanPage from "./src/pages/LoanPage";
+import GatePassPage from "./src/pages/GatePassPage";
 import LeaveStatusPage from "./src/pages/LeaveStatusPage";
 import WFHPage from "./src/pages/WFHPage";
 import PaySlipPage from "./src/pages/PaySlipPage";
@@ -111,6 +115,10 @@ export const route = createBrowserRouter([
             element: <AttendancePage />,
           },
           {
+            path: "team-attendance",
+            element: <TeamAttendancePage />,
+          },
+          {
             path: "calendar",
             element: <HolidayPage />,
           },
@@ -153,6 +161,18 @@ export const route = createBrowserRouter([
           {
             path: "performance",
             element: <PerformancePage />,
+          },
+          {
+            path: "reimbursement",
+            element: <ReimbursementPage />,
+          },
+          {
+            path: "loan",
+            element: <LoanPage />,
+          },
+          {
+            path: "gate-pass",
+            element: <GatePassPage />,
           },
           {
             path: "reimbursement/claim",
