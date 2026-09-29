@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import moment from "moment";
 
 type Props = { stats: any; events: any[] };
 
@@ -9,6 +10,8 @@ const TILES = [
   { key: "srt", label: "Short", color: "#64748b", bg: "#f1f5f9" },
   { key: "late", label: "Late", color: "#ea580c", bg: "#fff7ed" },
 ];
+
+const LOSS_STATUSES = new Set(["a", "absent", "lwp", "leave without pay"]);
 
 const MonthPulse = ({ stats, events }: Props) => {
   const counts = useMemo(() => {
@@ -22,8 +25,27 @@ const MonthPulse = ({ stats, events }: Props) => {
     };
   }, [stats, events]);
 
-  const worked = counts.present + counts.absent;
-  const rate = worked > 0 ? Math.round((counts.present / worked) * 100) : 0;
+
+  const { worked, rate } = useMemo(() => {
+    const first = events.find((e) => e?.start);
+    if (!first) return { worked: 0, rate: 0 };
+
+    const month = moment(first.start);
+    const today = moment();
+    const daysSoFar = month.isSame(today, "month")
+      ? today.date()
+      : month.isBefore(today, "month")
+        ? month.daysInMonth()
+        : 0;
+    if (daysSoFar === 0) return { worked: 0, rate: 0 };
+
+    const lost = events.filter((e) => {
+      const status = String(e.title).trim().toLowerCase();
+      return LOSS_STATUSES.has(status) && !moment(e.start).isAfter(today, "day");
+    }).length;
+
+    return { worked: daysSoFar, rate: Math.max(0, Math.round(100 - (lost / daysSoFar) * 100)) };
+  }, [events]);
 
   return (
     <section className="bg-white rounded-3xl border border-gray-100 shadow-[0_1px_4px_rgba(16,24,40,0.05)] p-5 flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-8">

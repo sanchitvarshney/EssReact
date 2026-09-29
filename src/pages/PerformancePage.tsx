@@ -21,6 +21,8 @@ const RatingPanel = ({ empId, fy, onSaved }: { empId: string; fy: string; onSave
     envelope,
     data,
     categories,
+    isSubmitted,
+    canEdit,
     entries,
     updateEntry,
     readOnlyValue,
@@ -65,27 +67,36 @@ if (isNetworkError || !isAuthorized) {
           Rating for <strong>{data.window.targetMonth}</strong> — you're rating as{" "}
           <strong>{data.yourRole === "employee" ? "Employee" : "Reporting Manager"}</strong>
         </Typography>
+        {isSubmitted && (
+          <Chip
+            label={`Submitted for ${data.window.targetMonth}`}
+            size="small"
+            sx={{ bgcolor: "#dcfce7", color: "#166534", fontWeight: 600 }}
+          />
+        )}
       </div>
       <KraRatingTable
         categories={categories}
         yourRole={data.yourRole}
-        editable={data.window.open}
+        editable={canEdit}
         entries={entries}
         onUpdate={updateEntry}
         readOnlyValue={readOnlyValue}
       />
-      <div className="flex items-center justify-end gap-3">
-        <CustomButton onClick={resetEntries} variant="outline" className="cursor-pointer">
-          Cancel
-        </CustomButton>
-        <CustomButton
-          onClick={handleSave}
-          disabled={saving || !data.window.open}
-          className="cursor-pointer bg-gradient-to-r from-[#00a0a0] to-[#007f86] hover:from-[#007f86] hover:to-[#00a0a0] text-white"
-        >
-          {saving ? "Saving..." : "Save"}
-        </CustomButton>
-      </div>
+      {canEdit && (
+        <div className="flex items-center justify-end gap-3">
+          <CustomButton onClick={resetEntries} disabled={saving} variant="outline" className="cursor-pointer">
+            Cancel
+          </CustomButton>
+          <CustomButton
+            onClick={handleSave}
+            disabled={saving}
+            className="cursor-pointer bg-gradient-to-r from-[#00a0a0] to-[#007f86] hover:from-[#007f86] hover:to-[#00a0a0] text-white"
+          >
+            {saving ? "Saving..." : "Save"}
+          </CustomButton>
+        </div>
+      )}
     </>
   );
 };

@@ -46,7 +46,7 @@ const groups: { label: string; items: RailItem[] }[] = [
       { title: "Reimbursement", path: "/reimbursement", Icon: ReceiptLongOutlinedIcon },
       { title: "Loan & Advance", path: "/loan", Icon: PaymentsOutlinedIcon },
       { title: "Gate Pass", path: "/gate-pass", Icon: ConfirmationNumberOutlinedIcon },
-      { title: "My KRA", path: "/performance", Icon: TrendingUpIcon },
+      { title: "My KRA", path: "/kra", Icon: TrendingUpIcon },
     ],
   },
   {

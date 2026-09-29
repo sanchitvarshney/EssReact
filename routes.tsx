@@ -169,7 +169,7 @@ export const route = createBrowserRouter([
             element: withSuspense(<LeaveGrantPage />),
           },
           {
-            path: "performance",
+            path: "kra",
             element: withSuspense(<PerformancePage />),
           },
           {

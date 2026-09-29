@@ -10,6 +10,8 @@ interface WeightageInputsProps {
   disabled?: boolean;
 }
 
+const PERCENTAGE_PATTERN = /^(100|\d{0,2})$/;
+
 const percentageSx = {
   "& .MuiOutlinedInput-root": {
     borderRadius: "10px",
@@ -50,9 +52,11 @@ const WeightageInputs = memo(
       <StyledTableCell sx={{ width: 110 }}>
         <TextField
           size="small"
-          type="number"
           value={percentage ?? ""}
-          onChange={(e) => onPercentageChange(e.target.value)}
+          onChange={(e) => {
+            // Digits only, 0-99, or exactly 100 - no signs, decimals or 3-digit values above 100.
+            if (PERCENTAGE_PATTERN.test(e.target.value)) onPercentageChange(e.target.value);
+          }}
           disabled={disabled}
           placeholder="0"
           slotProps={{
@@ -65,7 +69,7 @@ const WeightageInputs = memo(
                   %
                 </InputAdornment>
               ),
-              inputProps: { min: 0, max: 100 },
+              inputProps: { inputMode: "numeric", maxLength: 3 },
             },
           }}
           sx={{ width: 90, ...percentageSx }}

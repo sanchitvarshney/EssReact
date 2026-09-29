@@ -43,7 +43,7 @@ export const homeData: homeMenuTypes[] = [
     id: "performance",
     title: "My KRA",
     icon: performance,
-    path: "/performance",
+    path: "/kra",
   },
       {
     id: "peripheral",

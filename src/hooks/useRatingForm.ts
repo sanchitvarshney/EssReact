@@ -64,6 +64,17 @@ export const useRatingForm = (empId: string | undefined, fy: string) => {
     []
   );
 
+  // Submitted once the server holds this role's rating for the target month; the form then locks.
+  const isSubmitted = useMemo(() => {
+    if (!data || data.points.length === 0) return false;
+    const month = data.window.targetMonth;
+    return data.points.some((point) => ratingKey(point.id, month, data.yourRole) in data.ratings);
+  }, [data]);
+
+  // Role-specific window when the API sends it, otherwise the overall one.
+  const windowOpen = data ? data.window[data.yourRole]?.open ?? data.window.open : false;
+  const canEdit = windowOpen && !isSubmitted;
+
   const categories = useMemo<CategoryGroup[]>(() => {
     if (!data) return [];
     const map = new Map<number, CategoryGroup>();
@@ -111,12 +122,13 @@ export const useRatingForm = (empId: string | undefined, fy: string) => {
         extractMessage(res.message, `Rating saved for ${res.data?.month ?? data.window.targetMonth}`),
         "success"
       );
+      refetch();
       return true;
     } catch (err: any) {
       showToast(extractMessage(err?.data?.message, "Could not save rating"), "error");
       return false;
     }
-  }, [data, empId, fy, entries, saveRating, showToast]);
+  }, [data, empId, fy, entries, saveRating, showToast, refetch]);
 
   return {
     isFetching,
@@ -125,6 +137,8 @@ export const useRatingForm = (empId: string | undefined, fy: string) => {
     envelope,
     data,
     categories,
+    isSubmitted,
+    canEdit,
     entries,
     updateEntry,
     readOnlyValue,
