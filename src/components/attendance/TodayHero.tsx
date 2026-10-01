@@ -116,7 +116,7 @@ const TodayHero: FC<Props> = ({ value, date }) => {
             <span className="text-3xl font-bold tabular-nums leading-none">
               {hh}:{mm}
             </span>
-            <span className="text-[10px] text-white/60 mt-1.5 whitespace-nowrap">of 8h 30m</span>
+            <span className="text-[10px] text-white/60 mt-1.5 whitespace-nowrap">of 9h 00m</span>
           </div>
         </div>
 

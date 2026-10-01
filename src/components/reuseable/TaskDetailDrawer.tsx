@@ -146,6 +146,8 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
   const [confirmComplete, setConfirmComplete] = useState(false);
   const [etaDate, setEtaDate] = useState<Dayjs | null>(null);
   const [etaTime, setEtaTime] = useState<Dayjs | null>(null);
+  const [etaRemark, setEtaRemark] = useState("");
+  const [etaSubmitted, setEtaSubmitted] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const [editPriority, setEditPriority] = useState("Medium");
 
@@ -187,6 +189,52 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
   };
 
   const fmtDate = (d?: string) => (d ? dayjs(d).format("DD MMM YYYY, hh:mm A") : "—");
+
+  // Expected-time form, shared by "Expected time" and "Start Working" (which asks for the time first).
+  // Date and time are required and must be in the future; starting asks only for those, no remark.
+  const isStartFlow = dialog === "start";
+  const etaAt = etaDate && etaTime
+    ? etaDate.hour(etaTime.hour()).minute(etaTime.minute()).second(0)
+    : null;
+  const etaErrors = {
+    date: !etaDate ? "Pick a date" : "",
+    time: !etaTime ? "Pick a time" : etaAt && !etaAt.isAfter(dayjs()) ? "Time must be in the future" : "",
+    remark: !isStartFlow && etaRemark.trim().length < 3 ? "Add a remark (at least 3 characters)" : "",
+  };
+  const etaValid = !etaErrors.date && !etaErrors.time && !etaErrors.remark;
+
+  const openEtaForm = (mode: "eta" | "start") => {
+    if (dialog === mode) { setDialog(""); return; }
+    // Prefill with the current expected time when the task already has one.
+    const existing = task?.eta_fmt ? dayjs(task.eta_fmt) : null;
+    const prefill = existing?.isValid() && existing.isAfter(dayjs()) ? existing : null;
+    setEtaDate(prefill);
+    setEtaTime(prefill);
+    setEtaRemark("");
+    setEtaSubmitted(false);
+    setDialog(mode);
+  };
+
+  const submitEta = async () => {
+    setEtaSubmitted(true);
+    if (!etaValid || !etaAt) return;
+    const etaCall = setEta({
+      id: task.id,
+      expected_at: etaAt.format("YYYY-MM-DD HH:mm:ss"),
+      ...(!isStartFlow ? { remark: etaRemark.trim() } : {}),
+    });
+    if (!isStartFlow) {
+      wrap("Expected time saved", etaCall, false);
+      return;
+    }
+    // Start flow: save the expected time first, then start - stop if saving the time fails.
+    const res: any = await etaCall;
+    if (res?.error || res?.data?.success === false) {
+      showToast(res?.error?.data?.message || res?.data?.message || "Couldn't save the expected time", "error");
+      return;
+    }
+    wrap("Task started", startTask({ id: task.id }), false);
+  };
 
   if (loadingDetail && !task) {
     return (
@@ -232,7 +280,7 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
 
       {/* ── Primary actions ─────────────────────────────────────────────── */}
       {actions.includes("start") && (
-        <Button variant="contained" sx={{ bgcolor: "#00a0a0" }} disabled={starting} onClick={() => wrap("Task started", startTask({ id: task.id }), false)}>
+        <Button variant="contained" sx={{ bgcolor: "#00a0a0" }} disabled={starting} onClick={() => openEtaForm("start")}>
           {starting ? <CircularProgress size={18} sx={{ color: "#fff" }} /> : "Start Working"}
         </Button>
       )}
@@ -253,7 +301,7 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
       {/* ── Secondary actions ────────────────────────────────────────────── */}
       <div className="flex flex-wrap gap-2">
         {actions.includes("eta") && (
-          <Button size="small" variant="outlined" onClick={() => setDialog(dialog === "eta" ? "" : "eta")}>Expected time</Button>
+          <Button size="small" variant="outlined" onClick={() => openEtaForm("eta")}>Expected time</Button>
         )}
         {actions.includes("forward") && <Button size="small" variant="outlined" onClick={() => setDialog(dialog === "forward" ? "" : "forward")}>Forward</Button>}
         {actions.includes("takeback") && (
@@ -268,21 +316,44 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
         {actions.includes("withdraw") && <Button size="small" variant="outlined" color="error" onClick={() => setDialog(dialog === "withdraw" ? "" : "withdraw")}>Withdraw</Button>}
       </div>
 
-      {dialog === "eta" && (
+      {(dialog === "eta" || dialog === "start") && (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <div className="border border-gray-100 rounded-xl p-3 flex flex-col gap-2 bg-gray-50">
             <Typography variant="subtitle2" className="font-semibold">When do you expect to finish?</Typography>
+            {isStartFlow && (
+              <Typography variant="caption" className="text-gray-500">
+                Set your expected finish time to start working on this task.
+              </Typography>
+            )}
             <div className="flex gap-2">
-              <MobileDatePicker label="Date" value={etaDate} minDate={dayjs()} onChange={setEtaDate} slotProps={{ textField: { size: "small", fullWidth: true } }} />
-              <MobileTimePicker label="Time" value={etaTime} onChange={setEtaTime} slotProps={{ textField: { size: "small", fullWidth: true } }} />
+              <MobileDatePicker
+                label="Date *" value={etaDate} minDate={dayjs()} onChange={setEtaDate}
+                slotProps={{ textField: { size: "small", fullWidth: true, error: etaSubmitted && !!etaErrors.date, helperText: etaSubmitted ? etaErrors.date : "" } }}
+              />
+              <MobileTimePicker
+                label="Time *" value={etaTime} onChange={setEtaTime}
+                slotProps={{ textField: { size: "small", fullWidth: true, error: etaSubmitted && !!etaErrors.time, helperText: etaSubmitted ? etaErrors.time : "" } }}
+              />
             </div>
+            {!isStartFlow && (
+              <TextField
+                size="small" label="Remark *" placeholder="Why this time? e.g. waiting on API from backend team"
+                value={etaRemark} onChange={(e) => setEtaRemark(e.target.value.slice(0, 500))}
+                multiline minRows={2} fullWidth
+                error={etaSubmitted && !!etaErrors.remark}
+                helperText={etaSubmitted && etaErrors.remark ? etaErrors.remark : `${etaRemark.length}/500`}
+              />
+            )}
             <div className="flex gap-2 justify-end">
               <Button size="small" onClick={() => setDialog("")}>Cancel</Button>
               <Button
-                size="small" variant="contained" disabled={settingEta || !etaDate || !etaTime}
-                onClick={() => wrap("Expected time saved", setEta({ id: task.id, expected_at: `${etaDate!.format("YYYY-MM-DD")} ${etaTime!.format("HH:mm")}:00` }), false)}
+                size="small" variant="contained" disabled={settingEta || starting || (etaSubmitted && !etaValid)}
+                onClick={submitEta}
+                sx={isStartFlow ? { bgcolor: "#00a0a0" } : undefined}
               >
-                {settingEta ? <CircularProgress size={16} sx={{ color: "#fff" }} /> : "Save"}
+                {settingEta || starting
+                  ? <CircularProgress size={16} sx={{ color: "#fff" }} />
+                  : isStartFlow ? "Start Working" : "Save"}
               </Button>
             </div>
           </div>

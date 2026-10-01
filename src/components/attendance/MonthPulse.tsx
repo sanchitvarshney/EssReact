@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import moment from "moment";
+import { isUpcomingAbsent } from "../../helper/attendance";
 
 type Props = { stats: any; events: any[] };
 
@@ -15,7 +16,9 @@ const LOSS_STATUSES = new Set(["a", "absent", "lwp", "leave without pay"]);
 
 const MonthPulse = ({ stats, events }: Props) => {
   const counts = useMemo(() => {
-    const absent = events.filter((e) => String(e.title).toLowerCase() === "a").length;
+    const absent = events.filter(
+      (e) => String(e.title).toLowerCase() === "a" && !isUpcomingAbsent(e.start, e.title),
+    ).length;
     return {
       present: Number(stats?.total_present ?? 0),
       absent,

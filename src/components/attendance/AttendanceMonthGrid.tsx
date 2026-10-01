@@ -4,6 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import type { EventContentArg } from "@fullcalendar/core";
 import moment from "moment";
 import { getTitleStyle } from "../../helper/getcolor";
+import { isUpcomingAbsent } from "../../helper/attendance";
 import "../../css/AttendanceFullCalendar.css";
 
 const timeOnly = (v?: string) => {
@@ -22,6 +23,9 @@ const AttendanceMonthGrid = ({ date, events }: Props) => {
     () =>
       events.flatMap((e, i) => {
         const day = moment(e.start).format("YYYY-MM-DD");
+        if (isUpcomingAbsent(e.start, e.title)) {
+          return [{ id: `ev-${i}`, start: day, allDay: true, extendedProps: { raw: e, upcoming: true } }];
+        }
         const style = getTitleStyle(e.title);
         return [
           { id: `bg-${i}`, start: day, allDay: true, display: "background", backgroundColor: `${style.bg}99` },
@@ -36,9 +40,18 @@ const AttendanceMonthGrid = ({ date, events }: Props) => {
   }, [date]);
 
   const renderEvent = (arg: EventContentArg) => {
-    const { raw, style } = arg.event.extendedProps as any;
+    const { raw, style, upcoming } = arg.event.extendedProps as any;
     // Background (tint) events carry no attendance payload - let FullCalendar draw them by default.
     if (!raw) return true;
+    if (upcoming) {
+      return (
+        <div className="w-full px-1.5 pb-1.5">
+          <span className="text-sm font-semibold text-gray-300" title="Upcoming day">
+            –
+          </span>
+        </div>
+      );
+    }
     const inT = timeOnly(raw?.in_time);
     const outT = timeOnly(raw?.out_time);
     return (

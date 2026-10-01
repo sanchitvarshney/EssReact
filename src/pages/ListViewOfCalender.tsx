@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { useMemo } from "react";
 import { getTitleStyle } from "../helper/getcolor";
+import { isUpcomingAbsent } from "../helper/attendance";
 
 const formatTimeOnly = (value?: string) => {
   if (!value) return "";
@@ -139,7 +140,7 @@ const CalendarListView = ({
 
                   {/* Status badge */}
                   <TableCell align="center" sx={{ py: 1.25, px: 2 }}>
-                    {event.status ? (
+                    {event.status && !isUpcomingAbsent(event.start, event.status) ? (
                       <span
                         style={{
                           backgroundColor: bg,
