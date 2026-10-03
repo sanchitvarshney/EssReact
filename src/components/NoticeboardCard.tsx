@@ -16,7 +16,6 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import PauseIcon from "@mui/icons-material/Pause";
 import qrCode from "../assets/img/essDownload.png";
-import cricketAds from "../assets/img/cricket-ads.gif";
 
 const MIN_AUTOPLAY_MS = 3000;
 const MAX_AUTOPLAY_MS = 5000;
@@ -59,22 +58,6 @@ const slides: React.ReactNode[] = [
       </Typography>
     </Box>
 
-    <Typography variant="body2" fontWeight={600} sx={{ mt: 1.5, textAlign: "center" }}>
-      — HR Team
-    </Typography>
-  </Box>,
-
-  <Box sx={{ width: "100%", maxWidth: 420, mx: "auto" }}>
-    <Box
-      component="img"
-      src={cricketAds}
-      alt="Cricket tournament"
-      sx={{ width: "100%", maxWidth: 320, mx: "auto", display: "block", borderRadius: 2, mb: 1.5 }}
-    />
-    <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", lineHeight: 1.7 }}>
-      🏏 Get ready! Our cricket tournament kicks off on the 1st.
-      Start forming your teams and stay tuned for the schedule.
-    </Typography>
     <Typography variant="body2" fontWeight={600} sx={{ mt: 1.5, textAlign: "center" }}>
       — HR Team
     </Typography>
