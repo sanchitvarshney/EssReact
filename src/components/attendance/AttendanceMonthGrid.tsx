@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import type { EventContentArg } from "@fullcalendar/core";
+import type { EventContentArg, EventInput } from "@fullcalendar/core";
 import moment from "moment";
 import { getTitleStyle } from "../../helper/getcolor";
 import { isUpcomingAbsent } from "../../helper/attendance";
@@ -21,7 +21,7 @@ const AttendanceMonthGrid = ({ date, events }: Props) => {
   // Each attendance day becomes a tinted background event + a content event (status, times).
   const fcEvents = useMemo(
     () =>
-      events.flatMap((e, i) => {
+      events.flatMap((e, i): EventInput[] => {
         const day = moment(e.start).format("YYYY-MM-DD");
         if (isUpcomingAbsent(e.start, e.title)) {
           return [{ id: `ev-${i}`, start: day, allDay: true, extendedProps: { raw: e, upcoming: true } }];
