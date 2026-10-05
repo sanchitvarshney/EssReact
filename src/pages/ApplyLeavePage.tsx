@@ -102,6 +102,10 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
   const endSession = form.watch("toSession");
   const messageValue = form.watch("message") || "";
 
+  // OD and LWP are informative-only - they're never accrued/allotted, so there's no real
+  // balance to check against (same assumption the Android app's hasNoBalanceConcept makes).
+  const hasNoBalanceConcept = type === "OD" || type === "LWP";
+
   const handleGetUrl = (value: string) => {
     const urlMap: Record<string, string> = {
       EL: "sendELLeaveRequest",
@@ -196,6 +200,7 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
 
     if (
       type !== "ACL" &&
+      !hasNoBalanceConcept &&
       getLeaveCalculateData?.data?.currentBooking > getLeaveBalanceData?.leaveBalance?.balance
     ) {
       showToast("Insufficient leave balance", "error");
@@ -283,6 +288,8 @@ const ApplyLeavePage = ({ onClose }: { onClose: () => void }) => {
                     </p>
                     {getLeaveBalanceLoading ? (
                       <DotLoading />
+                    ) : hasNoBalanceConcept ? (
+                      <p className="text-xl font-bold text-[#006064] leading-none">No limit</p>
                     ) : (
                       <p className="text-xl font-bold text-[#006064] leading-none">
                         {balance}
