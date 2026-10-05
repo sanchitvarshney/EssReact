@@ -16,6 +16,10 @@ export const FYI_MESSAGES: FyiMessage[] = [
   },
   {
     type: "success",
-    text: "Your Q3 performance review window is now open under My KRA.",
+    text: "New KRA feature has been added to your ESS Web Portal. KRA will be available from the 25th until the end of every month. Please make sure to complete your KRA within this period.",
+  },
+  {
+    type: "error",
+    text: "WhatsApp Bot is currently unavailable. Please use the ESS App or Web Portal to continue. We sincerely apologize for the inconvenience and deeply regret the disruption.",
   },
 ];

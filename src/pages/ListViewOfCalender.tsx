@@ -20,6 +20,18 @@ const formatTimeOnly = (value?: string) => {
   return parsed.isValid() ? parsed.format("hh:mm A") : value;
 };
 
+// "09:10:00" -> "9h 10m" (drops the minutes when they're zero) - same compact style as the Org View / Team
+// Attendance drill-down's own day rows, so total time reads the same wherever it shows up.
+const compactHours = (totalTime?: string) => {
+  if (!totalTime || totalTime === "--" || totalTime === "0") return "";
+  const m = /^(\d{1,2}):(\d{2})/.exec(totalTime);
+  if (!m) return "";
+  const h = Number(m[1]);
+  const min = Number(m[2]);
+  if (h === 0 && min === 0) return "";
+  return min > 0 ? `${h}h ${min}m` : `${h}h`;
+};
+
 
 
 const CalendarListView = ({
@@ -127,14 +139,19 @@ const CalendarListView = ({
                       whiteSpace: "nowrap",
                     }}
                   >
-                    <span>{date.format("DD MMM YYYY")}</span>
-                    {isToday && (
-                      <span
-                        className="ml-2 text-[10px] font-bold px-1.5 py-0.5 rounded-full"
-                        style={{ backgroundColor: "#e0f6f6", color: "#007f86" }}
-                      >
-                        Today
-                      </span>
+                    <div className="flex items-center">
+                      <span>{date.format("DD MMM YYYY")}</span>
+                      {isToday && (
+                        <span
+                          className="ml-2 text-[10px] font-bold px-1.5 py-0.5 rounded-full"
+                          style={{ backgroundColor: "#e0f6f6", color: "#007f86" }}
+                        >
+                          Today
+                        </span>
+                      )}
+                    </div>
+                    {compactHours(event.total_time) && (
+                      <div className="text-[10px] font-normal text-gray-400 mt-0.5">{compactHours(event.total_time)}</div>
                     )}
                   </TableCell>
 
