@@ -8,6 +8,8 @@ import LeavesAttendanceCard from "../components/dashboard/LeavesAttendanceCard";
 import NewJoiningCard from "../components/dashboard/NewJoiningCard";
 import AbsentTodayCard from "../components/dashboard/AbsentTodayCard";
 import FyiBanner from "../components/dashboard/FyiBanner";
+import AnnouncementBannerModal from "../components/reuseable/AnnouncementBannerModal";
+import { useAnnouncementBanner } from "../hooks/useAnnouncementBanner";
 
 // Same Live / Xd left / Closing / Locked states as Android's Dashboard KRA tile badge
 // (DashboardScreen.kt's kraBadge `when`), computed from the same role-split window shape
@@ -24,9 +26,11 @@ const getKraBadge = (window_?: { employee?: { open: boolean; daysUntilOpen?: num
 const HomePage = () => {
   const { data: ratingWindowRes } = useGetRatingWindowQuery();
   const kraBadge = getKraBadge(ratingWindowRes?.data);
+  const announcementBanner = useAnnouncementBanner();
 
   return (
     <div className="w-full min-h-full flex flex-col">
+      <AnnouncementBannerModal open={announcementBanner.open} onClose={announcementBanner.close} />
       <FyiBanner />
 
       <div className="flex-1 px-4 pb-4 flex flex-col gap-4">
