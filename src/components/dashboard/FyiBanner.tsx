@@ -26,7 +26,7 @@ const FyiBanner = () => {
   const isMediumDevice = useMediaQuery(theme.breakpoints.down("md"));
   const fromX = isSmallDevice ? "20%" : isMediumDevice ? "40%" : "90%";
   const toX = isSmallDevice ? "-20%" : isMediumDevice ? "-40%" : "-120%";
-  const durationSec = isSmallDevice ? 15 : isMediumDevice ? 25 : 35;
+  const durationSec = isSmallDevice ? 12 : isMediumDevice ? 20 : 28;
   const scroll = getScrollKeyframes(fromX, toX);
 
   const [cycle, setCycle] = useState(0);
@@ -42,7 +42,7 @@ const FyiBanner = () => {
         style={{ backgroundColor: color }}
       >
         <CampaignIcon sx={{ color: "#fff", fontSize: 18, mr: 0.5 }} />
-        <span className="text-white font-bold text-sm whitespace-nowrap">FYI</span>
+        <span className="text-white font-bold text-sm whitespace-nowrap">FYIP</span>
         <div
           style={{
             position: "absolute",
