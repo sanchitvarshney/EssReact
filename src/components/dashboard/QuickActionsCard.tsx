@@ -27,7 +27,7 @@ const QuickActionsCard = ({ kraBadge }: Props) => {
   }, [group]);
 
   return (
-    <DashCard title="Quick Actions">
+    <DashCard title="Quick Actions" className="h-full flex flex-col">
       <div className="flex flex-wrap gap-2 mb-4">
         {GROUPS.map(({ label }) => {
           const on = group === label;

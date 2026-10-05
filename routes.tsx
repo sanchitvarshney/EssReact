@@ -41,6 +41,7 @@ const ReimbursementGrantPage = lazy(() => import("./src/pages/ReimbursementGrant
 const RecoverPassword = lazy(() => import("./src/pages/RecoverPassword"));
 const TwoFactorAuthPage = lazy(() => import("./src/pages/TwoFactorAuthPage"));
 const SignInScreen = lazy(() => import("./src/pages/SignInScreen"));
+const WebAccessBlockedPage = lazy(() => import("./src/pages/WebAccessBlockedPage"));
 const TaskPage = lazy(() => import("./src/pages/TaskPage"));
 const EmployeeDetails = lazy(() => import("./src/pages/EmployeeDetails"));
 const GatepassRequestPage = lazy(() => import("./src/pages/GatepassRequestPage"));
@@ -257,6 +258,16 @@ export const route = createBrowserRouter([
       { path: "guards", element: withSuspense(<Guards />) },
       { path: "settings", element: withSuspense(<McGuardSettings />) },
     ],
+  },
+  {
+    // Outside MainLayout on purpose - a blocked employee gets none of the real
+    // app chrome, just this page (see useWebAccessBlockGuard.ts).
+    path: "/app-only",
+    element: (
+      <Protected>
+        {withSuspense(<WebAccessBlockedPage />)}
+      </Protected>
+    ),
   },
   {
     path: "/sign-in",

@@ -101,7 +101,7 @@ const LeavesAttendanceCard = () => {
   ];
 
   return (
-    <DashCard title="Leaves & Attendance">
+    <DashCard title="Leaves & Attendance" className="h-full flex flex-col">
       <div className="flex items-center justify-between text-[11px] text-gray-500 mb-1.5">
         <span>Attendance</span>
         <span>{moment().format("DD MMM YYYY")}</span>
