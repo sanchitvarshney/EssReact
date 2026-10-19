@@ -30,7 +30,7 @@ const AbsentTodayCard = () => {
       {list.length === 0 ? (
         <p className="text-xs text-gray-400 py-8 text-center">Everyone is in today.</p>
       ) : (
-        <div className="max-h-[170px] overflow-y-auto custom-scrollbar-for-menu space-y-1 px-2 -mx-2">
+        <div className="space-y-1 px-2 -mx-2">
           {list.map((e, i) => (
             <div key={i} className="flex items-center gap-2.5 py-1.5 px-2 -mx-2 rounded-xl row-hover">
               <Avatar
