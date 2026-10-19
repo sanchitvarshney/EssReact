@@ -9,7 +9,6 @@ import nointernet from "../assets/no-wifi.png";
 import AISurveyDialog from "../components/reuseable/AISurveyDialog";
 import CyberAlertDialog from "../components/reuseable/CyberAlertDialog";
 import AssetVerificationDrawer from "../components/reuseable/AssetVerificationDrawer";
-import { useWebAccessBlockGuard } from "../hooks/useWebAccessBlockGuard";
 import {
   clearAiSurveyPendingForLogin,
   shouldOpenAiSurveyOnHome,
@@ -24,11 +23,6 @@ import { updateStoredUserAssetConfirmation } from "../helper/userStorage";
 
 function MainLayout() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-
-  // 12-10-2026 "use the app instead" block - redirects to /app-only on its own
-  // (see useWebAccessBlockGuard.ts) before any of the layout below is useful
-  // to a blocked employee.
-  useWebAccessBlockGuard();
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
