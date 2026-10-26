@@ -158,7 +158,9 @@ const TaskPage = () => {
       // again, same mismatch my_action/to_act fixed for "My Tasks".
       key: isMine ? "my_action" : isTeam && person ? "person_open" : "active",
       label: "Open",
-      value: isMine ? (shownMetrics?.to_act || 0) : isTeam ? (shownMetrics?.open_tasks || 0) : (shownMetrics?.assigned || 0) + (shownMetrics?.in_progress || 0),
+      // Backend SUM() aggregates come back as strings (e.g. "4"), not numbers - Number(...) here
+      // is required, or "4" + "2" silently string-concatenates to "42" instead of adding to 6.
+      value: isMine ? (shownMetrics?.to_act || 0) : isTeam ? (shownMetrics?.open_tasks || 0) : Number(shownMetrics?.assigned || 0) + Number(shownMetrics?.in_progress || 0),
       color: "#1e88e5", icon: PlayCircleOutlineIcon,
     },
     { key: "overdue", label: "Overdue", value: shownMetrics?.overdue || 0, color: "#e53935", icon: ErrorOutlineIcon },
