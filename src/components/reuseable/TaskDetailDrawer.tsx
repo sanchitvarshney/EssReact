@@ -191,15 +191,20 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
   const fmtDate = (d?: string) => (d ? dayjs(d).format("DD MMM YYYY, hh:mm A") : "—");
 
   // Expected-time form, shared by "Expected time" and "Start Working" (which asks for the time first).
-  // Date and time are required and must be in the future; starting asks only for those, no remark.
+  // Date and time are required and must be in the future. The remark is required whenever the
+  // chosen time is actually past the deadline - NOT just outside the "start" flow - the backend
+  // (tasksWeb.js POST /:id/eta) enforces that remark on every call regardless of which flow it
+  // came from, so hiding the field only for "start" left a dead end: a user picking a late time
+  // while starting got a 400 for a field the UI never showed them.
   const isStartFlow = dialog === "start";
   const etaAt = etaDate && etaTime
     ? etaDate.hour(etaTime.hour()).minute(etaTime.minute()).second(0)
     : null;
+  const isLate = !!(etaAt && task?.expected_end_at && etaAt.isAfter(dayjs(task.expected_end_at)));
   const etaErrors = {
     date: !etaDate ? "Pick a date" : "",
     time: !etaTime ? "Pick a time" : etaAt && !etaAt.isAfter(dayjs()) ? "Time must be in the future" : "",
-    remark: !isStartFlow && etaRemark.trim().length < 3 ? "Add a remark (at least 3 characters)" : "",
+    remark: isLate && etaRemark.trim().length < 3 ? "Add a remark (at least 3 characters) - your time is after the deadline" : "",
   };
   const etaValid = !etaErrors.date && !etaErrors.time && !etaErrors.remark;
 
@@ -221,7 +226,7 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
     const etaCall = setEta({
       id: task.id,
       expected_at: etaAt.format("YYYY-MM-DD HH:mm:ss"),
-      ...(!isStartFlow ? { remark: etaRemark.trim() } : {}),
+      ...(isLate ? { remark: etaRemark.trim() } : {}),
     });
     if (!isStartFlow) {
       wrap("Expected time saved", etaCall, false);
@@ -335,9 +340,9 @@ const TaskDetailDrawer = ({ taskId, onClose, onChanged }: { taskId: number; onCl
                 slotProps={{ textField: { size: "small", fullWidth: true, error: etaSubmitted && !!etaErrors.time, helperText: etaSubmitted ? etaErrors.time : "" } }}
               />
             </div>
-            {!isStartFlow && (
+            {isLate && (
               <TextField
-                size="small" label="Remark *" placeholder="Why this time? e.g. waiting on API from backend team"
+                size="small" label="Remark *" placeholder="Why this time is after the deadline"
                 value={etaRemark} onChange={(e) => setEtaRemark(e.target.value.slice(0, 500))}
                 multiline minRows={2} fullWidth
                 error={etaSubmitted && !!etaErrors.remark}

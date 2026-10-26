@@ -30,7 +30,7 @@ const tasksApi = baseApiInstance.injectEndpoints({
     }),
     getPersonTasks: builder.mutation<
       any,
-      { empCode: string; filter?: string; by?: "assigner" }
+      { empCode: string; filter?: string; by?: "assigner"; page?: number; limit?: number }
     >({
       query: ({ empCode, ...params }) => ({
         url: `/tasks/of/${empCode}`,

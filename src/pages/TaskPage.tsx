@@ -83,19 +83,29 @@ const TaskPage = () => {
   const isManager = team.length > 0;
   const loading = isTeam ? teamLoading : byMe ? loadingManaged : loadingMine;
 
+  // The board/table renders whatever this single fetch returns with no further
+  // pagination, so it needs the backend's full page size (its own hard cap - see
+  // tasksWeb.js's per-route `limit` clamp) or the board silently truncates to
+  // that route's much smaller default (20/30/50) while the stat tiles above
+  // (a separate, un-paginated COUNT/SUM query) keep showing the true total -
+  // exactly the "Open: 53" vs. a 19-card board mismatch this was a bug report for.
+  const FULL_PAGE = 100;
+
   const load = async () => {
     if (isTeam) {
       setTeamLoading(true);
       const listCall: any = person
-        ? await getPersonTasks({ empCode: person.emp_code, filter: filter || undefined, by: personBy === "given" ? "assigner" : undefined })
-        : await getTeamTasks({ filter: filter || undefined });
+        ? await getPersonTasks({ empCode: person.emp_code, filter: filter || undefined, by: personBy === "given" ? "assigner" : undefined, limit: FULL_PAGE })
+        : await getTeamTasks({ filter: filter || undefined, limit: FULL_PAGE });
       if (listCall?.data?.success) setTasks(listCall.data.data?.tasks || []);
       const overview: any = await getTeamOverview();
       if (overview?.data?.success) setTeam(overview.data.data?.members || []);
       setTeamLoading(false);
       return;
     }
-    const listCall: any = byMe ? await getManagedTasks({ filter: filter || undefined }) : await getMyTasks({ filter: filter || undefined });
+    const listCall: any = byMe
+      ? await getManagedTasks({ filter: filter || undefined, limit: FULL_PAGE })
+      : await getMyTasks({ filter: filter || undefined, limit: FULL_PAGE });
     if (listCall?.data?.success) setTasks(listCall.data.data?.tasks || []);
     const metricsCall: any = byMe ? await getManagerTaskMetrics() : await getMyTaskMetrics();
     if (metricsCall?.data?.success) setMetrics(metricsCall.data.data);
