@@ -39,9 +39,12 @@ import {
 } from "../services/tasks";
 import { deadlineText, PRIORITY_COLOR, STATUS_COLOR, statusLabel } from "../utils/taskBoxUtils";
 
-const FILTERS = [
+// "Open" here must stay in sync with the "Open" stat tile below - same reasoning
+// (isMine ? my_action : active), otherwise this segmented control and the tile would
+// filter to two different sets of tasks under the same "Open" label.
+const filtersFor = (isMine: boolean) => [
   { value: "", label: "All" },
-  { value: "active", label: "Open" },
+  { value: isMine ? "my_action" : "active", label: "Open" },
   { value: "overdue", label: "Overdue" },
   { value: "waiting", label: "Waiting to close" },
   { value: "closed", label: "Closed" },
@@ -139,8 +142,19 @@ const TaskPage = () => {
     return BOARD_COLUMNS.map((col) => ({ ...col, items: pick(col.statuses) }));
   }, [tasks]);
 
+  // On "My Tasks" only, "Open" means tasks actually waiting on ME (my_action/to_act - I own it
+  // and it's active, or it was forwarded to me) - not tasks I merely handed to someone else and
+  // am waiting on THEM for. Those still show in the board below (My Tasks intentionally also
+  // lists what you've assigned out), just not folded into this count. "Assigned by Me" and
+  // "My Team" keep the broader assigned+in_progress definition - there, everything really is
+  // work the viewer gave out, so there's no such distinction to make.
+  const isMine = !byMe && !isTeam;
   const tiles = [
-    { key: "active", label: "Open", value: (shownMetrics?.assigned || 0) + (shownMetrics?.in_progress || 0), color: "#1e88e5", icon: PlayCircleOutlineIcon },
+    {
+      key: isMine ? "my_action" : "active", label: "Open",
+      value: isMine ? (shownMetrics?.to_act || 0) : (shownMetrics?.assigned || 0) + (shownMetrics?.in_progress || 0),
+      color: "#1e88e5", icon: PlayCircleOutlineIcon,
+    },
     { key: "overdue", label: "Overdue", value: shownMetrics?.overdue || 0, color: "#e53935", icon: ErrorOutlineIcon },
     { key: "waiting", label: "Waiting", value: shownMetrics?.pending_approval || 0, color: "#8e24aa", icon: HourglassEmptyIcon },
     { key: "closed", label: "Closed", value: shownMetrics?.closed || 0, color: "#2e7d32", icon: TaskAltIcon },
@@ -299,7 +313,7 @@ const TaskPage = () => {
       {/* Filter chips + view switch */}
       <div className="flex items-center justify-between gap-3 flex-wrap flex-shrink-0">
         <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar-for-menu">
-          {FILTERS.map((f) => {
+          {filtersFor(isMine).map((f) => {
             const on = filter === f.value;
             return (
               <button
