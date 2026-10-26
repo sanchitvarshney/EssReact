@@ -125,10 +125,12 @@ const TaskPage = () => {
   }, []);
 
   // Team tiles are the sum of the people's own counts (whole team) or that one person's counts.
+  // open_tasks (not not_started+in_progress) - team-overview already excludes a task someone
+  // forwarded away to someone else, or Completed (that's "waiting"), from their own open_tasks.
   const teamMetrics = useMemo(() => {
     const pool = person ? team.filter((m) => m.emp_code === person.emp_code) : team;
     const sum = (k: string) => pool.reduce((a, m) => a + (Number(m[k]) || 0), 0);
-    return { assigned: sum("not_started"), in_progress: sum("in_progress"), pending_approval: sum("pending_approval"), overdue: sum("overdue"), closed: sum("closed") };
+    return { open_tasks: sum("open_tasks"), pending_approval: sum("pending_approval"), overdue: sum("overdue"), closed: sum("closed") };
   }, [team, person]);
   const shownMetrics = isTeam ? (team.length ? teamMetrics : null) : metrics;
 
@@ -151,8 +153,12 @@ const TaskPage = () => {
   const isMine = !byMe && !isTeam;
   const tiles = [
     {
-      key: isMine ? "my_action" : "active", label: "Open",
-      value: isMine ? (shownMetrics?.to_act || 0) : (shownMetrics?.assigned || 0) + (shownMetrics?.in_progress || 0),
+      // A specific team member's Open list must use person_open (the backend's :p-scoped twin of
+      // my_action) - "active" has no actor bound in it and would pull in forwarded-away tasks
+      // again, same mismatch my_action/to_act fixed for "My Tasks".
+      key: isMine ? "my_action" : isTeam && person ? "person_open" : "active",
+      label: "Open",
+      value: isMine ? (shownMetrics?.to_act || 0) : isTeam ? (shownMetrics?.open_tasks || 0) : (shownMetrics?.assigned || 0) + (shownMetrics?.in_progress || 0),
       color: "#1e88e5", icon: PlayCircleOutlineIcon,
     },
     { key: "overdue", label: "Overdue", value: shownMetrics?.overdue || 0, color: "#e53935", icon: ErrorOutlineIcon },
