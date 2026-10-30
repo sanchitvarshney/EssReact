@@ -69,7 +69,7 @@ export const RootEmployeeTree: FC<RootEmployeeTreeProps> = ({
           {/* Avatar with premium badge */}
           <div style={{ position: "relative" }}>
             <Avatar
-              src={node?.imageUrl}
+              src={node?.photo || node?.other?.photo || node?.imageUrl}
               alt={node?.name}
               sx={{
                 width: 72,
